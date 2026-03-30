@@ -1,12 +1,9 @@
 api_version: 1
 
-# Framework Drupal avec Integrated Composer (vendor/ non commité)
-framework: drupal_composer_managed
-
 # PHP 8.3 — aligné avec l'environnement DDEV local
 php_version: 8.3
 
-# drush_version 10 = valeur max acceptée par Pantheon (le vrai Drush 13 est dans composer.json)
+# drush_version 10 = valeur max acceptée par Pantheon
 drush_version: 10
 
 # Le webroot est web/ (pas la racine du repo)
