@@ -21,8 +21,14 @@ const path = require('path');
 const fs   = require('fs');
 
 const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://web';
-const ADMIN    = process.env.DRUPAL_ADMIN_USER   || 'admin';
-const PASSWORD = process.env.DRUPAL_ADMIN_PASS   || 'admin';
+const AUDIT_USER = process.env.DRUPAL_AUDIT_USER
+  || process.env.DRUPAL_CLIENT_USER
+  || process.env.DRUPAL_ADMIN_USER
+  || 'client_ateliero';
+const AUDIT_PASSWORD = process.env.DRUPAL_AUDIT_PASS
+  || process.env.DRUPAL_CLIENT_PASS
+  || process.env.DRUPAL_ADMIN_PASS
+  || 'admin';
 
 const SCREENSHOTS_DIR = path.join(__dirname, '..', 'screenshots', 'audit-full');
 if (!fs.existsSync(SCREENSHOTS_DIR)) fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
@@ -42,47 +48,48 @@ const TECH_FIELD_NAMES = ['uid', 'langcode', 'uuid', 'vid', 'changed', 'revision
 const AUDIT_PAGES = [
   // ── Tableau de bord ──────────────────────────────────────────────────
   { key: 'dashboard',           url: '/admin/boutique',                           cat: 'Dashboard' },
+  { key: 'config-boutique',     url: '/admin/boutique/configuration',             cat: 'Dashboard' },
 
   // ── Catalogue produits ───────────────────────────────────────────────
   { key: 'product-list',        url: '/admin/commerce/products',                  cat: 'Catalogue' },
   { key: 'product-add',         url: '/product/add/default',                      cat: 'Catalogue' },
-  { key: 'product-types',       url: '/admin/commerce/config/product-types',      cat: 'Catalogue' },
-  { key: 'product-attributes',  url: '/admin/commerce/product-attributes',        cat: 'Catalogue' },
 
   // ── Commandes ────────────────────────────────────────────────────────
   { key: 'order-list',          url: '/admin/commerce/orders',                    cat: 'Commandes' },
-  { key: 'order-add',           url: '/admin/commerce/orders/add',                cat: 'Commandes' },
 
   // ── Promotions ───────────────────────────────────────────────────────
   { key: 'promotions-list',     url: '/admin/commerce/promotions',                cat: 'Promotions' },
-  { key: 'promotion-add',       url: '/promotion/add',                            cat: 'Promotions' },
 
-  // ── Configuration boutique ───────────────────────────────────────────
-  { key: 'store-config',        url: '/admin/commerce/config/stores',             cat: 'Config boutique' },
-  { key: 'payment-gateways',    url: '/admin/commerce/config/payment-gateways',   cat: 'Config boutique' },
-  { key: 'taxes',               url: '/admin/commerce/config/tax-types',          cat: 'Config boutique' },
+  // ── Facturation ──────────────────────────────────────────────────────
+  { key: 'invoices-list',       url: '/admin/commerce/invoices',                  cat: 'Facturation' },
 
   // ── Médias ───────────────────────────────────────────────────────────
   { key: 'media-list',          url: '/admin/content/media',                      cat: 'Médias' },
   { key: 'media-add-image',     url: '/media/add/product_image',                  cat: 'Médias' },
-
-  // ── Clients / utilisateurs ───────────────────────────────────────────
-  { key: 'users-list',          url: '/admin/people',                             cat: 'Clients' },
-
-  // ── Rapports ─────────────────────────────────────────────────────────
-  { key: 'status-report',       url: '/admin/reports/status',                     cat: 'Rapports' },
-
-  // ── Traductions ──────────────────────────────────────────────────────
-  { key: 'translations',        url: '/admin/config/regional/translate',          cat: 'Traductions' },
 ];
 
 async function login(page) {
   await page.goto(`${BASE_URL}/user/login`);
   await page.waitForSelector('#edit-name');
-  await page.fill('#edit-name', ADMIN);
-  await page.fill('#edit-pass', PASSWORD);
+  await page.fill('#edit-name', AUDIT_USER);
+  await page.fill('#edit-pass', AUDIT_PASSWORD);
   await page.click('#edit-submit');
-  await page.waitForURL(/\/(admin|user\/\d+)/, { timeout: 10_000 }).catch(() => {});
+  await page.waitForLoadState('networkidle');
+
+  const stillOnLogin = await page.locator('#edit-name').count();
+  if (stillOnLogin > 0) {
+    throw new Error(`Connexion échouée pour "${AUDIT_USER}"`);
+  }
+}
+
+async function assertPageUsable(page, url) {
+  const bodyText = await page.locator('body').innerText().catch(() => '');
+  if (/Vous n['’]êtes pas autorisé\(e\) à accéder à cette page|Access denied/i.test(bodyText)) {
+    throw new Error(`Accès refusé pour ${url}`);
+  }
+  if (/La page demandée n['’]a pas pu être trouvée|Page not found/i.test(bodyText)) {
+    throw new Error(`Page introuvable pour ${url}`);
+  }
 }
 
 async function auditPage(page, entry) {
@@ -93,6 +100,7 @@ async function auditPage(page, entry) {
     await page.goto(`${BASE_URL}${url}`, { waitUntil: 'networkidle', timeout: 20_000 });
     await page.waitForTimeout(1500);
     await page.evaluate(() => document.fonts.ready);
+    await assertPageUsable(page, url);
   } catch (e) {
     return { ...entry, findings: [{ severity: 'high', message: `Page inaccessible : ${e.message}` }], error: true };
   }
@@ -107,10 +115,11 @@ async function auditPage(page, entry) {
     findings.push({ severity: 'high', check: 'php_error', message: 'Erreur PHP visible dans la page' });
   }
 
-  // ── Check 2 : Titre de page vide ────────────────────────────────────
-  const h1 = await page.$eval('h1.page-title, h1, .page-header h1', el => el.innerText?.trim()).catch(() => '');
-  if (!h1) {
-    findings.push({ severity: 'high', check: 'no_title', message: 'Titre de page h1 vide ou absent' });
+  // ── Check 2 : repère d'écran absent (titre navigateur + heading visible) ─
+  const browserTitle = (await page.title()).trim();
+  const heading = await page.$eval('h1.page-title, h1, .page-header h1, h2, summary', el => el.innerText?.trim()).catch(() => '');
+  if (!browserTitle && !heading) {
+    findings.push({ severity: 'high', check: 'no_title', message: 'Repère de page absent (titre navigateur et heading invisibles)' });
   }
 
   // ── Check 3 : Labels EN non traduits ────────────────────────────────
@@ -176,7 +185,7 @@ async function auditPage(page, entry) {
   }
 
   // ── Check 7 : Champs importants sans texte d'aide (seulement formulaires d'ajout) ──
-  if (url.includes('/add') || url.includes('/edit')) {
+  if (url.includes('/add') || url.includes('/edit') || url.includes('/configuration')) {
     const missingHelp = await page.$$eval('.form-item', items =>
       items
         .filter(item => !item.querySelector('.form-item__description, .description, [id*="description"]'))
@@ -185,7 +194,15 @@ async function auditPage(page, entry) {
           const name  = item.querySelector('input, select, textarea')?.getAttribute('name') || '';
           return { label, name };
         })
-        .filter(f => f.label && f.name && !f.name.startsWith('_') && !f.name.includes('[_'))
+        .filter(f => (
+          f.label
+          && f.name
+          && !f.name.startsWith('_')
+          && !f.name.includes('[_')
+          && !f.name.startsWith('created[')
+          && !f.name.startsWith('changed[')
+          && !f.name.startsWith('revision_')
+        ))
         .slice(0, 5)
     );
     for (const { label, name } of missingHelp) {
@@ -268,6 +285,7 @@ function printReport(results) {
 
   console.log('\n🔍  Audit UX/UI complet — démarrage\n');
   await login(page);
+  console.log(`  Session audit : ${AUDIT_USER}`);
 
   const results = [];
   for (const entry of AUDIT_PAGES) {

@@ -15,9 +15,15 @@
 const { chromium } = require('playwright');
 
 const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'http://web';
-const ADMIN    = process.env.DRUPAL_ADMIN_USER   || 'admin';
-const PASSWORD = process.env.DRUPAL_ADMIN_PASS   || 'admin';
-const TARGET   = process.argv[2] || 'all';
+const AUDIT_USER = process.env.DRUPAL_AUDIT_USER
+  || process.env.DRUPAL_CLIENT_USER
+  || process.env.DRUPAL_ADMIN_USER
+  || 'client_ateliero';
+const AUDIT_PASSWORD = process.env.DRUPAL_AUDIT_PASS
+  || process.env.DRUPAL_CLIENT_PASS
+  || process.env.DRUPAL_ADMIN_PASS
+  || 'admin';
+const TARGET = process.argv[2] || 'all';
 
 /** Mots courants anglais qui signalent une chaîne non traduite dans l'UI */
 const EN_PATTERNS = [
@@ -32,17 +38,47 @@ const TECHNICAL_FIELDS = ['uid', 'langcode', 'created', 'changed', 'path', 'uuid
 
 const AUDIT_PAGES = {
   'dashboard':    '/admin/boutique',
-  'product-form': '/admin/commerce/products/add/default',
-  'order-form':   '/admin/commerce/orders/add',
+  'config':       '/admin/boutique/configuration',
+  'product-form': '/product/add/default',
+  'products':     '/admin/commerce/products',
+  'orders':       '/admin/commerce/orders',
+  'promotions':   '/admin/commerce/promotions',
+  'invoices':     '/admin/commerce/invoices',
+  'media':        '/admin/content/media',
 };
+
+function isManagedFormPage(url) {
+  return [
+    '/admin/boutique/configuration',
+    '/product/add/',
+    '/product/',
+    '/media/add/',
+    '/media/',
+  ].some(pattern => url.includes(pattern));
+}
 
 async function login(page) {
   await page.goto(`${BASE_URL}/user/login`);
   await page.waitForSelector('#edit-name');
-  await page.fill('#edit-name', ADMIN);
-  await page.fill('#edit-pass', PASSWORD);
+  await page.fill('#edit-name', AUDIT_USER);
+  await page.fill('#edit-pass', AUDIT_PASSWORD);
   await page.click('#edit-submit');
-  await page.waitForURL(/\/(admin|user\/\d+)/, { timeout: 10_000 }).catch(() => {});
+  await page.waitForLoadState('networkidle');
+
+  const stillOnLogin = await page.locator('#edit-name').count();
+  if (stillOnLogin > 0) {
+    throw new Error(`Connexion échouée pour "${AUDIT_USER}"`);
+  }
+}
+
+async function assertPageUsable(page, url) {
+  const bodyText = await page.locator('body').innerText().catch(() => '');
+  if (/Vous n['’]êtes pas autorisé\(e\) à accéder à cette page|Access denied/i.test(bodyText)) {
+    throw new Error(`Accès refusé pour ${url}`);
+  }
+  if (/La page demandée n['’]a pas pu être trouvée|Page not found/i.test(bodyText)) {
+    throw new Error(`Page introuvable pour ${url}`);
+  }
 }
 
 async function auditPage(page, name, url) {
@@ -50,6 +86,16 @@ async function auditPage(page, name, url) {
 
   await page.goto(`${BASE_URL}${url}`, { waitUntil: 'networkidle', timeout: 15_000 });
   await page.waitForTimeout(500);
+  try {
+    await assertPageUsable(page, url);
+  } catch (error) {
+    findings.push({
+      severity: 'high',
+      type: 'page_unusable',
+      message: error.message,
+    });
+    return { page: name, url, findings };
+  }
 
   // 1. Labels visibles avec du texte anglais
   const labels = await page.$$eval('label, .form-item__label, button, .button, .action-links a', els =>
@@ -71,23 +117,32 @@ async function auditPage(page, name, url) {
     }
   }
 
-  // 2. Champs de formulaire sans description
-  const fieldsWithoutHelp = await page.$$eval('.form-item', items =>
-    items
-      .filter(item => !item.querySelector('.form-item__description, .description'))
-      .map(item => {
-        const label = item.querySelector('label')?.innerText?.trim() || '?';
-        const name  = item.querySelector('input, select, textarea')?.getAttribute('name') || '';
-        return { label, name };
-      })
-      .filter(f => f.label !== '?' && f.name && !f.name.includes('[_'))
-  );
-  for (const { label, name } of fieldsWithoutHelp.slice(0, 10)) {
-    findings.push({
-      severity: 'medium',
-      type: 'missing_help',
-      message: `Champ sans description d'aide : "${label}" (name="${name}")`,
-    });
+  // 2. Champs de formulaire sans description sur les vrais écrans de saisie.
+  if (isManagedFormPage(url)) {
+    const fieldsWithoutHelp = await page.$$eval('.form-item', items =>
+      items
+        .filter(item => !item.querySelector('.form-item__description, .description'))
+        .map(item => {
+          const label = item.querySelector('label')?.innerText?.trim() || '?';
+          const name  = item.querySelector('input, select, textarea')?.getAttribute('name') || '';
+          return { label, name };
+        })
+        .filter(f => (
+          f.label !== '?'
+          && f.name
+          && !f.name.includes('[_')
+          && !f.name.startsWith('created[')
+          && !f.name.startsWith('changed[')
+          && !f.name.startsWith('revision_')
+        ))
+    );
+    for (const { label, name } of fieldsWithoutHelp.slice(0, 10)) {
+      findings.push({
+        severity: 'medium',
+        type: 'missing_help',
+        message: `Champ sans description d'aide : "${label}" (name="${name}")`,
+      });
+    }
   }
 
   // 3. Champs techniques exposés (vérifie que le champ n'a pas de label métier)
@@ -150,6 +205,7 @@ function printReport(results) {
 
   console.log('\n🔍  Démarrage de l\'audit UX…');
   await login(page);
+  console.log(`  Session audit : ${AUDIT_USER}`);
 
   const pagesToAudit = TARGET === 'all'
     ? Object.entries(AUDIT_PAGES)

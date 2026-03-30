@@ -4,6 +4,7 @@ namespace Drupal\odesign_admin\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Url;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -114,62 +115,83 @@ class DashboardController extends ControllerBase {
    * Raccourcis vers les actions fréquentes.
    */
   protected function getQuickLinks(): array {
-    return [
+    $links = [
       [
         'title'       => 'Créer un produit',
-        'url'         => '/product/add/default',
+        'route_name'  => 'entity.commerce_product.add_form',
+        'route_params' => ['commerce_product_type' => 'default'],
         'description' => 'Ajouter un nouveau produit à votre boutique',
         'icon'        => 'add_circle',
       ],
       [
         'title'       => 'Toutes les commandes',
-        'url'         => '/admin/commerce/orders',
+        'route_name'  => 'entity.commerce_order.collection',
         'description' => 'Gérer et suivre vos commandes',
         'icon'        => 'receipt_long',
       ],
       [
         'title'       => 'Expéditions',
-        'url'         => '/admin/commerce/shipping-methods',
+        'route_name'  => 'entity.commerce_shipping_method.collection',
         'description' => 'Gérer les modes de livraison',
         'icon'        => 'local_shipping',
       ],
       [
         'title'       => 'Factures',
-        'url'         => '/admin/commerce/invoices',
+        'route_name'  => 'view.commerce_invoices.page_1',
         'description' => 'Consulter et télécharger les factures',
         'icon'        => 'description',
       ],
       [
         'title'       => 'Mes clients',
-        'url'         => '/admin/people',
+        'route_name'  => 'entity.user.collection',
         'description' => 'Consulter les comptes clients',
         'icon'        => 'group',
       ],
       [
         'title'       => 'Mes produits',
-        'url'         => '/admin/commerce/products',
+        'route_name'  => 'entity.commerce_product.collection',
         'description' => 'Modifier votre catalogue',
         'icon'        => 'inventory_2',
       ],
       [
         'title'       => 'Promotions',
-        'url'         => '/admin/commerce/promotions',
+        'route_name'  => 'entity.commerce_promotion.collection',
         'description' => 'Créer et gérer vos codes promo',
         'icon'        => 'local_offer',
       ],
       [
         'title'       => 'Ajouter une image',
-        'url'         => '/media/add/product_image',
+        'route_name'  => 'entity.media.add_form',
+        'route_params' => ['media_type' => 'product_image'],
         'description' => 'Télécharger une photo produit',
         'icon'        => 'add_photo_alternate',
       ],
       [
         'title'       => 'Configuration boutique',
-        'url'         => '/admin/boutique/configuration',
+        'route_name'  => 'odesign_admin.config',
         'description' => 'Mailgun, Stripe, informations boutique',
         'icon'        => 'settings',
       ],
     ];
+
+    $account = $this->currentUser();
+    $access_manager = \Drupal::service('access_manager');
+    $quick_links = [];
+
+    foreach ($links as $link) {
+      $route_name = $link['route_name'];
+      $route_params = $link['route_params'] ?? [];
+      $access = $access_manager->checkNamedRoute($route_name, $route_params, $account, TRUE);
+      if (!$access->isAllowed()) {
+        continue;
+      }
+
+      $link['url'] = Url::fromRoute($route_name, $route_params)->toString();
+      unset($link['route_name'], $link['route_params']);
+      $quick_links[] = $link;
+    }
+
+    return $quick_links;
   }
 
 }
