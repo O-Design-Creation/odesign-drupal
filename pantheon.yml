@@ -6,19 +6,8 @@ framework: drupal_composer_managed
 # PHP 8.3 — aligné avec l'environnement DDEV local
 php_version: 8.3
 
-# Drush 13 (compatible Drupal 11)
-drush_version: 13
+# drush_version 10 = valeur max acceptée par Pantheon (le vrai Drush 13 est dans composer.json)
+drush_version: 10
 
-# Integrated Composer — Pantheon exécute `composer install` au déploiement
-build:
-  composer_version: 2
-
-# Déploiement — exécuter updatedb + config:import + cache:rebuild après chaque push
-deploy:
-  after:
-    - "php $OLDPWD/web/sites/default/settings.pantheon.php || true"
-
-# Environnements
-environments:
-  dev:
-    branch: main
+# Le webroot est web/ (pas la racine du repo)
+web_docroot: true
