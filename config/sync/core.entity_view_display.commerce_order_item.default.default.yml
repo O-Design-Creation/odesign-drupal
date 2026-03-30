@@ -1,0 +1,137 @@
+uuid: c56b2ab4-096a-4953-beb9-1b651d92b6f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_item_type.default
+    - field.field.commerce_order_item.default.field_poc_finish
+    - field.field.commerce_order_item.default.field_poc_need_upload
+    - field.field.commerce_order_item.default.field_poc_text
+    - field.field.commerce_order_item.default.field_poc_tree_layout
+    - field.field.commerce_order_item.default.field_poc_tree_names
+    - field.field.commerce_order_item.default.field_poc_tree_wall_mount
+    - field.field.commerce_order_item.default.field_poc_upload
+  module:
+    - commerce_order
+    - commerce_price
+    - file
+    - options
+  enforced:
+    module:
+      - commerce_product
+_core:
+  default_config_hash: 1M4qYC5fiEudKUFSLH3u_bGifX8mJOnwgB0ilyLYN0Y
+id: commerce_order_item.default.default
+targetEntityType: commerce_order_item
+bundle: default
+mode: default
+content:
+  created:
+    type: timestamp
+    label: hidden
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_poc_finish:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  field_poc_need_upload:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  field_poc_text:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  field_poc_tree_layout:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 32
+    region: content
+  field_poc_tree_names:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 30
+    region: content
+  field_poc_tree_wall_mount:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 31
+    region: content
+  field_poc_upload:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 23
+    region: content
+  purchased_entity:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  quantity:
+    type: commerce_quantity
+    label: above
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+      strip_trailing_zeroes: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  total_price:
+    type: commerce_price_default
+    label: above
+    settings:
+      strip_trailing_zeroes: false
+      currency_display: symbol
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  unit_price:
+    type: commerce_price_default
+    label: above
+    settings:
+      strip_trailing_zeroes: false
+      currency_display: symbol
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  adjustments: true
+  search_api_excerpt: true

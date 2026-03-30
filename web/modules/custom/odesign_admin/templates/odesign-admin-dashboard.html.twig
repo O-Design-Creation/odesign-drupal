@@ -1,0 +1,74 @@
+{#
+/**
+ * @file
+ * Template du tableau de bord gestionnaire boutique — ODesign Admin.
+ *
+ * Variables :
+ * - stats : array (pending_orders, total_orders, total_products)
+ * - orders_view : render array de la vue commandes
+ * - quick_links : array de raccourcis (title, url, description, icon)
+ */
+#}
+
+<div class="odesign-dashboard">
+
+  {# Bannière d'accueil #}
+  <div class="odesign-dashboard__welcome">
+    <span class="material-symbols-outlined odesign-dashboard__welcome-icon">storefront</span>
+    <div class="odesign-dashboard__welcome-text">
+      <h2>Bienvenue dans votre boutique</h2>
+      <p>Retrouvez ici vos commandes, vos produits et toutes les actions du quotidien.</p>
+    </div>
+  </div>
+
+  {# Compteurs rapides #}
+  <div class="odesign-dashboard__stats">
+    <div class="odesign-dashboard__stat odesign-dashboard__stat--highlight">
+      <span class="material-symbols-outlined stat-icon">pending_actions</span>
+      <span class="stat-value">{{ stats.pending_orders }}</span>
+      <span class="stat-label">Commande{{ stats.pending_orders != 1 ? 's' : '' }} en attente</span>
+    </div>
+    <div class="odesign-dashboard__stat">
+      <span class="material-symbols-outlined stat-icon">shopping_bag</span>
+      <span class="stat-value">{{ stats.total_orders }}</span>
+      <span class="stat-label">Commande{{ stats.total_orders != 1 ? 's' : '' }} au total</span>
+    </div>
+    <div class="odesign-dashboard__stat">
+      <span class="material-symbols-outlined stat-icon">inventory_2</span>
+      <span class="stat-value">{{ stats.total_products }}</span>
+      <span class="stat-label">Produit{{ stats.total_products != 1 ? 's' : '' }} en ligne</span>
+    </div>
+  </div>
+
+  {# Actions rapides #}
+  <div class="odesign-dashboard__quick-links">
+    <h3 class="odesign-dashboard__section-label">Actions rapides</h3>
+    <div class="quick-actions-grid">
+      {% for link in quick_links %}
+        <a href="{{ link.url }}" class="quick-action-btn">
+          <span class="quick-action-btn__icon">
+            <span class="material-symbols-outlined">{{ link.icon }}</span>
+          </span>
+          <span class="quick-action-btn__body">
+            <span class="quick-action-btn__title">{{ link.title }}</span>
+            <span class="quick-action-btn__desc">{{ link.description }}</span>
+          </span>
+          <span class="material-symbols-outlined quick-action-btn__arrow">chevron_right</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {# Commandes récentes #}
+  {% if orders_view %}
+    <div class="odesign-dashboard__orders">
+      <h3>
+        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.2rem; margin-right: 6px;">receipt_long</span>
+        Commandes récentes
+      </h3>
+      {{ orders_view }}
+    </div>
+  {% endif %}
+
+</div>
+

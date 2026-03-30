@@ -1,0 +1,10 @@
+odesign_admin/css:
+  css:
+    theme:
+      css/dashboard.css: {}
+
+odesign_admin/admin_global:
+  css:
+    theme:
+      css/admin-global.css: {}
+

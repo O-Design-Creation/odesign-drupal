@@ -1,0 +1,376 @@
+/* ODesign Admin — Dashboard styles */
+
+.odesign-dashboard {
+  max-width: 1200px;
+  padding: 2rem 1.5rem;
+}
+
+/* ─── Material Symbols — configuration globale ───────────────────────────── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ─── Bannière d'accueil ─────────────────────────────────────────────────── */
+.odesign-dashboard__welcome {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: linear-gradient(135deg, #f8f4ef 0%, #ede8e0 100%);
+  border-left: 4px solid #8b6f47;
+  border-radius: 8px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.odesign-dashboard__welcome-icon {
+  font-size: 2.5rem;
+  color: #8b6f47;
+  flex-shrink: 0;
+  font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 48;
+}
+
+.odesign-dashboard__welcome-text h2 {
+  margin: 0 0 0.3rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #3d2b1f;
+}
+
+.odesign-dashboard__welcome-text p {
+  margin: 0;
+  color: #6b5744;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ─── Compteurs ─────────────────────────────────────────────────────────── */
+.odesign-dashboard__stats {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.odesign-dashboard__stat {
+  flex: 1;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+
+.odesign-dashboard__stat--highlight {
+  border-color: #8b6f47;
+  background: linear-gradient(135deg, #fdf9f5 0%, #faf4ec 100%);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  color: #b0a090;
+  margin-bottom: 0.25rem;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.odesign-dashboard__stat--highlight .stat-icon {
+  color: #8b6f47;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #3d2b1f;
+  line-height: 1;
+}
+
+.odesign-dashboard__stat--highlight .stat-value {
+  color: #8b6f47;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: #8a7a6a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+/* ─── Actions rapides ────────────────────────────────────────────────────── */
+.odesign-dashboard__quick-links {
+  margin-bottom: 2rem;
+}
+
+.odesign-dashboard__section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #b0a090;
+  margin: 0 0 0.9rem;
+  padding-bottom: 0;
+  border: none;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #e4ddd5;
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  min-height: 72px;
+}
+
+.quick-action-btn:hover {
+  border-color: #8b6f47;
+  background: #fdfaf7;
+  box-shadow: 0 4px 14px rgba(139,111,71,.1);
+  text-decoration: none;
+}
+
+.quick-action-btn__icon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  background: #f5efe8;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.quick-action-btn:hover .quick-action-btn__icon {
+  background: #ede4d9;
+}
+
+.quick-action-btn__icon .material-symbols-outlined {
+  font-size: 20px;
+  color: #8b6f47;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.quick-action-btn__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.quick-action-btn__title {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2d1f14;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-action-btn__desc {
+  display: block;
+  font-size: 0.77rem;
+  color: #a09080;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.quick-action-btn__arrow {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: #cdc0b0;
+  transition: color 0.15s, transform 0.15s;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+.quick-action-btn:hover .quick-action-btn__arrow {
+  color: #8b6f47;
+  transform: translateX(3px);
+}
+
+/* ─── Commandes récentes ─────────────────────────────────────────────────── */
+.odesign-dashboard__orders {
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+
+/* ─── Icônes dans la navigation sidebar (Material Symbols via CSS) ───────── */
+/* Remplace les éventuels emojis résiduels dans le nav */
+.gin-sidebar-navigation .navigation-link[href*="/admin/boutique"]::before,
+.toolbar-menu a[href*="/admin/boutique"]::before,
+[data-drupal-link-system-path="admin/boutique"] a::before {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  content: 'dashboard';
+  font-size: 1.1rem;
+  vertical-align: middle;
+  margin-right: 6px;
+  color: currentColor;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+}
+
+
+/* Bannière d'accueil */
+.odesign-dashboard__welcome {
+  background: linear-gradient(135deg, #f8f4ef 0%, #ede8e0 100%);
+  border-left: 4px solid #8b6f47;
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.odesign-dashboard__welcome h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.4rem;
+  color: #3d2b1f;
+}
+
+.odesign-dashboard__welcome p {
+  margin: 0;
+  color: #6b5744;
+  font-size: 0.95rem;
+}
+
+/* Compteurs */
+.odesign-dashboard__stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.odesign-dashboard__stat {
+  flex: 1;
+  min-width: 140px;
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 8px;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.odesign-dashboard__stat--highlight {
+  border-color: #8b6f47;
+  background: #fdf8f3;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #3d2b1f;
+  line-height: 1;
+}
+
+.odesign-dashboard__stat--highlight .stat-value {
+  color: #8b6f47;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.82rem;
+  color: #7a6a5a;
+  margin-top: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Actions rapides */
+.odesign-dashboard__quick-links {
+  margin-bottom: 1.75rem;
+}
+
+.odesign-dashboard__quick-links h3,
+.odesign-dashboard__orders h3 {
+  font-size: 1.05rem;
+  color: #3d2b1f;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ede8e0;
+}
+
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+
+.quick-link-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.quick-link-card:hover {
+  border-color: #8b6f47;
+  box-shadow: 0 3px 10px rgba(139,111,71,.15);
+  text-decoration: none;
+}
+
+.quick-link-card__title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #3d2b1f;
+  margin-bottom: 0.3rem;
+}
+
+.quick-link-card__desc {
+  font-size: 0.8rem;
+  color: #8a7a6a;
+}
+
+/* Commandes récentes */
+.odesign-dashboard__orders {
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}

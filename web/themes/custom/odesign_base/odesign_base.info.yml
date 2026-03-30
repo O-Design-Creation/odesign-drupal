@@ -1,0 +1,18 @@
+name: ODesign Base
+type: theme
+description: 'Socle exploratoire minimal pour ODesign.'
+core_version_requirement: ^11
+package: Custom
+base theme: false
+libraries:
+  - odesign_base/global
+regions:
+  header: Header
+  primary_menu: Primary menu
+  secondary_menu: Secondary menu
+  breadcrumb: Breadcrumb
+  highlighted: Highlighted
+  help: Help
+  content: Content
+  sidebar_first: Sidebar first
+  footer: Footer

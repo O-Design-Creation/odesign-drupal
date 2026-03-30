@@ -1,0 +1,19 @@
+uuid: 4260180f-1116-4769-be61-f77ede665c6b
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_order
+    - text
+id: commerce_order.field_notes_atelier
+field_name: field_notes_atelier
+entity_type: commerce_order
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

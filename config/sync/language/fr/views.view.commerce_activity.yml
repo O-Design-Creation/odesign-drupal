@@ -1,0 +1,30 @@
+display:
+  default:
+    display_title: Principal
+    display_options:
+      title: 'Activités de la commande'
+      fields:
+        created:
+          label: Date
+          separator: ', '
+        rendered_entity:
+          label: Message
+        uid:
+          label: Utilisateur
+          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Appliquer
+          reset_button_label: Réinitialiser
+          exposed_sorts_label: 'Trier par'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      arguments:
+        source_entity_id:
+          exception:
+            title: Tout
+        source_entity_type:
+          exception:
+            title: Tout
+  block_1:
+    display_title: Bloc

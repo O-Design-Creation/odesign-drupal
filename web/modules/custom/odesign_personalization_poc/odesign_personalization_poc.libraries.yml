@@ -1,0 +1,9 @@
+tree_builder:
+  css:
+    theme:
+      css/tree-builder.css: {}
+  js:
+    js/tree-builder.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

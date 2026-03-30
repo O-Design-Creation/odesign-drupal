@@ -1,0 +1,15 @@
+uuid: 0ef74fb9-1c64-42ea-9dfc-e928b5b89cff
+langcode: fr
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_product
+_core:
+  default_config_hash: 6n6q97CDOCqHGs4Dun3BqVJE6e1o6TA-69qCwoUU-SY
+id: default
+label: 'Par défaut'
+traits: {  }
+locked: false
+purchasableEntityType: commerce_product_variation
+orderType: default

@@ -1,0 +1,80 @@
+uuid: 92eb7600-85fa-4cc7-9e4c-87a665c3695c
+langcode: en
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - field.field.commerce_order.default.field_atelier_status
+    - field.field.commerce_order.default.field_notes_atelier
+  module:
+    - commerce_order
+    - text
+_core:
+  default_config_hash: ZT4pREnvh4c-BSAu2qMMjclCYJxb16VDTHJaxIjnQFE
+id: commerce_order.default.default
+targetEntityType: commerce_order
+bundle: default
+mode: default
+content:
+  adjustments:
+    type: commerce_adjustment_default
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  billing_profile:
+    type: commerce_billing_profile
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  cart:
+    type: boolean_checkbox
+    weight: 20
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_atelier_status:
+    type: options_select
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_notes_atelier:
+    type: text_textarea
+    weight: 51
+    region: content
+    settings:
+      rows: 4
+      placeholder: ''
+    third_party_settings: {  }
+  mail:
+    type: email_default
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  order_items:
+    type: commerce_order_items
+    weight: 1
+    region: content
+    settings:
+      allow_new: true
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
+      draggable: true
+    third_party_settings: {  }
+hidden:
+  coupons: true
+  created: true
+  customer_comments: true
+  ip_address: true
+  mail: true
+  order_number: true
+  state: true
+  store_id: true
+  uid: true

@@ -1,0 +1,40 @@
+/* ODesign Admin — CSS global admin */
+
+/* ─── Google Fonts : Material Symbols Outlined ───────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block');
+
+/* ─── Correction offset sidebar Gin ─────────────────────────────────────────
+ * Gin 5.x gère l'offset de la sidebar via --drupal-displace-offset-left (Drupal JS).
+ * On ne surcharge pas main.page-content pour ne pas doubler l'offset.
+ * Seul un espacement visuel minimal est ajouté pour respiration.
+ */
+body.gin--sidebar-toolbar .page-content-header,
+body.gin--sidebar-toolbar .gin-secondary-toolbar {
+  /* Gin gère nativement via --gin-toolbar-x-offset */
+}
+
+/* ─── Material Symbols — configuration globale ───────────────────────────── */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ─── Commerce Shipping — masquer les blocs promotionnels tiers ──────────────
+ * Le module commerce_shipping affiche un bloc publicitaire ShipStation
+ * inutile et source de confusion pour le gestionnaire boutique.
+ * Sélecteur DOM vérifié : .system-status-general-info.commerce-shipping-info
+ */
+.system-status-general-info.commerce-shipping-info {
+  display: none !important;
+}

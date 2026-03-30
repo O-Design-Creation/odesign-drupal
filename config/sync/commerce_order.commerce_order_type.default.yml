@@ -1,0 +1,26 @@
+uuid: a5b2e2c3-dccc-4c32-b84e-7751cac89abc
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_invoice
+    - odesign_admin
+third_party_settings:
+  commerce_invoice:
+    invoice_type: default
+    invoice_workflow: invoice_default
+_core:
+  default_config_hash: jn2Hj-04qG6O3dTtK8EaBB13jVPplONDb9L0Fat-0pI
+id: default
+label: 'Par défaut'
+traits:
+  - commerce_shippable_order
+locked: false
+workflow: odesign_order
+showOrderEditLinks: false
+numberPattern: order_default
+refresh_mode: customer
+refresh_frequency: 300
+sendReceipt: true
+receiptBcc: ''
+receiptSubject: ''

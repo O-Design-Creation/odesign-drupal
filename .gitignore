@@ -1,0 +1,32 @@
+# Drupal
+web/sites/*/settings.local.php
+web/sites/*/services.local.yml
+web/sites/*/files/
+web/sites/*/private/
+web/sites/*/tmp/
+
+# Composer
+/vendor/
+web/core/
+web/modules/contrib/
+web/themes/contrib/
+web/profiles/contrib/
+
+# DDEV
+/.ddev/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log
+
+# Playwright
+playwright/screenshots/
+playwright/node_modules/

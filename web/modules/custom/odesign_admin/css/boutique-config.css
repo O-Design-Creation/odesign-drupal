@@ -1,0 +1,167 @@
+/* ODesign — Page de configuration boutique */
+
+/* ── Intro ─────────────────────────────────────────────────────────────────── */
+.config-intro {
+  background: linear-gradient(135deg, #fdf9f5 0%, #faf4ec 100%);
+  border-left: 4px solid #8b6f47;
+  border-radius: 3px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  color: #3d2b1f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.config-intro p { margin: 0 0 6px; }
+.config-intro p:last-child { margin-bottom: 0; }
+
+/* ── Sections (details) ─────────────────────────────────────────────────────── */
+.config-section {
+  border: 1px solid #e0dbd4;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.config-section > summary {
+  padding: 16px 20px;
+  background: #fdfaf7;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d2b1f;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #e0dbd4;
+}
+.config-section > summary::-webkit-details-marker { display: none; }
+.config-section > summary::before {
+  content: '›';
+  font-size: 18px;
+  color: #8b6f47;
+  transition: transform 0.15s;
+  margin-right: 4px;
+}
+.config-section[open] > summary::before { transform: rotate(90deg); }
+
+.config-section.config-ok > summary { border-left: 4px solid #4a9960; }
+.config-section.config-warning > summary { border-left: 4px solid #c8853a; }
+
+/* Contenu des sections */
+.config-section > :not(summary) {
+  padding: 20px 24px 4px;
+}
+
+/* ── Badges de statut ───────────────────────────────────────────────────────── */
+.config-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.config-badge--ok {
+  background: #e8f5ee;
+  color: #2d7a47;
+  border: 1px solid #b4dec5;
+}
+.config-badge--warning {
+  background: #fdf3e8;
+  color: #9a5f1a;
+  border: 1px solid #f0d0a0;
+}
+
+/* ── Aides contextuelles ────────────────────────────────────────────────────── */
+.config-help {
+  background: #f8f4ef;
+  border-radius: 3px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: #6b5744;
+  line-height: 1.5;
+}
+.config-help a {
+  color: #8b6f47;
+  font-weight: 600;
+}
+.config-help strong { color: #3d2b1f; }
+
+/* ── Badge mode Stripe ──────────────────────────────────────────────────────── */
+.config-mode-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 3px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.config-mode-test {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+}
+.config-mode-inactive {
+  background: #fdf3e8;
+  color: #9a5f1a;
+  border: 1px solid #f0d0a0;
+}
+
+/* ── URL Webhook ────────────────────────────────────────────────────────────── */
+.config-webhook-url {
+  background: #f8f4ef;
+  border-radius: 3px;
+  padding: 12px 14px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #6b5744;
+  line-height: 1.7;
+}
+.config-webhook-url code {
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #e0dbd4;
+  border-radius: 2px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #3d2b1f;
+  word-break: break-all;
+  margin: 4px 0;
+}
+.config-webhook-url small { color: #8a7a6a; }
+
+/* ── Bloc test email ────────────────────────────────────────────────────────── */
+.config-test-block {
+  border: 1px dashed #d0c8be;
+  border-radius: 3px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+.config-test-block > summary {
+  font-size: 13px;
+  color: #8b6f47;
+  cursor: pointer;
+  padding: 8px 12px;
+  list-style: none;
+}
+.config-test-block > summary::-webkit-details-marker { display: none; }
+.config-test-block > :not(summary) { padding: 8px 12px 4px; }
+
+/* ── Bouton principal ───────────────────────────────────────────────────────── */
+.form-actions .button--primary {
+  background: #8b6f47;
+  border-color: #7a6040;
+  color: #fff;
+  padding: 10px 28px;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+}
+.form-actions .button--primary:hover {
+  background: #7a6040;
+}

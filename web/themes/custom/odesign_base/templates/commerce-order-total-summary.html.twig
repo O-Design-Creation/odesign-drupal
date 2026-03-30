@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * odesign_base override — Order total summary with franchise TVA mention.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the wrapper.
+ * - order_entity: The order entity.
+ * - totals: subtotal, adjustments[], total.
+ *
+ * TVA : Franchise en base, art. 293 B du CGI.
+ */
+#}
+{{ attach_library('commerce_order/total_summary') }}
+<div{{ attributes }}>
+  {% if totals.subtotal %}
+    <div class="order-total-line order-total-line__subtotal">
+      <span class="order-total-line-label">{{ 'Subtotal'|t }} </span><span class="order-total-line-value">{{ totals.subtotal|commerce_price_format }}</span>
+    </div>
+  {% endif %}
+  {% for adjustment in totals.adjustments %}
+    <div class="order-total-line order-total-line__adjustment order-total-line__adjustment--{{ adjustment.type|clean_class }}">
+      <span class="order-total-line-label">{{ adjustment.label }} </span><span class="order-total-line-value">{{ adjustment.amount|commerce_price_format }}</span>
+    </div>
+  {% endfor %}
+  {% if totals.total %}
+    <div class="order-total-line order-total-line__total">
+      <span class="order-total-line-label">{{ 'Total'|t }} </span><span class="order-total-line-value">{{ totals.total|commerce_price_format }}</span>
+    </div>
+  {% endif %}
+  <div class="order-total-line order-total-line__tva-mention">
+    <small>{{ 'TVA non applicable, art. 293 B du CGI'|t }}</small>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+uuid: d3a75779-2ce9-4aca-9a0f-814662e615a7
+langcode: fr
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.field.commerce_product.default.body
+    - field.field.commerce_product.default.field_product_images
+  module:
+    - commerce
+    - field_group
+    - media_library
+    - text
+third_party_settings:
+  field_group:
+    group_produit_tabs:
+      children:
+        - group_produit_principal
+        - group_produit_images
+        - group_produit_personnalisation
+        - group_produit_description
+      label: 'Onglets produit'
+      region: content
+      parent_name: ''
+      weight: -20
+      format_type: tabs
+      format_settings:
+        classes: group-produit-tabs
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+    group_produit_principal:
+      children:
+        - title
+        - status
+        - stores
+        - variations
+      label: 'Informations principales'
+      region: content
+      parent_name: group_produit_tabs
+      weight: 0
+      format_type: tab
+      format_settings:
+        classes: group-produit-principal
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_produit_images:
+      children:
+        - field_product_images
+      label: Images
+      region: content
+      parent_name: group_produit_tabs
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: group-produit-images
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
+    group_produit_description:
+      children:
+        - body
+      label: Description
+      region: content
+      parent_name: group_produit_tabs
+      weight: 3
+      format_type: tab
+      format_settings:
+        label: '📝 Description'
+        classes: group-produit-description
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
+      context: form
+      entity_type: commerce_product
+      bundle: default
+      mode: default
+_core:
+  default_config_hash: bVqhDE0CBvUi4RPHqKu4sBhUOUwOTgcHVhn5PkfngLU
+id: commerce_product.default.default
+targetEntityType: commerce_product
+bundle: default
+mode: default
+content:
+  body:
+    type: text_textarea_with_summary
+    weight: 2
+    region: content
+    settings:
+      rows: 9
+      summary_rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  field_product_images:
+    type: media_library_widget
+    weight: 10
+    region: content
+    settings:
+      media_types:
+        - product_image
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 8
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  stores:
+    type: commerce_entity_select
+    weight: 0
+    region: content
+    settings:
+      hide_single_entity: true
+      autocomplete_threshold: 7
+      autocomplete_size: 60
+      autocomplete_placeholder: ''
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  uid: true
+  variations: true

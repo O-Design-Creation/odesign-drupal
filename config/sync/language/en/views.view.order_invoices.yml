@@ -1,0 +1,47 @@
+label: 'Order invoices'
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      fields:
+        invoice_number:
+          label: Number
+          separator: ', '
+        invoice_date:
+          label: Date
+          separator: ', '
+        langcode:
+          label: Language
+          separator: ', '
+        state:
+          label: State
+          separator: ', '
+        total_price__number:
+          label: Total
+          separator: ', '
+        operations:
+          label: Operations
+      title: Invoices
+      empty:
+        area_text_custom:
+          content: 'There are no invoices yet.'
+      arguments:
+        orders_target_id:
+          exception:
+            title: All
+  page_1:
+    display_title: Invoices
+  page_2:
+    display_title: 'Credit memos'
+    display_options:
+      empty:
+        area_text_custom:
+          content: 'There are no credit memos yet.'
+      title: 'Credit memos'

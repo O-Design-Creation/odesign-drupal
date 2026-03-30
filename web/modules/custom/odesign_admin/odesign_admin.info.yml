@@ -1,0 +1,9 @@
+name: 'ODesign Admin'
+type: module
+description: 'Tableau de bord et ergonomie back-office pour le gestionnaire boutique.'
+package: ODesign
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:views
+  - drupal:commerce_order
+  - drupal:commerce_product

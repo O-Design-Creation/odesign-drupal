@@ -1,0 +1,13 @@
+uuid: a50ebe2f-c04b-4f19-bc53-7b4093db574a
+langcode: en
+status: true
+dependencies: {  }
+id: product_image
+label: 'Image produit'
+description: null
+source: image
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_image
+field_map: {  }

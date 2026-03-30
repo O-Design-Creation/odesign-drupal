@@ -1,0 +1,261 @@
+<?php
+
+use Drupal\commerce_order\Entity\OrderItemInterface;
+use Drupal\commerce_price\Calculator;
+use Drupal\commerce_price\Price;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+
+/**
+ * @file
+ * Exploratory hooks for the ODesign personalization proof of concept.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function odesign_personalization_poc_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  $form_object = $form_state->getFormObject();
+  if (!$form_object || !method_exists($form_object, 'getEntity')) {
+    return;
+  }
+
+  $entity = $form_object->getEntity();
+  if (!$entity instanceof OrderItemInterface || $entity->bundle() !== 'default') {
+    return;
+  }
+
+  if (!isset($form['field_poc_need_upload'], $form['field_poc_upload'])) {
+    return;
+  }
+
+  $form['field_poc_finish']['widget']['#description'] = 'PoC: la finition premium ajoute un surcoût simulé de 7 EUR.';
+  $form['field_poc_need_upload']['widget']['#description'] = 'PoC: si cette case est cochée, un fichier devient requis et un surcoût simulé de 3 EUR est appliqué.';
+
+  $selector = ':input[name="field_poc_need_upload[value]"]';
+  $form['field_poc_upload']['#states'] = [
+    'visible' => [
+      $selector => ['checked' => TRUE],
+    ],
+    'required' => [
+      $selector => ['checked' => TRUE],
+    ],
+  ];
+
+  if (!odesign_personalization_poc_is_tree_pilot($entity)) {
+    return;
+  }
+
+  // Keep the Arbre de vie pilot focused on its dedicated interaction pattern.
+  unset(
+    $form['field_poc_text'],
+    $form['field_poc_finish'],
+    $form['field_poc_need_upload'],
+    $form['field_poc_upload']
+  );
+
+  if (!isset($form['field_poc_tree_names']['widget'][0]['value'], $form['field_poc_tree_layout']['widget'][0]['value'])) {
+    return;
+  }
+
+  $form['field_poc_tree_names']['widget'][0]['value']['#attributes']['class'][] = 'js-poc-tree-names';
+  $form['field_poc_tree_names']['widget'][0]['value']['#description'] = 'PoC Arbre de vie : entrez les prénoms séparés par des virgules ou des retours ligne.';
+
+  $form['field_poc_tree_layout']['widget'][0]['value']['#attributes']['class'][] = 'js-poc-tree-layout';
+  $form['field_poc_tree_layout']['widget'][0]['value']['#type'] = 'hidden';
+
+  if (isset($form['field_poc_tree_wall_mount']['widget']['value'])) {
+    $form['field_poc_tree_wall_mount']['widget']['value']['#attributes']['class'][] = 'js-poc-tree-wall-mount';
+    $form['field_poc_tree_wall_mount']['widget']['#description'] = 'PoC Arbre de vie : affiche un rappel visuel si une attache murale est demandée.';
+  }
+
+  $form['poc_tree_builder'] = [
+    '#type' => 'container',
+    '#weight' => 34,
+    '#attributes' => [
+      'class' => ['poc-tree-builder', 'js-poc-tree-builder'],
+    ],
+    'intro' => [
+      '#markup' => '<p class="poc-tree-builder__intro">PoC Arbre de vie : sélectionnez un prénom puis cliquez sur un emplacement pour le positionner.</p>',
+    ],
+    'layout' => [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['poc-tree-builder__layout']],
+      'panel' => [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['poc-tree-builder__panel']],
+        'title' => [
+          '#markup' => '<h3>Prénoms à placer</h3>',
+        ],
+        'help' => [
+          '#markup' => '<p class="poc-tree-builder__help">Le PoC accepte jusqu\'à 25 prénoms et mémorise leur placement.</p>',
+        ],
+        'chips' => [
+          '#markup' => '<div class="poc-tree-builder__chips js-poc-tree-chips"></div><p class="poc-tree-builder__summary js-poc-tree-summary"></p><p class="poc-tree-builder__warning js-poc-tree-warning"></p>',
+        ],
+      ],
+      'stage_wrapper' => [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['poc-tree-builder__panel']],
+        'title' => [
+          '#markup' => '<h3>Aperçu guidé</h3>',
+        ],
+        'stage' => [
+          '#markup' => '<div class="poc-tree-builder__stage js-poc-tree-stage"><div class="poc-tree-builder__wall js-poc-tree-wall" hidden>Attache murale demandée</div></div>',
+        ],
+      ],
+    ],
+  ];
+
+  $form['#attached']['library'][] = 'odesign_personalization_poc/tree_builder';
+}
+
+/**
+ * Implements hook_entity_presave().
+ */
+function odesign_personalization_poc_entity_presave($entity) {
+  if (!$entity instanceof OrderItemInterface || $entity->bundle() !== 'default') {
+    return;
+  }
+  if (!$entity->hasField('field_poc_finish') || !$entity->hasField('field_poc_need_upload')) {
+    return;
+  }
+
+  $purchased_entity = $entity->getPurchasedEntity();
+  if (!$purchased_entity || !method_exists($purchased_entity, 'getPrice')) {
+    return;
+  }
+
+  $base_price = $purchased_entity->getPrice();
+  if (!$base_price instanceof Price) {
+    return;
+  }
+
+  $amount = $base_price->getNumber();
+  if ($entity->get('field_poc_finish')->value === 'premium') {
+    $amount = Calculator::add($amount, '7.00');
+  }
+  if ((bool) $entity->get('field_poc_need_upload')->value) {
+    $amount = Calculator::add($amount, '3.00');
+  }
+
+  $entity->setUnitPrice(new Price($amount, $base_price->getCurrencyCode()), TRUE);
+}
+
+/**
+ * Implements hook_entity_view().
+ */
+function odesign_personalization_poc_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if (!$entity instanceof OrderItemInterface || !$entity->hasField('field_poc_tree_names')) {
+    return;
+  }
+
+  $summary = odesign_personalization_poc_build_tree_summary($entity);
+  if (!$summary) {
+    return;
+  }
+
+  $items = [];
+  foreach ($summary['placements'] as $placement) {
+    $items[] = t('@slot : @name', [
+      '@slot' => $placement['slot_label'],
+      '@name' => $placement['name'],
+    ]);
+  }
+
+  unset($build['field_poc_tree_layout']);
+
+  $content = [
+    '#type' => 'container',
+    '#attributes' => ['class' => ['odesign-tree-summary']],
+    'title' => [
+      '#type' => 'html_tag',
+      '#tag' => 'strong',
+      '#value' => t('Synthèse arbre de vie'),
+      '#attributes' => ['class' => ['odesign-tree-summary__title']],
+    ],
+    'meta' => [
+      '#markup' => '<p class="odesign-tree-summary__meta">' . t('@count prénom(s) placés.', ['@count' => $summary['placed_count']]) . '</p>',
+    ],
+    'list' => [
+      '#theme' => 'item_list',
+      '#items' => $items,
+      '#attributes' => ['class' => ['odesign-tree-summary__list']],
+    ],
+  ];
+
+  if ($summary['wall_mount']) {
+    $content['wall'] = [
+      '#markup' => '<p class="odesign-tree-summary__wall">' . t('Attache murale : oui') . '</p>',
+    ];
+  }
+
+  $build['odesign_tree_summary'] = [
+    '#type' => 'container',
+    '#weight' => 33,
+    '#attributes' => ['class' => ['field', 'field--name-odesign-tree-summary']],
+    'content' => $content,
+  ];
+}
+
+/**
+ * Detects the dedicated Arbre de vie pilot product.
+ */
+function odesign_personalization_poc_is_tree_pilot(OrderItemInterface $entity): bool {
+  $purchased_entity = $entity->getPurchasedEntity();
+  return $purchased_entity && method_exists($purchased_entity, 'getSku') && $purchased_entity->getSku() === 'POC-TREE-001';
+}
+
+/**
+ * Builds a readable summary for the Arbre de vie pilot.
+ */
+function odesign_personalization_poc_build_tree_summary(OrderItemInterface $entity): array {
+  if (!$entity->hasField('field_poc_tree_names') || !$entity->hasField('field_poc_tree_layout')) {
+    return [];
+  }
+
+  $names = odesign_personalization_poc_parse_tree_names((string) $entity->get('field_poc_tree_names')->value);
+  $layout = json_decode((string) $entity->get('field_poc_tree_layout')->value, TRUE);
+  $layout = is_array($layout) ? $layout : [];
+
+  $placements = [];
+  foreach ($layout as $slot => $name) {
+    if (!$name || !in_array($name, $names, TRUE)) {
+      continue;
+    }
+
+    $index = 0;
+    if (preg_match('/^slot_(\d+)$/', (string) $slot, $matches)) {
+      $index = (int) $matches[1];
+    }
+    $placements[] = [
+      'slot_key' => (string) $slot,
+      'slot_label' => $index > 0 ? new TranslatableMarkup('Emplacement @n', ['@n' => $index]) : (string) $slot,
+      'name' => (string) $name,
+      'slot_index' => $index,
+    ];
+  }
+
+  usort($placements, static function (array $a, array $b): int {
+    return ($a['slot_index'] <=> $b['slot_index']) ?: strcmp($a['slot_key'], $b['slot_key']);
+  });
+
+  return [
+    'names' => $names,
+    'placements' => $placements,
+    'placed_count' => count($placements),
+    'wall_mount' => $entity->hasField('field_poc_tree_wall_mount') && (bool) $entity->get('field_poc_tree_wall_mount')->value,
+  ];
+}
+
+/**
+ * Parses the textarea of names for the Arbre de vie pilot.
+ */
+function odesign_personalization_poc_parse_tree_names(string $value): array {
+  $parts = preg_split('/[\r\n,]+/', $value) ?: [];
+  $parts = array_map(static fn(string $item): string => trim($item), $parts);
+  $parts = array_values(array_filter($parts, static fn(string $item): bool => $item !== ''));
+  return array_slice($parts, 0, 25);
+}

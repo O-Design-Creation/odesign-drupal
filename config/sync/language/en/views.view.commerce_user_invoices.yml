@@ -1,0 +1,56 @@
+label: 'User invoices'
+description: 'Display a list of invoices for a user.'
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+      fields:
+        invoice_id:
+          label: ID
+          separator: ', '
+        invoice_number:
+          label: 'Invoice number'
+          alter:
+            path: 'user/{{ raw_arguments.uid }}/invoices/{{ invoice_id }}'
+          separator: ', '
+        invoice_date:
+          label: Date
+          separator: ', '
+        total_price__number:
+          label: Total
+          separator: ', '
+        state:
+          label: State
+          separator: ', '
+      title: Invoices
+      empty:
+        area:
+          content:
+            value: 'No invoices yet.'
+      arguments:
+        uid:
+          exception:
+            title: All
+  invoice_page:
+    display_title: 'User invoices'
+    display_options:
+      menu:
+        title: Invoices

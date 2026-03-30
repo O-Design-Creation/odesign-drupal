@@ -1,0 +1,22 @@
+uuid: 21ffced4-1fd8-4962-85c1-dbfe764021d0
+langcode: fr
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - field.storage.commerce_order.field_notes_atelier
+  module:
+    - text
+id: commerce_order.default.field_notes_atelier
+field_name: field_notes_atelier
+entity_type: commerce_order
+bundle: default
+label: 'Notes internes atelier'
+description: 'Notes de production/personnalisation (back-office uniquement).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

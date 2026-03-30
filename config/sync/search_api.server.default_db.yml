@@ -1,0 +1,18 @@
+uuid: 713c4e87-d5a0-42aa-aec2-301af94fb671
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_db
+id: default_db
+name: 'Default DB server'
+description: 'Exploratory Search API database server'
+backend: search_api_db
+backend_config:
+  database: 'default:default'
+  min_chars: 1
+  matching: words
+  phrase: bigram
+  autocomplete:
+    suggest_suffix: true
+    suggest_words: true

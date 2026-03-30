@@ -1,0 +1,19 @@
+uuid: f2e9ce74-a986-405c-aff3-d6edf493f8e1
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: commerce_order_item.field_poc_tree_names
+field_name: field_poc_tree_names
+entity_type: commerce_order_item
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

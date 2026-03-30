@@ -1,0 +1,18 @@
+uuid: 875af00e-3733-440f-96ff-aa3a40d2b9cf
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: commerce_order_item.field_poc_tree_wall_mount
+field_name: field_poc_tree_wall_mount
+entity_type: commerce_order_item
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,15 @@
+uuid: c5d97d3f-4c37-45b3-9811-3ab7b2c17288
+langcode: en
+status: true
+dependencies: {  }
+name: product_full
+label: 'Product Full (1200×900)'
+effects:
+  5661fac3-df8f-4319-865d-42d62174bcef:
+    uuid: 5661fac3-df8f-4319-865d-42d62174bcef
+    id: image_scale
+    weight: 1
+    data:
+      width: 1200
+      height: 900
+      upscale: false

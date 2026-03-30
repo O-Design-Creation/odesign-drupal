@@ -1,0 +1,33 @@
+uuid: afe88237-93c6-48a0-8e8f-efbc42bef6e6
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_stripe
+id: stripe_sandbox
+label: 'Carte bancaire (Stripe)'
+weight: 0
+plugin: stripe_payment_element
+configuration:
+  display_label: 'Stripe Payment Element'
+  mode: test
+  payment_method_types:
+    - card
+  collect_billing_information: true
+  api_version: null
+  authentication_method: stripe_connect
+  access_token: ''
+  stripe_user_id: ''
+  publishable_key: pk_test_PLACEHOLDER
+  secret_key: sk_test_PLACEHOLDER
+  express_checkout:
+    enable_on_cart: false
+    allowed_payment_method_types: {  }
+  webhook_signing_secret: ''
+  payment_method_usage: on_session
+  capture_method: automatic
+  style: {  }
+  checkout_form_display_label: {  }
+  webhook_secret: ''
+conditions: {  }
+conditionOperator: AND

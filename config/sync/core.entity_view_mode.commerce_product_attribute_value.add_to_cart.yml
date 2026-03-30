@@ -1,0 +1,13 @@
+uuid: 6779fdc5-e3da-4e54-a359-509813feb2f2
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_product
+_core:
+  default_config_hash: ry5RvX-mOnp2GQWzMqSYjPz-jKfP1nSo4Xo4kJCodlE
+id: commerce_product_attribute_value.add_to_cart
+label: "Formulaire d'ajout au panier"
+description: null
+targetEntityType: commerce_product_attribute_value
+cache: true

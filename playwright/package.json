@@ -1,0 +1,13 @@
+{
+  "name": "odesign-playwright",
+  "version": "1.0.0",
+  "description": "Scripts Playwright pour inspection et amélioration de l'interface admin Drupal",
+  "scripts": {
+    "screenshot": "node scripts/screenshot-admin.js",
+    "audit": "node scripts/audit-ux.js",
+    "diff": "node scripts/diff-screens.js"
+  },
+  "dependencies": {
+    "playwright": "1.49.0"
+  }
+}

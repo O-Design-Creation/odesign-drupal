@@ -1,0 +1,14 @@
+uuid: 656ce78d-73c8-4893-80ee-0647efb357b5
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.gestionnaire_boutique
+  module:
+    - user
+id: user_remove_role_action.gestionnaire_boutique
+label: 'Remove the Gestionnaire boutique role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: gestionnaire_boutique

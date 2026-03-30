@@ -1,0 +1,23 @@
+uuid: 476bf2b4-6eb1-435e-900b-5cd5f5f33e4e
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+    - file
+id: commerce_order_item.field_poc_upload
+field_name: field_poc_upload
+entity_type: commerce_order_item
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: file
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

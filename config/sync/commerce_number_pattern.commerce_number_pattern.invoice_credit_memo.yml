@@ -1,0 +1,18 @@
+uuid: bd99436f-167d-45bc-80a6-600da44d0028
+langcode: fr
+status: true
+dependencies:
+  enforced:
+    module:
+      - commerce_invoice
+_core:
+  default_config_hash: ljZ14iTDPhrHMp9-aB_vmQIB86s5FODIcHPM295o1yM
+id: invoice_credit_memo
+label: Avoir
+targetEntityType: commerce_invoice
+plugin: infinite
+configuration:
+  pattern: '[pattern:number]'
+  initial_number: 1
+  padding: 0
+  per_store_sequence: true

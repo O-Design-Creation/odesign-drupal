@@ -1,0 +1,15 @@
+uuid: 89187f59-f223-48c0-9ca7-30fe7209f756
+langcode: en
+status: true
+dependencies: {  }
+name: product_thumbnail
+label: 'Product Thumbnail (300×300)'
+effects:
+  d6222ec9-1bad-4dcd-b0cd-f74ca198b1cc:
+    uuid: d6222ec9-1bad-4dcd-b0cd-f74ca198b1cc
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 300
+      height: 300
+      anchor: center-center

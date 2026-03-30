@@ -1,0 +1,390 @@
+<?php
+
+/**
+ * @file
+ * ODesign Admin — tableau de bord, aide contextuelle, redirection post-login.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\commerce_order\Entity\OrderInterface;
+
+/**
+ * Implémente hook_page_attachments().
+ *
+ * Injecte directement les CSS admin (contourne le système de library
+ * qui ne sort pas le link tag dans ce contexte).
+ */
+function odesign_admin_page_attachments(array &$attachments): void {
+  if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+  // CSS global admin — sidebar offset + Material Symbols.
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'rel' => 'stylesheet',
+        'href' => '/modules/custom/odesign_admin/css/admin-global.css',
+        'media' => 'all',
+      ],
+    ],
+    'odesign_admin_global_css',
+  ];
+}
+
+/**
+ * Implémente hook_theme().
+ */
+function odesign_admin_theme(): array {
+  return [
+    'odesign_admin_dashboard' => [
+      'template' => 'odesign-admin-dashboard',
+      'variables' => [
+        'stats' => [],
+        'orders_view' => NULL,
+        'quick_links' => [],
+      ],
+    ],
+  ];
+}
+/**
+ * Implémente hook_theme_registry_alter().
+ *
+ * Surcharge les templates email Commerce par les versions brandées studio.
+ */
+function odesign_admin_theme_registry_alter(array &$theme_registry): void {
+  $module_path = \Drupal::service('extension.list.module')->getPath('odesign_admin');
+  $email_path = $module_path . '/templates/email';
+  if (isset($theme_registry['commerce_order_receipt'])) {
+    $theme_registry['commerce_order_receipt']['path'] = $email_path;
+    $theme_registry['commerce_order_receipt']['template'] = 'commerce-order-receipt';
+  }
+}
+
+/**
+ * Implémente hook_mail().
+ *
+ * Définit le contenu des emails de notification de statut commande
+ * et de l'email de test depuis la page de configuration boutique.
+ */
+function odesign_admin_mail(string $key, array &$message, array $params): void {
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+
+  // ── Email de test (page configuration boutique) ───────────────────────────
+  if ($key === 'test_email') {
+    $message['subject'] = 'Test email — Atelier O Design';
+    $message['body'][] = '<table style="max-width:500px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;border:1px solid #e0dbd4;border-radius:4px;">'
+      . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;background:#fdfaf7;">'
+      . '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>'
+      . '<tr><td style="padding:28px 24px;">'
+      . '<p style="font-size:18px;margin:0 0 12px;">✅ Configuration email fonctionnelle</p>'
+      . '<p style="color:#6b5744;margin:0;">Si vous recevez cet email, votre configuration Mailgun fonctionne correctement. Vos clients recevront bien leurs confirmations de commande.</p>'
+      . '</td></tr>'
+      . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">'
+      . 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>'
+      . '</table>';
+    return;
+  }
+
+  // ── Notifications de statut commande ─────────────────────────────────────
+  $order = $params['order'] ?? NULL;
+  $label = $params['label'] ?? '';
+  $subject = $params['subject'] ?? $label;
+
+  $message['subject'] = $subject;
+
+  if (!$order) {
+    return;
+  }
+
+  $order_number = $order->getOrderNumber();
+  $total        = $order->getTotalPrice() ? \Drupal::service('commerce_price.currency_formatter')->format($order->getTotalPrice()->getNumber(), $order->getTotalPrice()->getCurrencyCode()) : '—';
+  $customer     = $order->getEmail();
+
+  // Corps HTML minimal brandé
+  $body = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">';
+  $body .= '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;">';
+  $body .= '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>';
+  $body .= '<tr><td style="padding:28px 24px;">';
+  $body .= '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">' . htmlspecialchars($label) . '</p>';
+  $body .= '<p style="margin:0 0 8px;"><strong>Commande</strong> : #' . htmlspecialchars($order_number ?? '—') . '</p>';
+  $body .= '<p style="margin:0 0 8px;"><strong>Client</strong> : ' . htmlspecialchars($customer) . '</p>';
+  $body .= '<p style="margin:0 0 24px;"><strong>Total</strong> : ' . htmlspecialchars($total) . '</p>';
+
+  // Lien de suivi pour les transitions expédiée/livrée
+  if (in_array($params['transition_id'] ?? '', ['ship', 'deliver'], TRUE)) {
+    $order_url = \Drupal\Core\Url::fromRoute('commerce_order.order_user_view', [
+      'user'           => $order->getCustomerId(),
+      'commerce_order' => $order->id(),
+    ])->setAbsolute()->toString();
+    $body .= '<p><a href="' . $order_url . '" style="display:inline-block;padding:10px 24px;background:#8b6f47;color:#fff;text-decoration:none;font-size:13px;border-radius:2px;">Voir ma commande</a></p>';
+  }
+
+  $body .= '</td></tr>';
+  $body .= '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">';
+  $body .= 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>';
+  $body .= '</table>';
+
+  $message['body'][] = $body;
+}
+
+/**
+ * Implémente hook_user_login().
+ *
+ * Redirige le gestionnaire boutique vers le tableau de bord après connexion.
+ */
+function odesign_admin_user_login($account): void {
+  if ($account->hasRole('gestionnaire_boutique') && !$account->hasRole('administrator')) {
+    $request = \Drupal::service('request_stack')->getCurrentRequest();
+    // Forcer la destination vers le tableau de bord si aucune destination
+    // explicite n'est déjà définie dans l'URL.
+    if (!$request->query->get('destination')) {
+      $request->query->set('destination', '/admin/boutique');
+    }
+  }
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour le formulaire de produit.
+ *
+ * Ajoute des textes d'aide explicites sur chaque champ clé.
+ */
+function odesign_admin_form_commerce_product_default_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_add_product_field_help($form);
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour la création de produit.
+ */
+function odesign_admin_form_commerce_product_default_add_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_add_product_field_help($form);
+}
+
+/**
+ * Ajoute les descriptions d'aide sur le formulaire produit.
+ */
+function _odesign_admin_add_product_field_help(array &$form): void {
+  // Titre du produit.
+  if (isset($form['title'])) {
+    $form['title']['widget'][0]['value']['#description'] =
+      t('Le nom exact de votre création, tel qu\'il apparaîtra sur le site. Soyez précis et descriptif (ex. : "Prénom en bois - chêne naturel").');
+  }
+
+  // Statut publié/brouillon.
+  if (isset($form['status'])) {
+    $form['status']['widget']['value']['#description'] =
+      t('Activé : le produit est visible sur votre boutique. Désactivé : brouillon, invisible pour les clients.');
+  }
+
+  // Description / Corps.
+  if (isset($form['body'])) {
+    $form['body']['widget'][0]['#description'] =
+      t('Description détaillée du produit : matières, dimensions, personnalisation possible, conseils d\'entretien…');
+  }
+
+  // Boutique associée.
+  if (isset($form['stores'])) {
+    $form['stores']['widget']['#description'] =
+      t('Laissez "ODesign" sélectionné — c\'est votre boutique.');
+  }
+
+  // Variantes / prix.
+  if (isset($form['variations'])) {
+    $form['variations']['#description'] =
+      t('Définissez le prix de vente TTC de votre produit. Si votre produit existe en plusieurs options (taille, couleur…), créez une variante par option.');
+  }
+
+  // Images produit.
+  if (isset($form['field_product_images'])) {
+    $form['field_product_images']['widget']['#description'] =
+      t('Ajoutez une ou plusieurs photos de votre produit. Conseil : utilisez des photos carrées, fond neutre, bonne luminosité. La première image sera affichée en priorité.');
+    $form['field_product_images']['#weight'] = -10;
+  }
+}
+
+/**
+ * Implémente hook_form_alter() pour personnaliser les labels de l'interface.
+ */
+function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // Améliorer le libellé du bouton "Enregistrer" sur les formulaires produit.
+  if (in_array($form_id, [
+    'commerce_product_default_add_form',
+    'commerce_product_default_edit_form',
+  ])) {
+    if (isset($form['actions']['submit'])) {
+      $form['actions']['submit']['#value'] = t('Enregistrer le produit');
+    }
+    if (isset($form['actions']['delete'])) {
+      $form['actions']['delete']['#value'] = t('Supprimer ce produit');
+    }
+  }
+
+  // Améliorer le libellé de sauvegarde des commandes.
+  if (str_starts_with($form_id, 'commerce_order_')) {
+    if (isset($form['actions']['submit'])) {
+      $form['actions']['submit']['#value'] = t('Enregistrer la commande');
+    }
+  }
+
+  // Ajouter des aides sur le formulaire ajout/édition de média image produit.
+  if (in_array($form_id, ['media_product_image_add_form', 'media_product_image_edit_form'])) {
+    if (isset($form['name'])) {
+      $form['name']['widget'][0]['value']['#description'] =
+        t('Nom interne pour retrouver cette image (ex. : "Photo principale - Prénom Léa"). Non visible sur le site.');
+    }
+    if (isset($form['status'])) {
+      $form['status']['widget']['value']['#description'] =
+        t('Activé : l\'image est disponible pour être utilisée sur vos produits.');
+    }
+    // Masquer les champs techniques inutiles pour le gestionnaire.
+    if (isset($form['revision_log_message'])) {
+      $form['revision_log_message']['#access'] = FALSE;
+    }
+  }
+
+  // Ajouter des aides sur le formulaire promotion.
+  if (str_starts_with($form_id, 'commerce_promotion_')) {
+    if (isset($form['name'])) {
+      $form['name']['widget'][0]['value']['#description'] =
+        t('Nom interne de la promotion (ex. : "Soldes été 2026"). Non visible sur le site.');
+    }
+    if (isset($form['offer'])) {
+      $form['offer']['widget'][0]['target_plugin_id']['#description'] =
+        t('Choisissez le type de remise : pourcentage sur le total, montant fixe, etc.');
+    }
+  }
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour le formulaire de création de commande.
+ *
+ * - Masque le champ technique uid (règle UX-03).
+ * - Ajoute des descriptions sur les champs clés (règle UX-02).
+ */
+function odesign_admin_form_commerce_order_add_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_clean_order_form($form);
+}
+
+function odesign_admin_form_commerce_order_default_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_clean_order_form($form);
+}
+
+/**
+ * Masque les champs techniques et ajoute des descriptions métier sur les formulaires commande.
+ */
+function _odesign_admin_clean_order_form(array &$form): void {
+  // UX-03 : masquer le champ uid (sélecteur d'utilisateur technique).
+  if (isset($form['uid'])) {
+    $form['uid']['#access'] = FALSE;
+  }
+
+  // UX-02 : descriptions sur les champs visibles.
+  if (isset($form['customer_type'])) {
+    $form['customer_type']['#description'] = t('Indiquez si ce client est déjà enregistré dans la boutique ou s\'il s\'agit d\'un nouvel acheteur.');
+  }
+  if (isset($form['custom_placed_date'])) {
+    $form['custom_placed_date']['#description'] = t('Cochez cette case uniquement si vous souhaitez enregistrer la commande à une date différente d\'aujourd\'hui.');
+  }
+  if (isset($form['placed'])) {
+    if (isset($form['placed']['widget'][0]['value'])) {
+      $form['placed']['widget'][0]['value']['#description'] = t('Date à laquelle la commande a été passée.');
+    }
+  }
+}
+
+/**
+ * Implémente hook_menu_links_discovered_alter().
+ *
+ * Renomme les sections de navigation admin en termes métier français.
+ */
+function odesign_admin_menu_links_discovered_alter(array &$links): void {
+  // "Commerce" → "Ma boutique"
+  if (isset($links['commerce.admin_commerce'])) {
+    $links['commerce.admin_commerce']['title'] = 'Ma boutique';
+  }
+  // "Produits" → "Mes produits"
+  if (isset($links['commerce_product.admin'])) {
+    $links['commerce_product.admin']['title'] = 'Mes produits';
+  }
+  // "Commandes" → "Mes commandes"
+  if (isset($links['commerce_order.admin'])) {
+    $links['commerce_order.admin']['title'] = 'Mes commandes';
+  }
+  // Raccourci vers le dashboard boutique
+  $links['odesign_admin.dashboard_shortcut'] = [
+    'title'       => '🏠 Tableau de bord',
+    'route_name'  => 'odesign_admin.dashboard',
+    'menu_name'   => 'admin',
+    'parent'      => '',
+    'weight'      => -100,
+    'description' => 'Retour au tableau de bord de la boutique',
+    'provider'    => 'odesign_admin',
+    'class'       => 'Drupal\\Core\\Menu\\MenuLinkDefault',
+    'metadata'    => ['expanded' => FALSE],
+  ];
+}
+
+/**
+ * Implémente hook_mail_alter().
+ *
+ * Personnalise les emails Commerce envoyés au gestionnaire et au client.
+ */
+function odesign_admin_mail_alter(array &$message): void {
+  // S'assurer que les emails Commerce sont bien en français.
+  if (str_starts_with($message['id'] ?? '', 'commerce_')) {
+    $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+  }
+}
+
+/**
+ * Implémente hook_commerce_order_transition_post_transition().
+ *
+ * Envoie une notification email au gestionnaire boutique lors d'une nouvelle commande.
+ */
+function odesign_admin_commerce_order_post_save(\Drupal\commerce_order\Entity\OrderInterface $order): void {
+  // Notifier uniquement quand une commande passe en statut 'pending' (payée).
+  if ($order->getState()->getId() !== 'pending') {
+    return;
+  }
+
+  // Récupérer l'email du gestionnaire (depuis les comptes avec le bon rôle).
+  $manager_emails = [];
+  $ids = \Drupal::entityQuery('user')
+    ->condition('roles', 'gestionnaire_boutique')
+    ->condition('status', 1)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  foreach (\Drupal::entityTypeManager()->getStorage('user')->loadMultiple($ids) as $user) {
+    $manager_emails[] = $user->getEmail();
+  }
+
+  // Ajouter aussi l'email admin du store.
+  $store = $order->getStore();
+  if ($store) {
+    $manager_emails[] = $store->getEmail();
+  }
+
+  $manager_emails = array_unique(array_filter($manager_emails));
+  if (empty($manager_emails)) {
+    return;
+  }
+
+  $order_number = $order->getOrderNumber();
+  $total = $order->getTotalPrice();
+  $total_formatted = \Drupal::service('commerce_price.currency_formatter')
+    ->format($total->getNumber(), $total->getCurrencyCode());
+
+  foreach ($manager_emails as $email) {
+    \Drupal::service('plugin.manager.mail')->mail(
+      'odesign_admin',
+      'new_order_notification',
+      $email,
+      'fr',
+      ['order' => $order, 'order_number' => $order_number, 'total' => $total_formatted],
+    );
+  }
+}
+

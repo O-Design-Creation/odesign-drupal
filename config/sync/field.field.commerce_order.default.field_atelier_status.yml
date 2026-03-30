@@ -1,0 +1,21 @@
+uuid: 0653f402-f0fb-4209-b964-da5b9c4a9d6f
+langcode: fr
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - field.storage.commerce_order.field_atelier_status
+  module:
+    - options
+id: commerce_order.default.field_atelier_status
+field_name: field_atelier_status
+entity_type: commerce_order
+bundle: default
+label: 'Suivi interne atelier'
+description: 'Statut de suivi interne pour les commandes personnalisées (non visible par le client).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

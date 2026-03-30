@@ -1,0 +1,5 @@
+services:
+  odesign_admin.order_workflow_subscriber:
+    class: Drupal\odesign_admin\EventSubscriber\OrderWorkflowSubscriber
+    tags:
+      - { name: event_subscriber }

@@ -1,0 +1,149 @@
+.poc-tree-builder {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid #d7ccc2;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #fffaf6 0%, #f6ede6 100%);
+}
+
+.poc-tree-builder__intro {
+  margin: 0 0 0.5rem;
+  color: #5c4739;
+  font-size: 0.95rem;
+}
+
+.poc-tree-builder__warning {
+  margin: 0.5rem 0 0;
+  color: #8d2e1d;
+  font-weight: 600;
+}
+
+.poc-tree-builder__layout {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .poc-tree-builder__layout {
+    grid-template-columns: minmax(220px, 280px) minmax(300px, 1fr);
+    align-items: start;
+  }
+}
+
+.poc-tree-builder__panel {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.poc-tree-builder__panel h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.poc-tree-builder__help {
+  margin: 0;
+  color: #6d5a4f;
+  font-size: 0.9rem;
+}
+
+.poc-tree-builder__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.poc-tree-builder__chip {
+  border: 1px solid #b58d73;
+  border-radius: 999px;
+  background: #fff;
+  color: #51372a;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.8rem;
+}
+
+.poc-tree-builder__chip.is-selected {
+  background: #51372a;
+  border-color: #51372a;
+  color: #fff;
+}
+
+.poc-tree-builder__chip.is-placed {
+  border-style: dashed;
+  opacity: 0.65;
+}
+
+.poc-tree-builder__summary {
+  margin: 0;
+  color: #51372a;
+  font-weight: 600;
+}
+
+.poc-tree-builder__stage {
+  position: relative;
+  width: min(100%, 430px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #d1b5a0;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 32%),
+    url("https://www.atelierodesign.fr/cdn/shop/files/arbre-de-vie-personnalise-bois.webp?v=1770490953") center/cover no-repeat,
+    #f3ebe4;
+}
+
+.poc-tree-builder__stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0) 58%, rgba(63, 37, 24, 0.08) 100%);
+  pointer-events: none;
+}
+
+.poc-tree-builder__slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 4.7rem;
+  min-height: 2.6rem;
+  padding: 0.2rem 0.3rem;
+  border: 1px dashed rgba(81, 55, 42, 0.45);
+  border-radius: 0.8rem;
+  background: rgba(255, 250, 245, 0.72);
+  color: #3b281f;
+  cursor: pointer;
+  font-size: 0.72rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.poc-tree-builder__slot.is-filled {
+  border-style: solid;
+  border-color: #6b4e3f;
+  background: rgba(255, 247, 240, 0.92);
+  font-weight: 600;
+}
+
+.poc-tree-builder__slot:focus-visible,
+.poc-tree-builder__chip:focus-visible {
+  outline: 2px solid #2a7fff;
+  outline-offset: 2px;
+}
+
+.poc-tree-builder__wall {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  color: #51372a;
+  font-size: 0.82rem;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+.poc-tree-builder__wall[hidden] {
+  display: none;
+}

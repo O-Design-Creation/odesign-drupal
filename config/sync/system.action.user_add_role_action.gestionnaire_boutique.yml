@@ -1,0 +1,14 @@
+uuid: 36665913-119d-4470-a5d2-6ab97930fdfb
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.gestionnaire_boutique
+  module:
+    - user
+id: user_add_role_action.gestionnaire_boutique
+label: 'Add the Gestionnaire boutique role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: gestionnaire_boutique

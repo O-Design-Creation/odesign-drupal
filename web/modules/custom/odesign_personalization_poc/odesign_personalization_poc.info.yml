@@ -1,0 +1,5 @@
+name: ODesign Personalization PoC
+type: module
+description: 'PoC exploratoire de personnalisation produit sur order item Commerce.'
+core_version_requirement: ^11
+package: ODesign

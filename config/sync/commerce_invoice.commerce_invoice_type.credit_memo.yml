@@ -1,0 +1,18 @@
+uuid: 3da78cae-d110-4c31-9cae-c782ffd6954a
+langcode: fr
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: iswHHsQHYcOMRngM9CAcOy-Gjs62tJtrpVm6AxgklkQ
+id: credit_memo
+label: Avoir
+traits: {  }
+numberPattern: invoice_credit_memo
+logo: null
+dueDays: null
+paymentTerms: ''
+footerText: ''
+workflow: invoice_default
+sendConfirmation: false
+confirmationBcc: ''
+privateSubdirectory: null

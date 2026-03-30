@@ -1,0 +1,47 @@
+uuid: 01ad01f5-2db4-4c4a-9b2f-95792f949041
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce
+    - commerce_checkout
+    - commerce_order
+    - commerce_payment
+    - commerce_product
+    - media
+    - node
+    - system
+    - toolbar
+id: gestionnaire_boutique
+label: 'Gestionnaire boutique'
+weight: 3
+is_admin: false
+permissions:
+  - 'access administration pages'
+  - 'access checkout'
+  - 'access commerce administration pages'
+  - 'access commerce_order overview'
+  - 'access commerce_product overview'
+  - 'access commerce_product_attribute overview'
+  - 'access content overview'
+  - 'access media overview'
+  - 'access toolbar'
+  - 'access user profiles'
+  - 'add commerce_log commerce_order admin comment'
+  - 'create default commerce_product'
+  - 'create media'
+  - 'manage default commerce_order_item'
+  - 'manage default commerce_product_variation'
+  - 'unlock orders'
+  - 'update any default commerce_product'
+  - 'update any media'
+  - 'update default commerce_order'
+  - 'update own default commerce_product'
+  - 'view any commerce_payment_method'
+  - 'view commerce_order'
+  - 'view commerce_product'
+  - 'view commerce_product_attribute'
+  - 'view default commerce_order'
+  - 'view default commerce_product'
+  - 'view media'
+  - 'view own unpublished commerce_product'

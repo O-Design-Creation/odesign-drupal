@@ -1,0 +1,159 @@
+{#
+/**
+ * @file
+ * Template brandé Atelier O Design pour la confirmation de commande.
+ *
+ * Variables disponibles :
+ * - order_entity: Entité commande.
+ * - billing_information: Informations de facturation.
+ * - shipping_information: Informations de livraison.
+ * - payment_method: Moyen de paiement.
+ * - totals: Totaux (subtotal, adjustments[], total).
+ *
+ * Palette : #8b6f47 (brun studio), #3d2b1f (texte foncé), #f8f4ef (fond chaud)
+ */
+#}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ 'Confirmation de commande'|t }}</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f0ebe4; font-family: Georgia, 'Times New Roman', serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0ebe4; padding:30px 0;">
+  <tr>
+    <td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%;">
+
+        {# ── En-tête studio ── #}
+        <tr>
+          <td align="center" style="padding:40px 30px 20px;">
+            <a href="{{ url('<front>') }}" style="text-decoration:none; display:inline-block;">
+              <div style="font-family:Georgia, serif; font-size:24px; color:#3d2b1f; letter-spacing:0.08em; font-weight:normal; text-transform:uppercase;">
+                Atelier O Design
+              </div>
+              <div style="width:40px; height:2px; background:#8b6f47; margin:8px auto 0;"></div>
+            </a>
+          </td>
+        </tr>
+
+        {# ── Bloc principal ── #}
+        <tr>
+          <td style="background:#ffffff; border-radius:4px; padding:40px 40px 30px; border:1px solid #e0dbd4;">
+
+            <p style="font-size:22px; color:#3d2b1f; margin:0 0 6px; text-align:center; font-weight:normal; letter-spacing:0.04em;">
+              {{ 'Merci pour votre commande'|t }} 🌿
+            </p>
+            <p style="font-size:13px; color:#8a7a6a; text-align:center; margin:0 0 30px;">
+              {{ 'Nous avons bien reçu votre commande et vous enverrons une confirmation d\'expédition dès que votre colis sera en route.'|t }}
+            </p>
+
+            {# ── Référence commande ── #}
+            <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e4ddd5; border-radius:3px; margin-bottom:28px;">
+              <tr>
+                <td style="padding:16px 20px; background:#fdf9f5; border-bottom:1px solid #e4ddd5;">
+                  <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#8b6f47;">{{ 'Commande'|t }}</span>
+                  <strong style="float:right; font-size:14px; color:#3d2b1f;">#{{ order_entity.getOrderNumber }}</strong>
+                </td>
+              </tr>
+              {% if order_entity.getPlacedTime %}
+              <tr>
+                <td style="padding:12px 20px;">
+                  <span style="font-size:12px; color:#8a7a6a;">{{ 'Date'|t }}</span>
+                  <span style="float:right; font-size:13px; color:#3d2b1f;">{{ order_entity.getPlacedTime|format_date('medium') }}</span>
+                </td>
+              </tr>
+              {% endif %}
+            </table>
+
+            {# ── Lignes de commande ── #}
+            <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#8b6f47; margin:0 0 12px; border-bottom:1px solid #e4ddd5; padding-bottom:8px;">
+              {{ 'Articles commandés'|t }}
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+              {% for order_item in order_entity.getItems %}
+              <tr>
+                <td style="padding:8px 0; border-bottom:1px solid #f0ebe4; font-size:13px; color:#3d2b1f; vertical-align:top;">
+                  <span style="color:#8a7a6a;">{{ order_item.getQuantity|number_format }} ×</span>
+                  {{ order_item.label }}
+                </td>
+                <td style="padding:8px 0; border-bottom:1px solid #f0ebe4; font-size:13px; color:#3d2b1f; text-align:right; vertical-align:top; white-space:nowrap;">
+                  {{ order_item.getTotalPrice|commerce_price_format }}
+                </td>
+              </tr>
+              {% endfor %}
+            </table>
+
+            {# ── Totaux ── #}
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+              <tr>
+                <td style="padding:6px 0; font-size:13px; color:#8a7a6a;">{{ 'Sous-total'|t }}</td>
+                <td style="padding:6px 0; font-size:13px; color:#3d2b1f; text-align:right;">{{ totals.subtotal|commerce_price_format }}</td>
+              </tr>
+              {% for adjustment in totals.adjustments %}
+              <tr>
+                <td style="padding:6px 0; font-size:13px; color:#8a7a6a;">{{ adjustment.label }}</td>
+                <td style="padding:6px 0; font-size:13px; color:#3d2b1f; text-align:right;">{{ adjustment.total|commerce_price_format }}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td style="padding:12px 0 0; font-size:15px; color:#3d2b1f; font-weight:bold; border-top:1px solid #e4ddd5;">{{ 'Total'|t }}</td>
+                <td style="padding:12px 0 0; font-size:15px; color:#8b6f47; font-weight:bold; text-align:right; border-top:1px solid #e4ddd5;">{{ order_entity.getTotalPrice|commerce_price_format }}</td>
+              </tr>
+            </table>
+
+            {# ── Adresses ── #}
+            {% if shipping_information or billing_information %}
+            <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e4ddd5; padding-top:20px; margin-bottom:24px;">
+              <tr>
+                {% if shipping_information %}
+                <td width="50%" style="padding-right:15px; vertical-align:top;">
+                  <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#8b6f47; margin:0 0 8px;">{{ 'Livraison'|t }}</p>
+                  <div style="font-size:12px; color:#3d2b1f; line-height:1.6;">{{ shipping_information }}</div>
+                </td>
+                {% endif %}
+                {% if billing_information %}
+                <td width="50%" style="padding-left:15px; vertical-align:top;">
+                  <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#8b6f47; margin:0 0 8px;">{{ 'Facturation'|t }}</p>
+                  <div style="font-size:12px; color:#3d2b1f; line-height:1.6;">{{ billing_information }}</div>
+                </td>
+                {% endif %}
+              </tr>
+            </table>
+            {% endif %}
+
+            {# ── Moyen de paiement ── #}
+            {% if payment_method %}
+            <p style="font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#8b6f47; margin:0 0 6px;">{{ 'Moyen de paiement'|t }}</p>
+            <p style="font-size:12px; color:#3d2b1f; margin:0 0 24px;">{{ payment_method }}</p>
+            {% endif %}
+
+            {# ── CTA ── #}
+            <p style="text-align:center; margin:20px 0 0;">
+              <a href="{{ url('<front>') }}" style="display:inline-block; padding:12px 32px; background:#8b6f47; color:#ffffff; text-decoration:none; font-size:13px; letter-spacing:0.06em; text-transform:uppercase; border-radius:2px;">
+                {{ 'Retourner à la boutique'|t }}
+              </a>
+            </p>
+
+          </td>
+        </tr>
+
+        {# ── Pied de page ── #}
+        <tr>
+          <td align="center" style="padding:24px 30px;">
+            <p style="font-size:11px; color:#b0a090; margin:0; line-height:1.7;">
+              Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090; text-decoration:none;">atelierodesign.fr</a><br>
+              {{ 'Vous recevez cet email car vous avez passé une commande sur notre boutique.'|t }}
+            </p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

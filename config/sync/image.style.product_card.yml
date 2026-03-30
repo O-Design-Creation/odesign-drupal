@@ -1,0 +1,15 @@
+uuid: 1b82e21e-702f-429a-b3d0-fb4d3f4cb8c9
+langcode: en
+status: true
+dependencies: {  }
+name: product_card
+label: 'Product Card (600×600)'
+effects:
+  b7265c15-70bd-427e-ba78-aabc2531fbd8:
+    uuid: b7265c15-70bd-427e-ba78-aabc2531fbd8
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 600
+      height: 600
+      anchor: center-center

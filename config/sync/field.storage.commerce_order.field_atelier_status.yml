@@ -1,0 +1,39 @@
+uuid: 704b4810-638b-492c-a627-12376fb2aabd
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_order
+    - options
+id: commerce_order.field_atelier_status
+field_name: field_atelier_status
+entity_type: commerce_order
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: a_verifier
+      label: 'À vérifier'
+    -
+      value: validee_atelier
+      label: 'Validée atelier'
+    -
+      value: en_production
+      label: 'En production'
+    -
+      value: en_attente_client
+      label: 'En attente client'
+    -
+      value: livraison_prevue
+      label: 'Livraison prévue'
+    -
+      value: termine
+      label: Terminée
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

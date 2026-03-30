@@ -1,0 +1,27 @@
+uuid: 1dcabdc9-0b07-46f1-84f5-54a1761474ef
+langcode: en
+status: true
+dependencies:
+  module:
+    - commerce_order
+    - options
+id: commerce_order_item.field_poc_finish
+field_name: field_poc_finish
+entity_type: commerce_order_item
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: standard
+      label: Standard
+    -
+      value: premium
+      label: 'Premium (+7 EUR)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

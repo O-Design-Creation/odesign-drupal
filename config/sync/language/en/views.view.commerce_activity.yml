@@ -1,0 +1,36 @@
+label: 'Commerce Activity'
+display:
+  default:
+    display_title: Master
+    display_options:
+      title: 'Order activity'
+      fields:
+        created:
+          label: Date
+          separator: ', '
+        rendered_entity:
+          label: Message
+        uid:
+          label: User
+          alter:
+            text: '<span class="commerce-text--muted">By: {{ uid }}</span> '
+          separator: ', '
+      exposed_form:
+        options:
+          submit_button: Apply
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      empty:
+        area_text_custom:
+          content: 'No log entries.'
+      arguments:
+        source_entity_id:
+          exception:
+            title: All
+        source_entity_type:
+          exception:
+            title: All
+  block_1:
+    display_title: Block

@@ -1,0 +1,44 @@
+odesign_order:
+  id: odesign_order
+  group: commerce_order
+  label: 'Atelier O Design — Commandes'
+  states:
+    draft:
+      label: 'Brouillon'
+    pending_payment:
+      label: 'En attente de paiement'
+    processing:
+      label: 'En préparation'
+    shipped:
+      label: 'Expédiée'
+    completed:
+      label: 'Livrée'
+    canceled:
+      label: 'Annulée'
+    refunded:
+      label: 'Remboursée'
+  transitions:
+    place:
+      label: 'Confirmer la commande'
+      from: [draft]
+      to: pending_payment
+    confirm_payment:
+      label: 'Paiement reçu — mettre en préparation'
+      from: [pending_payment]
+      to: processing
+    ship:
+      label: 'Marquer comme expédiée'
+      from: [processing]
+      to: shipped
+    deliver:
+      label: 'Marquer comme livrée'
+      from: [shipped]
+      to: completed
+    cancel:
+      label: 'Annuler la commande'
+      from: [draft, pending_payment, processing]
+      to: canceled
+    refund:
+      label: 'Rembourser'
+      from: [completed, shipped, processing, canceled]
+      to: refunded

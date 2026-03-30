@@ -1,0 +1,18 @@
+uuid: b749ba95-1309-438f-8f9b-56a827a2ac09
+langcode: fr
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: ccmJnYDefjjUJ1_S8QUpDMgN41yZcLULtiTOdR1sJmo
+id: default
+label: Facture
+traits: {  }
+numberPattern: invoice_default
+logo: null
+dueDays: null
+paymentTerms: ''
+footerText: ''
+workflow: invoice_default
+sendConfirmation: false
+confirmationBcc: ''
+privateSubdirectory: null
