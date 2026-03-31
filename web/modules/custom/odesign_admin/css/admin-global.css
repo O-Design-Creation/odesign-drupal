@@ -371,6 +371,18 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   white-space: nowrap;
 }
 
+.gin--sidebar-toolbar td.views-field-operations:empty,
+.gin--sidebar-toolbar td.views-field-operations:not(:has(*)) {
+  text-align: center;
+}
+
+.gin--sidebar-toolbar td.views-field-operations:empty::before,
+.gin--sidebar-toolbar td.views-field-operations:not(:has(*))::before {
+  content: "—";
+  color: #a08c76;
+  font-weight: 600;
+}
+
 /* ─── Polish des formulaires admin et écrans de commande ─────────────────── */
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form,
