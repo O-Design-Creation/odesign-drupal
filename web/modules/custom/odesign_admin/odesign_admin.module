@@ -33,6 +33,18 @@ function odesign_admin_page_attachments(array &$attachments): void {
     ],
     'odesign_admin_global_css',
   ];
+
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+      '#attributes' => [
+        'src' => '/modules/custom/odesign_admin/js/admin-actions.js',
+        'defer' => TRUE,
+      ],
+    ],
+    'odesign_admin_actions_js',
+  ];
 }
 
 /**
