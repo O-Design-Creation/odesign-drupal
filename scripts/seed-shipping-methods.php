@@ -13,14 +13,30 @@
  */
 
 use Drupal\commerce_shipping\Entity\ShippingMethod;
+use Drupal\commerce_store\Entity\Store;
 
-// Récupérer le premier store disponible.
-$stores = \Drupal::entityTypeManager()->getStorage('commerce_store')->loadMultiple();
+// Récupérer ou créer le store Atelier O Design.
+$store_storage = \Drupal::entityTypeManager()->getStorage('commerce_store');
+$stores = $store_storage->loadMultiple();
+
 if (empty($stores)) {
-  echo "ERREUR : aucun store trouvé. Créer le store d'abord.\n";
-  return;
+  echo "Aucun store trouvé. Création du store Atelier O Design…\n";
+  $store = Store::create([
+    'type'             => 'online',
+    'name'             => 'Atelier O Design',
+    'mail'             => 'odesigncrea@gmail.com',
+    'default_currency' => 'EUR',
+    'timezone'         => 'Europe/Paris',
+    'address'          => ['country_code' => 'FR'],
+    'is_default'       => TRUE,
+    'status'           => TRUE,
+  ]);
+  $store->save();
+  echo "Store créé : " . $store->getName() . " (id=" . $store->id() . ")\n";
 }
-$store = reset($stores);
+else {
+  $store = reset($stores);
+}
 $store_id = $store->id();
 echo "Store trouvé : " . $store->getName() . " (id={$store_id})\n";
 
