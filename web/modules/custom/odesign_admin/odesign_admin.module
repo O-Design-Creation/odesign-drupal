@@ -259,13 +259,19 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
       $form['name']['widget'][0]['value']['#description'] =
         t('Nom interne pour retrouver cette image (ex. : "Photo principale - Prénom Léa"). Non visible sur le site.');
     }
+    if (isset($form['field_media_image'])) {
+      $form['field_media_image']['widget']['#description'] =
+        t('Ajoutez votre photo principale au format JPG, PNG ou WebP. Préférez une image nette, lumineuse et centrée sur la création.');
+    }
     if (isset($form['status'])) {
       $form['status']['widget']['value']['#description'] =
         t('Activé : l\'image est disponible pour être utilisée sur vos produits.');
     }
     // Masquer les champs techniques inutiles pour le gestionnaire.
-    if (isset($form['revision_log_message'])) {
-      $form['revision_log_message']['#access'] = FALSE;
+    foreach (['advanced', 'author', 'uid', 'created', 'revision_log_message'] as $technical_key) {
+      if (isset($form[$technical_key])) {
+        $form[$technical_key]['#access'] = FALSE;
+      }
     }
   }
 

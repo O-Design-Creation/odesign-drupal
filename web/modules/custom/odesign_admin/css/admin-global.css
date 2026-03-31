@@ -122,8 +122,21 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   background: #fffaf4;
 }
 
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form),
+.gin--sidebar-toolbar .views-element-container .views-form,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) {
+  padding: 16px 18px 18px;
+  margin: 0 0 18px;
+  border: 1px solid #e4d9cb;
+  border-radius: 18px;
+  background: #fffdfa;
+  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
+}
+
 .gin--sidebar-toolbar .view-content,
-.gin--sidebar-toolbar .views-element-container {
+.gin--sidebar-toolbar .views-element-container,
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form),
+.gin--sidebar-toolbar .views-element-container .views-form {
   border: 1px solid #e4d9cb;
   border-radius: 18px;
   overflow: hidden;
@@ -131,17 +144,18 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
 }
 
-.gin--sidebar-toolbar table.views-table {
+.gin--sidebar-toolbar table.views-table,
+.gin--sidebar-toolbar .views-element-container table,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table {
   width: 100%;
   margin: 0;
   border-collapse: separate;
   border-spacing: 0;
 }
 
-.gin--sidebar-toolbar table.views-table thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+.gin--sidebar-toolbar table.views-table thead th,
+.gin--sidebar-toolbar .views-element-container table thead th,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table thead th {
   padding: 14px 16px;
   background: linear-gradient(180deg, #f8f1e8 0%, #f2e7da 100%);
   color: #3d2b1f;
@@ -152,18 +166,57 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   border-bottom: 1px solid #e0d3c3;
 }
 
-.gin--sidebar-toolbar table.views-table tbody td {
+.gin--sidebar-toolbar table.views-table tbody td,
+.gin--sidebar-toolbar .views-element-container table tbody td,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody td {
   padding: 14px 16px;
   vertical-align: top;
   border-bottom: 1px solid #f0e7dc;
 }
 
-.gin--sidebar-toolbar table.views-table tbody tr:nth-child(odd) {
+.gin--sidebar-toolbar table.views-table tbody tr:nth-child(odd),
+.gin--sidebar-toolbar .views-element-container table tbody tr:nth-child(odd),
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody tr:nth-child(odd) {
   background: #fffdfa;
 }
 
-.gin--sidebar-toolbar table.views-table tbody tr:hover {
+.gin--sidebar-toolbar table.views-table tbody tr:hover,
+.gin--sidebar-toolbar .views-element-container table tbody tr:hover,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody tr:hover {
   background: #fcf6ef;
+}
+
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form) .form-item-action,
+.gin--sidebar-toolbar .views-element-container .views-form .form-item-action,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) .form-item-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form) .form-item-action label,
+.gin--sidebar-toolbar .views-element-container .views-form .form-item-action label,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) .form-item-action label {
+  margin: 0;
+  color: #6e5a48;
+  font-weight: 600;
+}
+
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form) .form-actions,
+.gin--sidebar-toolbar .views-element-container .views-form .form-actions,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) .form-actions {
+  margin: 0 0 14px;
+}
+
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form) .button,
+.gin--sidebar-toolbar .views-element-container .views-form .button,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) .button,
+.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form) select,
+.gin--sidebar-toolbar .views-element-container .views-form select,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) select {
+  min-height: 40px;
+  border-radius: 12px;
 }
 
 .gin--sidebar-toolbar .view-empty {
@@ -184,6 +237,153 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   font-weight: 700;
 }
 
+/* ─── Polish des formulaires admin et écrans de commande ─────────────────── */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
+  max-width: 1180px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form {
+  display: grid;
+  gap: 18px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form > .form-wrapper,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form > .form-wrapper,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main > *,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > * {
+  padding: 22px 24px;
+  border: 1px solid #e4d9cb;
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(139, 111, 71, 0.08), transparent 28%),
+    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
+  box-shadow: 0 14px 30px rgba(61, 43, 31, 0.05);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-item,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-item {
+  margin-top: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form label,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form label,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar h2,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main h2 {
+  color: #3d2b1f;
+  font-weight: 700;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="text"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="search"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="email"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="date"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="time"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form select,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="text"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="search"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="email"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="date"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="time"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form select,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form textarea,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form textarea {
+  min-height: 46px;
+  border: 1px solid #d9cdbd;
+  border-radius: 12px;
+  background: #fff;
+  padding: 10px 14px;
+  box-shadow: inset 0 1px 2px rgba(61, 43, 31, 0.03);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .description,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .description,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-item__description,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-item__description {
+  margin-top: 8px;
+  color: #6e5a48;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .image-widget,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .image-widget-data {
+  display: grid;
+  gap: 12px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="file"] {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  border: 1px dashed #c9b49a;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar .button {
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 0 18px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
+  display: grid;
+  gap: 18px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table th,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table th {
+  padding: 12px 10px;
+  border-bottom: 1px solid #ebdfd1;
+  vertical-align: top;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table tr:last-child td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table tr:last-child td {
+  border-bottom: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
+  align-content: start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > .form-wrapper {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main details {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
 @media (max-width: 900px) {
   .gin--sidebar-toolbar .dialog-off-canvas-main-canvas main,
   .gin--sidebar-toolbar .layout-container main {
@@ -197,5 +397,12 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   .gin--sidebar-toolbar table.views-table thead th,
   .gin--sidebar-toolbar table.views-table tbody td {
     padding: 12px 10px;
+  }
+
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form > .form-wrapper,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form > .form-wrapper,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main > *,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > * {
+    padding: 18px 16px;
   }
 }
