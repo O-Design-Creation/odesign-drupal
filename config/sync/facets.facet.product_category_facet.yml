@@ -1,0 +1,45 @@
+uuid: fab9e194-6b51-4d68-bb8c-c3d50b0a989d
+langcode: fr
+status: true
+dependencies: {  }
+id: product_category_facet
+name: Catégorie
+weight: null
+min_count: 1
+missing: false
+missing_label: ''
+url_alias: categorie
+facet_source_id: 'search_api:views_page__catalogue__page_catalogue'
+field_identifier: field_category
+query_operator: null
+hard_limit: null
+exclude: false
+use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+widget:
+  type: links
+  config:
+    show_numbers: true
+    soft_limit: 0
+empty_behavior: null
+only_visible_when_facet_source_is_visible: true
+show_only_one_result: false
+show_title: null
+processor_configs:
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -10
+    settings: {  }
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 50
+    settings:
+      sort: ASC

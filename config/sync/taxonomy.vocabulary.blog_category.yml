@@ -1,0 +1,9 @@
+uuid: 31bfaaf8-8680-49b0-8011-5aee71a78aba
+langcode: fr
+status: true
+dependencies: {  }
+name: 'Catégories blog'
+vid: blog_category
+description: 'Thèmes des articles de blog.'
+weight: 0
+new_revision: false

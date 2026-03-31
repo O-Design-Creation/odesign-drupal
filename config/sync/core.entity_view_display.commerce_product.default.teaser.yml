@@ -6,6 +6,7 @@ dependencies:
     - commerce_product.commerce_product_type.default
     - core.entity_view_mode.commerce_product.teaser
     - field.field.commerce_product.default.body
+    - field.field.commerce_product.default.field_category
     - field.field.commerce_product.default.field_product_images
   module:
     - commerce_product
@@ -14,6 +15,14 @@ targetEntityType: commerce_product
 bundle: default
 mode: teaser
 content:
+  field_category:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 30
+    region: content
   field_product_images:
     type: entity_reference_entity_view
     label: hidden

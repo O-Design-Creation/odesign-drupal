@@ -1,0 +1,9 @@
+uuid: e611c7f5-4a53-4cb4-a6fc-54ede3b484e6
+langcode: fr
+status: true
+dependencies: {  }
+name: 'Catégories produits'
+vid: product_category
+description: 'Catégories de produits Atelier O Design'
+weight: 0
+new_revision: false

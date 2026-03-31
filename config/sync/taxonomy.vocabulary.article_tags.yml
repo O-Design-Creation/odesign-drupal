@@ -1,0 +1,9 @@
+uuid: 70741ec5-d53d-48bd-b01d-0eaedb1441ef
+langcode: fr
+status: true
+dependencies: {  }
+name: 'Tags articles'
+vid: article_tags
+description: 'Étiquettes thématiques pour les articles de blog.'
+weight: 0
+new_revision: false

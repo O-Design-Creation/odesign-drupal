@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.article.body
+    - field.field.node.article.field_blog_category
+    - field.field.node.article.field_tags
     - node.type.article
   module:
     - text
@@ -19,6 +21,22 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_blog_category:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  field_tags:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 20
     region: content
   links:
     settings: {  }

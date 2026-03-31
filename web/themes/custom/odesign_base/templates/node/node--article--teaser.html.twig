@@ -40,6 +40,12 @@
 
   <div class="article-card__body">
     <div class="article-card__meta">
+      {%- if content.field_blog_category is not empty -%}
+        <span class="article-card__category">
+          <i class="ph ph-tag" aria-hidden="true"></i>
+          {{- content.field_blog_category -}}
+        </span>
+      {%- endif -%}
       <time class="article-card__date" datetime="{{ node.getCreatedTime()|date('Y-m-d') }}">
         {{ node.getCreatedTime()|format_date('custom', 'j F Y') }}
       </time>
@@ -52,6 +58,12 @@
     {%- if content.body is not empty -%}
       <div class="article-card__summary">
         {{- content.body -}}
+      </div>
+    {%- endif -%}
+
+    {%- if content.field_tags is not empty -%}
+      <div class="article-card__tags">
+        {{- content.field_tags -}}
       </div>
     {%- endif -%}
 

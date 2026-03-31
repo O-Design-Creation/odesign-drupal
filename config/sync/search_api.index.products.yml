@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - field.storage.commerce_product.body
+    - field.storage.commerce_product.field_category
     - search_api.server.default_db
   module:
     - commerce_product
@@ -28,6 +29,14 @@ field_settings:
     dependencies:
       module:
         - commerce_product
+  field_category:
+    label: Catégorie
+    datasource_id: 'entity:commerce_product'
+    property_path: field_category
+    type: integer
+    dependencies:
+      config:
+        - field.storage.commerce_product.field_category
   status:
     label: Published
     datasource_id: 'entity:commerce_product'

@@ -1195,12 +1195,47 @@ textarea {
 .article-card__meta {
   font-size: var(--font-size-sm);
   color: var(--color-text-light);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
 }
+
+.article-card__category {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.article-card__category .ph { font-size: 0.85em; }
 
 .article-card__summary {
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   flex: 1;
+}
+
+.article-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.article-card__tags .field__items { display: contents; }
+
+.article-card__tags .field__item {
+  font-size: var(--font-size-xs);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 2px 10px;
 }
 
 /* ---------------------------------------------------------------------------

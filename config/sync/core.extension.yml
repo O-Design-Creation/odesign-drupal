@@ -28,6 +28,7 @@ module:
   entity: 0
   entity_print: 0
   entity_reference_revisions: 0
+  facets: 0
   field: 0
   field_group: 0
   file: 0
@@ -62,6 +63,7 @@ module:
   smtp: 0
   state_machine: 0
   system: 0
+  taxonomy: 0
   text: 0
   token: 0
   toolbar: 0

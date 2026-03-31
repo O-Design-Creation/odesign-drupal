@@ -4,6 +4,8 @@ status: true
 dependencies:
   config:
     - field.field.node.article.body
+    - field.field.node.article.field_blog_category
+    - field.field.node.article.field_tags
     - node.type.article
   module:
     - path
@@ -29,6 +31,26 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_blog_category:
+    type: entity_reference_autocomplete
+    weight: 8
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: 'Saisir ou créer une catégorie…'
+    third_party_settings: {  }
+  field_tags:
+    type: entity_reference_autocomplete_tags
+    weight: 10
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: 'Ajouter des tags (séparés par des virgules)…'
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 2
@@ -39,6 +61,11 @@ content:
   path:
     type: path
     weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
