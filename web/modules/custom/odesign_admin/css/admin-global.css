@@ -305,16 +305,18 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
 }
 
 .gin--sidebar-toolbar .views-field-operations .dropbutton-toggle .dropbutton-arrow::before {
   content: "▾";
-  font-size: 16px;
+  display: block;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1;
   color: #6b4a22;
+  transform: translateY(-1px);
 }
 
 .gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton-widget,
