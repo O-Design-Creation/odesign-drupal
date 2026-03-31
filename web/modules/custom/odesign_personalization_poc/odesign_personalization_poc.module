@@ -201,7 +201,21 @@ function odesign_personalization_poc_entity_view(array &$build, EntityInterface 
  */
 function odesign_personalization_poc_is_tree_pilot(OrderItemInterface $entity): bool {
   $purchased_entity = $entity->getPurchasedEntity();
-  return $purchased_entity && method_exists($purchased_entity, 'getSku') && $purchased_entity->getSku() === 'POC-TREE-001';
+  if (!$purchased_entity || !method_exists($purchased_entity, 'getSku')) {
+    return FALSE;
+  }
+
+  $sku = (string) $purchased_entity->getSku();
+  if ($sku === 'POC-TREE-001' || str_starts_with($sku, 'arbre-de-vie-personnalise-')) {
+    return TRUE;
+  }
+
+  $product = method_exists($purchased_entity, 'getProduct') ? $purchased_entity->getProduct() : NULL;
+  if ($product && method_exists($product, 'label')) {
+    return $product->label() === 'Arbre de vie en bois personnalisé';
+  }
+
+  return FALSE;
 }
 
 /**
