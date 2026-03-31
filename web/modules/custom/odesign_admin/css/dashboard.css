@@ -321,12 +321,12 @@
 
 .odesign-dashboard__section-header h3 .material-symbols-outlined {
   font-size: 1.2rem;
-  color: var(--color-brand-dark, #5c2e28);
+  color: var(--color-brand-dark, #4E2620);
 }
 
 .odesign-dashboard__see-all {
   font-size: 0.8rem;
-  color: var(--color-brand-dark, #5c2e28);
+  color: var(--color-brand-dark, #4E2620);
   text-decoration: none;
   font-weight: 500;
 }
@@ -384,7 +384,7 @@
   text-overflow: ellipsis;
 }
 .article-item__title:hover {
-  color: var(--color-brand-dark, #5c2e28);
+  color: var(--color-brand-dark, #4E2620);
   text-decoration: underline;
 }
 
@@ -433,8 +433,8 @@
   font-size: 1rem;
 }
 .article-item__btn:hover {
-  background: var(--color-brand-bg, #f3eae8);
-  color: var(--color-brand-dark, #5c2e28);
+  background: var(--color-brand-bg, #faf4f0);
+  color: var(--color-brand-dark, #4E2620);
 }
 
 /* ─── Bouton "Écrire un nouvel article" ─────────────────────────────────── */
@@ -448,7 +448,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 18px;
-  background: var(--color-brand-dark, #5c2e28);
+  background: var(--color-brand-dark, #4E2620);
   color: #fff;
   border-radius: 20px;
   text-decoration: none;
@@ -460,7 +460,7 @@
   font-size: 1rem;
 }
 .odesign-dashboard__new-article-btn:hover {
-  background: #7a3e37;
+  background: #6b3b30;
   color: #fff;
   text-decoration: none;
 }

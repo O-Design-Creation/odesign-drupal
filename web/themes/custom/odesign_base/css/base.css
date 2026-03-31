@@ -1,8 +1,7 @@
 /* ==========================================================================
    Atelier O Design — Thème Drupal Commerce
    Palette terracotta chaud · Playfair Display + DM Sans
-   Palette extraite du logo officiel Atelier O Design (SVG)
-   Mise à jour : 2026-04-01
+   Palette officielle fournie par la cliente (2026-04-01)
    ========================================================================== */
 
 /* ---------------------------------------------------------------------------
@@ -14,29 +13,31 @@
    1. Design tokens (custom properties)
    --------------------------------------------------------------------------- */
 :root {
-  /* Palette terracotta chaud — extraite du logo officiel Atelier O Design */
-  --color-brand-dark:     #5c2e28;   /* bordeaux terracotta — footer, accents forts */
-  --color-brand-medium:   #c97b75;   /* rose terracotta — barres, hover */
-  --color-brand-light:    #e8c5c0;   /* rose pâle — bordures, fonds */
-  --color-brand-cream:    #fdf7f6;   /* ivoire nacré — fonds de cartes */
-  --color-accent:         #7e4943;   /* terracotta profond — prix, CTA forts */
-  --color-accent-hover:   #5c2e28;
+  /* Palette officielle Atelier O Design — fournie par la cliente */
+  --color-brand-dark:     #4E2620;   /* 🤎 Marron profond       — footer, header barre annonce, accents forts */
+  --color-brand-medium:   #BB7570;   /* 🌸 Rose terracotta doux — barres, hover, boutons secondaires */
+  --color-brand-warm:     #8B6151;   /* 🪵 Brun naturel chaud   — prix, CTA forts, icônes */
+  --color-brand-beige:    #D9B7A4;   /* 🕊️ Beige rosé lumineux  — fonds chauds, cartes, bordures */
+  --color-brand-light:    #ecddd5;   /* Dérivé beige clair      — bordures, fonds légers */
+  --color-brand-cream:    #faf4f0;   /* Dérivé crème            — fonds de page alternés */
+  --color-accent:         #8B6151;   /* = brand-warm pour cohérence — CTA, prix */
+  --color-accent-hover:   #4E2620;   /* = brand-dark au hover */
 
-  /* Neutrals */
-  --color-text:           #1a1614;
-  --color-text-muted:     #7a6868;
-  --color-text-light:     #a89090;
+  /* Neutrals — dérivés de la palette officielle */
+  --color-text:           #1a1210;   /* quasi-noir chaud */
+  --color-text-muted:     #6b4e44;   /* dérivé brun chaud */
+  --color-text-light:     #a08070;   /* dérivé beige moyen */
   --color-bg:             #ffffff;
-  --color-bg-alt:         #faf5f5;
-  --color-border:         #ead8d8;
-  --color-border-light:   #f3e8e8;
+  --color-bg-alt:         #faf4f0;   /* = brand-cream */
+  --color-border:         #d9b7a4;   /* = brand-beige */
+  --color-border-light:   #ecddd5;   /* = brand-light */
 
   /* Système */
   --color-success:        #2a7a50;
   --color-warning:        #b5630a;
   --color-error:          #c02020;
   --color-info:           #1a4a7a;
-  --color-focus:          #7a3a44;
+  --color-focus:          #BB7570;   /* = brand-medium pour focus visible */
 
   /* Typographie */
   --font-display:         'Playfair Display', Georgia, 'Times New Roman', serif;
