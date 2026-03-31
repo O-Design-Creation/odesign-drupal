@@ -5,6 +5,7 @@ dependencies:
   module:
     - commerce_checkout
     - commerce_product
+    - eu_cookie_compliance
     - media
     - system
 _core:
@@ -16,5 +17,6 @@ is_admin: false
 permissions:
   - 'access checkout'
   - 'access content'
+  - 'display eu cookie compliance popup'
   - 'view commerce_product'
   - 'view media'

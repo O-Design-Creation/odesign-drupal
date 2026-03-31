@@ -35,7 +35,8 @@
         "drupal/smtp": "^1.4",
         "drupal/mailsystem": "^4.5",
         "drupal/commerce_invoice": "^2.2",
-        "drupal/config_ignore": "^3.3"
+        "drupal/config_ignore": "^3.3",
+        "drupal/eu_cookie_compliance": "^1.29"
     },
     "config": {
         "allow-plugins": {

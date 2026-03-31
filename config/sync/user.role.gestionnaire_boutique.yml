@@ -5,9 +5,13 @@ dependencies:
   module:
     - commerce
     - commerce_checkout
+    - commerce_invoice
     - commerce_order
     - commerce_payment
     - commerce_product
+    - commerce_promotion
+    - commerce_store
+    - eu_cookie_compliance
     - media
     - node
     - system
@@ -22,17 +26,19 @@ permissions:
   - 'access commerce administration pages'
   - 'access commerce_invoice overview'
   - 'access commerce_order overview'
-  - 'access commerce_promotion overview'
   - 'access commerce_product overview'
   - 'access commerce_product_attribute overview'
+  - 'access commerce_promotion overview'
   - 'access commerce_store overview'
   - 'access content overview'
   - 'access media overview'
   - 'access toolbar'
   - 'access user profiles'
   - 'add commerce_log commerce_order admin comment'
+  - 'administer commerce_invoice'
   - 'create default commerce_product'
   - 'create media'
+  - 'display eu cookie compliance popup'
   - 'manage default commerce_order_item'
   - 'manage default commerce_product_variation'
   - 'unlock orders'

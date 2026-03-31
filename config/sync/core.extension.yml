@@ -65,6 +65,7 @@ module:
   user: 0
   views_ui: 0
   views: 10
+  eu_cookie_compliance: 11
   minimal: 1000
 theme:
   stark: 0
