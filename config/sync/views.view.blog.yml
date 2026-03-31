@@ -22,7 +22,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Journal
+      title: Blog
       pager:
         type: full
         options:
@@ -130,7 +130,7 @@ display:
       path: blog
       menu:
         type: normal
-        title: Journal
+        title: Blog
         description: ''
         weight: 5
         expanded: false

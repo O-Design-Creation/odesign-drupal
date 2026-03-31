@@ -20,7 +20,7 @@
     'article-card',
     node.isPromoted() ? 'article-card--promoted',
     not node.isPublished() ? 'article-card--unpublished',
-  ]|filter
+  ]|filter(v => v)
 %}
 <article{{ attributes.addClass(classes) }}>
   <a href="{{ url }}" class="article-card__link" tabindex="-1" aria-hidden="true">
@@ -41,7 +41,7 @@
   <div class="article-card__body">
     <div class="article-card__meta">
       <time class="article-card__date" datetime="{{ node.getCreatedTime()|date('Y-m-d') }}">
-        {{ node.getCreatedTime()|date('j F Y') }}
+        {{ node.getCreatedTime()|format_date('custom', 'j F Y') }}
       </time>
     </div>
 

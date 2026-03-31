@@ -55,6 +55,8 @@ async function auditPage(page, browserPage, pageDef, viewportName) {
     }
 
     // ---------- Screenshot ----------
+    // Attendre le chargement complet des webfonts avant capture.
+    await browserPage.evaluate(() => document.fonts.ready);
     const screenshotDir = path.join(SCREENSHOTS_DIR, viewportName);
     fs.mkdirSync(screenshotDir, { recursive: true });
     const screenshotPath = path.join(screenshotDir, `${pageDef.name}.png`);
@@ -207,7 +209,8 @@ async function auditPage(page, browserPage, pageDef, viewportName) {
 
   fs.mkdirSync(SCREENSHOTS_DIR, { recursive: true });
 
-  const browser = await chromium.launch({ headless: true });
+  // --font-render-hinting=none corrige le rendu des icon-fonts (PUA) en mode headless.
+  const browser = await chromium.launch({ headless: true, args: ['--font-render-hinting=none'] });
 
   for (const viewport of VIEWPORTS) {
     console.log(`\n📐 Viewport : ${viewport.name} (${viewport.width}×${viewport.height})`);
