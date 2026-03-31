@@ -665,17 +665,20 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-prefix {
-  display: block;
-  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  padding: 14px 16px;
   border-radius: 12px;
   border: 1px dashed #dbcbb8;
-  background: #fffdfa;
+  background: linear-gradient(180deg, #fffdfa 0%, #f7efe6 100%);
   color: #6e5a48;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-suffix {
   display: flex;
   justify-content: flex-start;
+  margin-top: 14px;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button {
@@ -698,10 +701,18 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-disabled textarea,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form textarea[disabled] {
   min-height: 104px;
-  border-style: dashed;
-  background: #fffcf7;
+  padding: 16px 18px;
+  border: 1px solid #e3d4c1;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
   color: #6e5a48;
   opacity: 1;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .odesign-readonly-longtext[disabled] {
+  min-height: 124px;
+  font-style: italic;
+  cursor: not-allowed;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations {

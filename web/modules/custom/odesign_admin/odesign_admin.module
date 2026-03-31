@@ -193,6 +193,9 @@ function _odesign_admin_add_product_field_help(array &$form): void {
     if (isset($form['body']['widget'][0]['value'])) {
       $form['body']['widget'][0]['value']['#description'] =
         t('Décrivez clairement le produit, ses matières, ses dimensions et ses options de personnalisation.');
+      if (!empty($form['body']['widget'][0]['value']['#disabled'])) {
+        $form['body']['widget'][0]['value']['#attributes']['class'][] = 'odesign-readonly-longtext';
+      }
     }
     if (isset($form['body']['widget'][0]['summary'])) {
       $form['body']['widget'][0]['summary']['#description'] =
