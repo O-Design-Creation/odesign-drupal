@@ -114,12 +114,55 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   padding: 0 18px;
 }
 
-.gin--sidebar-toolbar .views-bulk-form {
-  padding: 14px 18px;
+.gin--sidebar-toolbar .views-bulk-form,
+.gin--sidebar-toolbar .views-bulk-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
   margin: 0 0 16px;
-  border: 1px solid #eadfce;
-  border-radius: 14px;
-  background: #fffaf4;
+  border: 1px solid #ddc5b6;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at top right, rgba(187, 117, 112, 0.10), transparent 28%),
+    linear-gradient(180deg, #fdf8f4 0%, #f4e7dc 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 10px 24px rgba(78,38,32,.06);
+}
+
+.gin--sidebar-toolbar .views-bulk-form .form-item-action,
+.gin--sidebar-toolbar .views-bulk-form .form-actions,
+.gin--sidebar-toolbar .views-bulk-actions .form-item-action,
+.gin--sidebar-toolbar .views-bulk-actions .form-actions {
+  margin: 0;
+}
+
+.gin--sidebar-toolbar .views-bulk-form .form-item-action,
+.gin--sidebar-toolbar .views-bulk-actions .form-item-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #6b4e44;
+  font-weight: 600;
+}
+
+.gin--sidebar-toolbar .views-bulk-form label,
+.gin--sidebar-toolbar .views-bulk-actions label {
+  margin: 0;
+  color: #6b4e44;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.gin--sidebar-toolbar .views-bulk-form select,
+.gin--sidebar-toolbar .views-bulk-actions select {
+  min-height: 40px;
+  min-width: 220px;
+  border: 1px solid #d6b9a7;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fffdfa 0%, #fbf2eb 100%);
+  color: #4E2620;
+  padding: 0 16px;
+  box-shadow: inset 0 1px 2px rgba(61, 43, 31, 0.04);
 }
 
 .gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form),
@@ -477,6 +520,8 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
   transition: background .15s, transform .15s;
 }
@@ -496,10 +541,13 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   padding: 0;
   border-left: 1px solid rgba(124, 90, 79, 0.22);
   border-radius: 0 10px 10px 0;
+  appearance: none;
+  -webkit-appearance: none;
   background: linear-gradient(180deg, #fffdfa 0%, #f1e6dd 100%);
   color: #3d2b1f;
   cursor: pointer;
   transition: background .15s, color .15s;
+  box-shadow: none;
 }
 
 .gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle:hover,
@@ -546,6 +594,137 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   background: #f6eee8;
   padding-left: 18px;
   outline: none;
+}
+
+/* Même composant custom sur le tableau des variations produit. */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-wrapper.odesign-actions-ready {
+  display: inline-flex;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid #7c5a4f;
+  border-radius: 14px;
+  background: #fbf6f2;
+  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.10), 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle {
+  min-height: 32px;
+  border: 0;
+  text-decoration: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border-radius: 10px 0 0 10px;
+  background: #BB7570;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+  transition: background .15s, transform .15s;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary:focus-visible {
+  background: #8B6151;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  padding: 0;
+  border-left: 1px solid rgba(124, 90, 79, 0.22);
+  border-radius: 0 10px 10px 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(180deg, #fffdfa 0%, #f1e6dd 100%);
+  color: #3d2b1f;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  box-shadow: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle:focus-visible,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions.is-open .odesign-actions__toggle {
+  background: #8B6151;
+  color: #fff;
+  outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 176px;
+  padding: 8px 0;
+  border: 1px solid #e5d7c9;
+  border-radius: 14px;
+  background: #fffdfa;
+  box-shadow: 0 18px 34px rgba(36, 25, 20, 0.18), 0 4px 12px rgba(36, 25, 20, 0.10);
+  overflow: hidden;
+  z-index: 60;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  color: #3d2b1f;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .12s, padding-left .12s;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item + .odesign-actions__item {
+  border-top: 1px solid #eee1d5;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item:focus-visible {
+  background: #f6eee8;
+  padding-left: 18px;
+  outline: none;
+}
+
+/* Le menu d'actions des variations doit passer au-dessus des bandes/blocs du tableau. */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations tbody,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations tr,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td {
+  overflow: visible;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td {
+  position: relative;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations tr:has(.odesign-actions.is-open),
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td:has(.odesign-actions.is-open) {
+  position: relative;
+  z-index: 25;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions {
+  z-index: 30;
 }
 
 .gin--sidebar-toolbar table.views-table tbody td[colspan],
@@ -1828,23 +2007,44 @@ li.commerce-inbox-action-link-wrapper,
 
 .gin--sidebar-toolbar .views-bulk-form input[type="submit"],
 .gin--sidebar-toolbar .views-bulk-form .button,
-.gin--sidebar-toolbar .views-form input[type="submit"] {
-  min-height: 38px;
-  border-radius: 8px;
-  padding: 0 16px;
-  background: #4E2620;
-  border: 0;
-  color: #fff;
+.gin--sidebar-toolbar .views-bulk-actions input[type="submit"],
+.gin--sidebar-toolbar .views-bulk-actions .button,
+.gin--sidebar-toolbar .views-bulk-form input.form-submit,
+.gin--sidebar-toolbar .views-bulk-actions input.form-submit,
+.gin--sidebar-toolbar .views-bulk-form .form-actions .button,
+.gin--sidebar-toolbar .views-bulk-actions .form-actions .button,
+.gin--sidebar-toolbar .views-bulk-form .form-actions input[type="submit"],
+.gin--sidebar-toolbar .views-bulk-actions .form-actions input[type="submit"] {
+  min-height: 40px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 999px;
+  padding: 0 18px;
+  background-color: #4E2620 !important;
+  background-image: linear-gradient(180deg, #6a3a32 0%, #4E2620 100%) !important;
+  border: 1px solid #4E2620 !important;
+  color: #fff !important;
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: .01em;
-  box-shadow: 0 3px 8px rgba(78,38,32,.18);
-  transition: background .15s;
+  box-shadow: 0 10px 20px rgba(78,38,32,.18), 0 1px 0 rgba(255,255,255,.12) inset;
+  transition: background .15s, transform .15s;
 }
 
 .gin--sidebar-toolbar .views-bulk-form input[type="submit"]:hover,
-.gin--sidebar-toolbar .views-bulk-form .button:hover {
-  background: #3a1c17;
+.gin--sidebar-toolbar .views-bulk-form .button:hover,
+.gin--sidebar-toolbar .views-bulk-actions input[type="submit"]:hover,
+.gin--sidebar-toolbar .views-bulk-actions .button:hover,
+.gin--sidebar-toolbar .views-bulk-form input.form-submit:hover,
+.gin--sidebar-toolbar .views-bulk-actions input.form-submit:hover,
+.gin--sidebar-toolbar .views-bulk-form .form-actions .button:hover,
+.gin--sidebar-toolbar .views-bulk-actions .form-actions .button:hover,
+.gin--sidebar-toolbar .views-bulk-form .form-actions input[type="submit"]:hover,
+.gin--sidebar-toolbar .views-bulk-actions .form-actions input[type="submit"]:hover {
+  background-color: #5f342d !important;
+  background-image: linear-gradient(180deg, #8B6151 0%, #5f342d 100%) !important;
+  border-color: #5f342d !important;
+  transform: translateY(-1px);
 }
 
 /* ─── Badges de statut dans les tableaux ("Publié", "Brouillon") ──────── */
