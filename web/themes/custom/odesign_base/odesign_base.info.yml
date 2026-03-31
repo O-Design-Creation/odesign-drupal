@@ -5,6 +5,7 @@ core_version_requirement: ^11
 package: Custom
 base theme: false
 logo: logo.svg
+favicon: images/favicon.ico
 libraries:
   - odesign_base/global
 regions:

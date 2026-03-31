@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * odesign_base.theme — Fonctions du thème Atelier O Design.
+ */
+
+/**
+ * Implements hook_page_attachments_alter().
+ *
+ * Supprime la favicon Drupal core et injecte le jeu complet de favicons
+ * générés depuis le logo SVG.
+ */
+function odesign_base_page_attachments_alter(array &$attachments): void {
+  // Supprimer la favicon Drupal core
+  if (isset($attachments['#attached']['html_head'])) {
+    foreach ($attachments['#attached']['html_head'] as $key => $item) {
+      if (isset($item[1]) && $item[1] === 'favicon') {
+        unset($attachments['#attached']['html_head'][$key]);
+      }
+    }
+  }
+}

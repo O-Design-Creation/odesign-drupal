@@ -4,9 +4,12 @@
   "private": true,
   "description": "Outils d'audit accessibilité et performance pour Atelier O Design",
   "scripts": {
+    "audit:visual": "node playwright/scripts/audit-frontend.js",
     "audit:a11y": "node playwright/scripts/audit-a11y.js",
     "audit:perf": "node playwright/scripts/audit-performance.js",
-    "audit:full": "node playwright/scripts/audit-frontend.js && node playwright/scripts/audit-a11y.js && node playwright/scripts/audit-performance.js",
+    "audit:seo": "node playwright/scripts/audit-seo.js",
+    "audit:lighthouse": "node playwright/scripts/audit-lighthouse.js",
+    "audit:full": "node playwright/scripts/audit-frontend.js && node playwright/scripts/audit-a11y.js && node playwright/scripts/audit-seo.js && node playwright/scripts/audit-performance.js",
     "audit:report": "node playwright/scripts/audit-report-html.js"
   },
   "dependencies": {
@@ -14,5 +17,9 @@
     "@phosphor-icons/web": "^2.1.2",
     "@playwright/test": "^1.49.0",
     "axe-core": "^4.9.1"
+  },
+  "devDependencies": {
+    "lighthouse": "^13.0.3",
+    "png-to-ico": "^3.0.1"
   }
 }

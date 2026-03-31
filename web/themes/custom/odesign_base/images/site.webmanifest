@@ -1,0 +1,23 @@
+{
+  "name": "Atelier O Design",
+  "short_name": "O Design",
+  "description": "Cadeaux personnalisés en bois gravés au laser, faits main en France",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#4e2720",
+  "background_color": "#f9f5f2",
+  "display": "browser",
+  "start_url": "/"
+}
