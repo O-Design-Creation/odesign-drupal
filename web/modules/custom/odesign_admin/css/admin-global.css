@@ -153,6 +153,13 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   border-spacing: 0;
 }
 
+.gin--sidebar-toolbar table.views-table thead,
+.gin--sidebar-toolbar .views-element-container table thead,
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table thead {
+  position: static !important;
+  inset-block-start: auto !important;
+}
+
 .gin--sidebar-toolbar table.views-table thead th,
 .gin--sidebar-toolbar .views-element-container table thead th,
 .gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table thead th {
