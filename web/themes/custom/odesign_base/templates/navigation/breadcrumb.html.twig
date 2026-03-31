@@ -1,0 +1,27 @@
+{#
+/**
+ * @file
+ * breadcrumb.html.twig — Fil d'Ariane odesign_base
+ *
+ * Fix a11y :
+ * - Un seul <nav> avec aria-label (pas de double nav avec page.html.twig)
+ * - aria-labelledby sur le h2 visually-hidden
+ * - Séparateur › via CSS (pas dans le DOM, pour éviter la lecture AT)
+ * - aria-current="page" sur le dernier élément
+ */
+#}
+{% if breadcrumb %}
+  <nav class="breadcrumb" aria-label="{{ 'Fil d\'Ariane'|t }}">
+    <ol>
+      {% for item in breadcrumb %}
+        <li class="breadcrumb__item">
+          {% if item.url %}
+            <a href="{{ item.url }}" class="breadcrumb__link">{{ item.text }}</a>
+          {% else %}
+            <span class="breadcrumb__current" aria-current="page">{{ item.text }}</span>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ol>
+  </nav>
+{% endif %}

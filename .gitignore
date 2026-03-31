@@ -30,3 +30,4 @@ Thumbs.db
 # Playwright
 playwright/screenshots/
 playwright/node_modules/
+node_modules/

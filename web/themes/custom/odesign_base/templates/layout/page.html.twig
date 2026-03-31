@@ -3,73 +3,153 @@
  * @file
  * page.html.twig — Template de page principal Atelier O Design
  *
- * Variables disponibles :
- * - node: l'entité node courante (si applicable)
- * - is_front: TRUE si page d'accueil
- * - logged_in: TRUE si utilisateur connecté
- * - is_admin: TRUE si rôle admin
- * - page.header, page.primary_menu, page.content, page.footer_*
+ * Variables :
+ * - is_front, logged_in, is_admin
+ * - page.header_top, page.header, page.primary_menu
+ * - page.highlighted, page.breadcrumb, page.content
+ * - page.footer_first/second/third, page.footer_bottom
  */
 #}
 <!DOCTYPE html>
-<html{{ html_attributes }}>
+<html{{ html_attributes.setAttribute('lang', 'fr') }}>
   <head>
     <head-placeholder token="{{ placeholder_token }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ head_title|safe_join(' | ') }}</title>
+    {# Preconnect Google Fonts pour la performance #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
   </head>
   <body{{ attributes.addClass('layout-no-sidebars') }}>
-    <a href="#main-content" class="visually-hidden focusable skip-link">
+
+    {# Skip link accessibilité #}
+    <a href="#main-content" class="skip-link visually-hidden focusable">
       {{ 'Aller au contenu principal'|t }}
     </a>
 
+    {# Barre d'annonce promo (optionnelle — région header_top) #}
+    {% if page.header_top %}
+      <div class="announcement-bar" role="region" aria-label="{{ 'Informations et promotions'|t }}">
+        <div class="container">{{ page.header_top }}</div>
+      </div>
+    {% else %}
+      <div class="announcement-bar" role="region" aria-label="{{ 'Informations livraison'|t }}">
+        <div class="container">
+          <i class="ph ph-truck" aria-hidden="true"></i>
+          <span>{{ 'Livraison gratuite dès 50€ d\'achat'|t }}</span>
+        </div>
+      </div>
+    {% endif %}
+
+    {# Header principal #}
     <header class="site-header" role="banner">
-      <div class="container">
-        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Accueil Atelier O Design'|t }}">
-          {{ page.header }}
+      <div class="site-header__inner">
+
+        {# Logo — lien séparé, jamais wrappé autour de blocs dynamiques #}
+        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Retour à l\'accueil Atelier O Design'|t }}">
+          <span class="site-logo__text">Atelier O Design</span>
         </a>
+
+        {# Blocs optionnels région header (ex: branding personnalisé) #}
+        {% if page.header %}
+          <div class="site-header__extra">{{ page.header }}</div>
+        {% endif %}
+
+        {# Navigation principale (desktop) #}
         {% if page.primary_menu %}
-          <nav class="site-nav" role="navigation" aria-label="{{ 'Navigation principale'|t }}">
+          <nav id="main-navigation"
+               class="site-nav"
+               role="navigation"
+               aria-label="{{ 'Navigation principale'|t }}">
             {{ page.primary_menu }}
           </nav>
         {% endif %}
+
+        {# Actions header #}
+        <div class="site-header__actions">
+          {# Panier — lien direct Drupal Commerce #}
+          <a href="{{ path('commerce_cart.page') }}"
+             class="btn btn--ghost header-cart"
+             aria-label="{{ 'Voir le panier'|t }}">
+            <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+          </a>
+
+          {# Bouton hamburger mobile #}
+          <button class="nav-toggle"
+                  id="nav-toggle"
+                  aria-controls="main-navigation"
+                  aria-expanded="false"
+                  aria-label="{{ 'Ouvrir le menu de navigation'|t }}">
+            <svg class="nav-toggle__icon-open" aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            <svg class="nav-toggle__icon-close" aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
       </div>
     </header>
 
+    {# Messages de statut Drupal #}
     {% if page.highlighted %}
-      <div class="highlighted">{{ page.highlighted }}</div>
+      <div class="highlighted" role="alert" aria-live="polite">
+        {{ page.highlighted }}
+      </div>
     {% endif %}
 
-    {% if page.breadcrumb %}
-      <div class="breadcrumb-wrapper container">{{ page.breadcrumb }}</div>
+    {# Fil d'Ariane — le template breadcrumb.html.twig gère le <nav> #}
+    {% if page.breadcrumb and not is_front %}
+      <div class="breadcrumb-wrapper container">
+        {{ page.breadcrumb }}
+      </div>
     {% endif %}
 
-    <main id="main-content" class="main-content" role="main">
+    {# Contenu principal #}
+    <main id="main-content" class="main-content" role="main" tabindex="-1">
       <div class="container">
         {{ page.content }}
       </div>
     </main>
 
+    {# Footer #}
     <footer class="site-footer" role="contentinfo">
       <div class="container">
+
         {% if page.footer_first or page.footer_second or page.footer_third %}
           <div class="site-footer__columns">
-            {% if page.footer_first %}<div class="site-footer__col">{{ page.footer_first }}</div>{% endif %}
-            {% if page.footer_second %}<div class="site-footer__col">{{ page.footer_second }}</div>{% endif %}
-            {% if page.footer_third %}<div class="site-footer__col">{{ page.footer_third }}</div>{% endif %}
+            {% if page.footer_first %}
+              <div class="site-footer__col">{{ page.footer_first }}</div>
+            {% endif %}
+            {% if page.footer_second %}
+              <div class="site-footer__col">{{ page.footer_second }}</div>
+            {% endif %}
+            {% if page.footer_third %}
+              <div class="site-footer__col">{{ page.footer_third }}</div>
+            {% endif %}
           </div>
         {% endif %}
+
         <div class="site-footer__bottom">
-          <div class="site-footer__links">
-            <a href="{{ path('entity.node.canonical', {'node': 1}) }}">{{ 'CGV'|t }}</a>
-            <a href="{{ path('entity.node.canonical', {'node': 2}) }}">{{ 'Mentions légales'|t }}</a>
-            <a href="{{ path('entity.node.canonical', {'node': 3}) }}">{{ 'Politique de confidentialité'|t }}</a>
-          </div>
+          <nav class="site-footer__links" aria-label="{{ 'Liens légaux'|t }}">
+            <a href="/cgv">{{ 'CGV'|t }}</a>
+            <a href="/mentions-legales">{{ 'Mentions légales'|t }}</a>
+            <a href="/politique-confidentialite">{{ 'Politique de confidentialité'|t }}</a>
+          </nav>
           <p class="site-footer__copyright">
             &copy; {{ 'now'|date('Y') }} Atelier O Design. {{ 'Tous droits réservés.'|t }}
           </p>
         </div>
+
       </div>
     </footer>
 

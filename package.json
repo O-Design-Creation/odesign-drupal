@@ -1,0 +1,18 @@
+{
+  "name": "odesign-drupal-audits",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Outils d'audit accessibilité et performance pour Atelier O Design",
+  "scripts": {
+    "audit:a11y":   "node playwright/scripts/audit-a11y.js",
+    "audit:perf":   "node playwright/scripts/audit-performance.js",
+    "audit:full":   "node playwright/scripts/audit-frontend.js && node playwright/scripts/audit-a11y.js && node playwright/scripts/audit-performance.js",
+    "audit:report": "node playwright/scripts/audit-report-html.js"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.9.1",
+    "axe-core": "^4.9.1",
+    "@playwright/test": "^1.49.0"
+  },
+  "devDependencies": {}
+}

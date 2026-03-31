@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * menu.html.twig — Navigation principale odesign_base
+ *
+ * Note a11y : role="list" retiré — axe-core 4.11 exige role="listitem"
+ * explicite sur tous les <li> ce qui est redondant avec le HTML natif.
+ * La sémantique <ul>/<li> native est suffisante pour les AT modernes.
+ */
+#}
+{% import _self as menus %}
+{{ menus.menu_links(items, attributes, 0) }}
+
+{% macro menu_links(items, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if menu_level == 0 %}
+      <ul{{ attributes }}>
+    {% else %}
+      <ul>
+    {% endif %}
+    {% for item in items %}
+      <li{{ item.attributes.addClass('menu-item') }}>
+        {{ link(item.title, item.url, {
+          'class': ['menu-item__link'] + (item.in_active_trail ? ['is-active'] : [])
+        }) }}
+        {% if item.below %}
+          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        {% endif %}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

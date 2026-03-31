@@ -4,12 +4,7 @@
  * commerce-product.html.twig
  *
  * Fiche produit complète — layout 2 colonnes.
- *
- * Variables :
- * - product: champs rendus
- * - product_entity: entité commerce_product
- * - product_url: URL de la fiche
- * - attributes: attributs HTML de l'article
+ * Icônes : Phosphor Icons (webfont) — pas d'emojis.
  */
 #}
 {%
@@ -20,15 +15,6 @@
 %}
 <article{{ attributes.addClass(classes) }}>
 
-  {# Breadcrumb contextuel #}
-  <nav class="product-detail__breadcrumb" aria-label="{{ 'Fil d\'Ariane'|t }}">
-    <ol class="breadcrumb">
-      <li><a href="{{ path('<front>') }}">{{ 'Accueil'|t }}</a></li>
-      <li><a href="{{ path('view.catalogue.page_catalogue') }}">{{ 'Boutique'|t }}</a></li>
-      <li aria-current="page">{{ product_entity.label }}</li>
-    </ol>
-  </nav>
-
   <div class="product-layout">
 
     {# Colonne gauche : galerie images #}
@@ -38,10 +24,10 @@
           {{- product.field_product_images -}}
         </div>
       {%- else -%}
-        <div class="product-gallery__placeholder" aria-hidden="true">
-          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-            <rect width="400" height="400" fill="#f9f5f2"/>
-            <path d="M140 260 L200 140 L260 260Z" fill="#d9c7b8"/>
+        <div class="product-gallery__placeholder" aria-label="{{ 'Image non disponible'|t }}" role="img">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="400" height="400" fill="var(--color-bg-alt)"/>
+            <path d="M140 260 L200 140 L260 260Z" fill="var(--color-brand-light)"/>
           </svg>
         </div>
       {%- endif -%}
@@ -49,20 +35,22 @@
 
     {# Colonne droite : informations produit #}
     <div class="product-info">
-      <h1 class="product-detail__title">{{ product_entity.label }}</h1>
+      <h2 class="product-detail__title">{{ product_entity.label }}</h2>
 
-      {# Prix depuis la variation par défaut #}
+      {# Prix #}
       {%- set variation = product_entity.getDefaultVariation() -%}
       {%- if variation and variation.getPrice() -%}
-        <div class="product-detail__price" itemprop="price">
-          {{- variation.getPrice().getNumber()|number_format(2, ',', ' ') }} €
+        <div class="product-detail__price" itemprop="price" content="{{ variation.getPrice().getNumber() }}">
+          {{ variation.getPrice().getNumber()|number_format(2, ',', ' ') }}&nbsp;€
         </div>
         {% if variation.getPrice().getNumber() >= 50 %}
           <p class="product-detail__shipping-free">
-            🎁 {{ 'Livraison offerte pour cette commande'|t }}
+            <i class="ph ph-gift" aria-hidden="true"></i>
+            {{ 'Livraison offerte pour cette commande'|t }}
           </p>
         {% else %}
           <p class="product-detail__shipping-cost">
+            <i class="ph ph-truck" aria-hidden="true"></i>
             {{ 'Livraison : 4,90 € — Gratuite dès 50 €'|t }}
           </p>
         {% endif %}
@@ -80,23 +68,25 @@
         {{- product|without('title', 'body', 'field_product_images') -}}
       </div>
 
-      {# Informations livraison / réassurance #}
-      <div class="product-detail__reassurance">
-        <ul class="reassurance-list">
-          <li class="reassurance-list__item">
-            <span class="reassurance-list__icon" aria-hidden="true">🔒</span>
-            {{ 'Paiement sécurisé'|t }}
-          </li>
-          <li class="reassurance-list__item">
-            <span class="reassurance-list__icon" aria-hidden="true">✋</span>
-            {{ 'Fait main en France'|t }}
-          </li>
-          <li class="reassurance-list__item">
-            <span class="reassurance-list__icon" aria-hidden="true">📦</span>
-            {{ 'Expédition sous 24h'|t }}
-          </li>
-        </ul>
-      </div>
+      {# Réassurance — icônes Phosphor #}
+      <ul class="reassurance-list" aria-label="{{ 'Arguments de vente'|t }}">
+        <li class="reassurance-list__item">
+          <i class="ph ph-lock-simple" aria-hidden="true"></i>
+          <span>{{ 'Paiement sécurisé'|t }}</span>
+        </li>
+        <li class="reassurance-list__item">
+          <i class="ph ph-hands-praying" aria-hidden="true"></i>
+          <span>{{ 'Fait main en France'|t }}</span>
+        </li>
+        <li class="reassurance-list__item">
+          <i class="ph ph-package" aria-hidden="true"></i>
+          <span>{{ 'Expédition sous 24h'|t }}</span>
+        </li>
+        <li class="reassurance-list__item">
+          <i class="ph ph-arrow-counter-clockwise" aria-hidden="true"></i>
+          <span>{{ 'Retours sous 14 jours'|t }}</span>
+        </li>
+      </ul>
 
     </div>{# /.product-info #}
   </div>{# /.product-layout #}

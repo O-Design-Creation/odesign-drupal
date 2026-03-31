@@ -10,7 +10,7 @@ dependencies:
     - odesign_base
 id: odesign_base_main_menu
 theme: odesign_base
-region: header
+region: primary_menu
 weight: 0
 provider: null
 plugin: 'system_menu_block:main'

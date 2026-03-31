@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * pager.html.twig — Pagination odesign_base
+ *
+ * Fix a11y heading-order : heading de pagination forcé à h2 visually-hidden
+ * (le heading_level par défaut de Drupal peut créer un saut de niveau).
+ * Icônes : Phosphor Icons (pas d'entités HTML ‹ ›).
+ */
+#}
+{% if items %}
+  <nav class="pager" role="navigation" aria-labelledby="{{ heading_id }}">
+    <h2 id="{{ heading_id }}" class="visually-hidden">{{ 'Pagination'|t }}</h2>
+    <ul class="pager__items">
+      {% if items.first %}
+        <li class="pager__item pager__item--first">
+          <a href="{{ items.first.href }}" title="{{ 'Première page'|t }}"{{ items.first.attributes|without('href', 'title') }}>
+            <span class="visually-hidden">{{ 'Première page'|t }}</span>
+            <i class="ph ph-caret-double-left" aria-hidden="true"></i>
+          </a>
+        </li>
+      {% endif %}
+      {% if items.previous %}
+        <li class="pager__item pager__item--previous">
+          <a href="{{ items.previous.href }}" title="{{ 'Page précédente'|t }}" rel="prev"{{ items.previous.attributes|without('href', 'title', 'rel') }}>
+            <span class="visually-hidden">{{ 'Page précédente'|t }}</span>
+            <i class="ph ph-caret-left" aria-hidden="true"></i>
+          </a>
+        </li>
+      {% endif %}
+      {% if ellipses.previous %}
+        <li class="pager__item pager__item--ellipsis" role="presentation" aria-hidden="true">&hellip;</li>
+      {% endif %}
+      {% for key, item in items.pages %}
+        <li class="pager__item{{ current == key ? ' is-active' : '' }}">
+          <a href="{{ item.href }}"
+             title="{{ current == key ? 'Page courante'|t : 'Aller à la page @key'|t({'@key': key}) }}"
+             {% if current == key %}aria-current="page"{% endif %}
+             {{ item.attributes|without('href', 'title') }}>
+            <span class="visually-hidden">{{ 'Page'|t }} </span>{{ key }}
+          </a>
+        </li>
+      {% endfor %}
+      {% if ellipses.next %}
+        <li class="pager__item pager__item--ellipsis" role="presentation" aria-hidden="true">&hellip;</li>
+      {% endif %}
+      {% if items.next %}
+        <li class="pager__item pager__item--next">
+          <a href="{{ items.next.href }}" title="{{ 'Page suivante'|t }}" rel="next"{{ items.next.attributes|without('href', 'title', 'rel') }}>
+            <span class="visually-hidden">{{ 'Page suivante'|t }}</span>
+            <i class="ph ph-caret-right" aria-hidden="true"></i>
+          </a>
+        </li>
+      {% endif %}
+      {% if items.last %}
+        <li class="pager__item pager__item--last">
+          <a href="{{ items.last.href }}" title="{{ 'Dernière page'|t }}"{{ items.last.attributes|without('href', 'title') }}>
+            <span class="visually-hidden">{{ 'Dernière page'|t }}</span>
+            <i class="ph ph-caret-double-right" aria-hidden="true"></i>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

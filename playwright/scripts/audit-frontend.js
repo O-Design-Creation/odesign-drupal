@@ -80,7 +80,7 @@ async function auditPage(page, browserPage, pageDef, viewportName) {
 
       // Palette : vérifier que les couleurs du studio sont appliquées.
       const bodyStyle = getComputedStyle(body);
-      results.hasCssVars  = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() !== '';
+      results.hasCssVars  = getComputedStyle(document.documentElement).getPropertyValue('--color-brand-dark').trim() !== '';
 
       // Images cassées.
       const imgs = Array.from(document.querySelectorAll('img'));
@@ -134,7 +134,7 @@ async function auditPage(page, browserPage, pageDef, viewportName) {
     if (!analysis.hasFooter)   addFinding('warning', pageDef.label, 'Footer manquant dans le DOM');
     if (!analysis.hasSkipLink) addFinding('warning', pageDef.label, 'Skip-link d\'accessibilité absent');
 
-    if (!analysis.hasCssVars)  addFinding('error',   pageDef.label, 'Variables CSS --color-primary non chargées (thème non actif ?)');
+    if (!analysis.hasCssVars)  addFinding('error',   pageDef.label, 'Variables CSS --color-brand-dark non chargées (thème non actif ?)');
 
     if (analysis.brokenImages > 0) {
       addFinding('error', pageDef.label, `${analysis.brokenImages} image(s) cassée(s) sur ${analysis.totalImages}`);

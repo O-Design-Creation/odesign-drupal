@@ -125,6 +125,7 @@ display:
     display_plugin: page
     position: 1
     display_options:
+      title: Blog
       display_extenders: {  }
       path: blog
       menu:

@@ -5,5 +5,18 @@ global:
   js:
     js/odesign.js: {}
   dependencies:
+    - odesign_base/phosphor-icons
     - core/drupal
     - core/once
+
+# Phosphor Icons — webfont légère, moderne
+phosphor-icons:
+  css:
+    component:
+      https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css: { type: external, minified: true }
+
+# Audit a11y uniquement (non chargé en prod)
+a11y-dev:
+  css:
+    component:
+      css/a11y-dev.css: {}

@@ -1,0 +1,12 @@
+{#
+/**
+ * @file
+ * block--system-menu-block--main.html.twig
+ *
+ * Surcharge du bloc menu principal.
+ * On supprime le <nav> interne car page.html.twig fournit déjà
+ * un <nav id="main-navigation" aria-label="Navigation principale">.
+ * Évite le finding axe landmark-unique (double <nav>).
+ */
+#}
+{{ content }}
