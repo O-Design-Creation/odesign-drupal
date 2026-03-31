@@ -514,7 +514,7 @@ strong { font-weight: 600; }
 
 .site-footer__legal-notice {
   margin: var(--space-2) 0 0;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.75);   /* ratio ≥ 7:1 sur #4E2620 — WCAG AAA */
   font-size: var(--font-size-xs);
   font-style: italic;
   width: 100%;
@@ -1199,7 +1199,7 @@ textarea {
 
 .article-card__meta {
   font-size: var(--font-size-sm);
-  color: var(--color-text-light);
+  color: var(--color-text-muted);  /* #6b4e44 — ratio 7.5:1 sur blanc — WCAG AA ✅ */
   display: flex;
   flex-wrap: wrap;
   align-items: center;

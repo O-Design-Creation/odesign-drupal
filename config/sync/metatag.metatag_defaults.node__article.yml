@@ -1,0 +1,22 @@
+uuid: a3f7c291-5e48-4b2c-8d61-09e3f7a12b45
+langcode: fr
+status: true
+dependencies:
+  config:
+    - node.type.article
+id: node__article
+label: 'Article de blog'
+tags:
+  title: '[node:title] | [site:name]'
+  description: '[node:summary]'
+  canonical_url: '[node:url]'
+  og_title: '[node:title]'
+  og_description: '[node:summary]'
+  og_url: '[node:url]'
+  og_type: article
+  og_image: '[node:field_image:entity:url]'
+  og_image_alt: '[node:field_image:alt]'
+  twitter_cards_type: summary_large_image
+  twitter_cards_title: '[node:title]'
+  twitter_cards_description: '[node:summary]'
+  twitter_cards_image: '[node:field_image:entity:url]'
