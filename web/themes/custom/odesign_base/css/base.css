@@ -1,7 +1,8 @@
 /* ==========================================================================
    Atelier O Design — Thème Drupal Commerce
-   Palette rose poudré · Playfair Display + DM Sans
-   Mise à jour : 2026-03-31
+   Palette terracotta chaud · Playfair Display + DM Sans
+   Palette extraite du logo officiel Atelier O Design (SVG)
+   Mise à jour : 2026-04-01
    ========================================================================== */
 
 /* ---------------------------------------------------------------------------
@@ -13,13 +14,13 @@
    1. Design tokens (custom properties)
    --------------------------------------------------------------------------- */
 :root {
-  /* Palette rose poudré — extraite du site Shopify atelierodesign.fr */
-  --color-brand-dark:     #7a3a44;   /* rose profond — footer, accents forts */
-  --color-brand-medium:   #bd7878;   /* rose poudré — barres, hover */
-  --color-brand-light:    #e8c4c4;   /* rose clair — bordures, fonds */
-  --color-brand-cream:    #fdf5f5;   /* crème rosé — fonds de cartes */
-  --color-accent:         #cc4040;   /* coral-rouge — prix, CTA forts */
-  --color-accent-hover:   #b03030;
+  /* Palette terracotta chaud — extraite du logo officiel Atelier O Design */
+  --color-brand-dark:     #5c2e28;   /* bordeaux terracotta — footer, accents forts */
+  --color-brand-medium:   #c97b75;   /* rose terracotta — barres, hover */
+  --color-brand-light:    #e8c5c0;   /* rose pâle — bordures, fonds */
+  --color-brand-cream:    #fdf7f6;   /* ivoire nacré — fonds de cartes */
+  --color-accent:         #7e4943;   /* terracotta profond — prix, CTA forts */
+  --color-accent-hover:   #5c2e28;
 
   /* Neutrals */
   --color-text:           #1a1614;
@@ -1154,7 +1155,10 @@ textarea {
 .article-card__image {
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: var(--color-bg-alt);
+  background: linear-gradient(135deg, var(--color-brand-cream) 0%, var(--color-brand-light) 60%, #e0b5ae 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .article-card__image img {
@@ -1239,6 +1243,172 @@ textarea {
 }
 
 /* ---------------------------------------------------------------------------
+   21b. Blog — grille des cartes articles
+   --------------------------------------------------------------------------- */
+
+/* Grille 3 colonnes sur la liste blog */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+/* Chaque views-row devient transparent dans la grille */
+.blog-grid .views-row {
+  display: contents;
+}
+
+/* Placeholder image : fond dégradé propre à la place du triangle */
+.article-card__image--placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-brand-cream) 0%, var(--color-brand-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-card__image--placeholder svg {
+  width: 60px;
+  height: 60px;
+  opacity: 0.35;
+}
+
+/* Bouton "Lire la suite" aligné en bas de card */
+.article-card__read-more {
+  align-self: flex-end;
+  margin-top: auto;
+  font-size: var(--font-size-sm);
+}
+
+/* Masquer la ligne "Soumis par admin" dans les cards */
+.article-card .node__submitted { display: none; }
+
+/* ---------------------------------------------------------------------------
+   21c. Article — page complète (layout enrichi)
+   --------------------------------------------------------------------------- */
+
+.node--type-article.node--view-mode-full {
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+/* Image de couverture pleine largeur */
+.node--type-article.node--view-mode-full .field--name-field-image {
+  margin-bottom: var(--space-8);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+}
+
+.node--type-article.node--view-mode-full .field--name-field-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Masquer "Soumis par admin" sur page article */
+.node--type-article .node__submitted {
+  display: none;
+}
+
+/* Meta stylée en haut d'article : catégorie + date */
+.article-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border-light);
+  padding-bottom: var(--space-4);
+}
+
+.article-meta__category {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--color-brand-cream);
+  color: var(--color-brand-dark);
+  border: 1px solid var(--color-brand-light);
+  border-radius: var(--radius-pill);
+  padding: 3px 12px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.article-meta__date {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Typographie de lecture */
+.node--type-article.node--view-mode-full .field--name-body {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+.node--type-article.node--view-mode-full .field--name-body h2 {
+  font-family: var(--font-display);
+  font-size: var(--font-size-h3);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+  color: var(--color-brand-dark);
+}
+
+.node--type-article.node--view-mode-full .field--name-body h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+}
+
+.node--type-article.node--view-mode-full .field--name-body p {
+  margin-bottom: var(--space-4);
+}
+
+.node--type-article.node--view-mode-full .field--name-body ul,
+.node--type-article.node--view-mode-full .field--name-body ol {
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-4);
+}
+
+.node--type-article.node--view-mode-full .field--name-body li {
+  margin-bottom: var(--space-2);
+}
+
+/* Lien retour blog */
+.article-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  margin-bottom: var(--space-6);
+}
+
+.article-back-link:hover { color: var(--color-brand-dark); }
+
+/* Bloc tags en pied d'article */
+.article-footer-tags {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ---------------------------------------------------------------------------
    22. Responsive global
    --------------------------------------------------------------------------- */
 @media (max-width: 768px) {
@@ -1258,6 +1428,12 @@ textarea {
   .main-content {
     padding-block: var(--space-6) var(--space-8);
   }
+
+  /* Blog : 2 colonnes sur tablette */
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
 }
 
 @media (max-width: 480px) {
@@ -1268,6 +1444,12 @@ textarea {
   .product-card__footer {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  /* Blog : 1 colonne sur mobile */
+  .blog-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 }
 

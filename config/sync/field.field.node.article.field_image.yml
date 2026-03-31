@@ -1,0 +1,38 @@
+uuid: 9f1d776e-2c61-4a00-9b8f-784ada75411e
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - node.type.article
+  module:
+    - image
+id: node.article.field_image
+field_name: field_image
+entity_type: node
+bundle: article
+label: 'Image de couverture'
+description: "Image affichée en vignette dans la liste blog et en en-tête de l'article."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: articles
+  file_extensions: 'png gif jpg jpeg webp'
+  max_filesize: '2 MB'
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: false
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image

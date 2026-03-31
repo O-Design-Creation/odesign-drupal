@@ -1,0 +1,60 @@
+{#
+/**
+ * @file
+ * node--article--full.html.twig
+ *
+ * Template article en vue complète.
+ * Le titre est rendu par le bloc "Page title" de Drupal — ne pas le dupliquer ici.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    'node--view-mode-full',
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+
+  {# Lien retour vers la liste blog — affiché juste sous le titre de page #}
+  <a href="/blog" class="article-back-link">
+    <i class="ph ph-arrow-left" aria-hidden="true"></i>
+    {{ 'Retour au blog'|t }}
+  </a>
+
+  {# Métadonnées : catégorie + date #}
+  <div class="article-meta">
+    {%- if content.field_blog_category|render|striptags|trim is not empty -%}
+      <span class="article-meta__category">
+        <i class="ph ph-tag" aria-hidden="true"></i>
+        {{- content.field_blog_category|render|striptags|trim -}}
+      </span>
+    {%- endif -%}
+    <time class="article-meta__date" datetime="{{ node.getCreatedTime()|date('Y-m-d') }}">
+      <i class="ph ph-calendar-blank" aria-hidden="true"></i>
+      {{ node.getCreatedTime()|format_date('custom', 'j F Y') }}
+    </time>
+  </div>
+
+  {# Image de couverture #}
+  {%- if content.field_image|render|striptags|trim is not empty -%}
+    <div class="article-cover-image">
+      {{- content.field_image -}}
+    </div>
+  {%- endif -%}
+
+  {# Corps de l'article #}
+  <div class="field--name-body">
+    {{- content.body -}}
+  </div>
+
+  {# Tags en pied d'article — uniquement si présents #}
+  {%- set tags_rendered = content.field_tags|render|striptags|trim -%}
+  {%- if tags_rendered is not empty -%}
+    <div class="article-footer-tags">
+      <i class="ph ph-hash" aria-hidden="true"></i>
+      {{- content.field_tags -}}
+    </div>
+  {%- endif -%}
+
+</article>
