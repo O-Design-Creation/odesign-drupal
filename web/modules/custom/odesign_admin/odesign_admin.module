@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\commerce_order\Entity\OrderInterface;
 
@@ -300,6 +301,28 @@ function odesign_admin_form_commerce_order_add_form_alter(array &$form, FormStat
 
 function odesign_admin_form_commerce_order_default_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   _odesign_admin_clean_order_form($form);
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour la page des variantes produit.
+ */
+function odesign_admin_form_commerce_product_variations_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = t('Enregistrer l’ordre des variantes');
+  }
+
+  if (!isset($form['variations']) || !is_array($form['variations'])) {
+    return;
+  }
+
+  $variation_rows = &$form['variations'];
+  foreach (Element::children($variation_rows) as $variation_id) {
+    if (!isset($form['variations'][$variation_id]['weight'])) {
+      continue;
+    }
+
+    $form['variations'][$variation_id]['weight']['#description'] = t('Utilisez ce poids pour changer l’ordre d’affichage des variantes sur la page produit. 0 = position actuelle, un nombre plus petit remonte plus haut.');
+  }
 }
 
 /**

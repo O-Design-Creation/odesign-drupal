@@ -645,6 +645,20 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   box-shadow: none;
 }
 
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .js-hide {
+  display: none !important;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget legend {
+  margin-bottom: 10px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .fieldset-legend {
+  color: #3d2b1f;
+  font-size: 16px;
+  font-weight: 700;
+}
+
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .fieldset-wrapper {
   display: grid;
   gap: 12px;
@@ -654,8 +668,14 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   display: block;
   padding: 12px 14px;
   border-radius: 12px;
-  background: #fff;
+  border: 1px dashed #dbcbb8;
+  background: #fffdfa;
   color: #6e5a48;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-suffix {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button {
@@ -673,6 +693,174 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button:focus-visible {
   background: #ecddc8;
   outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-disabled textarea,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form textarea[disabled] {
+  min-height: 104px;
+  border-style: dashed;
+  background: #fffcf7;
+  color: #6e5a48;
+  opacity: 1;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations {
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > .tabledrag-toggle-weight-wrapper,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > .form-actions,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > table {
+  padding: 18px 22px;
+  border: 1px solid #e4d9cb;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(139, 111, 71, 0.07), transparent 28%),
+    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
+  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .tabledrag-toggle-weight-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  justify-self: end;
+  width: fit-content;
+  padding: 14px 18px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .tabledrag-toggle-weight {
+  min-height: 40px;
+  border-radius: 999px;
+  padding: 0 16px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-widget {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 38px;
+  border: 1px solid #d7c7b2;
+  border-radius: 999px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fffefd 0%, #f6ede2 100%);
+  box-shadow: 0 6px 16px rgba(61, 43, 31, 0.08);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton li {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-action > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  color: #6e4f28;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle {
+  border-left: 1px solid #e4d7c7;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-action > a:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-action > a:focus-visible,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle button:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle button:focus-visible {
+  background: #ede0d0;
+  color: #50371d;
+  outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .commerce-copy-link {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: #6e4f28;
+  border: 1px solid #d7c7b2;
+  border-radius: 999px;
+  background-color: currentColor;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table thead {
+  position: static !important;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table thead th {
+  padding: 14px 16px;
+  background: linear-gradient(180deg, #f8f1e8 0%, #f2e7da 100%);
+  color: #3d2b1f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e0d3c3;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table tbody td {
+  padding: 14px 16px;
+  vertical-align: top;
+  border-bottom: 1px solid #f0e7dc;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table tbody tr:nth-child(odd) {
+  background: #fffdfa;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations select.weight {
+  min-width: 84px;
+  min-height: 40px;
+  border: 1px solid #d8cbbb;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .description {
+  margin-top: 8px;
+  color: #6e5a48;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .form-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .form-actions .button {
+  min-height: 44px;
+  border-radius: 999px;
+  padding: 0 18px;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main,
