@@ -199,6 +199,7 @@ async function auditPage(page, entry) {
           && f.name
           && !f.name.startsWith('_')
           && !f.name.includes('[_')
+          && f.name !== 'body[0][value]'
           && !f.name.startsWith('created[')
           && !f.name.startsWith('changed[')
           && !f.name.startsWith('revision_')

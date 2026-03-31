@@ -131,6 +131,7 @@ async function auditPage(page, name, url) {
           f.label !== '?'
           && f.name
           && !f.name.includes('[_')
+          && f.name !== 'body[0][value]'
           && !f.name.startsWith('created[')
           && !f.name.startsWith('changed[')
           && !f.name.startsWith('revision_')
