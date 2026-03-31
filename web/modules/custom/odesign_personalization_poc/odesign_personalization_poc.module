@@ -27,28 +27,24 @@ function odesign_personalization_poc_form_alter(array &$form, FormStateInterface
     return;
   }
 
-  if (!isset($form['field_poc_need_upload'], $form['field_poc_upload'])) {
-    return;
-  }
-
-  $form['field_poc_finish']['widget']['#description'] = 'PoC: la finition premium ajoute un surcoût simulé de 7 EUR.';
-  $form['field_poc_need_upload']['widget']['#description'] = 'PoC: si cette case est cochée, un fichier devient requis et un surcoût simulé de 3 EUR est appliqué.';
-
-  $selector = ':input[name="field_poc_need_upload[value]"]';
-  $form['field_poc_upload']['#states'] = [
-    'visible' => [
-      $selector => ['checked' => TRUE],
-    ],
-    'required' => [
-      $selector => ['checked' => TRUE],
-    ],
+  $poc_fields = [
+    'field_poc_text',
+    'field_poc_finish',
+    'field_poc_need_upload',
+    'field_poc_upload',
+    'field_poc_tree_names',
+    'field_poc_tree_layout',
+    'field_poc_tree_wall_mount',
+    'poc_tree_builder',
   ];
 
   if (!odesign_personalization_poc_is_tree_pilot($entity)) {
+    foreach ($poc_fields as $field_name) {
+      unset($form[$field_name]);
+    }
     return;
   }
 
-  // Keep the Arbre de vie pilot focused on its dedicated interaction pattern.
   unset(
     $form['field_poc_text'],
     $form['field_poc_finish'],
