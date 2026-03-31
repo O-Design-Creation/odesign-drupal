@@ -9,4 +9,9 @@ label: Global
 tags:
   canonical_url: '[current-page:url]'
   title: '[current-page:title] | [site:name]'
-  description: 'Exploratoire local ODesign Drupal.'
+  description: 'Atelier O Design — cadeaux personnalisés en bois gravés au laser, faits main en France. Cartes de naissance, décoration, coffrets cadeaux.'
+  og_title: '[current-page:title] | [site:name]'
+  og_description: 'Atelier O Design — cadeaux personnalisés en bois gravés au laser, faits main en France.'
+  og_site_name: '[site:name]'
+  og_type: website
+  og_url: '[current-page:url]'

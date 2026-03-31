@@ -510,6 +510,15 @@ strong { font-weight: 600; }
   font-size: var(--font-size-xs);
 }
 
+.site-footer__legal-notice {
+  margin: var(--space-2) 0 0;
+  color: rgba(255,255,255,0.5);
+  font-size: var(--font-size-xs);
+  font-style: italic;
+  width: 100%;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .site-footer__columns {
     grid-template-columns: 1fr;

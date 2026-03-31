@@ -22,7 +22,7 @@ popup_more_info_button_message: 'En savoir plus'
 mobile_breakpoint: 768
 popup_agreed_enabled: false
 popup_hide_agreed: true
-disagree_button_label: 'No, thanks'
+disagree_button_label: 'Non, merci'
 popup_agreed:
   value: '<h2>Thank you for accepting cookies</h2><p>You can now hide this message or find out more about cookies.</p>'
   format: plain_text
