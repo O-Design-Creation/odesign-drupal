@@ -382,8 +382,17 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   gap: 18px;
 }
 
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-commerce-form,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-product-form {
+  display: grid;
+  gap: 18px;
+}
+
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form > .form-wrapper,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form > .form-wrapper,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-region--commerce-main > *,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-region--commerce-secondary > *,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-region--commerce-footer > *,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main > *,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > * {
   padding: 22px 24px;
@@ -402,6 +411,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form label,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form label,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form label,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar h2,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main h2 {
   color: #3d2b1f;
@@ -420,8 +430,15 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="date"],
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form input[type="time"],
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form select,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form input[type="text"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form input[type="search"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form input[type="email"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form input[type="date"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form input[type="time"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form select,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form textarea,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form textarea {
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form textarea,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form textarea {
   min-height: 46px;
   border: 1px solid #d9cdbd;
   border-radius: 12px;
@@ -432,8 +449,10 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .description,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .description,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .description,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-item__description,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-item__description {
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-item__description,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-item__description {
   margin-top: 8px;
   color: #6e5a48;
   font-size: 14px;
@@ -456,7 +475,8 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions {
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions {
   display: flex;
   gap: 12px;
   align-items: center;
@@ -464,11 +484,104 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions .button,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar .button {
   min-height: 44px;
   border-radius: 999px;
   padding: 0 18px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs {
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button {
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #dcccb7;
+  border-radius: 999px;
+  background: #fffaf4;
+  color: #6e4f28;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button.selected a,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button a:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button a:focus-visible {
+  background: linear-gradient(180deg, #f5eadc 0%, #ecdcc7 100%);
+  color: #50371d;
+  outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-pane {
+  margin: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-pane > summary {
+  display: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .entity-meta {
+  display: grid;
+  gap: 16px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .entity-meta__header {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card {
+  display: grid;
+  gap: 12px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button {
+  justify-content: center;
+  width: 100%;
+  min-height: 46px;
+  background: linear-gradient(180deg, #fffdf9 0%, #f3e6d6 100%);
+  color: #5f4322;
+  border: 1px solid #dbc9b4;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button:focus-visible,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button:focus-visible {
+  background: #ecddc8;
+  color: #50371d;
+  outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__details-card .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__details-card a.button {
+  margin-left: 10px;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main,
