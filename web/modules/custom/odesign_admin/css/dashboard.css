@@ -285,3 +285,200 @@
   color: currentColor;
   font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
 }
+
+/* ─── Layout 2 colonnes : Articles + Commandes ─────────────────────────────── */
+.odesign-dashboard__two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+@media (max-width: 1100px) {
+  .odesign-dashboard__two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── En-tête de section avec lien "Voir tout" ───────────────────────────── */
+.odesign-dashboard__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.odesign-dashboard__section-header h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-gin-title-main, #2d2d2d);
+}
+
+.odesign-dashboard__section-header h3 .material-symbols-outlined {
+  font-size: 1.2rem;
+  color: var(--color-brand-dark, #5c2e28);
+}
+
+.odesign-dashboard__see-all {
+  font-size: 0.8rem;
+  color: var(--color-brand-dark, #5c2e28);
+  text-decoration: none;
+  font-weight: 500;
+}
+.odesign-dashboard__see-all:hover {
+  text-decoration: underline;
+}
+
+/* ─── Section articles récents ─────────────────────────────────────────────── */
+.odesign-dashboard__recent-articles {
+  background: var(--color-white, #fff);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+}
+
+.odesign-dashboard__article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--color-border, #e8e0d5);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.odesign-dashboard__article-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border, #e8e0d5);
+  transition: background .15s;
+}
+.odesign-dashboard__article-item:last-child {
+  border-bottom: none;
+}
+.odesign-dashboard__article-item:hover {
+  background: #faf7f4;
+}
+
+.article-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.article-item__title {
+  font-size: .875rem;
+  font-weight: 500;
+  color: var(--color-gin-title-main, #2d2d2d);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.article-item__title:hover {
+  color: var(--color-brand-dark, #5c2e28);
+  text-decoration: underline;
+}
+
+.article-item__date {
+  font-size: .75rem;
+  color: #888;
+}
+
+.article-item__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.article-item__status {
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.article-item__status.status--published {
+  background: #e6f4ea;
+  color: #2e7d32;
+}
+.article-item__status.status--draft {
+  background: #f5f5f5;
+  color: #757575;
+}
+
+.article-item__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  color: #555;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.article-item__btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+.article-item__btn:hover {
+  background: var(--color-brand-bg, #f3eae8);
+  color: var(--color-brand-dark, #5c2e28);
+}
+
+/* ─── Bouton "Écrire un nouvel article" ─────────────────────────────────── */
+.odesign-dashboard__article-footer {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.odesign-dashboard__new-article-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: var(--color-brand-dark, #5c2e28);
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 500;
+  transition: background .2s;
+}
+.odesign-dashboard__new-article-btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+.odesign-dashboard__new-article-btn:hover {
+  background: #7a3e37;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* Section vide #}*/
+.odesign-dashboard__recent-articles--empty {
+  text-align: center;
+  padding: 32px 20px;
+}
+.odesign-dashboard__recent-articles--empty p {
+  color: #888;
+  margin-bottom: 16px;
+}
+
+/* Intégrer la vue commandes dans la même boîte */
+.odesign-dashboard__orders {
+  background: var(--color-white, #fff);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
+}

@@ -1,3 +1,4 @@
+uuid: fe1f05bd-6499-4c85-a704-daec635f50b9
 langcode: fr
 status: true
 dependencies:
@@ -5,7 +6,6 @@ dependencies:
     - filter.format.basic_html
   module:
     - ckeditor5
-name: 'Basic HTML'
 format: basic_html
 editor: ckeditor5
 settings:
@@ -28,6 +28,7 @@ settings:
       properties:
         reversed: false
         startIndex: false
+        styles: false
       multiBlock: false
 image_upload:
   status: false

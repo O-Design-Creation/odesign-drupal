@@ -46,6 +46,7 @@ class DashboardController extends ControllerBase {
       '#theme' => 'odesign_admin_dashboard',
       '#stats' => $stats,
       '#orders_view' => $orders_view,
+      '#recent_articles' => $this->getRecentArticles(),
       '#quick_links' => $this->getQuickLinks(),
       '#cache' => ['max-age' => 0],
       '#attached' => [
@@ -108,7 +109,49 @@ class DashboardController extends ControllerBase {
       $stats['total_products'] = 0;
     }
 
+    // Articles de blog publiés.
+    try {
+      $articles = $this->database->select('node_field_data', 'n')
+        ->condition('n.type', 'article')
+        ->condition('n.status', 1)
+        ->countQuery()->execute()->fetchField();
+      $stats['total_articles'] = (int) $articles;
+    }
+    catch (\Exception $e) {
+      $stats['total_articles'] = 0;
+    }
+
     return $stats;
+  }
+
+  /**
+   * Récupère les 5 articles de blog les plus récents.
+   */
+  protected function getRecentArticles(): array {
+    $articles = [];
+    try {
+      $results = $this->database->select('node_field_data', 'n')
+        ->fields('n', ['nid', 'title', 'status', 'changed'])
+        ->condition('n.type', 'article')
+        ->orderBy('n.changed', 'DESC')
+        ->range(0, 5)
+        ->execute()
+        ->fetchAll();
+
+      foreach ($results as $row) {
+        $articles[] = [
+          'title'    => $row->title,
+          'status'   => (bool) $row->status,
+          'date'     => date('d/m/Y', $row->changed),
+          'edit_url' => '/node/' . $row->nid . '/edit',
+          'view_url' => '/node/' . $row->nid,
+        ];
+      }
+    }
+    catch (\Exception $e) {
+      // Silently fail if table doesn't exist.
+    }
+    return $articles;
   }
 
   /**
@@ -122,6 +165,13 @@ class DashboardController extends ControllerBase {
         'route_params' => ['commerce_product_type' => 'default'],
         'description' => 'Ajouter un nouveau produit à votre boutique',
         'icon'        => 'add_circle',
+      ],
+      [
+        'title'       => 'Écrire un article',
+        'route_name'  => 'node.add',
+        'route_params' => ['node_type' => 'article'],
+        'description' => 'Rédiger un nouvel article de blog',
+        'icon'        => 'edit_note',
       ],
       [
         'title'       => 'Toutes les commandes',
@@ -152,6 +202,12 @@ class DashboardController extends ControllerBase {
         'route_name'  => 'entity.commerce_product.collection',
         'description' => 'Modifier votre catalogue',
         'icon'        => 'inventory_2',
+      ],
+      [
+        'title'       => 'Gérer le blog',
+        'route_name'  => 'system.admin_content',
+        'description' => 'Voir et modifier vos articles',
+        'icon'        => 'article',
       ],
       [
         'title'       => 'Promotions',

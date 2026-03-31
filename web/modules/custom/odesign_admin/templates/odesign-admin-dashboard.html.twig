@@ -4,8 +4,9 @@
  * Template du tableau de bord gestionnaire boutique — ODesign Admin.
  *
  * Variables :
- * - stats : array (pending_orders, total_orders, total_products)
+ * - stats : array (pending_orders, total_orders, total_products, total_articles)
  * - orders_view : render array de la vue commandes
+ * - recent_articles : array de {title, url, date, status}
  * - quick_links : array de raccourcis (title, url, description, icon)
  */
 #}
@@ -38,6 +39,11 @@
       <span class="stat-value">{{ stats.total_products }}</span>
       <span class="stat-label">Produit{{ stats.total_products != 1 ? 's' : '' }} en ligne</span>
     </div>
+    <div class="odesign-dashboard__stat">
+      <span class="material-symbols-outlined stat-icon">article</span>
+      <span class="stat-value">{{ stats.total_articles }}</span>
+      <span class="stat-label">Article{{ stats.total_articles != 1 ? 's' : '' }} de blog</span>
+    </div>
   </div>
 
   {# Actions rapides #}
@@ -59,16 +65,76 @@
     </div>
   </div>
 
-  {# Commandes récentes #}
-  {% if orders_view %}
-    <div class="odesign-dashboard__orders">
-      <h3>
-        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.2rem; margin-right: 6px;">receipt_long</span>
-        Commandes récentes
-      </h3>
-      {{ orders_view }}
-    </div>
-  {% endif %}
+  {# Articles récents + Commandes récentes côte à côte #}
+  <div class="odesign-dashboard__two-col">
+
+    {# Articles récents #}
+    {% if recent_articles is not empty %}
+      <div class="odesign-dashboard__recent-articles">
+        <div class="odesign-dashboard__section-header">
+          <h3>
+            <span class="material-symbols-outlined" aria-hidden="true">article</span>
+            Articles récents
+          </h3>
+          <a href="/admin/content?type=article" class="odesign-dashboard__see-all">Voir tous les articles →</a>
+        </div>
+        <div class="odesign-dashboard__article-list">
+          {% for article in recent_articles %}
+            <div class="odesign-dashboard__article-item">
+              <div class="article-item__info">
+                <a href="{{ article.edit_url }}" class="article-item__title">{{ article.title }}</a>
+                <span class="article-item__date">{{ article.date }}</span>
+              </div>
+              <div class="article-item__actions">
+                <span class="article-item__status {{ article.status ? 'status--published' : 'status--draft' }}">
+                  {{ article.status ? 'Publié' : 'Brouillon' }}
+                </span>
+                <a href="{{ article.view_url }}" class="article-item__btn article-item__btn--view" title="Voir l'article" target="_blank">
+                  <span class="material-symbols-outlined">visibility</span>
+                </a>
+                <a href="{{ article.edit_url }}" class="article-item__btn article-item__btn--edit" title="Modifier l'article">
+                  <span class="material-symbols-outlined">edit</span>
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="odesign-dashboard__article-footer">
+          <a href="/node/add/article" class="odesign-dashboard__new-article-btn">
+            <span class="material-symbols-outlined">add</span>
+            Écrire un nouvel article
+          </a>
+        </div>
+      </div>
+    {% else %}
+      <div class="odesign-dashboard__recent-articles odesign-dashboard__recent-articles--empty">
+        <h3>
+          <span class="material-symbols-outlined" aria-hidden="true">article</span>
+          Blog
+        </h3>
+        <p>Aucun article publié pour l'instant.</p>
+        <a href="/node/add/article" class="odesign-dashboard__new-article-btn">
+          <span class="material-symbols-outlined">add</span>
+          Écrire votre premier article
+        </a>
+      </div>
+    {% endif %}
+
+    {# Commandes récentes #}
+    {% if orders_view %}
+      <div class="odesign-dashboard__orders">
+        <div class="odesign-dashboard__section-header">
+          <h3>
+            <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+            Commandes récentes
+          </h3>
+          <a href="/admin/commerce/orders" class="odesign-dashboard__see-all">Voir toutes les commandes →</a>
+        </div>
+        {{ orders_view }}
+      </div>
+    {% endif %}
+
+  </div>{# /.two-col #}
 
 </div>
 

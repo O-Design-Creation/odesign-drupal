@@ -45,6 +45,7 @@ function odesign_admin_theme(): array {
       'variables' => [
         'stats' => [],
         'orders_view' => NULL,
+        'recent_articles' => [],
         'quick_links' => [],
       ],
     ],

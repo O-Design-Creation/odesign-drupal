@@ -1,3 +1,4 @@
+uuid: d1201bf0-fb6b-4e18-a12f-2fbf9fbaf10c
 langcode: fr
 status: true
 dependencies:
@@ -5,7 +6,6 @@ dependencies:
     - filter.format.full_html
   module:
     - ckeditor5
-name: 'Full HTML'
 format: full_html
 editor: ckeditor5
 settings:
@@ -45,16 +45,17 @@ settings:
         - toggleImageCaption
         - imageTextAlternative
         - '|'
-        - imageStyle:inline
-        - imageStyle:wrapText
-        - imageStyle:breakText
+        - 'imageStyle:inline'
+        - 'imageStyle:wrapText'
+        - 'imageStyle:breakText'
     ckeditor5_list:
       properties:
         reversed: false
         startIndex: false
+        styles: true
       multiBlock: true
     ckeditor5_sourceEditing:
-      allowed_tags: []
+      allowed_tags: {  }
 image_upload:
   status: true
   scheme: public
