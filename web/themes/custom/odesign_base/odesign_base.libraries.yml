@@ -1,4 +1,9 @@
 global:
   css:
     theme:
-      css/base.css: {}
+      css/base.css: { weight: -100 }
+  js:
+    js/odesign.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

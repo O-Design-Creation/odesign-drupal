@@ -1,0 +1,78 @@
+{#
+/**
+ * @file
+ * page.html.twig — Template de page principal Atelier O Design
+ *
+ * Variables disponibles :
+ * - node: l'entité node courante (si applicable)
+ * - is_front: TRUE si page d'accueil
+ * - logged_in: TRUE si utilisateur connecté
+ * - is_admin: TRUE si rôle admin
+ * - page.header, page.primary_menu, page.content, page.footer_*
+ */
+#}
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+  </head>
+  <body{{ attributes.addClass('layout-no-sidebars') }}>
+    <a href="#main-content" class="visually-hidden focusable skip-link">
+      {{ 'Aller au contenu principal'|t }}
+    </a>
+
+    <header class="site-header" role="banner">
+      <div class="container">
+        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Accueil Atelier O Design'|t }}">
+          {{ page.header }}
+        </a>
+        {% if page.primary_menu %}
+          <nav class="site-nav" role="navigation" aria-label="{{ 'Navigation principale'|t }}">
+            {{ page.primary_menu }}
+          </nav>
+        {% endif %}
+      </div>
+    </header>
+
+    {% if page.highlighted %}
+      <div class="highlighted">{{ page.highlighted }}</div>
+    {% endif %}
+
+    {% if page.breadcrumb %}
+      <div class="breadcrumb-wrapper container">{{ page.breadcrumb }}</div>
+    {% endif %}
+
+    <main id="main-content" class="main-content" role="main">
+      <div class="container">
+        {{ page.content }}
+      </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container">
+        {% if page.footer_first or page.footer_second or page.footer_third %}
+          <div class="site-footer__columns">
+            {% if page.footer_first %}<div class="site-footer__col">{{ page.footer_first }}</div>{% endif %}
+            {% if page.footer_second %}<div class="site-footer__col">{{ page.footer_second }}</div>{% endif %}
+            {% if page.footer_third %}<div class="site-footer__col">{{ page.footer_third }}</div>{% endif %}
+          </div>
+        {% endif %}
+        <div class="site-footer__bottom">
+          <div class="site-footer__links">
+            <a href="{{ path('entity.node.canonical', {'node': 1}) }}">{{ 'CGV'|t }}</a>
+            <a href="{{ path('entity.node.canonical', {'node': 2}) }}">{{ 'Mentions légales'|t }}</a>
+            <a href="{{ path('entity.node.canonical', {'node': 3}) }}">{{ 'Politique de confidentialité'|t }}</a>
+          </div>
+          <p class="site-footer__copyright">
+            &copy; {{ 'now'|date('Y') }} Atelier O Design. {{ 'Tous droits réservés.'|t }}
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+  </body>
+</html>

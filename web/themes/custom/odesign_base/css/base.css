@@ -1,47 +1,502 @@
+/* ==========================================================================
+   Atelier O Design — Thème Drupal Commerce
+   Palette officielle extraite du logo-odesign.svg
+   Généré : 2026-03-31
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Variables CSS — Palette studio
+   --------------------------------------------------------------------------- */
+:root {
+  /* Couleurs brand */
+  --color-brand-dark:     #4e2720;   /* bordeaux/brun foncé — couleur principale logo */
+  --color-brand-medium:   #7a4b2a;   /* brun moyen — liens, accents */
+  --color-brand-light:    #d9c7b8;   /* beige rosé — bordures, fonds doux */
+  --color-brand-cream:    #fff9f4;   /* crème — fonds de cartes, zones mises en valeur */
+
+  /* Couleurs neutres */
+  --color-text:           #1f1a17;   /* texte principal (quasi-noir chaud) */
+  --color-text-muted:     #6b5c52;   /* texte secondaire */
+  --color-bg:             #ffffff;   /* fond page */
+  --color-bg-alt:         #f9f5f2;   /* fond alternatif, zones grises */
+  --color-border:         #e5d8cf;   /* bordures subtiles */
+
+  /* Couleurs système */
+  --color-success:        #2d6a4f;
+  --color-warning:        #b5630a;
+  --color-error:          #9b1a1a;
+  --color-info:           #1a4a7a;
+
+  /* Typographie */
+  --font-family-base:     'Georgia', 'Times New Roman', serif;
+  --font-family-ui:       -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-base:       1rem;
+  --font-size-sm:         0.875rem;
+  --font-size-lg:         1.125rem;
+  --font-size-xl:         1.375rem;
+  --font-size-h1:         2rem;
+  --font-size-h2:         1.5rem;
+  --font-size-h3:         1.25rem;
+  --line-height-base:     1.65;
+
+  /* Espacements */
+  --spacing-xs:   0.25rem;
+  --spacing-sm:   0.5rem;
+  --spacing-md:   1rem;
+  --spacing-lg:   1.5rem;
+  --spacing-xl:   2rem;
+  --spacing-2xl:  3rem;
+
+  /* Bordures */
+  --border-radius-sm:     0.25rem;
+  --border-radius-md:     0.5rem;
+  --border-radius-lg:     0.75rem;
+  --border-radius-pill:   9999px;
+
+  /* Ombres */
+  --shadow-sm:  0 1px 2px rgba(78,39,32,0.08);
+  --shadow-md:  0 4px 12px rgba(78,39,32,0.12);
+  --shadow-lg:  0 8px 24px rgba(78,39,32,0.16);
+
+  /* Layout */
+  --container-max:        1200px;
+  --container-padding:    1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Reset minimal
+   --------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  background: #ffffff;
-  color: #1f1a17;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  margin: 0;
+  padding: 0;
 }
 
 a {
-  color: #7a4b2a;
+  color: var(--color-brand-medium);
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-light);
+  transition: color 0.15s ease;
+}
+
+a:hover,
+a:focus {
+  color: var(--color-brand-dark);
+  text-decoration-color: var(--color-brand-medium);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout — Container
+   --------------------------------------------------------------------------- */
+.container,
+.layout-container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* ---------------------------------------------------------------------------
+   Header
+   --------------------------------------------------------------------------- */
+.site-header {
+  background: var(--color-brand-dark);
+  color: #ffffff;
+  padding: var(--spacing-md) 0;
+  border-bottom: 3px solid var(--color-brand-medium);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.site-logo img,
+.site-logo svg {
+  height: 48px;
+  width: auto;
+  filter: brightness(0) invert(1); /* Logo blanc sur fond sombre */
+}
+
+.site-logo__text {
+  color: #ffffff;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xl);
+  letter-spacing: 0.03em;
+  margin-left: var(--spacing-sm);
+  text-decoration: none;
+}
+
+/* Navigation principale */
+.site-nav a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  transition: background 0.15s ease;
+}
+
+.site-nav a:hover,
+.site-nav a:focus {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------------------
+   Footer
+   --------------------------------------------------------------------------- */
+.site-footer {
+  background: var(--color-brand-dark);
+  color: rgba(255, 255, 255, 0.8);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xl) 0 var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
+}
+
+.site-footer a {
+  color: var(--color-brand-light);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #ffffff;
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+/* ---------------------------------------------------------------------------
+   Typographie
+   --------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-base);
+  color: var(--color-brand-dark);
+  line-height: 1.3;
+  margin-top: 0;
+}
+
+h1 { font-size: var(--font-size-h1); }
+h2 { font-size: var(--font-size-h2); }
+h3 { font-size: var(--font-size-h3); }
+
+/* ---------------------------------------------------------------------------
+   Composants communs
+   --------------------------------------------------------------------------- */
+
+/* Bouton principal */
+.btn,
+.button,
+input[type="submit"],
+button[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  background: var(--color-brand-dark);
+  color: #ffffff;
+  border: 2px solid var(--color-brand-dark);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.btn:hover,
+.button:hover,
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+  background: var(--color-brand-medium);
+  border-color: var(--color-brand-medium);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Bouton secondaire */
+.btn--secondary {
+  background: transparent;
+  color: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+}
+
+.btn--secondary:hover {
+  background: var(--color-brand-cream);
+  color: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+}
+
+/* ---------------------------------------------------------------------------
+   Grille produits
+   --------------------------------------------------------------------------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
+}
+
+.product-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--color-brand-light);
+}
+
+.product-card__image {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: var(--color-bg-alt);
+}
+
+.product-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-card__image img {
+  transform: scale(1.04);
+}
+
+.product-card__body {
+  padding: var(--spacing-md);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card__title {
+  font-size: var(--font-size-base);
+  font-weight: normal;
+  color: var(--color-text);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.product-card__price {
+  font-family: var(--font-family-ui);
+  font-weight: 600;
+  color: var(--color-brand-dark);
+  font-size: var(--font-size-lg);
+  margin-top: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Fiche produit
+   --------------------------------------------------------------------------- */
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
+  padding: var(--spacing-xl) 0;
+}
+
+@media (max-width: 768px) {
+  .product-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.product-gallery__main {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background: var(--color-bg-alt);
+}
+
+.product-gallery__main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-detail__title {
+  font-size: var(--font-size-h1);
+  color: var(--color-brand-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.product-detail__price {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-brand-dark);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ---------------------------------------------------------------------------
+   Panier
+   --------------------------------------------------------------------------- */
+.cart-block {
+  background: var(--color-brand-cream);
+  border: 1px solid var(--color-brand-light);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ---------------------------------------------------------------------------
+   Checkout
+   --------------------------------------------------------------------------- */
+.checkout-order-summary {
+  background: var(--color-brand-cream);
+  border: 1px solid var(--color-brand-light);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
 }
 
 .checkout-order-summary__personalization {
-  margin-top: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-left: 3px solid #444;
-  font-size: 0.95rem;
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-left: 3px solid var(--color-brand-medium);
+  background: rgba(255, 249, 244, 0.5);
+  font-size: var(--font-size-sm);
+  border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
 }
 
 .checkout-order-summary__personalization ul {
-  margin: 0.35rem 0 0;
+  margin: var(--spacing-xs) 0 0;
   padding-left: 1.1rem;
 }
 
 .checkout-order-summary__personalization li > ul {
-  margin-top: 0.35rem;
+  margin-top: var(--spacing-xs);
 }
 
+/* ---------------------------------------------------------------------------
+   Arbre de vie PoC
+   --------------------------------------------------------------------------- */
 .odesign-tree-summary {
-  margin-top: 0.75rem;
-  padding: 0.75rem;
-  border: 1px solid #d9c7b8;
-  border-radius: 0.75rem;
-  background: #fff9f4;
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-brand-light);
+  border-radius: var(--border-radius-lg);
+  background: var(--color-brand-cream);
 }
 
 .odesign-tree-summary__title {
   display: inline-block;
-  margin-bottom: 0.4rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-brand-dark);
+  font-weight: 600;
 }
 
 .odesign-tree-summary__meta,
 .odesign-tree-summary__wall {
   margin: 0.2rem 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
 }
 
 .odesign-tree-summary__list {
-  margin: 0.45rem 0 0;
+  margin: var(--spacing-xs) 0 0;
   padding-left: 1.1rem;
+  font-size: var(--font-size-sm);
 }
+
+/* ---------------------------------------------------------------------------
+   Bandeau cookies RGPD (eu_cookie_compliance)
+   --------------------------------------------------------------------------- */
+#sliding-popup,
+#sliding-popup .popup-content {
+  background: var(--color-brand-dark);
+  color: rgba(255, 255, 255, 0.95);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-sm);
+}
+
+#sliding-popup .agree-button {
+  background: var(--color-brand-medium);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#sliding-popup .agree-button:hover {
+  background: #5e3a22;
+}
+
+#sliding-popup .decline-button {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xs) var(--spacing-md);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive
+   --------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --font-size-h1: 1.5rem;
+    --font-size-h2: 1.25rem;
+  }
+
+  .site-header .container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

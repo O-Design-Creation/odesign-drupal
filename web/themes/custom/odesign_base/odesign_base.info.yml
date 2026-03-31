@@ -1,18 +1,26 @@
 name: ODesign Base
 type: theme
-description: 'Socle exploratoire minimal pour ODesign.'
+description: 'Thème Atelier O Design — boutique Drupal Commerce.'
 core_version_requirement: ^11
 package: Custom
 base theme: false
+logo: logo.svg
 libraries:
   - odesign_base/global
 regions:
   header: Header
-  primary_menu: Primary menu
-  secondary_menu: Secondary menu
-  breadcrumb: Breadcrumb
-  highlighted: Highlighted
-  help: Help
-  content: Content
-  sidebar_first: Sidebar first
-  footer: Footer
+  header_top: Header top (promo banner)
+  primary_menu: Navigation principale
+  secondary_menu: Navigation secondaire
+  breadcrumb: Fil d'Ariane
+  highlighted: Messages mis en avant
+  help: Aide
+  content: Contenu principal
+  sidebar_first: Sidebar gauche
+  sidebar_second: Sidebar droite
+  featured_top: Zone mise en avant (top)
+  featured_bottom: Zone mise en avant (bas)
+  footer_first: Footer — colonne 1
+  footer_second: Footer — colonne 2
+  footer_third: Footer — colonne 3
+  footer_bottom: Footer — bande basse (légal)
