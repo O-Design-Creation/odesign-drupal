@@ -233,15 +233,139 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 }
 
 .gin--sidebar-toolbar .views-field-operations .dropbutton-widget {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 38px;
   border-radius: 999px;
   overflow: hidden;
-  border: 1px solid #ddcfbd;
-  background: #fff;
+  border: 1px solid #d7c7b2;
+  background: linear-gradient(180deg, #fffefd 0%, #f6ede2 100%);
+  box-shadow: 0 6px 16px rgba(61, 43, 31, 0.08);
 }
 
-.gin--sidebar-toolbar .views-field-operations .dropbutton-action a {
+.gin--sidebar-toolbar .views-field-operations .dropbutton {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton li {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton .secondary-action {
+  display: none;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-action a,
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 0;
+  background: transparent;
   color: #6e4f28;
   font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-action:first-child a {
+  background: linear-gradient(180deg, #fffdf9 0%, #f4e8d8 100%);
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle {
+  border-left: 1px solid #e0d2c0;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle button {
+  min-width: 40px;
+  padding-inline: 10px;
+  cursor: pointer;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-action a:hover,
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle button:hover,
+.gin--sidebar-toolbar .views-field-operations .dropbutton-action a:focus-visible,
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle button:focus-visible {
+  background: #efe0cd;
+  color: #50371d;
+  outline: none;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle .dropbutton-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-toggle .dropbutton-arrow::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton-widget,
+.gin--sidebar-toolbar .views-field-operations .dropbutton-widget:hover {
+  box-shadow: 0 10px 20px rgba(61, 43, 31, 0.12);
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open {
+  position: relative;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton-widget {
+  overflow: visible;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton .secondary-action {
+  display: flex;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton .secondary-action a {
+  position: absolute;
+  right: 0;
+  min-width: 180px;
+  justify-content: flex-start;
+  padding: 12px 16px;
+  border: 1px solid #dcccb7;
+  border-top: 0;
+  border-radius: 0;
+  background: #fffdf9;
+  box-shadow: 0 10px 20px rgba(61, 43, 31, 0.12);
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton .secondary-action:nth-of-type(3) a {
+  top: calc(100% + 2px);
+  border-radius: 16px 16px 0 0;
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton .secondary-action:nth-of-type(4) a {
+  top: calc(100% + 46px);
+}
+
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton .secondary-action:nth-of-type(5) a {
+  top: calc(100% + 90px);
+  border-radius: 0 0 16px 16px;
+}
+
+.gin--sidebar-toolbar .views-field-operations {
+  white-space: nowrap;
 }
 
 /* ─── Polish des formulaires admin et écrans de commande ─────────────────── */
