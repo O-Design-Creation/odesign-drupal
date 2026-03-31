@@ -1,0 +1,62 @@
+{#
+/**
+ * @file
+ * node--article--teaser.html.twig
+ *
+ * Carte article dans la liste blog.
+ *
+ * Variables :
+ * - node: entité node article
+ * - label: titre de l'article
+ * - url: URL de l'article
+ * - content: champs rendus
+ * - date: date formatée
+ * - author_name: nom de l'auteur
+ * - attributes: attributs HTML
+ */
+#}
+{%
+  set classes = [
+    'article-card',
+    node.isPromoted() ? 'article-card--promoted',
+    not node.isPublished() ? 'article-card--unpublished',
+  ]|filter
+%}
+<article{{ attributes.addClass(classes) }}>
+  <a href="{{ url }}" class="article-card__link" tabindex="-1" aria-hidden="true">
+    <div class="article-card__image">
+      {%- if content.field_image is not empty -%}
+        {{- content.field_image -}}
+      {%- else -%}
+        <div class="article-card__image--placeholder" aria-hidden="true">
+          <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="200" fill="#f9f5f2"/>
+            <path d="M150 140 L200 60 L250 140Z" fill="#d9c7b8"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="article-card__body">
+    <div class="article-card__meta">
+      <time class="article-card__date" datetime="{{ node.getCreatedTime()|date('Y-m-d') }}">
+        {{ node.getCreatedTime()|date('j F Y') }}
+      </time>
+    </div>
+
+    <h2 class="article-card__title">
+      <a href="{{ url }}">{{ label }}</a>
+    </h2>
+
+    {%- if content.body is not empty -%}
+      <div class="article-card__summary">
+        {{- content.body -}}
+      </div>
+    {%- endif -%}
+
+    <a href="{{ url }}" class="article-card__read-more btn btn--secondary">
+      {{ 'Lire la suite'|t }}
+    </a>
+  </div>
+</article>

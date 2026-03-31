@@ -1,25 +1,26 @@
 /* ==========================================================================
    Atelier O Design — Thème Drupal Commerce
-   Palette officielle extraite du logo-odesign.svg
-   Généré : 2026-03-31
+   Palette rose poudré extraite du site Shopify réel (atelierodesign.fr)
+   Mise à jour : 2026-03-31 (palette corrigée après audit visuel Shopify)
    ========================================================================== */
 
 /* ---------------------------------------------------------------------------
    Variables CSS — Palette studio
    --------------------------------------------------------------------------- */
 :root {
-  /* Couleurs brand */
-  --color-brand-dark:     #4e2720;   /* bordeaux/brun foncé — couleur principale logo */
-  --color-brand-medium:   #7a4b2a;   /* brun moyen — liens, accents */
-  --color-brand-light:    #d9c7b8;   /* beige rosé — bordures, fonds doux */
-  --color-brand-cream:    #fff9f4;   /* crème — fonds de cartes, zones mises en valeur */
+  /* Couleurs brand — rose poudré / dusty rose */
+  --color-brand-dark:     #7a3a44;   /* rose profond/bordeaux rosé — header, profondeur */
+  --color-brand-medium:   #bd7878;   /* rose poudré medium — barres d'annonce, accents */
+  --color-brand-light:    #e8c4c4;   /* rose clair — bordures, fonds doux */
+  --color-brand-cream:    #fdf5f5;   /* crème rosé — fonds de cartes, zones mises en valeur */
+  --color-accent:         #cc4040;   /* coral-rouge — prix, CTA forts */
 
   /* Couleurs neutres */
   --color-text:           #1f1a17;   /* texte principal (quasi-noir chaud) */
-  --color-text-muted:     #6b5c52;   /* texte secondaire */
+  --color-text-muted:     #7a6868;   /* texte secondaire, légèrement rosé */
   --color-bg:             #ffffff;   /* fond page */
-  --color-bg-alt:         #f9f5f2;   /* fond alternatif, zones grises */
-  --color-border:         #e5d8cf;   /* bordures subtiles */
+  --color-bg-alt:         #faf5f5;   /* fond alternatif, crème rosé très pâle */
+  --color-border:         #ead8d8;   /* bordures subtiles rose */
 
   /* Couleurs système */
   --color-success:        #2d6a4f;
@@ -54,9 +55,9 @@
   --border-radius-pill:   9999px;
 
   /* Ombres */
-  --shadow-sm:  0 1px 2px rgba(78,39,32,0.08);
-  --shadow-md:  0 4px 12px rgba(78,39,32,0.12);
-  --shadow-lg:  0 8px 24px rgba(78,39,32,0.16);
+  --shadow-sm:  0 1px 2px rgba(122,58,68,0.08);
+  --shadow-md:  0 4px 12px rgba(122,58,68,0.12);
+  --shadow-lg:  0 8px 24px rgba(122,58,68,0.16);
 
   /* Layout */
   --container-max:        1200px;
@@ -110,13 +111,14 @@ img {
 }
 
 /* ---------------------------------------------------------------------------
-   Header
+   Header — fond blanc avec accent rose (aligné palette Shopify)
    --------------------------------------------------------------------------- */
 .site-header {
-  background: var(--color-brand-dark);
-  color: #ffffff;
+  background: #ffffff;
+  color: var(--color-text);
   padding: var(--spacing-md) 0;
-  border-bottom: 3px solid var(--color-brand-medium);
+  border-bottom: 1px solid var(--color-brand-light);
+  box-shadow: 0 1px 4px rgba(122,58,68,0.06);
 }
 
 .site-header .container {
@@ -136,11 +138,11 @@ img {
 .site-logo svg {
   height: 48px;
   width: auto;
-  filter: brightness(0) invert(1); /* Logo blanc sur fond sombre */
+  /* Logo en couleur sur fond blanc */
 }
 
 .site-logo__text {
-  color: #ffffff;
+  color: var(--color-brand-dark);
   font-family: var(--font-family-base);
   font-size: var(--font-size-xl);
   letter-spacing: 0.03em;
@@ -150,7 +152,7 @@ img {
 
 /* Navigation principale */
 .site-nav a {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text);
   text-decoration: none;
   font-family: var(--font-family-ui);
   font-size: var(--font-size-sm);
@@ -163,16 +165,16 @@ img {
 
 .site-nav a:hover,
 .site-nav a:focus {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
+  background: var(--color-brand-cream);
+  color: var(--color-brand-dark);
 }
 
 /* ---------------------------------------------------------------------------
-   Footer
+   Footer — rose profond (aligné section newsletter Shopify)
    --------------------------------------------------------------------------- */
 .site-footer {
   background: var(--color-brand-dark);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.85);
   font-family: var(--font-family-ui);
   font-size: var(--font-size-sm);
   padding: var(--spacing-xl) 0 var(--spacing-lg);
@@ -322,7 +324,7 @@ button[type="submit"]:hover {
 .product-card__price {
   font-family: var(--font-family-ui);
   font-weight: 600;
-  color: var(--color-brand-dark);
+  color: var(--color-accent);   /* coral-rouge — aligné palette Shopify */
   font-size: var(--font-size-lg);
   margin-top: auto;
 }
@@ -366,7 +368,7 @@ button[type="submit"]:hover {
 .product-detail__price {
   font-size: var(--font-size-xl);
   font-weight: 700;
-  color: var(--color-brand-dark);
+  color: var(--color-accent);   /* coral-rouge — aligné palette Shopify */
   margin-bottom: var(--spacing-lg);
 }
 
@@ -441,7 +443,7 @@ button[type="submit"]:hover {
 }
 
 /* ---------------------------------------------------------------------------
-   Bandeau cookies RGPD (eu_cookie_compliance)
+   Bandeau cookies RGPD (eu_cookie_compliance) — palette rose
    --------------------------------------------------------------------------- */
 #sliding-popup,
 #sliding-popup .popup-content {
@@ -462,7 +464,7 @@ button[type="submit"]:hover {
 }
 
 #sliding-popup .agree-button:hover {
-  background: #5e3a22;
+  background: var(--color-brand-dark);
 }
 
 #sliding-popup .decline-button {

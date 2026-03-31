@@ -1,0 +1,55 @@
+{#
+/**
+ * @file
+ * commerce-product--teaser.html.twig
+ *
+ * Carte produit — affichage dans la liste catalogue (/produits).
+ *
+ * Variables :
+ * - product: champs rendus (title, field_product_images, etc.)
+ * - product_entity: entité commerce_product
+ * - product_url: URL de la fiche produit
+ * - attributes: attributs HTML de l'article
+ */
+#}
+{%
+  set classes = [
+    'product-card',
+    'product-card--' ~ product_entity.bundle(),
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+  <a href="{{ product_url }}" class="product-card__link" tabindex="-1" aria-hidden="true">
+    <div class="product-card__image">
+      {%- if product_entity.get('field_product_images').entity -%}
+        {{- product.field_product_images -}}
+      {%- else -%}
+        <div class="product-card__image--placeholder" aria-hidden="true">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="60" height="60" fill="#f9f5f2"/>
+            <path d="M20 38 L30 20 L40 38Z" fill="#d9c7b8"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="product-card__body">
+    <h2 class="product-card__title">
+      <a href="{{ product_url }}">{{ product_entity.label }}</a>
+    </h2>
+
+    <div class="product-card__footer">
+      {%- set variation = product_entity.getDefaultVariation() -%}
+      {%- if variation and variation.getPrice() -%}
+        <span class="product-card__price">
+          {{- variation.getPrice().getNumber()|number_format(2, ',', ' ') }} €
+        </span>
+      {%- endif -%}
+
+      <a href="{{ product_url }}" class="btn btn--secondary product-card__cta">
+        {{ 'Voir le produit'|t }}
+      </a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,20 @@
+uuid: c513cf52-a477-475b-bcab-73bd8d17293d
+langcode: fr
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - odesign_base
+id: odesign_base_breadcrumb
+theme: odesign_base
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumb
+  label_display: ''
+  provider: system
+visibility: {  }

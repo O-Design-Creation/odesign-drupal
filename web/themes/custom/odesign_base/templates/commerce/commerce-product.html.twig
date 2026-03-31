@@ -1,0 +1,104 @@
+{#
+/**
+ * @file
+ * commerce-product.html.twig
+ *
+ * Fiche produit complète — layout 2 colonnes.
+ *
+ * Variables :
+ * - product: champs rendus
+ * - product_entity: entité commerce_product
+ * - product_url: URL de la fiche
+ * - attributes: attributs HTML de l'article
+ */
+#}
+{%
+  set classes = [
+    'product-detail',
+    'product-detail--' ~ product_entity.bundle(),
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+
+  {# Breadcrumb contextuel #}
+  <nav class="product-detail__breadcrumb" aria-label="{{ 'Fil d\'Ariane'|t }}">
+    <ol class="breadcrumb">
+      <li><a href="{{ path('<front>') }}">{{ 'Accueil'|t }}</a></li>
+      <li><a href="{{ path('view.catalogue.page_catalogue') }}">{{ 'Boutique'|t }}</a></li>
+      <li aria-current="page">{{ product_entity.label }}</li>
+    </ol>
+  </nav>
+
+  <div class="product-layout">
+
+    {# Colonne gauche : galerie images #}
+    <div class="product-gallery">
+      {%- if product_entity.get('field_product_images').entity -%}
+        <div class="product-gallery__main" id="product-gallery-main">
+          {{- product.field_product_images -}}
+        </div>
+      {%- else -%}
+        <div class="product-gallery__placeholder" aria-hidden="true">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="400" fill="#f9f5f2"/>
+            <path d="M140 260 L200 140 L260 260Z" fill="#d9c7b8"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {# Colonne droite : informations produit #}
+    <div class="product-info">
+      <h1 class="product-detail__title">{{ product_entity.label }}</h1>
+
+      {# Prix depuis la variation par défaut #}
+      {%- set variation = product_entity.getDefaultVariation() -%}
+      {%- if variation and variation.getPrice() -%}
+        <div class="product-detail__price" itemprop="price">
+          {{- variation.getPrice().getNumber()|number_format(2, ',', ' ') }} €
+        </div>
+        {% if variation.getPrice().getNumber() >= 50 %}
+          <p class="product-detail__shipping-free">
+            🎁 {{ 'Livraison offerte pour cette commande'|t }}
+          </p>
+        {% else %}
+          <p class="product-detail__shipping-cost">
+            {{ 'Livraison : 4,90 € — Gratuite dès 50 €'|t }}
+          </p>
+        {% endif %}
+      {%- endif -%}
+
+      {# Description produit #}
+      {%- if product_entity.body.value -%}
+        <div class="product-detail__description">
+          {{- product.body -}}
+        </div>
+      {%- endif -%}
+
+      {# Formulaire Add-to-cart / variations / personnalisation #}
+      <div class="product-detail__form">
+        {{- product|without('title', 'body', 'field_product_images') -}}
+      </div>
+
+      {# Informations livraison / réassurance #}
+      <div class="product-detail__reassurance">
+        <ul class="reassurance-list">
+          <li class="reassurance-list__item">
+            <span class="reassurance-list__icon" aria-hidden="true">🔒</span>
+            {{ 'Paiement sécurisé'|t }}
+          </li>
+          <li class="reassurance-list__item">
+            <span class="reassurance-list__icon" aria-hidden="true">✋</span>
+            {{ 'Fait main en France'|t }}
+          </li>
+          <li class="reassurance-list__item">
+            <span class="reassurance-list__icon" aria-hidden="true">📦</span>
+            {{ 'Expédition sous 24h'|t }}
+          </li>
+        </ul>
+      </div>
+
+    </div>{# /.product-info #}
+  </div>{# /.product-layout #}
+
+</article>

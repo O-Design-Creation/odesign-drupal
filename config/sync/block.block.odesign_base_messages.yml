@@ -1,0 +1,20 @@
+uuid: e84b96e5-a686-44a7-aa70-fafcf2f30d6d
+langcode: fr
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - odesign_base
+id: odesign_base_messages
+theme: odesign_base
+region: highlighted
+weight: -10
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Messages
+  label_display: ''
+  provider: system
+visibility: {  }

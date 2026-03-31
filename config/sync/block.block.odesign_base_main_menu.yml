@@ -1,0 +1,25 @@
+uuid: e44e1af9-14b1-459e-a41e-a06531b1ec4b
+langcode: fr
+status: true
+dependencies:
+  config:
+    - system.menu.main
+  module:
+    - system
+  theme:
+    - odesign_base
+id: odesign_base_main_menu
+theme: odesign_base
+region: header
+weight: 0
+provider: null
+plugin: 'system_menu_block:main'
+settings:
+  id: 'system_menu_block:main'
+  label: 'Navigation principale'
+  label_display: ''
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

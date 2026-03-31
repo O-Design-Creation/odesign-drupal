@@ -1,0 +1,119 @@
+uuid: 613e5ded-f649-4518-8e4d-54b6be351f99
+langcode: fr
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.commerce_product.teaser
+    - system.menu.main
+  module:
+    - commerce_product
+id: catalogue
+label: 'Catalogue produits'
+module: views
+description: ''
+tag: ''
+base_table: commerce_product_field_data
+base_field: nid
+display:
+  default:
+    id: default
+    display_title: Principal
+    display_plugin: default
+    position: 0
+    display_options:
+      title: Boutique
+      pager:
+        type: full
+        options:
+          offset: 0
+          items_per_page: 24
+          total_pages: null
+          id: 0
+          tags:
+            next: ›
+            previous: ‹
+            first: ''
+            last: ''
+          expose:
+            items_per_page: false
+            offset: false
+          quantity: 9
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: tag
+        options: {  }
+      sorts:
+        created:
+          id: created
+          table: commerce_product_field_data
+          field: created
+          plugin_id: date
+          order: DESC
+      filters:
+        status:
+          id: status
+          table: commerce_product_field_data
+          field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+      row:
+        type: 'entity:commerce_product'
+        options:
+          relationship: none
+          view_mode: teaser
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          distinct: false
+          replica: false
+          query_tags: {  }
+      use_ajax: false
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url.query_args
+      tags: {  }
+  page_catalogue:
+    id: page_catalogue
+    display_title: 'Page catalogue'
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: produits
+      menu:
+        type: normal
+        title: Boutique
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: main
+        parent: ''
+        context: '0'
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url.query_args
+      tags: {  }

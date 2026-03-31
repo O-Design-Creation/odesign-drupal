@@ -1,0 +1,11 @@
+uuid: 135404f7-cd9b-496b-8ac6-472cd16d7de3
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_product
+id: commerce_product.teaser
+label: 'Teaser (carte produit)'
+description: null
+targetEntityType: commerce_product
+cache: true

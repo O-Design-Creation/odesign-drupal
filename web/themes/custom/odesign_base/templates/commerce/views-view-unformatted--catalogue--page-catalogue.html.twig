@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * views-view-unformatted--catalogue--page-catalogue.html.twig
+ *
+ * Wrapper HTML de la vue catalogue — applique la classe .product-grid.
+ *
+ * Variables :
+ * - title: titre de la vue
+ * - rows: lignes de la vue (cartes produits)
+ * - options: options de la vue
+ */
+#}
+{% if title %}
+  <h1 class="catalogue__title">{{ title }}</h1>
+{% endif %}
+
+<div class="product-grid">
+  {% for row in rows %}
+    {{- row.content -}}
+  {% endfor %}
+</div>

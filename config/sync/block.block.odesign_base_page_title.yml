@@ -1,0 +1,18 @@
+uuid: f358b0a0-7e87-4a58-89b6-382c8d9675e2
+langcode: fr
+status: true
+dependencies:
+  theme:
+    - odesign_base
+id: odesign_base_page_title
+theme: odesign_base
+region: content
+weight: -10
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: ''
+  provider: core
+visibility: {  }
