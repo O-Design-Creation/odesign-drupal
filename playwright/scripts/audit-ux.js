@@ -135,6 +135,8 @@ async function auditPage(page, name, url) {
           && !f.name.startsWith('created[')
           && !f.name.startsWith('changed[')
           && !f.name.startsWith('revision_')
+          // Sélecteur de format CKEditor — champ technique masqué via #access=FALSE côté PHP.
+          && f.name !== 'body[0][format]'
         ))
     );
     for (const { label, name } of fieldsWithoutHelp.slice(0, 10)) {

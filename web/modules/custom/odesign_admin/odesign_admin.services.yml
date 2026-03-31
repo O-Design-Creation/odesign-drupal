@@ -3,3 +3,10 @@ services:
     class: Drupal\odesign_admin\EventSubscriber\OrderWorkflowSubscriber
     tags:
       - { name: event_subscriber }
+
+  odesign_admin.lazy_builders:
+    class: Drupal\odesign_admin\LazyBuilders\AdminLazyBuilders
+    arguments:
+      - '@entity_type.manager'
+    tags:
+      - { name: drupal.lazy_builder }

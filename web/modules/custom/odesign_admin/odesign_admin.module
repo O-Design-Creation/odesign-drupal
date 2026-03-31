@@ -36,6 +36,37 @@ function odesign_admin_page_attachments(array &$attachments): void {
 }
 
 /**
+ * Implémente hook_preprocess_html().
+ *
+ * Ajoute la classe CSS `odesign-gestionnaire` sur le body quand l'utilisateur
+ * courant est gestionnaire_boutique (sans être admin).
+ * Cette classe masque la toolbar Gin via CSS.
+ *
+ * Injecte aussi un inline CSS critique en <head> pour masquer la toolbar
+ * avant que le browser n'affiche le rendu (évite le flash FOUC).
+ */
+function odesign_admin_preprocess_html(array &$variables): void {
+  $account = \Drupal::currentUser();
+  if (!$account->hasRole('gestionnaire_boutique') || $account->hasRole('administrator')) {
+    return;
+  }
+
+  $variables['attributes']['class'][] = 'odesign-gestionnaire';
+
+  // CSS inline critique en <head> — masque la toolbar avant le premier paint.
+  $variables['page']['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag'  => 'style',
+      '#value' => '#toolbar-administration,.toolbar-bar,.gin-secondary-toolbar{display:none!important}'
+        . 'body.odesign-gestionnaire{margin-top:0!important;padding-top:44px!important}',
+      '#attributes' => ['id' => 'odesign-gestionnaire-toolbar-hide'],
+    ],
+    'odesign_gestionnaire_toolbar_hide',
+  ];
+}
+
+/**
  * Implémente hook_page_top().
  *
  * Injecte la barre de navigation rapide sur toutes les pages admin.
@@ -48,29 +79,59 @@ function odesign_admin_page_top(array &$page_top): void {
   $current_path = \Drupal::service('path.current')->getPath();
 
   $nav_items = [
-    ['label' => '🏠 Tableau de bord', 'path' => '/admin/boutique'],
-    ['label' => '✏️ Articles',         'path' => '/admin/content?type=article'],
-    ['label' => '🛍️ Produits',         'path' => '/admin/commerce/products'],
-    ['label' => '📦 Commandes',        'path' => '/admin/commerce/orders'],
-    ['label' => '🧾 Factures',         'path' => '/admin/commerce/invoices'],
-    ['label' => '🏷️ Promotions',       'path' => '/admin/commerce/promotions'],
-    ['label' => '🖼️ Médias',           'path' => '/admin/content/media'],
+    ['label' => 'Tableau de bord', 'icon' => 'storefront',    'path' => '/admin/boutique'],
+    ['label' => 'Articles',        'icon' => 'article',       'path' => '/admin/content?type=article'],
+    ['label' => 'Produits',        'icon' => 'inventory_2',   'path' => '/admin/commerce/products'],
+    ['label' => 'Commandes',       'icon' => 'receipt_long',  'path' => '/admin/commerce/orders'],
+    ['label' => 'Factures',        'icon' => 'description',   'path' => '/admin/commerce/invoices'],
+    ['label' => 'Promotions',      'icon' => 'local_offer',   'path' => '/admin/commerce/promotions'],
+    ['label' => 'Médias',          'icon' => 'photo_library', 'path' => '/admin/content/media'],
   ];
 
   $items_html = '';
   foreach ($nav_items as $item) {
     $active = str_starts_with($current_path, explode('?', $item['path'])[0]) ? ' aria-current="page"' : '';
     $items_html .= '<li><a href="' . htmlspecialchars($item['path']) . '"' . $active . '>'
-      . htmlspecialchars($item['label']) . '</a></li>';
+      . '<span class="material-symbols-outlined" aria-hidden="true">' . htmlspecialchars($item['icon']) . '</span>'
+      . '<span>' . htmlspecialchars($item['label']) . '</span>'
+      . '</a></li>';
   }
+
+  // Lien "Retour au site" et déconnexion à droite
+  $account        = \Drupal::currentUser();
+  $username       = htmlspecialchars($account->getDisplayName());
+  $logout_url     = \Drupal\Core\Url::fromRoute('user.logout')->toString();
+  $site_url       = \Drupal\Core\Url::fromRoute('<front>')->toString();
+
+  $right_html  = '<div class="odesign-admin-nav__right">';
+  $right_html .= '<a href="' . htmlspecialchars($site_url) . '" class="odesign-admin-nav__site-link" target="_blank" title="Voir le site">'
+    . '<span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>'
+    . '<span>Voir le site</span>'
+    . '</a>';
+  $right_html .= '<span class="odesign-admin-nav__user">'
+    . '<span class="material-symbols-outlined" aria-hidden="true">account_circle</span>'
+    . '<span class="odesign-admin-nav__username">' . $username . '</span>'
+    . '</span>';
+  $right_html .= '<a href="' . htmlspecialchars($logout_url) . '" class="odesign-admin-nav__logout" title="Se déconnecter">'
+    . '<span class="material-symbols-outlined" aria-hidden="true">logout</span>'
+    . '<span>Déconnexion</span>'
+    . '</a>';
+  $right_html .= '</div>';
 
   $page_top['odesign_admin_nav'] = [
     '#type'   => 'markup',
     '#markup' => '<nav class="odesign-admin-nav" aria-label="Navigation boutique">'
-      . '<span class="odesign-admin-nav__logo">O Design</span>'
+      . '<a href="/admin/boutique" class="odesign-admin-nav__logo" aria-label="Tableau de bord">'
+      . '<span class="material-symbols-outlined" aria-hidden="true">storefront</span>'
+      . '<span class="odesign-admin-nav__logo-text">O Design</span>'
+      . '</a>'
       . '<ul class="odesign-admin-nav__items">' . $items_html . '</ul>'
+      . $right_html
       . '</nav>',
     '#weight' => -100,
+    '#cache'  => [
+      'contexts' => ['user', 'url.path'],
+    ],
   ];
 }
 
@@ -188,6 +249,29 @@ function odesign_admin_user_login($account): void {
 }
 
 /**
+ * Implémente hook_preprocess_page_title().
+ *
+ * Corrige le titre "Créer Article" → "Créer un article"
+ * sur les formulaires de création/édition d'articles de blog.
+ */
+function odesign_admin_preprocess_page_title(array &$variables): void {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+
+  if ($route_name === 'node.add') {
+    $node_type = \Drupal::routeMatch()->getParameter('node_type');
+    if ($node_type && (is_string($node_type) ? $node_type : $node_type->id()) === 'article') {
+      $variables['title'] = t('Créer un article');
+    }
+  }
+  elseif ($route_name === 'entity.node.edit_form') {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    if ($node && $node->getType() === 'article') {
+      $variables['title'] = t('Modifier : @title', ['@title' => $node->getTitle()]);
+    }
+  }
+}
+
+/**
  * Implémente hook_form_FORM_ID_alter() pour le formulaire de produit.
  *
  * Ajoute des textes d'aide explicites sur chaque champ clé.
@@ -253,6 +337,23 @@ function _odesign_admin_add_product_field_help(array &$form): void {
   if (isset($form['variations'])) {
     $form['variations']['#description'] =
       t('Définissez le prix de vente TTC de votre produit. Si votre produit existe en plusieurs options (taille, couleur…), créez une variante par option.');
+  }
+
+  // Format de texte — sélecteur CKEditor : masquer pour le gestionnaire (UX-03).
+  // Le gestionnaire dispose déjà du format "full_html" par défaut.
+  // Le sélecteur de format est un détail technique sans valeur métier.
+  if (isset($form['body']['widget'][0]['format'])) {
+    $form['body']['widget'][0]['format']['#access'] = FALSE;
+  }
+  // Catégorie produit.
+  if (isset($form['field_category'])) {
+    $form['field_category']['widget']['#description'] =
+      t('Associez une catégorie à ce produit pour faciliter sa recherche dans la boutique. Commencez à saisir pour voir les catégories existantes ou créez-en une nouvelle.');
+    // Aide supplémentaire visible directement dans le form item.
+    if (isset($form['field_category']['widget']['target_id'])) {
+      $form['field_category']['widget']['target_id']['#description'] =
+        t('Catégorie de ce produit (ex. : "Prénom en bois", "Bijoux"). Commencez à saisir ou créez-en une nouvelle.');
+    }
   }
 
   // Images produit.
@@ -411,7 +512,7 @@ function odesign_admin_menu_links_discovered_alter(array &$links): void {
   }
   // Raccourci vers le dashboard boutique
   $links['odesign_admin.dashboard_shortcut'] = [
-    'title'       => '🏠 Tableau de bord',
+    'title'       => 'Tableau de bord',
     'route_name'  => 'odesign_admin.dashboard',
     'menu_name'   => 'admin',
     'parent'      => '',
@@ -421,6 +522,30 @@ function odesign_admin_menu_links_discovered_alter(array &$links): void {
     'class'       => 'Drupal\\Core\\Menu\\MenuLinkDefault',
     'metadata'    => ['expanded' => FALSE],
   ];
+}
+
+/**
+ * Implémente hook_toolbar_alter().
+ *
+ * Pour le gestionnaire_boutique :
+ * - Remplace le lien "Boîte de réception Commerce" (messages marketing du module)
+ *   par un lien direct vers la liste des commandes.
+ * - Corrige le libellé trompeur "Boîte de réception (3)" qui ne désigne pas des
+ *   commandes mais des messages promotionnels du projet Drupal Commerce.
+ */
+function odesign_admin_toolbar_alter(array &$items): void {
+  $account = \Drupal::currentUser();
+  if (!$account->hasRole('gestionnaire_boutique')) {
+    return;
+  }
+
+  // Remplacer le lien Commerce Inbox par un lien vers les commandes.
+  if (isset($items['commerce_inbox'])) {
+    $items['commerce_inbox']['tab']['#lazy_builder'] = [
+      'odesign_admin.lazy_builders:renderOrdersInbox',
+      [],
+    ];
+  }
 }
 
 /**

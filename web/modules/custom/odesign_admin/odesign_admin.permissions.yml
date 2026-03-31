@@ -1,0 +1,4 @@
+administer odesign boutique:
+  title: 'Administrer la configuration de la boutique O Design'
+  description: 'Accès à la page de configuration Mailgun, Stripe et informations boutique.'
+  restrict access: false

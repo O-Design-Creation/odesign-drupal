@@ -14,6 +14,6 @@ odesign_admin.config:
     _form: '\Drupal\odesign_admin\Form\BoutiqueConfigForm'
     _title: 'Configuration de la boutique'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'administer odesign boutique'
   options:
     _admin_route: TRUE
