@@ -1,19 +1,13 @@
 global:
   css:
     theme:
+      css/phosphor.css: { weight: -200 }
       css/base.css: { weight: -100 }
   js:
     js/odesign.js: {}
   dependencies:
-    - odesign_base/phosphor-icons
     - core/drupal
     - core/once
-
-# Phosphor Icons — webfont légère, moderne
-phosphor-icons:
-  css:
-    component:
-      https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css: { type: external, minified: true }
 
 # Audit a11y uniquement (non chargé en prod)
 a11y-dev:
