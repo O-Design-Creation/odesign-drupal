@@ -31,6 +31,7 @@ permissions:
   - 'access toolbar'
   - 'access user profiles'
   - 'add commerce_log commerce_order admin comment'
+  - 'administer commerce_invoice'
   - 'create default commerce_product'
   - 'create media'
   - 'manage default commerce_order_item'

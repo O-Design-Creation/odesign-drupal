@@ -383,6 +383,15 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   font-weight: 600;
 }
 
+.gin--sidebar-toolbar table.views-table tbody td[colspan],
+.gin--sidebar-toolbar .views-element-container table tbody td[colspan],
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody td[colspan] {
+  padding: 28px 24px;
+  text-align: center;
+  color: #7f6a55;
+  background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
+}
+
 /* ─── Polish des formulaires admin et écrans de commande ─────────────────── */
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form,
@@ -937,6 +946,54 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > .form-wrapper {
   font-size: 15px;
   line-height: 1.55;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .entity-meta,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form details.seven-details {
+  padding: 22px 24px;
+  border: 1px solid #e4d9cb;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(139, 111, 71, 0.07), transparent 28%),
+    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
+  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form details.seven-details > summary {
+  margin: 0 0 14px;
+  color: #3d2b1f;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #dbc9b4;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fffdf9 0%, #f3e6d6 100%);
+  color: #5f4322;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit:focus-visible {
+  background: #ecddc8;
+  color: #50371d;
+  outline: none;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main details {
