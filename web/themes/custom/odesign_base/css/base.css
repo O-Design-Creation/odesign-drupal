@@ -521,6 +521,44 @@ strong { font-weight: 600; }
   text-align: center;
 }
 
+/* Lien connexion discret dans le header */
+.header-login-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--color-text-muted, #6b4e44);
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: 20px;
+  border: 1px solid transparent;
+  transition: color .2s, border-color .2s, background .2s;
+  white-space: nowrap;
+}
+
+.header-login-link:hover,
+.header-login-link:focus {
+  color: var(--color-brand-dark, #4E2620);
+  border-color: var(--color-brand-beige, #D9B7A4);
+  background: var(--color-brand-cream, #faf4f0);
+}
+
+.header-login-link--connected {
+  color: var(--color-brand-warm, #8B6151);
+}
+
+.header-login-link__label {
+  display: none;  /* icône seule sur mobile */
+}
+
+@media (min-width: 768px) {
+  .header-login-link__label {
+    display: inline;
+  }
+}
+
 @media (max-width: 768px) {
   .site-footer__columns {
     grid-template-columns: 1fr;

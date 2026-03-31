@@ -75,6 +75,25 @@
 
         {# Actions header #}
         <div class="site-header__actions">
+          {# Lien connexion / espace personnel — discret, en haut à droite #}
+          {% if not logged_in %}
+            <a href="{{ path('user.login') }}" class="header-login-link" aria-label="{{ 'Se connecter à votre espace'|t }}">
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="header-login-link__label">{{ 'Connexion'|t }}</span>
+            </a>
+          {% else %}
+            <a href="{{ path('odesign_admin.dashboard') }}" class="header-login-link header-login-link--connected" aria-label="{{ 'Accéder à mon espace'|t }}">
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="header-login-link__label">{{ 'Mon espace'|t }}</span>
+            </a>
+          {% endif %}
+
           {# Panier — lien direct Drupal Commerce #}
           <a href="{{ path('commerce_cart.page') }}"
              class="btn btn--ghost header-cart"

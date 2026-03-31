@@ -482,3 +482,18 @@
   padding: 20px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, .06);
 }
+
+/* ─── Fix double en-tête sticky dans les tables Views admin (bug Gin/Drupal) ── */
+/* Le sticky-header est un clone JS normalement masqué jusqu'au scroll.           */
+/* Sans ce fix, il apparaît dupliqué en haut de page au chargement.               */
+.sticky-header {
+  display: none !important;
+}
+.sticky-header.is-sticky {
+  display: table !important;
+}
+
+/* ─── Fix Gin sticky header dupliqué (correct ciblage) ─────────────────────── */
+.gin--sticky-table-header {
+  display: none !important;
+}

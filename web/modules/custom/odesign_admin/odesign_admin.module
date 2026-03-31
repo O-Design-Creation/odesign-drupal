@@ -36,6 +36,45 @@ function odesign_admin_page_attachments(array &$attachments): void {
 }
 
 /**
+ * Implémente hook_page_top().
+ *
+ * Injecte la barre de navigation rapide sur toutes les pages admin.
+ */
+function odesign_admin_page_top(array &$page_top): void {
+  if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+
+  $current_path = \Drupal::service('path.current')->getPath();
+
+  $nav_items = [
+    ['label' => '🏠 Tableau de bord', 'path' => '/admin/boutique'],
+    ['label' => '✏️ Articles',         'path' => '/admin/content?type=article'],
+    ['label' => '🛍️ Produits',         'path' => '/admin/commerce/products'],
+    ['label' => '📦 Commandes',        'path' => '/admin/commerce/orders'],
+    ['label' => '🧾 Factures',         'path' => '/admin/commerce/invoices'],
+    ['label' => '🏷️ Promotions',       'path' => '/admin/commerce/promotions'],
+    ['label' => '🖼️ Médias',           'path' => '/admin/content/media'],
+  ];
+
+  $items_html = '';
+  foreach ($nav_items as $item) {
+    $active = str_starts_with($current_path, explode('?', $item['path'])[0]) ? ' aria-current="page"' : '';
+    $items_html .= '<li><a href="' . htmlspecialchars($item['path']) . '"' . $active . '>'
+      . htmlspecialchars($item['label']) . '</a></li>';
+  }
+
+  $page_top['odesign_admin_nav'] = [
+    '#type'   => 'markup',
+    '#markup' => '<nav class="odesign-admin-nav" aria-label="Navigation boutique">'
+      . '<span class="odesign-admin-nav__logo">O Design</span>'
+      . '<ul class="odesign-admin-nav__items">' . $items_html . '</ul>'
+      . '</nav>',
+    '#weight' => -100,
+  ];
+}
+
+/**
  * Implémente hook_theme().
  */
 function odesign_admin_theme(): array {
