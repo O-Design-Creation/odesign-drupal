@@ -35,6 +35,7 @@ class BoutiqueConfigForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $smtp   = \Drupal::configFactory()->get('smtp.settings');
     $stripe = \Drupal::configFactory()->get('commerce_payment.commerce_payment_gateway.stripe_sandbox');
+    $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
 
     // ── Statuts détectés ─────────────────────────────────────────────────────
     $smtp_ok   = !empty($smtp->get('smtp_username')) && !empty($smtp->get('smtp_password'));
@@ -42,6 +43,9 @@ class BoutiqueConfigForm extends FormBase {
               && !str_contains($stripe->get('configuration.publishable_key') ?? '', 'PLACEHOLDER')
               && !empty($stripe->get('configuration.secret_key'))
               && !str_contains($stripe->get('configuration.secret_key') ?? '', 'PLACEHOLDER');
+    $store_ok = $store && $store->getName() && $store->getEmail();
+
+    $form['#attributes']['class'][] = 'odesign-config-form';
 
     $form['#attached']['html_head'][] = [
       [
@@ -59,8 +63,15 @@ class BoutiqueConfigForm extends FormBase {
     // ── Intro ─────────────────────────────────────────────────────────────────
     $form['intro'] = [
       '#markup' => '<div class="config-intro">'
-        . '<p>Cette page vous permet de configurer les deux services externes nécessaires au bon fonctionnement de votre boutique.</p>'
-        . '<p>Remplissez chaque section et cliquez <strong>"Enregistrer"</strong> en bas de page.</p>'
+        . '<div class="config-intro__eyebrow">Configuration de la boutique</div>'
+        . '<h2 class="config-intro__title">Centralisez ici vos réglages essentiels</h2>'
+        . '<p class="config-intro__lead">Emails transactionnels, paiements et informations de contact : tout ce qui doit rester juste pour que la boutique fonctionne sans surprise.</p>'
+        . '<div class="config-status-grid">'
+        . $this->statusCard('Emails', $smtp_ok, $smtp_ok ? 'Mailgun prêt pour les confirmations et notifications.' : 'Identifiants SMTP à compléter.')
+        . $this->statusCard('Paiement', $stripe_ok, $stripe_ok ? 'Stripe test prêt pour les essais client.' : 'Clés Stripe à renseigner.')
+        . $this->statusCard('Boutique', (bool) $store_ok, $store_ok ? 'Nom et email boutique déjà renseignés.' : 'Nom ou email boutique à compléter.')
+        . '</div>'
+        . '<p class="config-intro__hint">Conseil : commencez par les sections marquées <strong>À configurer</strong>, puis enregistrez en bas de page.</p>'
         . '</div>',
     ];
 
@@ -71,7 +82,7 @@ class BoutiqueConfigForm extends FormBase {
       '#type'        => 'details',
       '#title'       => $this->statusBadge($smtp_ok) . ' Emails transactionnels (Mailgun)',
       '#open'        => !$smtp_ok,
-      '#attributes'  => ['class' => ['config-section', $smtp_ok ? 'config-ok' : 'config-warning']],
+      '#attributes'  => ['class' => ['config-section', 'config-section--smtp', $smtp_ok ? 'config-ok' : 'config-warning']],
     ];
 
     $form['smtp']['smtp_help'] = [
@@ -123,7 +134,7 @@ class BoutiqueConfigForm extends FormBase {
       '#type'       => 'details',
       '#title'      => $this->statusBadge($stripe_ok) . ' Paiements en ligne (Stripe)',
       '#open'       => !$stripe_ok,
-      '#attributes' => ['class' => ['config-section', $stripe_ok ? 'config-ok' : 'config-warning']],
+      '#attributes' => ['class' => ['config-section', 'config-section--stripe', $stripe_ok ? 'config-ok' : 'config-warning']],
     ];
 
     $form['stripe']['stripe_help'] = [
@@ -175,14 +186,11 @@ class BoutiqueConfigForm extends FormBase {
     // ────────────────────────────────────────────────────────────────────────
     // SECTION 3 — Informations boutique
     // ────────────────────────────────────────────────────────────────────────
-    $site_config = \Drupal::configFactory()->get('system.site');
-    $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
-
     $form['boutique'] = [
       '#type'       => 'details',
-      '#title'      => '🏪 Informations de la boutique',
+      '#title'      => $this->statusBadge((bool) $store_ok) . ' Informations de la boutique',
       '#open'       => FALSE,
-      '#attributes' => ['class' => ['config-section']],
+      '#attributes' => ['class' => ['config-section', 'config-section--boutique', $store_ok ? 'config-ok' : 'config-warning']],
     ];
 
     $form['boutique']['boutique_help'] = [
@@ -213,7 +221,10 @@ class BoutiqueConfigForm extends FormBase {
     // ────────────────────────────────────────────────────────────────────────
     // Submit
     // ────────────────────────────────────────────────────────────────────────
-    $form['actions'] = ['#type' => 'actions'];
+    $form['actions'] = [
+      '#type' => 'actions',
+      '#attributes' => ['class' => ['config-actions']],
+    ];
     $form['actions']['submit'] = [
       '#type'        => 'submit',
       '#value'       => 'Enregistrer la configuration',
@@ -230,6 +241,20 @@ class BoutiqueConfigForm extends FormBase {
     return $ok
       ? '<span class="config-badge config-badge--ok">✓ Configuré</span> '
       : '<span class="config-badge config-badge--warning">⚠ À configurer</span> ';
+  }
+
+  /**
+   * Génère une carte de statut synthétique.
+   */
+  private function statusCard(string $label, bool $ok, string $description): string {
+    $state = $ok ? 'Prêt' : 'À compléter';
+    $classes = $ok ? 'config-status-card config-status-card--ok' : 'config-status-card config-status-card--warning';
+
+    return '<div class="' . $classes . '">'
+      . '<div class="config-status-card__label">' . htmlspecialchars($label) . '</div>'
+      . '<div class="config-status-card__state">' . htmlspecialchars($state) . '</div>'
+      . '<p class="config-status-card__text">' . htmlspecialchars($description) . '</p>'
+      . '</div>';
   }
 
   /**
