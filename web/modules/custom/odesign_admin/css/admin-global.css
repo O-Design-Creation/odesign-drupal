@@ -478,6 +478,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: center;
 }
@@ -536,6 +537,23 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-pane {
   margin: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-region--commerce-footer > * {
+  max-width: 760px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button--primary {
+  background: linear-gradient(180deg, #fffdf9 0%, #f0dfca 100%);
+  border: 1px solid #d8c2a7;
+  color: #50371d;
+  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button:not(.button--primary) {
+  background: #fff;
+  border: 1px solid #d9cdbd;
+  color: #6e4f28;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-pane > summary {
