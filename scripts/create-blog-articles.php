@@ -4,6 +4,8 @@
  * Usage: drush php:script scripts/create-blog-articles.php
  */
 
+use Drupal\node\Entity\Node;
+
 $articles = [
   [
     'title' => 'Comment personnaliser une carte de naissance en bois',
@@ -61,18 +63,29 @@ $articles = [
 ];
 
 foreach ($articles as $i => $data) {
-  $node = \Drupal\node\Entity\Node::create([
+  $existing = \Drupal::entityTypeManager()
+    ->getStorage('node')
+    ->loadByProperties([
+      'type' => 'article',
+      'title' => $data['title'],
+    ]);
+
+  $node = $existing ? reset($existing) : Node::create([
     'type' => 'article',
     'title' => $data['title'],
-    'body' => [
-      'value' => $data['body'],
-      'summary' => $data['summary'],
-      'format' => 'full_html',
-    ],
-    'status' => 1,
     'uid' => 1,
   ]);
+
+  $node->set('body', [
+    'value' => $data['body'],
+    'summary' => $data['summary'],
+    'format' => 'full_html',
+  ]);
+  $node->set('status', 1);
+  $node->setNewRevision(FALSE);
   $node->save();
-  echo "Article " . ($i + 1) . " créé : nid=" . $node->id() . " — " . $data['title'] . "\n";
+
+  $action = $existing ? 'mis à jour' : 'créé';
+  echo "Article " . ($i + 1) . " $action : nid=" . $node->id() . " — " . $data['title'] . "\n";
 }
 echo "Done.\n";
