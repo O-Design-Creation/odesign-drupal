@@ -102,6 +102,9 @@ msgstr "Panier"
 msgid "Checkout order summary"
 msgstr "Récapitulatif de la commande"
 
+msgid "Save and add variations"
+msgstr "Enregistrer puis ajouter des variantes"
+
 msgid "Commerce Activity"
 msgstr "Activité boutique"
 

@@ -26,11 +26,15 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  background: linear-gradient(135deg, #f8f4ef 0%, #ede8e0 100%);
+  background:
+    radial-gradient(circle at right top, rgba(139, 111, 71, 0.12), transparent 28%),
+    linear-gradient(135deg, #fbf7f1 0%, #ede6dc 100%);
+  border: 1px solid #e0d4c4;
   border-left: 4px solid #8b6f47;
-  border-radius: 8px;
+  border-radius: 14px;
   padding: 1.5rem 1.75rem;
   margin-bottom: 2rem;
+  box-shadow: 0 14px 28px rgba(61, 43, 31, 0.06);
 }
 
 .odesign-dashboard__welcome-icon {
@@ -65,15 +69,15 @@
 .odesign-dashboard__stat {
   flex: 1;
   min-width: 160px;
-  background: #fff;
-  border: 1px solid #e0dbd4;
-  border-radius: 10px;
+  background: linear-gradient(180deg, #fffefd 0%, #fbf5ee 100%);
+  border: 1px solid #e4d8c9;
+  border-radius: 14px;
   padding: 1.4rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.35rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  box-shadow: 0 10px 24px rgba(61, 43, 31, 0.05);
 }
 
 .odesign-dashboard__stat--highlight {
@@ -145,13 +149,13 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: #fff;
-  border: 1px solid #e4ddd5;
-  border-radius: 10px;
+  background: linear-gradient(180deg, #fffefd 0%, #fbf6ef 100%);
+  border: 1px solid #e4d8cb;
+  border-radius: 14px;
   padding: 1.1rem 1.25rem;
   text-decoration: none;
   transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  box-shadow: 0 8px 20px rgba(61, 43, 31, 0.05);
   min-height: 72px;
 }
 
@@ -228,11 +232,44 @@
 
 /* ─── Commandes récentes ─────────────────────────────────────────────────── */
 .odesign-dashboard__orders {
-  background: #fff;
-  border: 1px solid #e0dbd4;
-  border-radius: 10px;
+  background: linear-gradient(180deg, #fffefd 0%, #fbf7f1 100%);
+  border: 1px solid #e0d6ca;
+  border-radius: 14px;
   padding: 1.5rem 1.75rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.06);
+}
+
+.odesign-dashboard__orders h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 1rem;
+  color: #3d2b1f;
+  font-size: 1.1rem;
+}
+
+.odesign-dashboard__orders .views-exposed-form {
+  margin-bottom: 14px;
+}
+
+.odesign-dashboard__orders table {
+  font-size: 14px;
+}
+
+.odesign-dashboard__orders table th,
+.odesign-dashboard__orders table td {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.odesign-dashboard__orders .views-field-operations .dropbutton-widget {
+  min-height: 34px;
+}
+
+.odesign-dashboard__orders .views-field-operations .dropbutton-action a,
+.odesign-dashboard__orders .views-field-operations .dropbutton-toggle button {
+  min-height: 34px;
+  padding-inline: 12px;
 }
 
 /* ─── Icônes dans la navigation sidebar (Material Symbols via CSS) ───────── */
@@ -247,130 +284,4 @@
   margin-right: 6px;
   color: currentColor;
   font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-}
-
-
-/* Bannière d'accueil */
-.odesign-dashboard__welcome {
-  background: linear-gradient(135deg, #f8f4ef 0%, #ede8e0 100%);
-  border-left: 4px solid #8b6f47;
-  border-radius: 6px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 1.75rem;
-}
-
-.odesign-dashboard__welcome h2 {
-  margin: 0 0 0.4rem;
-  font-size: 1.4rem;
-  color: #3d2b1f;
-}
-
-.odesign-dashboard__welcome p {
-  margin: 0;
-  color: #6b5744;
-  font-size: 0.95rem;
-}
-
-/* Compteurs */
-.odesign-dashboard__stats {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.75rem;
-  flex-wrap: wrap;
-}
-
-.odesign-dashboard__stat {
-  flex: 1;
-  min-width: 140px;
-  background: #fff;
-  border: 1px solid #e0dbd4;
-  border-radius: 8px;
-  padding: 1.2rem 1.5rem;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
-}
-
-.odesign-dashboard__stat--highlight {
-  border-color: #8b6f47;
-  background: #fdf8f3;
-}
-
-.stat-value {
-  display: block;
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #3d2b1f;
-  line-height: 1;
-}
-
-.odesign-dashboard__stat--highlight .stat-value {
-  color: #8b6f47;
-}
-
-.stat-label {
-  display: block;
-  font-size: 0.82rem;
-  color: #7a6a5a;
-  margin-top: 0.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-/* Actions rapides */
-.odesign-dashboard__quick-links {
-  margin-bottom: 1.75rem;
-}
-
-.odesign-dashboard__quick-links h3,
-.odesign-dashboard__orders h3 {
-  font-size: 1.05rem;
-  color: #3d2b1f;
-  margin-bottom: 0.75rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #ede8e0;
-}
-
-.quick-links-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 0.75rem;
-}
-
-.quick-link-card {
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border: 1px solid #e0dbd4;
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  text-decoration: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 3px rgba(0,0,0,.05);
-}
-
-.quick-link-card:hover {
-  border-color: #8b6f47;
-  box-shadow: 0 3px 10px rgba(139,111,71,.15);
-  text-decoration: none;
-}
-
-.quick-link-card__title {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #3d2b1f;
-  margin-bottom: 0.3rem;
-}
-
-.quick-link-card__desc {
-  font-size: 0.8rem;
-  color: #8a7a6a;
-}
-
-/* Commandes récentes */
-.odesign-dashboard__orders {
-  background: #fff;
-  border: 1px solid #e0dbd4;
-  border-radius: 8px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
 }

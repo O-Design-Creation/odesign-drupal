@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\commerce_order\Entity\OrderInterface;
 
@@ -180,8 +181,26 @@ function _odesign_admin_add_product_field_help(array &$form): void {
 
   // Description / Corps.
   if (isset($form['body'])) {
-    $form['body']['widget'][0]['#description'] =
-      t('Description détaillée du produit : matières, dimensions, personnalisation possible, conseils d\'entretien…');
+    if (isset($form['body']['widget'][0])) {
+      $form['body']['widget'][0]['odesign_help'] = [
+        '#type' => 'markup',
+        '#markup' => '<div class="form-item__description">'
+          . t('Description détaillée du produit : matières, dimensions, personnalisation possible, conseils d\'entretien…')
+          . '</div>',
+        '#weight' => -100,
+      ];
+    }
+    if (isset($form['body']['widget'][0]['value'])) {
+      $form['body']['widget'][0]['value']['#description'] =
+        t('Décrivez clairement le produit, ses matières, ses dimensions et ses options de personnalisation.');
+      if (!empty($form['body']['widget'][0]['value']['#disabled'])) {
+        $form['body']['widget'][0]['value']['#attributes']['class'][] = 'odesign-readonly-longtext';
+      }
+    }
+    if (isset($form['body']['widget'][0]['summary'])) {
+      $form['body']['widget'][0]['summary']['#description'] =
+        t('Optionnel : un résumé court utilisé sur certaines listes ou aperçus.');
+    }
   }
 
   // Boutique associée.
@@ -216,6 +235,16 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
     if (isset($form['actions']['submit'])) {
       $form['actions']['submit']['#value'] = t('Enregistrer le produit');
     }
+    foreach ($form['actions'] as &$action) {
+      if (!is_array($action)) {
+        continue;
+      }
+      if (($action['#id'] ?? '') === 'edit-actions-submit-continue'
+        || ($action['#value'] ?? '') === 'Save and add variations') {
+        $action['#value'] = t('Enregistrer puis ajouter des variantes');
+      }
+    }
+    unset($action);
     if (isset($form['actions']['delete'])) {
       $form['actions']['delete']['#value'] = t('Supprimer ce produit');
     }
@@ -234,13 +263,19 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
       $form['name']['widget'][0]['value']['#description'] =
         t('Nom interne pour retrouver cette image (ex. : "Photo principale - Prénom Léa"). Non visible sur le site.');
     }
+    if (isset($form['field_media_image'])) {
+      $form['field_media_image']['widget']['#description'] =
+        t('Ajoutez votre photo principale au format JPG, PNG ou WebP. Préférez une image nette, lumineuse et centrée sur la création.');
+    }
     if (isset($form['status'])) {
       $form['status']['widget']['value']['#description'] =
         t('Activé : l\'image est disponible pour être utilisée sur vos produits.');
     }
     // Masquer les champs techniques inutiles pour le gestionnaire.
-    if (isset($form['revision_log_message'])) {
-      $form['revision_log_message']['#access'] = FALSE;
+    foreach (['advanced', 'author', 'uid', 'created', 'revision_log_message'] as $technical_key) {
+      if (isset($form[$technical_key])) {
+        $form[$technical_key]['#access'] = FALSE;
+      }
     }
   }
 
@@ -269,6 +304,28 @@ function odesign_admin_form_commerce_order_add_form_alter(array &$form, FormStat
 
 function odesign_admin_form_commerce_order_default_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   _odesign_admin_clean_order_form($form);
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour la page des variantes produit.
+ */
+function odesign_admin_form_commerce_product_variations_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = t('Enregistrer l’ordre des variantes');
+  }
+
+  if (!isset($form['variations']) || !is_array($form['variations'])) {
+    return;
+  }
+
+  $variation_rows = &$form['variations'];
+  foreach (Element::children($variation_rows) as $variation_id) {
+    if (!isset($form['variations'][$variation_id]['weight'])) {
+      continue;
+    }
+
+    $form['variations'][$variation_id]['weight']['#description'] = t('Utilisez ce poids pour changer l’ordre d’affichage des variantes sur la page produit. 0 = position actuelle, un nombre plus petit remonte plus haut.');
+  }
 }
 
 /**
@@ -387,4 +444,3 @@ function odesign_admin_commerce_order_post_save(\Drupal\commerce_order\Entity\Or
     );
   }
 }
-

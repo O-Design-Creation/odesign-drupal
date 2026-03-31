@@ -17,4 +17,3 @@ odesign_admin.config:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
-
