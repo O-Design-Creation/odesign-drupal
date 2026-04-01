@@ -263,7 +263,7 @@ class BoutiqueConfigForm extends FormBase {
   public function sendTestEmail(array &$form, FormStateInterface $form_state): void {
     $email = $form_state->getValue('test_email');
     if (!$email) {
-      $this->messenger->addError('Veuillez entrer une adresse email de test.');
+      $this->messenger()->addError('Veuillez entrer une adresse email de test.');
       return;
     }
 
@@ -276,10 +276,10 @@ class BoutiqueConfigForm extends FormBase {
     );
 
     if ($result['result'] ?? FALSE) {
-      $this->messenger->addStatus("Email de test envoyé à $email. Vérifiez votre boîte.");
+      $this->messenger()->addStatus("Email de test envoyé à $email. Vérifiez votre boîte.");
     }
     else {
-      $this->messenger->addError("Échec de l'envoi. Vérifiez vos identifiants Mailgun ci-dessus.");
+      $this->messenger()->addError("Échec de l'envoi. Vérifiez vos identifiants Mailgun ci-dessus.");
     }
   }
 
@@ -312,6 +312,11 @@ class BoutiqueConfigForm extends FormBase {
     if ($wh = $form_state->getValue('webhook_secret')) {
       $config['webhook_secret'] = trim($wh);
     }
+    if (!empty($config['publishable_key']) && !empty($config['secret_key'])) {
+      $config['authentication_method'] = 'api_keys';
+      $config['access_token'] = '';
+      $config['stripe_user_id'] = '';
+    }
     $stripe->set('configuration', $config)->save();
 
     // ── Boutique ─────────────────────────────────────────────────────────────
@@ -326,7 +331,7 @@ class BoutiqueConfigForm extends FormBase {
       $store->save();
     }
 
-    $this->messenger->addStatus('Configuration enregistrée avec succès.');
+    $this->messenger()->addStatus('Configuration enregistrée avec succès.');
 
     // Vider le cache de config.
     \Drupal::service('config.factory')->reset();

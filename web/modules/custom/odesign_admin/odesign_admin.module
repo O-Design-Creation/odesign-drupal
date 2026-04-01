@@ -177,6 +177,7 @@ function odesign_admin_theme_registry_alter(array &$theme_registry): void {
   }
 }
 
+
 /**
  * Implémente hook_mail().
  *
