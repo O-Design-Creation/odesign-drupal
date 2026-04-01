@@ -129,6 +129,74 @@
   };
 
   // -------------------------------------------------------------------------
+  // Galerie produit : thumbnails accessibles
+  // -------------------------------------------------------------------------
+  Drupal.behaviors.odesignProductGallery = {
+    attach: function (context) {
+      once('odesign-product-gallery', '.product-gallery__frame', context).forEach(function (gallery) {
+        var triggers = gallery.querySelectorAll('[data-gallery-trigger]');
+        var slides = gallery.querySelectorAll('[data-gallery-slide]');
+
+        if (!triggers.length || !slides.length) {
+          return;
+        }
+
+        function activateSlide(targetId, focusTrigger) {
+          slides.forEach(function (slide) {
+            var isActive = slide.id === targetId;
+            slide.hidden = !isActive;
+            slide.classList.toggle('is-active', isActive);
+          });
+
+          triggers.forEach(function (trigger) {
+            var isActive = trigger.getAttribute('data-gallery-target') === targetId;
+            trigger.classList.toggle('is-active', isActive);
+            trigger.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            trigger.setAttribute('tabindex', isActive ? '0' : '-1');
+
+            if (isActive && focusTrigger) {
+              trigger.focus();
+            }
+          });
+        }
+
+        triggers.forEach(function (trigger, index) {
+          trigger.setAttribute('tabindex', index === 0 ? '0' : '-1');
+
+          trigger.addEventListener('click', function () {
+            activateSlide(trigger.getAttribute('data-gallery-target'), false);
+          });
+
+          trigger.addEventListener('keydown', function (event) {
+            var nextIndex = null;
+
+            if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+              nextIndex = (index + 1) % triggers.length;
+            }
+
+            if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+              nextIndex = (index - 1 + triggers.length) % triggers.length;
+            }
+
+            if (event.key === 'Home') {
+              nextIndex = 0;
+            }
+
+            if (event.key === 'End') {
+              nextIndex = triggers.length - 1;
+            }
+
+            if (nextIndex !== null) {
+              event.preventDefault();
+              activateSlide(triggers[nextIndex].getAttribute('data-gallery-target'), true);
+            }
+          });
+        });
+      });
+    }
+  };
+
+  // -------------------------------------------------------------------------
   // Couleur de la barre d'état du navigateur mobile (theme-color)
   // -------------------------------------------------------------------------
   Drupal.behaviors.odesignThemeColor = {

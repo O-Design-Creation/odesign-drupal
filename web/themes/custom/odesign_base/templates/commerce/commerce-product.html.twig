@@ -19,9 +19,63 @@
 
     {# Colonne gauche : galerie images #}
     <div class="product-gallery">
-      {%- if product_entity.get('field_product_images').entity -%}
-        <div class="product-gallery__main" id="product-gallery-main">
-          {{- product.field_product_images -}}
+      {%- if product_gallery_items is not empty -%}
+        <div class="product-gallery__frame">
+          <div class="product-gallery__main" id="product-gallery-main">
+            {% for item in product_gallery_items %}
+              <figure
+                class="product-gallery__slide{{ loop.first ? ' is-active' : '' }}"
+                id="{{ item.id }}"
+                data-gallery-slide
+                {% if not loop.first %}hidden{% endif %}
+              >
+                <img
+                  src="{{ item.main_src }}"
+                  alt="{{ item.alt }}"
+                  loading="{{ loop.first ? 'eager' : 'lazy' }}"
+                  decoding="async"
+                >
+              </figure>
+            {% endfor %}
+          </div>
+
+          {% if product_gallery_has_multiple %}
+            <div class="product-gallery__toolbar">
+              <p class="product-gallery__count">
+                {{ product_gallery_count }} {{ product_gallery_count > 1 ? 'vues'|t : 'vue'|t }}
+              </p>
+              <div class="product-gallery__hint">{{ 'Sélectionnez une vignette pour changer de vue'|t }}</div>
+            </div>
+
+            <div
+              class="product-gallery__thumbs"
+              role="tablist"
+              aria-label="{{ 'Galerie produit'|t }}"
+            >
+              {% for item in product_gallery_items %}
+                <button
+                  type="button"
+                  class="product-gallery__thumb{{ loop.first ? ' is-active' : '' }}"
+                  data-gallery-trigger
+                  data-gallery-target="{{ item.id }}"
+                  role="tab"
+                  aria-controls="{{ item.id }}"
+                  aria-selected="{{ loop.first ? 'true' : 'false' }}"
+                  aria-label="{{ 'Afficher l’image %position sur %total'|t({
+                    '%position': loop.index,
+                    '%total': product_gallery_count
+                  }) }}"
+                >
+                  <img
+                    src="{{ item.thumb_src }}"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  >
+                </button>
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
       {%- else -%}
         <div class="product-gallery__placeholder" aria-label="{{ 'Image non disponible'|t }}" role="img">

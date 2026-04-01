@@ -5,6 +5,8 @@
  * odesign_base.theme — Fonctions du thème Atelier O Design.
  */
 
+use Drupal\image\Entity\ImageStyle;
+
 /**
  * Implements hook_page_attachments_alter().
  *
@@ -20,4 +22,43 @@ function odesign_base_page_attachments_alter(array &$attachments): void {
       }
     }
   }
+}
+
+/**
+ * Implements hook_preprocess_commerce_product().
+ */
+function odesign_base_preprocess_commerce_product(array &$variables): void {
+  if (empty($variables['product_entity']) || !$variables['product_entity']->hasField('field_product_images')) {
+    return;
+  }
+
+  $file_url_generator = \Drupal::service('file_url_generator');
+  $full_style = ImageStyle::load('product_full');
+  $thumb_style = ImageStyle::load('thumbnail');
+  $gallery_items = [];
+
+  foreach ($variables['product_entity']->get('field_product_images')->referencedEntities() as $delta => $media) {
+    if (
+      !$media->hasField('field_media_image') ||
+      $media->get('field_media_image')->isEmpty() ||
+      !$media->get('field_media_image')->entity
+    ) {
+      continue;
+    }
+
+    $image = $media->get('field_media_image')->entity;
+    $image_item = $media->get('field_media_image')->first();
+    $uri = $image->getFileUri();
+
+    $gallery_items[] = [
+      'id' => 'product-gallery-image-' . $delta,
+      'alt' => trim((string) $image_item?->get('alt')->getString()) ?: $media->label(),
+      'main_src' => $full_style ? $full_style->buildUrl($uri) : $file_url_generator->generateString($uri),
+      'thumb_src' => $thumb_style ? $thumb_style->buildUrl($uri) : $file_url_generator->generateString($uri),
+    ];
+  }
+
+  $variables['product_gallery_items'] = $gallery_items;
+  $variables['product_gallery_count'] = count($gallery_items);
+  $variables['product_gallery_has_multiple'] = count($gallery_items) > 1;
 }
