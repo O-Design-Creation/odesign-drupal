@@ -515,12 +515,13 @@ function odesign_base_preprocess_menu(array &$variables): void {
   $existing_urls = [];
   $filtered_items = [];
   foreach ($variables['items'] ?? [] as $item) {
+    $item_title = mb_strtolower(trim((string) ($item['title'] ?? '')));
     if (!empty($item['url']) && $item['url'] instanceof Url) {
       $item_url = $item['url']->toString();
       $existing_urls[] = $item_url;
       // Le lien "Boutique" est redondant avec la homepage/catalogue.
       // On centralise l'accès catalogue dans le dropdown "Univers".
-      if ($item_url === '/produits') {
+      if ($item_url === '/produits' || $item_title === 'boutique') {
         continue;
       }
     }
