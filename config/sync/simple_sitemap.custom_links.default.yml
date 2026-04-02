@@ -5,3 +5,15 @@ links:
     path: /
     priority: '1.0'
     changefreq: daily
+  -
+    path: /occasions/mariage
+    priority: '0.8'
+    changefreq: weekly
+  -
+    path: /occasions/naissance-bebe
+    priority: '0.8'
+    changefreq: weekly
+  -
+    path: /occasions/cadeaux-personnalises-famille
+    priority: '0.8'
+    changefreq: weekly
