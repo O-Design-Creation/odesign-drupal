@@ -290,7 +290,7 @@ strong { font-weight: 600; }
 
 .site-logo img,
 .site-logo svg {
-  height: 52px;
+  height: 64px;
   width: auto;
 }
 
@@ -370,32 +370,42 @@ strong { font-weight: 600; }
    --------------------------------------------------------------------------- */
 @media (max-width: 900px) {
   .site-header__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
     gap: var(--space-2);
     padding-inline: var(--space-4);
   }
 
   .site-header__actions {
+    display: flex;
     gap: var(--space-2);
     margin-left: auto;
+    justify-self: end;
+    flex-wrap: nowrap;
   }
 
   .header-login-link {
-    display: none;
+    display: none !important;
   }
 
   .header-cart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: var(--space-2);
     min-width: auto;
   }
 
   .nav-toggle {
-    display: flex;
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    flex: 0 0 auto;
   }
 
   .site-nav {
-    display: none;
+    display: none !important;
     position: fixed;
     inset: 0;
     background: #ffffff;
@@ -407,7 +417,7 @@ strong { font-weight: 600; }
   }
 
   .site-nav.is-open {
-    display: flex;
+    display: flex !important;
   }
 
   .site-nav ul {
@@ -433,7 +443,11 @@ strong { font-weight: 600; }
 
   .site-logo img,
   .site-logo svg {
-    height: 40px;
+    height: 46px;
+  }
+
+  .site-logo {
+    min-width: 0;
   }
 }
 
