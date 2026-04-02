@@ -34,19 +34,22 @@
       </li>
     {% endfor %}
     {% for item in items %}
-      {% set item_link_classes = ['menu-item__link'] %}
-      {% if item.in_active_trail %}
-        {% set item_link_classes = item_link_classes|merge(['is-active']) %}
-      {% endif %}
-      <li{{ item.attributes.addClass('menu-item') }}>
-        {{ link(item.title, item.url, {
-          'class': item_link_classes,
-          'aria-current': item.in_active_trail ? 'page' : null
-        }) }}
-        {% if item.below %}
-          {{ menus.menu_links(item.below, attributes, menu_level + 1, []) }}
+      {% set item_title = item.title|render|striptags|trim|lower %}
+      {% if item_title != 'boutique' %}
+        {% set item_link_classes = ['menu-item__link'] %}
+        {% if item.in_active_trail %}
+          {% set item_link_classes = item_link_classes|merge(['is-active']) %}
         {% endif %}
-      </li>
+        <li{{ item.attributes.addClass('menu-item') }}>
+          {{ link(item.title, item.url, {
+            'class': item_link_classes,
+            'aria-current': item.in_active_trail ? 'page' : null
+          }) }}
+          {% if item.below %}
+            {{ menus.menu_links(item.below, attributes, menu_level + 1, []) }}
+          {% endif %}
+        </li>
+      {% endif %}
     {% endfor %}
     </ul>
   {% endif %}
