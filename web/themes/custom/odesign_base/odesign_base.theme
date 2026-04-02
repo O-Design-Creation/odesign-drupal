@@ -475,6 +475,55 @@ function odesign_base_build_life_occasion_card(TermInterface $term, int $product
 }
 
 /**
+ * Charge les derniers articles publiés.
+ *
+ * @return \Drupal\node\NodeInterface[]
+ *   Articles publiés.
+ */
+function odesign_base_load_latest_articles(int $limit = 3): array {
+  $storage = \Drupal::entityTypeManager()->getStorage('node');
+  $ids = $storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('type', 'article')
+    ->condition('status', 1)
+    ->sort('created', 'DESC')
+    ->range(0, $limit)
+    ->execute();
+  if (!$ids) {
+    return [];
+  }
+  return $storage->loadMultiple($ids);
+}
+
+/**
+ * Prépare des cartes d'articles compactes pour la homepage.
+ *
+ * @return array<int, array{title: string, url: string, excerpt: string}>
+ *   Données d'articles.
+ */
+function odesign_base_build_latest_article_items(int $limit = 3): array {
+  $items = [];
+  foreach (odesign_base_load_latest_articles($limit) as $article) {
+    $title = trim((string) $article->label());
+    $url = $article->toUrl()->toString();
+    $excerpt = '';
+    if ($article->hasField('body') && !$article->get('body')->isEmpty()) {
+      $raw = (string) ($article->get('body')->summary ?: $article->get('body')->value);
+      $excerpt = trim(\Drupal\Component\Utility\Html::decodeEntities(strip_tags($raw)));
+    }
+    if (mb_strlen($excerpt) > 140) {
+      $excerpt = rtrim(mb_substr($excerpt, 0, 137)) . '...';
+    }
+    $items[] = [
+      'title' => $title,
+      'url' => $url,
+      'excerpt' => $excerpt,
+    ];
+  }
+  return $items;
+}
+
+/**
  * Implements hook_preprocess_page().
  */
 function odesign_base_preprocess_page(array &$variables): void {
@@ -523,6 +572,9 @@ function odesign_base_preprocess_page(array &$variables): void {
   $variables['front_story_founder_image_url'] = odesign_base_file_url_from_id((int) ($settings->get('homepage_story_founder_image') ?? 0));
   $variables['front_story_video_file_url'] = odesign_base_file_url_from_id((int) ($settings->get('homepage_story_video_file') ?? 0));
   $variables['front_story_video_poster_url'] = odesign_base_file_url_from_id((int) ($settings->get('homepage_story_video_poster') ?? 0));
+
+  $variables['front_featured_life_occasions'] = array_slice($variables['front_life_occasion_cards'], 0, 4);
+  $variables['front_latest_articles'] = odesign_base_build_latest_article_items(3);
 }
 
 /**

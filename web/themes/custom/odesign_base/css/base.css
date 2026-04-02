@@ -2462,6 +2462,102 @@ nav ul {
   background: #000;
 }
 
+.home-bridge {
+  background: var(--color-brand-cream);
+  padding: var(--space-12) 0;
+}
+
+.home-bridge__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.home-bridge__card {
+  background: #fff;
+  border: 1px solid rgba(139, 97, 81, 0.14);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-bridge__intro {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.home-bridge__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.home-bridge__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.home-bridge__link:hover,
+.home-bridge__link:focus-visible {
+  border-color: var(--color-brand-medium);
+  background: var(--color-brand-cream);
+  color: var(--color-brand-dark);
+}
+
+.home-bridge__articles {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.home-bridge__article {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  background: var(--color-brand-cream);
+}
+
+.home-bridge__article-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-lg);
+}
+
+.home-bridge__article-title a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.home-bridge__article-title a:hover {
+  color: var(--color-brand-dark);
+  text-decoration: underline;
+}
+
+.home-bridge__article-excerpt {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+}
+
+.home-bridge__article-link {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.home-bridge__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
 /* ---------------------------------------------------------------------------
    30. Landing pages taxonomy "Occasions de vie"
    --------------------------------------------------------------------------- */
@@ -2624,6 +2720,10 @@ nav ul {
 
 @media (max-width: 980px) {
   .home-story-proof__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-bridge__grid {
     grid-template-columns: 1fr;
   }
 }
