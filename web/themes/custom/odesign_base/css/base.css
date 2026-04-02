@@ -2453,13 +2453,17 @@ nav ul {
 .home-story-proof__video-wrap {
   margin: 0;
   background: #000;
+  display: flex;
+  justify-content: center;
 }
 
 .home-story-proof__video {
   display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  width: min(100%, 420px);
+  aspect-ratio: 9 / 16;
+  object-fit: contain;
   background: #000;
+  margin-inline: auto;
 }
 
 .home-bridge {
