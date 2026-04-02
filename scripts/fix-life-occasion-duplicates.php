@@ -24,6 +24,7 @@ $definitions = [
   '/occasions/mariage' => 'Mariage',
   '/occasions/naissance-bebe' => 'Naissance & bébé',
   '/occasions/cadeaux-personnalises-famille' => 'Cadeaux personnalisés / famille',
+  '/occasions/pancarte-evenementielles' => 'Pancarte événementielles',
 ];
 
 $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
@@ -168,4 +169,3 @@ if ($schema->tableExists('commerce_product__field_life_occasion')) {
     print sprintf("  - %d => %d\n", (int) $tid, (int) $count);
   }
 }
-

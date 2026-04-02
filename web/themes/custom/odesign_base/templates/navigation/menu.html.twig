@@ -21,7 +21,7 @@
       <ul>
     {% endif %}
     {% for item in extra_links %}
-      {% set extra_link_is_active = item.in_active_trail or item.url.toString == current_path_info|default('') %}
+      {% set extra_link_is_active = item.in_active_trail %}
       {% set extra_link_classes = ['menu-item__link'] %}
       {% if extra_link_is_active %}
         {% set extra_link_classes = extra_link_classes|merge(['is-active']) %}

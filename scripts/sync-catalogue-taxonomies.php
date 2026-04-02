@@ -78,9 +78,9 @@ function load_or_create_term(string $vocabulary, string $name): \Drupal\taxonomy
 }
 
 /**
- * Déduit l'univers principal à partir des données Shopify.
+ * Déduit les univers à associer à partir des données Shopify.
  */
-function derive_life_occasion(array $row): string {
+function derive_life_occasion_labels(array $row): array {
   $haystack = normalize_text(implode(' ', [
     $row['Title'] ?? '',
     $row['Type'] ?? '',
@@ -90,13 +90,27 @@ function derive_life_occasion(array $row): string {
     $row['Product Category'] ?? '',
   ]));
 
+  $labels = [];
+
+  $pancarte_keywords = [
+    'pancarte', 'panneau', 'signaletique', 'signaletique',
+    'evenement', 'arche', 'bienvenue', 'plan table',
+  ];
+  foreach ($pancarte_keywords as $keyword) {
+    if (str_contains($haystack, $keyword)) {
+      $labels[] = 'Pancarte événementielles';
+      break;
+    }
+  }
+
   $mariage_keywords = [
     'mariage', 'maries', 'alliance', 'temoin', 'urne',
-    'table', 'chaise', 'livre or', 'wedding',
+    'livre or', 'wedding', 'deux oui', 'vin honneur',
   ];
   foreach ($mariage_keywords as $keyword) {
     if (str_contains($haystack, $keyword)) {
-      return 'Mariage';
+      $labels[] = 'Mariage';
+      break;
     }
   }
 
@@ -106,11 +120,16 @@ function derive_life_occasion(array $row): string {
   ];
   foreach ($birth_keywords as $keyword) {
     if (str_contains($haystack, $keyword)) {
-      return 'Naissance & bébé';
+      $labels[] = 'Naissance & bébé';
+      break;
     }
   }
 
-  return 'Cadeaux personnalisés / famille';
+  if (!$labels) {
+    $labels[] = 'Cadeaux personnalisés / famille';
+  }
+
+  return array_values(array_unique($labels));
 }
 
 /**
@@ -146,6 +165,7 @@ $life_terms = [
   'Mariage' => load_or_create_term('life_occasion', 'Mariage'),
   'Naissance & bébé' => load_or_create_term('life_occasion', 'Naissance & bébé'),
   'Cadeaux personnalisés / famille' => load_or_create_term('life_occasion', 'Cadeaux personnalisés / famille'),
+  'Pancarte événementielles' => load_or_create_term('life_occasion', 'Pancarte événementielles'),
 ];
 
 $rows_by_handle = [];
@@ -195,16 +215,28 @@ foreach ($products as $product) {
 
   $duplicate_aliases[$shopify_handle] = ($duplicate_aliases[$shopify_handle] ?? 0) + 1;
   $row = $rows_by_handle[$shopify_handle];
-  $life_label = derive_life_occasion($row);
-  $life_term = $life_terms[$life_label];
+  $life_labels = derive_life_occasion_labels($row);
+  $life_target_ids = [];
+  foreach ($life_labels as $life_label) {
+    if (isset($life_terms[$life_label])) {
+      $life_target_ids[] = (int) $life_terms[$life_label]->id();
+    }
+  }
+  $life_target_ids = array_values(array_unique($life_target_ids));
   $secondary = derive_product_category($row);
 
   $changed = FALSE;
 
   if ($product->hasField('field_life_occasion')) {
     $current_ids = array_map(static fn($item) => (int) $item['target_id'], $product->get('field_life_occasion')->getValue());
-    if ($current_ids !== [(int) $life_term->id()]) {
-      $product->set('field_life_occasion', [['target_id' => $life_term->id()]]);
+    sort($current_ids);
+    $expected_ids = $life_target_ids;
+    sort($expected_ids);
+    if ($current_ids !== $expected_ids) {
+      $product->set('field_life_occasion', array_map(
+        static fn(int $target_id): array => ['target_id' => $target_id],
+        $expected_ids
+      ));
       $changed = TRUE;
     }
   }
@@ -221,7 +253,7 @@ foreach ($products as $product) {
   if ($changed) {
     $product->save();
     $updated++;
-    echo "UPDATE : {$product->label()} ({$shopify_handle}) -> {$life_label}" . ($secondary ? " / {$secondary}" : '') . "\n";
+    echo "UPDATE : {$product->label()} ({$shopify_handle}) -> " . implode(' + ', $life_labels) . ($secondary ? " / {$secondary}" : '') . "\n";
   }
 }
 

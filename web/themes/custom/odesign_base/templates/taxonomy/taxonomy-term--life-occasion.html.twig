@@ -48,6 +48,39 @@
     </section>
   {% endif %}
 
+  {% if life_occasion_related_links %}
+    <section class="life-occasion-page__related">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="section-heading__eyebrow">{{ 'Maillage utile'|t }}</p>
+            <h2 class="section-heading__title">{{ 'Univers liés'|t }}</h2>
+          </div>
+        </div>
+
+        <div class="life-occasion-page__related-links">
+          {% for related in life_occasion_related_links %}
+            <a href="{{ related.url }}" class="btn btn--secondary">
+              {% if related.relationship == 'univers-principal-lie' %}
+                {{ 'Voir aussi l’univers principal : @title'|t({'@title': related.title}) }}
+              {% else %}
+                {{ 'Voir aussi : @title'|t({'@title': related.title}) }}
+              {% endif %}
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if life_occasion_is_secondary_measured and life_occasion_lot_offer_note %}
+    <section class="life-occasion-page__offer-note">
+      <div class="container">
+        <p>{{ life_occasion_lot_offer_note }}</p>
+      </div>
+    </section>
+  {% endif %}
+
   <section class="life-occasion-page__products">
     <div class="container">
       <div class="section-heading">

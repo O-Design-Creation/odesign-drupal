@@ -250,6 +250,53 @@ function odesign_base_extract_reassurance_items(TermInterface $term): array {
 }
 
 /**
+ * Fournit les relations éditoriales entre univers (maillage contrôlé).
+ *
+ * @param \Drupal\taxonomy\TermInterface $term
+ *   Le terme univers courant.
+ *
+ * @return array<int, array{title:string,url:string,relationship:string}>
+ *   Liste de liens liés.
+ */
+function odesign_base_build_related_life_occasion_links(TermInterface $term): array {
+  $canonical_path = '/taxonomy/term/' . $term->id();
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $current_alias = $alias_manager->getAliasByPath($canonical_path);
+
+  $relations_by_alias = [
+    '/occasions/mariage' => ['/occasions/pancarte-evenementielles'],
+    '/occasions/pancarte-evenementielles' => ['/occasions/mariage'],
+  ];
+
+  if (empty($relations_by_alias[$current_alias])) {
+    return [];
+  }
+
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $links = [];
+
+  foreach ($relations_by_alias[$current_alias] as $related_alias) {
+    $related_path = $alias_manager->getPathByAlias($related_alias);
+    if (!preg_match('#^/taxonomy/term/(\d+)$#', $related_path, $matches)) {
+      continue;
+    }
+    $related_term = $term_storage->load((int) $matches[1]);
+    if (!$related_term instanceof TermInterface || $related_term->bundle() !== 'life_occasion') {
+      continue;
+    }
+    $links[] = [
+      'title' => $related_term->label(),
+      'url' => $related_term->toUrl()->toString(),
+      'relationship' => $current_alias === '/occasions/pancarte-evenementielles'
+        ? 'univers-principal-lie'
+        : 'univers-secondaire-lie',
+    ];
+  }
+
+  return $links;
+}
+
+/**
  * Détermine la meilleure couleur de texte pour une image.
  */
 function odesign_base_detect_hero_text_mode(string $file_uri): string {
@@ -464,6 +511,7 @@ function odesign_base_preprocess_menu(array &$variables): void {
 
   $request_path = \Drupal::request()->getPathInfo();
   $alias_manager = \Drupal::service('path_alias.manager');
+  $current_route = \Drupal::routeMatch()->getRouteName();
   $existing_urls = [];
   foreach ($variables['items'] ?? [] as $item) {
     if (!empty($item['url']) && $item['url'] instanceof Url) {
@@ -483,11 +531,11 @@ function odesign_base_preprocess_menu(array &$variables): void {
 
     $canonical_path = '/taxonomy/term/' . $term->id();
     $alias_path = $alias_manager->getAliasByPath($canonical_path);
-    $is_active = (
+    $is_active = $current_route === 'entity.taxonomy_term.canonical' && (
       $route_term instanceof TermInterface
       && $route_term->bundle() === 'life_occasion'
       && (int) $route_term->id() === (int) $term->id()
-    ) || $request_path === $canonical_path || $request_path === $alias_path || $request_path === $url_string;
+    );
 
     $variables['life_occasion_links'][] = [
       'title' => $term->label(),
@@ -526,6 +574,14 @@ function odesign_base_preprocess_taxonomy_term(array &$variables): void {
   $variables['life_occasion_hero_image_url'] = $hero['url'];
   $variables['life_occasion_hero_text_mode'] = $hero['text_mode'];
   $variables['life_occasion_hero_has_image'] = $hero['has_image'];
+  $variables['life_occasion_related_links'] = odesign_base_build_related_life_occasion_links($term);
+
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $current_alias = $alias_manager->getAliasByPath('/taxonomy/term/' . $term->id());
+  $variables['life_occasion_is_secondary_measured'] = ($current_alias === '/occasions/pancarte-evenementielles');
+  $variables['life_occasion_lot_offer_note'] = $variables['life_occasion_is_secondary_measured']
+    ? 'Univers secondaire mesuré : cette page peut porter des offres en lot dédiées aux événements, sans casser la navigation principale.'
+    : '';
 }
 
 /**

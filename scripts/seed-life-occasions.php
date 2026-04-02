@@ -31,6 +31,14 @@ $definitions = [
     'reassurance' => "Univers facile à enrichir avec les temps forts\nBase utile pour les fêtes et cadeaux du quotidien\nNavigation plus simple qu’un catalogue purement technique",
     'alias' => '/occasions/cadeaux-personnalises-famille',
   ],
+  'pancarte-evenementielles' => [
+    'name' => 'Pancarte événementielles',
+    'weight' => 20,
+    'description' => "Univers secondaire pour les pancartes événementielles en bois, avec logique de lots et prix dégressifs.",
+    'intro' => "Une page dédiée aux pancartes événementielles en bois personnalisées, avec une lecture simple des options et des offres en lot.",
+    'reassurance' => "Univers secondaire mesuré pour ne pas diluer la navigation principale\nFabrication atelier soignée et personnalisations lisibles\nOffres en lot pensées pour les événements",
+    'alias' => '/occasions/pancarte-evenementielles',
+  ],
 ];
 
 $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');

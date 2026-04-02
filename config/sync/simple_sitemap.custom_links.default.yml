@@ -17,3 +17,7 @@ links:
     path: /occasions/cadeaux-personnalises-famille
     priority: '0.8'
     changefreq: weekly
+  -
+    path: /occasions/pancarte-evenementielles
+    priority: '0.7'
+    changefreq: weekly
