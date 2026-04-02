@@ -442,6 +442,20 @@ function odesign_base_build_homepage_hero(): array {
 }
 
 /**
+ * Retourne l'URL publique d'un fichier à partir de son id.
+ */
+function odesign_base_file_url_from_id(int $file_id): ?string {
+  if ($file_id <= 0) {
+    return NULL;
+  }
+  $file = \Drupal\file\Entity\File::load($file_id);
+  if (!$file) {
+    return NULL;
+  }
+  return \Drupal::service('file_url_generator')->generateString($file->getFileUri());
+}
+
+/**
  * Prépare une carte d'univers pour la homepage.
  */
 function odesign_base_build_life_occasion_card(TermInterface $term, int $product_limit = 3): array {
@@ -495,6 +509,20 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['front_primary_life_occasion_url'] = $first_term->toUrl()->toString();
   }
   $variables['front_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
+
+  $settings = \Drupal::config('odesign_admin.settings');
+  $default_founder_text = "Je m’appelle Océane, j’ai 22 ans, je suis mariée et maman d’un petit garçon.\n\nEn 2023, j’ai créé mon entreprise avec un rêve simple mais essentiel : construire une vie professionnelle qui me permette d’être présente pour ma famille et pour l’éducation de mon enfant.\n\nAujourd’hui, je vis de mon travail passion, un projet né du cœur, qui me ressemble et qui donne du sens à chaque journée.";
+  $default_video_text = 'Une vidéo réelle de fabrication pour montrer le niveau de finition, la précision de la gravure et le soin apporté aux créations.';
+
+  $founder_text = trim((string) ($settings->get('homepage_story_founder_text') ?: $default_founder_text));
+  $video_text = trim((string) ($settings->get('homepage_story_video_text') ?: $default_video_text));
+  $variables['front_story_founder_title'] = (string) ($settings->get('homepage_story_founder_title') ?: 'Un atelier incarné, un travail de cœur');
+  $variables['front_story_founder_text_lines'] = array_values(array_filter(preg_split('/\R\R+/', $founder_text) ?: []));
+  $variables['front_story_video_title'] = (string) ($settings->get('homepage_story_video_title') ?: 'Réalisation d’un arbre de vie');
+  $variables['front_story_video_text'] = $video_text;
+  $variables['front_story_founder_image_url'] = odesign_base_file_url_from_id((int) ($settings->get('homepage_story_founder_image') ?? 0));
+  $variables['front_story_video_file_url'] = odesign_base_file_url_from_id((int) ($settings->get('homepage_story_video_file') ?? 0));
+  $variables['front_story_video_poster_url'] = odesign_base_file_url_from_id((int) ($settings->get('homepage_story_video_poster') ?? 0));
 }
 
 /**

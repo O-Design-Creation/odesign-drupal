@@ -8,3 +8,24 @@ odesign_admin.settings:
     homepage_hero_text_mode:
       type: string
       label: 'Mode de contraste du texte du hero de la page d’accueil'
+    homepage_story_founder_title:
+      type: string
+      label: 'Titre du bloc Je me présente'
+    homepage_story_founder_text:
+      type: text
+      label: 'Texte du bloc Je me présente'
+    homepage_story_founder_image:
+      type: integer
+      label: 'Image du bloc Je me présente'
+    homepage_story_video_title:
+      type: string
+      label: 'Titre du bloc vidéo homepage'
+    homepage_story_video_text:
+      type: text
+      label: 'Texte du bloc vidéo homepage'
+    homepage_story_video_file:
+      type: integer
+      label: 'Vidéo MP4 homepage'
+    homepage_story_video_poster:
+      type: integer
+      label: 'Poster vidéo homepage'

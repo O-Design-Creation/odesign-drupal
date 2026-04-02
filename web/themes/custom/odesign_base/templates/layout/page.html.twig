@@ -226,6 +226,49 @@
           </div>
         </section>
 
+        <section class="home-story-proof">
+          <div class="container">
+            <div class="home-story-proof__grid">
+              <article class="home-story-proof__card home-story-proof__card--founder">
+                <figure class="home-story-proof__media">
+                  <img
+                    src="{{ front_story_founder_image_url ?: (base_path ~ directory ~ '/media/home-je-me-presente.jpg') }}"
+                    alt="{{ 'Océane dans son atelier O Design'|t }}"
+                    loading="lazy"
+                    width="1500"
+                    height="2000"
+                  >
+                </figure>
+                <div class="home-story-proof__content">
+                  <p class="section-heading__eyebrow">{{ 'Je me présente'|t }}</p>
+                  <h2 class="section-heading__title">{{ front_story_founder_title }}</h2>
+                  {% for paragraph in front_story_founder_text_lines %}
+                    <p>{{ paragraph }}</p>
+                  {% endfor %}
+                </div>
+              </article>
+
+              <article class="home-story-proof__card home-story-proof__card--video">
+                <div class="home-story-proof__content">
+                  <p class="section-heading__eyebrow">{{ 'Preuve atelier'|t }}</p>
+                  <h2 class="section-heading__title">{{ front_story_video_title }}</h2>
+                  <p>{{ front_story_video_text }}</p>
+                </div>
+                <figure class="home-story-proof__video-wrap">
+                  <video
+                    class="home-story-proof__video"
+                    controls
+                    preload="metadata"
+                    poster="{{ front_story_video_poster_url ?: (base_path ~ directory ~ '/media/home-arbre-vie-poster.jpg') }}"
+                  >
+                    <source src="{{ front_story_video_file_url ?: (base_path ~ directory ~ '/media/home-arbre-vie-realisation.mp4') }}" type="video/mp4">
+                  </video>
+                </figure>
+              </article>
+            </div>
+          </div>
+        </section>
+
         <section class="home-method">
           <div class="container">
             <div class="section-heading">

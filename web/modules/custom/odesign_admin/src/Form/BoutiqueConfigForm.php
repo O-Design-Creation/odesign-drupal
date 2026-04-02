@@ -264,6 +264,86 @@ class BoutiqueConfigForm extends FormBase {
     ];
 
     // ────────────────────────────────────────────────────────────────────────
+    // SECTION 5 — Bloc "Je me présente" + vidéo homepage
+    // ────────────────────────────────────────────────────────────────────────
+    $story_founder_fid = (int) ($settings->get('homepage_story_founder_image') ?? 0);
+    $story_video_fid = (int) ($settings->get('homepage_story_video_file') ?? 0);
+    $story_video_poster_fid = (int) ($settings->get('homepage_story_video_poster') ?? 0);
+    $story_founder_file = $story_founder_fid ? File::load($story_founder_fid) : NULL;
+    $story_video_file = $story_video_fid ? File::load($story_video_fid) : NULL;
+    $story_video_poster_file = $story_video_poster_fid ? File::load($story_video_poster_fid) : NULL;
+
+    $default_founder_text = "Je m’appelle Océane, j’ai 22 ans, je suis mariée et maman d’un petit garçon.\n\nEn 2023, j’ai créé mon entreprise avec un rêve simple mais essentiel : construire une vie professionnelle qui me permette d’être présente pour ma famille et pour l’éducation de mon enfant.\n\nAujourd’hui, je vis de mon travail passion, un projet né du cœur, qui me ressemble et qui donne du sens à chaque journée.";
+    $default_video_text = 'Une vidéo réelle de fabrication pour montrer le niveau de finition, la précision de la gravure et le soin apporté aux créations.';
+
+    $form['homepage_story'] = [
+      '#type' => 'details',
+      '#title' => 'Bloc "Je me présente" et vidéo',
+      '#open' => FALSE,
+      '#attributes' => ['class' => ['config-section', 'config-section--story']],
+    ];
+    $form['homepage_story']['story_help'] = [
+      '#markup' => '<div class="config-help">'
+        . 'Ce bloc renforce la confiance client : présentation de l’atelier + vidéo réelle de fabrication. '
+        . 'Tous les textes et médias ci-dessous sont modifiables.'
+        . '</div>',
+    ];
+    $form['homepage_story']['homepage_story_founder_title'] = [
+      '#type' => 'textfield',
+      '#title' => 'Titre "Je me présente"',
+      '#default_value' => (string) ($settings->get('homepage_story_founder_title') ?? 'Un atelier incarné, un travail de cœur'),
+      '#maxlength' => 160,
+    ];
+    $form['homepage_story']['homepage_story_founder_text'] = [
+      '#type' => 'textarea',
+      '#title' => 'Texte de présentation',
+      '#default_value' => (string) ($settings->get('homepage_story_founder_text') ?? $default_founder_text),
+      '#rows' => 7,
+    ];
+    $form['homepage_story']['homepage_story_founder_image'] = [
+      '#type' => 'managed_file',
+      '#title' => 'Photo de présentation',
+      '#default_value' => $story_founder_file ? [$story_founder_file->id()] : [],
+      '#upload_location' => 'public://homepage-story/',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['png jpg jpeg webp'],
+        'file_validate_size' => [8 * 1024 * 1024],
+      ],
+    ];
+    $form['homepage_story']['homepage_story_video_title'] = [
+      '#type' => 'textfield',
+      '#title' => 'Titre vidéo',
+      '#default_value' => (string) ($settings->get('homepage_story_video_title') ?? 'Réalisation d’un arbre de vie'),
+      '#maxlength' => 160,
+    ];
+    $form['homepage_story']['homepage_story_video_text'] = [
+      '#type' => 'textarea',
+      '#title' => 'Texte vidéo',
+      '#default_value' => (string) ($settings->get('homepage_story_video_text') ?? $default_video_text),
+      '#rows' => 3,
+    ];
+    $form['homepage_story']['homepage_story_video_file'] = [
+      '#type' => 'managed_file',
+      '#title' => 'Vidéo MP4',
+      '#default_value' => $story_video_file ? [$story_video_file->id()] : [],
+      '#upload_location' => 'public://homepage-story/',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['mp4'],
+        'file_validate_size' => [30 * 1024 * 1024],
+      ],
+    ];
+    $form['homepage_story']['homepage_story_video_poster'] = [
+      '#type' => 'managed_file',
+      '#title' => 'Image d’aperçu vidéo (poster)',
+      '#default_value' => $story_video_poster_file ? [$story_video_poster_file->id()] : [],
+      '#upload_location' => 'public://homepage-story/',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['png jpg jpeg webp'],
+        'file_validate_size' => [8 * 1024 * 1024],
+      ],
+    ];
+
+    // ────────────────────────────────────────────────────────────────────────
     // Submit
     // ────────────────────────────────────────────────────────────────────────
     $form['actions'] = [
@@ -389,6 +469,42 @@ class BoutiqueConfigForm extends FormBase {
     $settings
       ->set('homepage_hero_image', $new_hero_fid ?: NULL)
       ->set('homepage_hero_text_mode', $form_state->getValue('homepage_hero_text_mode') ?: 'auto')
+      ->save();
+
+    // ── Bloc "Je me présente" + vidéo homepage ────────────────────────────
+    $manage_config_file = static function (string $setting_key, string $form_key) use ($form_state, $settings): void {
+      $current_fid = (int) ($settings->get($setting_key) ?? 0);
+      $new_fids = array_values(array_filter($form_state->getValue($form_key) ?? []));
+      $new_fid = $new_fids ? (int) reset($new_fids) : 0;
+
+      if ($new_fid) {
+        $file = File::load($new_fid);
+        if ($file) {
+          $file->setPermanent();
+          $file->save();
+          \Drupal::service('file.usage')->add($file, 'odesign_admin', 'config', $setting_key);
+        }
+      }
+
+      if ($current_fid && $current_fid !== $new_fid) {
+        $old_file = File::load($current_fid);
+        if ($old_file) {
+          \Drupal::service('file.usage')->delete($old_file, 'odesign_admin', 'config', $setting_key);
+        }
+      }
+
+      $settings->set($setting_key, $new_fid ?: NULL);
+    };
+
+    $manage_config_file('homepage_story_founder_image', 'homepage_story_founder_image');
+    $manage_config_file('homepage_story_video_file', 'homepage_story_video_file');
+    $manage_config_file('homepage_story_video_poster', 'homepage_story_video_poster');
+
+    $settings
+      ->set('homepage_story_founder_title', trim((string) $form_state->getValue('homepage_story_founder_title')))
+      ->set('homepage_story_founder_text', trim((string) $form_state->getValue('homepage_story_founder_text')))
+      ->set('homepage_story_video_title', trim((string) $form_state->getValue('homepage_story_video_title')))
+      ->set('homepage_story_video_text', trim((string) $form_state->getValue('homepage_story_video_text')))
       ->save();
 
     // ── Boutique ─────────────────────────────────────────────────────────────
