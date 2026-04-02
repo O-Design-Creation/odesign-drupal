@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Drupal\path_alias\Entity\PathAlias;
+use Drupal\Core\Database\Database;
 use Drupal\taxonomy\Entity\Term;
 
 $definitions = [
@@ -35,17 +36,56 @@ $definitions = [
 $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
 $alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
 $logger = \Drupal::logger('odesign');
+$database = Database::getConnection();
+$schema = $database->schema();
+
+/**
+ * Normalise un libellé pour comparaison robuste (accents, casse, espaces).
+ */
+function normalize_life_occasion_name(string $value): string {
+  $value = mb_strtolower(trim($value));
+  $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value) ?: $value;
+  $value = preg_replace('/[^a-z0-9]+/', ' ', $value);
+  return trim((string) $value);
+}
 
 foreach ($definitions as $machine_name => $definition) {
-  $term_ids = $term_storage->getQuery()
+  $alias_value = $definition['alias'];
+  $canonical_term = NULL;
+
+  // 1) Priorité au terme déjà lié à l'alias canonique (source de vérité URL).
+  $alias_ids = $alias_storage->getQuery()
     ->accessCheck(FALSE)
-    ->condition('vid', 'life_occasion')
-    ->condition('name', $definition['name'])
+    ->condition('alias', $alias_value)
     ->range(0, 1)
     ->execute();
+  if ($alias_ids) {
+    /** @var \Drupal\path_alias\PathAliasInterface $alias_entity */
+    $alias_entity = $alias_storage->load(reset($alias_ids));
+    $alias_path = (string) $alias_entity->getPath();
+    if (preg_match('#^/taxonomy/term/(\d+)$#', $alias_path, $matches)) {
+      $candidate = $term_storage->load((int) $matches[1]);
+      if ($candidate instanceof Term && $candidate->bundle() === 'life_occasion') {
+        $canonical_term = $candidate;
+      }
+    }
+  }
+
+  // 2) Fallback par nom exact si aucun alias canonique existant.
+  if (!$canonical_term) {
+    $term_ids = $term_storage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('vid', 'life_occasion')
+      ->condition('name', $definition['name'])
+      ->range(0, 1)
+      ->execute();
+    if ($term_ids) {
+      $canonical_term = $term_storage->load(reset($term_ids));
+    }
+  }
 
   /** @var \Drupal\taxonomy\Entity\Term $term */
-  $term = $term_ids ? $term_storage->load(reset($term_ids)) : Term::create([
+  $term = $canonical_term ?: Term::create([
     'vid' => 'life_occasion',
     'name' => $definition['name'],
     'status' => 1,
@@ -71,7 +111,47 @@ foreach ($definitions as $machine_name => $definition) {
   $term->save();
 
   $internal_path = '/taxonomy/term/' . $term->id();
-  $alias_value = $definition['alias'];
+
+  // Fusionne les doublons de termes (même nom normalisé) vers le terme canonique.
+  $all_ids = $term_storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('vid', 'life_occasion')
+    ->execute();
+  $all_terms = $term_storage->loadMultiple($all_ids);
+  $canonical_name = normalize_life_occasion_name($definition['name']);
+  $duplicate_ids = [];
+  foreach ($all_terms as $candidate_term) {
+    if ((int) $candidate_term->id() === (int) $term->id()) {
+      continue;
+    }
+    if (normalize_life_occasion_name((string) $candidate_term->label()) === $canonical_name) {
+      $duplicate_ids[] = (int) $candidate_term->id();
+    }
+  }
+
+  if ($duplicate_ids && $schema->tableExists('commerce_product__field_life_occasion')) {
+    $database->update('commerce_product__field_life_occasion')
+      ->fields(['field_life_occasion_target_id' => (int) $term->id()])
+      ->condition('field_life_occasion_target_id', $duplicate_ids, 'IN')
+      ->execute();
+  }
+
+  foreach ($duplicate_ids as $duplicate_id) {
+    $duplicate_path = '/taxonomy/term/' . $duplicate_id;
+    $duplicate_alias_ids = $alias_storage->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('path', $duplicate_path)
+      ->execute();
+    foreach ($alias_storage->loadMultiple($duplicate_alias_ids) as $duplicate_alias) {
+      $duplicate_alias->delete();
+    }
+
+    $duplicate_term = $term_storage->load($duplicate_id);
+    if ($duplicate_term) {
+      $duplicate_term->delete();
+      print sprintf("[MERGE] Doublon '%s' #%d -> #%d\n", $definition['name'], $duplicate_id, $term->id());
+    }
+  }
 
   $existing_alias_ids = $alias_storage->getQuery()
     ->accessCheck(FALSE)
