@@ -142,7 +142,33 @@
         </li>
       </ul>
 
+      <div class="product-detail__navigation">
+        <a href="{{ product_back_to_catalog_url }}" class="btn btn--secondary">
+          {{ 'Retour aux univers'|t }}
+        </a>
+      </div>
+
+      {% if product_life_occasion_links %}
+        <div class="product-detail__universes">
+          <p class="product-detail__universes-label">{{ 'Explorer cet univers :'|t }}</p>
+          <ul class="product-detail__universes-links">
+            {% for item in product_life_occasion_links %}
+              <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
     </div>{# /.product-info #}
   </div>{# /.product-layout #}
+
+  {% if product_related_teasers %}
+    <section class="product-related" aria-label="{{ 'Produits similaires'|t }}">
+      <h2 class="product-related__title">{{ 'Dans le même univers'|t }}</h2>
+      <div class="product-grid product-grid--compact">
+        {{ product_related_teasers }}
+      </div>
+    </section>
+  {% endif %}
 
 </article>

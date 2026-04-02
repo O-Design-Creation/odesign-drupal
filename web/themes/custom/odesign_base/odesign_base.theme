@@ -47,7 +47,48 @@ function odesign_base_page_attachments_alter(array &$attachments): void {
  * Implements hook_preprocess_commerce_product().
  */
 function odesign_base_preprocess_commerce_product(array &$variables): void {
-  if (empty($variables['product_entity']) || !$variables['product_entity']->hasField('field_product_images')) {
+  if (empty($variables['product_entity']) || !$variables['product_entity'] instanceof ProductInterface) {
+    return;
+  }
+  /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
+  $product = $variables['product_entity'];
+
+  $variables['product_back_to_catalog_url'] = Url::fromUri('internal:/produits')->toString();
+  $variables['product_life_occasion_links'] = [];
+  $variables['product_related_teasers'] = '';
+
+  if ($product->hasField('field_life_occasion') && !$product->get('field_life_occasion')->isEmpty()) {
+    $terms = $product->get('field_life_occasion')->referencedEntities();
+    foreach ($terms as $term) {
+      if ($term instanceof TermInterface) {
+        $variables['product_life_occasion_links'][] = [
+          'title' => $term->label(),
+          'url' => $term->toUrl()->toString(),
+        ];
+      }
+    }
+
+    /** @var \Drupal\taxonomy\TermInterface|null $primary_term */
+    $primary_term = $terms[0] ?? NULL;
+    if ($primary_term instanceof TermInterface) {
+      $storage = \Drupal::entityTypeManager()->getStorage('commerce_product');
+      $related_ids = $storage->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('status', 1)
+        ->condition('field_life_occasion.target_id', $primary_term->id())
+        ->condition('product_id', $product->id(), '<>')
+        ->sort('changed', 'DESC')
+        ->range(0, 4)
+        ->execute();
+
+      if ($related_ids) {
+        $related_products = $storage->loadMultiple($related_ids);
+        $variables['product_related_teasers'] = odesign_base_build_product_teasers($related_products);
+      }
+    }
+  }
+
+  if (!$product->hasField('field_product_images')) {
     return;
   }
 
@@ -56,7 +97,7 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
   $thumb_style = ImageStyle::load('thumbnail');
   $gallery_items = [];
 
-  foreach ($variables['product_entity']->get('field_product_images')->referencedEntities() as $delta => $media) {
+  foreach ($product->get('field_product_images')->referencedEntities() as $delta => $media) {
     if (
       !$media->hasField('field_media_image') ||
       $media->get('field_media_image')->isEmpty() ||
@@ -472,7 +513,8 @@ function odesign_base_preprocess_taxonomy_term(array &$variables): void {
     return;
   }
 
-  $products = odesign_base_load_products_for_life_occasion($term, 12);
+  // Affiche un volume large pour éviter des fiches "orphelines" côté visiteur.
+  $products = odesign_base_load_products_for_life_occasion($term, 96);
   $hero = odesign_base_build_life_occasion_hero($term);
 
   $variables['life_occasion_title'] = $term->label();
@@ -480,7 +522,7 @@ function odesign_base_preprocess_taxonomy_term(array &$variables): void {
   $variables['life_occasion_reassurance_items'] = odesign_base_extract_reassurance_items($term);
   $variables['life_occasion_product_count'] = odesign_base_count_products_for_life_occasion($term);
   $variables['life_occasion_product_teasers'] = odesign_base_build_product_teasers($products);
-  $variables['life_occasion_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
+  $variables['life_occasion_catalogue_url'] = Url::fromUri('internal:/produits#home-universes')->toString();
   $variables['life_occasion_hero_image_url'] = $hero['url'];
   $variables['life_occasion_hero_text_mode'] = $hero['text_mode'];
   $variables['life_occasion_hero_has_image'] = $hero['has_image'];
