@@ -498,7 +498,7 @@ strong { font-weight: 600; }
    --------------------------------------------------------------------------- */
 .site-footer {
   background: var(--color-brand-dark);
-  color: rgba(255,255,255,0.82);
+  color: #ffffff;
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
   padding: var(--space-12) 0 var(--space-6);
@@ -506,7 +506,7 @@ strong { font-weight: 600; }
 }
 
 .site-footer a {
-  color: rgba(255,255,255,0.75);
+  color: #ffffff;
   text-decoration: none;
   transition: color var(--transition-fast);
 }
@@ -540,13 +540,13 @@ strong { font-weight: 600; }
 
 .site-footer__copyright {
   margin: 0;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.95);
   font-size: var(--font-size-xs);
 }
 
 .site-footer__legal-notice {
   margin: var(--space-2) 0 0;
-  color: rgba(255,255,255,0.75);   /* ratio ≥ 7:1 sur #4E2620 — WCAG AAA */
+  color: rgba(255,255,255,0.95);
   font-size: var(--font-size-xs);
   font-style: italic;
   width: 100%;
@@ -1306,8 +1306,8 @@ textarea {
 #sliding-popup .decline-button,
 #sliding-popup .find-more-button {
   background: transparent;
-  color: rgba(255,255,255,0.75);
-  border: 1px solid rgba(255,255,255,0.3);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.72);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-5);
   cursor: pointer;
@@ -1321,7 +1321,7 @@ textarea {
 #sliding-popup .find-more-button:hover {
   background: rgba(255,255,255,0.1);
   color: #ffffff;
-  border-color: rgba(255,255,255,0.75);
+  border-color: #ffffff;
 }
 
 /* ---------------------------------------------------------------------------
