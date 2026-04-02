@@ -332,6 +332,82 @@ strong { font-weight: 600; }
   transition: color var(--transition-fast), background var(--transition-fast);
 }
 
+.site-nav .menu-item__summary {
+  color: var(--color-text);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  line-height: 1.25;
+  white-space: nowrap;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.site-nav .menu-item {
+  position: relative;
+}
+
+.menu-dropdown {
+  position: relative;
+}
+
+.menu-item__summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.menu-item__summary::-webkit-details-marker {
+  display: none;
+}
+
+.menu-item__summary::after {
+  content: '▾';
+  margin-left: 0.45rem;
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.menu-dropdown__panel {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  .menu-dropdown__panel {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    min-width: 17rem;
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border-light);
+    background: #ffffff;
+    box-shadow: var(--shadow-md);
+    z-index: 240;
+    display: none;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .menu-dropdown[open] > .menu-dropdown__panel,
+  .menu-item--universes:hover .menu-dropdown__panel,
+  .menu-item--universes:focus-within .menu-dropdown__panel {
+    display: flex;
+  }
+
+  .menu-dropdown__link {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    white-space: normal;
+    border-radius: var(--radius-sm);
+  }
+}
+
 @media (max-width: 1280px) and (min-width: 901px) {
   .site-header__inner {
     gap: var(--space-2);
@@ -348,6 +424,12 @@ strong { font-weight: 600; }
     padding: 0.42rem 0.45rem;
   }
 
+  .site-nav .menu-item__summary {
+    font-size: 0.79rem;
+    letter-spacing: 0.02em;
+    padding: 0.42rem 0.45rem;
+  }
+
   .header-login-link {
     font-size: 11px;
     padding: 4px 6px;
@@ -356,6 +438,8 @@ strong { font-weight: 600; }
 
 .site-nav a:hover,
 .site-nav a:focus-visible,
+.site-nav .menu-item__summary:hover,
+.site-nav .menu-item__summary:focus-visible,
 .site-nav a.is-active,
 .site-nav .menu-item--active > .menu-item__link {
   background: var(--color-brand-cream);
@@ -366,8 +450,9 @@ strong { font-weight: 600; }
 .site-header__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Bouton hamburger mobile */
@@ -460,7 +545,55 @@ strong { font-weight: 600; }
     width: 100%;
   }
 
+  .menu-item--universes .menu-dropdown {
+    width: 100%;
+  }
+
+  .menu-item--universes .menu-item__summary {
+    width: 100%;
+  }
+
+  .menu-item__summary::after {
+    float: right;
+    margin-left: var(--space-2);
+  }
+
+  .menu-dropdown[open] > .menu-dropdown__panel {
+    display: flex;
+  }
+
+  .menu-dropdown__panel {
+    position: static;
+    display: none;
+    padding: var(--space-1) 0 var(--space-2);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .menu-dropdown__link {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+    padding: var(--space-3) var(--space-3);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
   .site-nav a {
+    display: block;
+    width: 100%;
+    font-size: clamp(1.3rem, 4.6vw, 1.65rem);
+    line-height: 1.28;
+    font-weight: 600;
+    text-decoration: none;
+    padding: var(--space-4) 0;
+    border-bottom: 1px solid var(--color-border-light);
+    border-radius: 0;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .site-nav .menu-item__summary {
     display: block;
     width: 100%;
     font-size: clamp(1.3rem, 4.6vw, 1.65rem);
@@ -614,6 +747,7 @@ strong { font-weight: 600; }
   border: 1px solid transparent;
   transition: color .2s, border-color .2s, background .2s;
   white-space: nowrap;
+  line-height: 1.1;
 }
 
 .header-login-link:hover,
