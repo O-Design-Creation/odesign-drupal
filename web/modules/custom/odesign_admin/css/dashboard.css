@@ -230,6 +230,157 @@
   transform: translateX(3px);
 }
 
+/* ─── Guide marketing ───────────────────────────────────────────────────── */
+.odesign-marketing-guide {
+  max-width: 1280px;
+}
+
+.odesign-marketing-guide__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.odesign-marketing-guide__hero-copy,
+.odesign-marketing-guide__hero-note,
+.odesign-marketing-guide__card,
+.odesign-marketing-guide__resources-wrap,
+.odesign-marketing-guide__footer {
+  background: linear-gradient(180deg, #fffefd 0%, #fbf7f1 100%);
+  border: 1px solid #e0d6ca;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.06);
+}
+
+.odesign-marketing-guide__hero-copy {
+  padding: 1.8rem 1.9rem;
+  background:
+    radial-gradient(circle at right top, rgba(139, 111, 71, 0.14), transparent 28%),
+    linear-gradient(135deg, #fbf7f1 0%, #ede6dc 100%);
+}
+
+.odesign-marketing-guide__hero-label,
+.odesign-marketing-guide__eyebrow {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: #9a836d;
+}
+
+.odesign-marketing-guide__hero-copy h1,
+.odesign-marketing-guide__resources-head h2,
+.odesign-marketing-guide__card h2 {
+  margin: 0 0 0.65rem;
+  color: #3d2b1f;
+  line-height: 1.15;
+}
+
+.odesign-marketing-guide__hero-copy h1 {
+  font-size: 2rem;
+  max-width: 12ch;
+}
+
+.odesign-marketing-guide__hero-copy p,
+.odesign-marketing-guide__hero-note p,
+.odesign-marketing-guide__resources-head p,
+.odesign-marketing-guide__intro,
+.odesign-marketing-guide__footer p {
+  margin: 0;
+  color: #6b5744;
+  line-height: 1.6;
+}
+
+.odesign-marketing-guide__hero-note {
+  padding: 1.35rem 1.4rem;
+  border-left: 4px solid #8b6f47;
+}
+
+.odesign-marketing-guide__hero-note strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #3d2b1f;
+  font-size: 0.95rem;
+}
+
+.odesign-marketing-guide__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.odesign-marketing-guide__card {
+  padding: 1.35rem 1.4rem 1.45rem;
+}
+
+.odesign-marketing-guide__card ul {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+  color: #4b392b;
+}
+
+.odesign-marketing-guide__card li + li {
+  margin-top: 0.7rem;
+}
+
+.odesign-marketing-guide__resources-wrap,
+.odesign-marketing-guide__footer {
+  margin-top: 1.4rem;
+  padding: 1.45rem 1.55rem;
+}
+
+.odesign-marketing-guide__resources {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.odesign-marketing-guide__resource {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid #e4d8cb;
+  border-radius: 12px;
+  background: #fdf9f4;
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.odesign-marketing-guide__resource:hover {
+  border-color: #8b6f47;
+  box-shadow: 0 10px 20px rgba(61, 43, 31, 0.07);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.odesign-marketing-guide__resource-title {
+  color: #2d1f14;
+  font-weight: 600;
+}
+
+.odesign-marketing-guide__resource-desc {
+  color: #846f59;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .odesign-marketing-guide__hero,
+  .odesign-marketing-guide__grid,
+  .odesign-marketing-guide__resources {
+    grid-template-columns: 1fr;
+  }
+
+  .odesign-marketing-guide__hero-copy h1 {
+    max-width: none;
+    font-size: 1.7rem;
+  }
+}
+
 /* ─── Commandes récentes ─────────────────────────────────────────────────── */
 .odesign-dashboard__orders {
   background: linear-gradient(180deg, #fffefd 0%, #fbf7f1 100%);

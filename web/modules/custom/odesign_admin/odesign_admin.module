@@ -92,6 +92,7 @@ function odesign_admin_page_top(array &$page_top): void {
 
   $nav_items = [
     ['label' => 'Tableau de bord', 'icon' => 'storefront',    'path' => '/admin/boutique'],
+    ['label' => 'Guide marketing', 'icon' => 'campaign',      'path' => '/admin/boutique/guide-marketing'],
     ['label' => 'Articles',        'icon' => 'article',       'path' => '/admin/content?type=article'],
     ['label' => 'Produits',        'icon' => 'inventory_2',   'path' => '/admin/commerce/products'],
     ['label' => 'Commandes',       'icon' => 'receipt_long',  'path' => '/admin/commerce/orders'],

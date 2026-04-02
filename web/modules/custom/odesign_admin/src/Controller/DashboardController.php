@@ -71,6 +71,201 @@ class DashboardController extends ControllerBase {
   }
 
   /**
+   * Guide marketing opérationnel pour la boutique.
+   */
+  public function marketingGuide(): array {
+    $resource_links = [
+      [
+        'title' => 'Mes produits',
+        'description' => 'Mettre en avant les produits à pousser en ce moment.',
+        'url' => Url::fromRoute('entity.commerce_product.collection')->toString(),
+      ],
+      [
+        'title' => 'Gérer le blog',
+        'description' => 'Publier un article utile pour un temps fort ou une catégorie.',
+        'url' => Url::fromRoute('system.admin_content')->toString(),
+      ],
+      [
+        'title' => 'Ajouter une image',
+        'description' => 'Mettre en ligne une photo produit ou une photo atelier.',
+        'url' => Url::fromRoute('entity.media.add_form', ['media_type' => 'product_image'])->toString(),
+      ],
+      [
+        'title' => 'Configuration boutique',
+        'description' => 'Vérifier les informations de contact, de paiement et d’expédition.',
+        'url' => Url::fromRoute('odesign_admin.config')->toString(),
+      ],
+    ];
+
+    $sections = [
+      [
+        'eyebrow' => 'Priorités du moment',
+        'title' => 'Les 3 familles à mettre en avant',
+        'intro' => 'Le site doit d’abord aider les visiteurs à trouver rapidement l’occasion qui leur ressemble.',
+        'items' => [
+          'Mariage : c’est la famille la plus naturelle à pousser en premier avec les cadeaux, la décoration et les commandes personnalisées.',
+          'Naissance et bébé : c’est une famille rassurante, émotionnelle et facile à offrir.',
+          'Cadeaux personnalisés, famille et maison : elle permet de toucher un public plus large toute l’année.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Ce que le site doit faire',
+        'title' => '3 missions simples',
+        'intro' => 'Chaque page importante doit aider le visiteur à comprendre vite ce que vous faites et pourquoi il peut vous faire confiance.',
+        'items' => [
+          'Montrer des créations personnalisées claires, belles et faciles à comprendre.',
+          'Rassurer avec des avis, des photos réelles, des délais expliqués et la preuve que vous avez un vrai atelier.',
+          'Orienter vers les bonnes catégories et les bons produits sans noyer la personne sous trop de choix.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Actions concrètes',
+        'title' => 'Ce que vous pouvez faire chaque semaine',
+        'intro' => 'Le but n’est pas de tout faire, mais d’avancer régulièrement avec quelques actions simples et utiles.',
+        'items' => [
+          'Choisir 1 produit à mettre en avant sur la page d’accueil et dans vos publications.',
+          'Ajouter ou améliorer 3 photos sur un produit important.',
+          'Demander 1 ou 2 avis à des clients satisfaits.',
+          'Vérifier qu’une catégorie importante a bien une introduction claire et rassurante.',
+          'Publier un contenu simple lié à un temps fort : mariage, naissance, fête des mères, Noël.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Photos et vidéos',
+        'title' => 'Les bons réflexes visuels',
+        'intro' => 'Les visuels servent à vendre, mais aussi à rassurer. Ils doivent montrer la qualité, la matière et le soin.',
+        'items' => [
+          'Photographier les produits sur fond propre, à la lumière du jour, avec un plan large et un détail rapproché.',
+          'Montrer aussi l’atelier, la machine, la préparation ou l’emballage pour prouver le travail réel.',
+          'Réutiliser les mêmes bons visuels sur le site, Google et les réseaux sociaux au lieu de refaire du contenu partout.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Avis et confiance',
+        'title' => 'Ce qui rassure le plus',
+        'intro' => 'Les visiteurs doivent sentir qu’ils commandent à une vraie personne soigneuse, pas à une boutique anonyme.',
+        'items' => [
+          'Afficher les meilleurs avis sur la page d’accueil et sur les catégories importantes.',
+          'Faire apparaître clairement que vous avez un atelier physique et un vrai savoir-faire.',
+          'Montrer des exemples de personnalisation terminée pour aider les gens à se projeter.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Temps forts',
+        'title' => 'Les moments à préparer en avance',
+        'intro' => 'Certains temps forts peuvent devenir des rendez-vous réguliers pour la boutique.',
+        'items' => [
+          'Mariage : cadeaux témoins, décoration, pancartes, petits détails personnalisés.',
+          'Naissance et bébé : cadeaux de naissance, décoration de chambre, souvenirs.',
+          'Fête des mères, fête des pères, maîtresse ou nounou, Noël : préparer une petite sélection dédiée chaque année.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Après achat',
+        'title' => 'Ne pas perdre le lien',
+        'intro' => 'Un client satisfait peut revenir ou recommander la boutique si vous gardez un contact simple et naturel.',
+        'items' => [
+          'Envoyer un message simple pour remercier et demander un avis.',
+          'Réutiliser les commandes réussies pour montrer votre savoir-faire avec l’accord du client.',
+          'Proposer plus tard une autre idée cadeau liée à un moment de vie proche.',
+        ],
+      ],
+      [
+        'eyebrow' => 'Développement local',
+        'title' => 'Petites actions locales utiles',
+        'intro' => 'Le local peut nourrir les ventes atelier et les ventes en ligne en même temps.',
+        'items' => [
+          'Soigner la fiche Google avec de nouvelles photos et des avis réguliers.',
+          'Créer quelques liens avec des partenaires locaux : mariage, cadeaux, événements, décoration.',
+          'Tester de petites commandes groupées ou séries limitées sans alourdir l’atelier.',
+        ],
+      ],
+    ];
+
+    $sections_markup = '';
+    foreach ($sections as $section) {
+      $items_markup = '';
+      foreach ($section['items'] as $item) {
+        $items_markup .= '<li>' . $item . '</li>';
+      }
+
+      $sections_markup .= '<article class="odesign-marketing-guide__card">'
+        . '<p class="odesign-marketing-guide__eyebrow">' . $section['eyebrow'] . '</p>'
+        . '<h2>' . $section['title'] . '</h2>'
+        . '<p class="odesign-marketing-guide__intro">' . $section['intro'] . '</p>'
+        . '<ul>' . $items_markup . '</ul>'
+        . '</article>';
+    }
+
+    $resources_markup = '';
+    foreach ($resource_links as $link) {
+      $resources_markup .= '<a class="odesign-marketing-guide__resource" href="' . $link['url'] . '">'
+        . '<span class="odesign-marketing-guide__resource-title">' . $link['title'] . '</span>'
+        . '<span class="odesign-marketing-guide__resource-desc">' . $link['description'] . '</span>'
+        . '</a>';
+    }
+
+    return [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['odesign-dashboard', 'odesign-marketing-guide']],
+      'hero' => [
+        '#markup' => '
+          <section class="odesign-marketing-guide__hero">
+            <div class="odesign-marketing-guide__hero-copy">
+              <p class="odesign-marketing-guide__hero-label">Guide marketing boutique</p>
+              <h1>Une feuille de route simple pour faire grandir la boutique</h1>
+              <p>
+                Cette page résume la stratégie marketing utile au quotidien. Elle aide à savoir
+                quoi montrer, quoi améliorer et quelles actions lancer sans se disperser.
+              </p>
+            </div>
+            <div class="odesign-marketing-guide__hero-note">
+              <strong>À retenir</strong>
+              <p>Le site doit vendre, rassurer et faire rayonner l’atelier. Les actions les plus utiles sont souvent les plus simples : belles photos, bons avis, catégories claires, produits bien choisis.</p>
+            </div>
+          </section>',
+      ],
+      'sections' => [
+        '#markup' => '<section class="odesign-marketing-guide__grid">' . $sections_markup . '</section>',
+      ],
+      'resources' => [
+        '#markup' => '
+          <section class="odesign-marketing-guide__resources-wrap">
+            <div class="odesign-marketing-guide__resources-head">
+              <p class="odesign-marketing-guide__eyebrow">Accès utiles</p>
+              <h2>Les pages à utiliser le plus souvent</h2>
+              <p>Ces raccourcis permettent de passer de la stratégie à l’action.</p>
+            </div>
+            <div class="odesign-marketing-guide__resources">' . $resources_markup . '</div>
+          </section>',
+      ],
+      'footer' => [
+        '#markup' => '
+          <section class="odesign-marketing-guide__footer">
+            <p>Ce guide est une version opérationnelle du document stratégique du projet. Il sert surtout à garder le cap dans la gestion quotidienne de la boutique.</p>
+          </section>',
+      ],
+      '#cache' => ['max-age' => 0],
+      '#attached' => [
+        'html_head' => [
+          [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'link',
+              '#attributes' => [
+                'rel' => 'stylesheet',
+                'href' => '/modules/custom/odesign_admin/css/dashboard.css',
+                'media' => 'all',
+              ],
+            ],
+            'odesign_admin_dashboard_css',
+          ],
+        ],
+      ],
+    ];
+  }
+
+  /**
    * Statistiques clés pour les compteurs du dashboard.
    */
   protected function getStats(): array {
@@ -227,6 +422,12 @@ class DashboardController extends ControllerBase {
         'route_name'  => 'odesign_admin.config',
         'description' => 'Mailgun, Stripe, informations boutique',
         'icon'        => 'settings',
+      ],
+      [
+        'title'       => 'Guide marketing',
+        'route_name'  => 'odesign_admin.marketing_guide',
+        'description' => 'Retrouver les priorités et actions utiles pour la boutique',
+        'icon'        => 'campaign',
       ],
     ];
 
