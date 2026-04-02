@@ -54,8 +54,8 @@
       <div class="site-header__inner">
 
         {# Logo — lien séparé, jamais wrappé autour de blocs dynamiques #}
-        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Retour à l\'accueil Atelier O Design'|t }}">
-          <span class="site-logo__text">Atelier O Design</span>
+        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Retour à l\'accueil Atelier O Design'|t }}" aria-label="{{ 'Retour à l\'accueil Atelier O Design'|t }}">
+          <img src="{{ base_path ~ directory }}/logo.svg" alt="{{ 'Atelier O Design'|t }}">
         </a>
 
         {# Blocs optionnels région header (ex: branding personnalisé) #}

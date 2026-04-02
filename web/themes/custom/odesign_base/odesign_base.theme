@@ -421,6 +421,8 @@ function odesign_base_preprocess_menu(array &$variables): void {
     return;
   }
 
+  $request_path = \Drupal::request()->getPathInfo();
+  $alias_manager = \Drupal::service('path_alias.manager');
   $existing_urls = [];
   foreach ($variables['items'] ?? [] as $item) {
     if (!empty($item['url']) && $item['url'] instanceof Url) {
@@ -430,6 +432,7 @@ function odesign_base_preprocess_menu(array &$variables): void {
 
   $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
   $variables['life_occasion_links'] = [];
+  $variables['current_path_info'] = $request_path;
   foreach (odesign_base_load_life_occasion_terms() as $term) {
     $url = $term->toUrl();
     $url_string = $url->toString();
@@ -437,13 +440,19 @@ function odesign_base_preprocess_menu(array &$variables): void {
       continue;
     }
 
+    $canonical_path = '/taxonomy/term/' . $term->id();
+    $alias_path = $alias_manager->getAliasByPath($canonical_path);
+    $is_active = (
+      $route_term instanceof TermInterface
+      && $route_term->bundle() === 'life_occasion'
+      && (int) $route_term->id() === (int) $term->id()
+    ) || $request_path === $canonical_path || $request_path === $alias_path || $request_path === $url_string;
+
     $variables['life_occasion_links'][] = [
       'title' => $term->label(),
       'url' => $url,
-      'in_active_trail' => $route_term instanceof TermInterface
-        && $route_term->bundle() === 'life_occasion'
-        && (int) $route_term->id() === (int) $term->id(),
-      'attributes' => new \Drupal\Core\Template\Attribute(['class' => ['menu-item', 'menu-item--life-occasion']]),
+      'in_active_trail' => $is_active,
+      'attributes' => new \Drupal\Core\Template\Attribute(['class' => array_filter(['menu-item', 'menu-item--life-occasion', $is_active ? 'menu-item--active' : NULL])]),
       'below' => [],
     ];
   }

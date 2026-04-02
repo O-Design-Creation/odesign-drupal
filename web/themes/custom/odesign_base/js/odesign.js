@@ -20,6 +20,7 @@
           toggle.setAttribute('aria-expanded', 'true');
           toggle.setAttribute('aria-label', Drupal.t('Fermer le menu de navigation'));
           nav.classList.add('is-open');
+          document.body.classList.add('nav-is-open');
           document.body.style.overflow = 'hidden';
           // Focus premier lien du menu
           var firstLink = nav.querySelector('a');
@@ -30,6 +31,7 @@
           toggle.setAttribute('aria-expanded', 'false');
           toggle.setAttribute('aria-label', Drupal.t('Ouvrir le menu de navigation'));
           nav.classList.remove('is-open');
+          document.body.classList.remove('nav-is-open');
           document.body.style.overflow = '';
           toggle.focus();
         }
@@ -53,6 +55,20 @@
             !nav.contains(e.target) &&
             !toggle.contains(e.target)
           ) {
+            closeMenu();
+          }
+        });
+
+        nav.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            if (nav.classList.contains('is-open')) {
+              closeMenu();
+            }
+          });
+        });
+
+        window.addEventListener('resize', function () {
+          if (window.innerWidth > 900 && nav.classList.contains('is-open')) {
             closeMenu();
           }
         });

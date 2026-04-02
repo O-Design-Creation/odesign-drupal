@@ -21,16 +21,27 @@
       <ul>
     {% endif %}
     {% for item in extra_links %}
+      {% set extra_link_is_active = item.in_active_trail or item.url.toString == current_path_info|default('') %}
+      {% set extra_link_classes = ['menu-item__link'] %}
+      {% if extra_link_is_active %}
+        {% set extra_link_classes = extra_link_classes|merge(['is-active']) %}
+      {% endif %}
       <li{{ item.attributes.addClass('menu-item') }}>
         {{ link(item.title, item.url, {
-          'class': ['menu-item__link'] + (item.in_active_trail ? ['is-active'] : [])
+          'class': extra_link_classes,
+          'aria-current': extra_link_is_active ? 'page' : null
         }) }}
       </li>
     {% endfor %}
     {% for item in items %}
+      {% set item_link_classes = ['menu-item__link'] %}
+      {% if item.in_active_trail %}
+        {% set item_link_classes = item_link_classes|merge(['is-active']) %}
+      {% endif %}
       <li{{ item.attributes.addClass('menu-item') }}>
         {{ link(item.title, item.url, {
-          'class': ['menu-item__link'] + (item.in_active_trail ? ['is-active'] : [])
+          'class': item_link_classes,
+          'aria-current': item.in_active_trail ? 'page' : null
         }) }}
         {% if item.below %}
           {{ menus.menu_links(item.below, attributes, menu_level + 1, []) }}
