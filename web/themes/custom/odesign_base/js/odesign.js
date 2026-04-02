@@ -4,7 +4,7 @@
  * Accessible, progressive enhancement, no external deps.
  */
 
-(function (Drupal, once) {
+(function (Drupal, once, drupalSettings) {
   'use strict';
 
   // -------------------------------------------------------------------------
@@ -212,4 +212,39 @@
     }
   };
 
-})(Drupal, once);
+  // -------------------------------------------------------------------------
+  // Masquer le bandeau cookies sur les pages d'administration.
+  // -------------------------------------------------------------------------
+  Drupal.behaviors.odesignHideCookieBannerAdmin = {
+    attach: function (context) {
+      once('odesign-hide-cookie-admin', 'body', context).forEach(function () {
+        if (!drupalSettings.path || !drupalSettings.path.currentPathIsAdmin) {
+          return;
+        }
+
+        function hideCookieUi() {
+          ['#sliding-popup', '.eu-cookie-withdraw-wrapper', '.eu-cookie-withdraw-tab'].forEach(function (selector) {
+            document.querySelectorAll(selector).forEach(function (element) {
+              element.style.display = 'none';
+            });
+          });
+        }
+
+        hideCookieUi();
+        window.setTimeout(hideCookieUi, 250);
+        window.setTimeout(hideCookieUi, 1000);
+        window.setTimeout(hideCookieUi, 2000);
+
+        var attempts = 0;
+        var interval = window.setInterval(function () {
+          hideCookieUi();
+          attempts += 1;
+          if (attempts >= 8) {
+            window.clearInterval(interval);
+          }
+        }, 500);
+      });
+    }
+  };
+
+})(Drupal, once, drupalSettings);

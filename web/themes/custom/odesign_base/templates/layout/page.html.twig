@@ -28,7 +28,7 @@
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
   </head>
-  <body{{ attributes.addClass('layout-no-sidebars') }}>
+  <body{{ attributes.addClass('layout-no-sidebars', is_admin ? 'page-admin' : '') }}>
 
     {# Skip link accessibilité #}
     <a href="#main-content" class="skip-link visually-hidden focusable">
@@ -141,9 +141,121 @@
 
     {# Contenu principal #}
     <main id="main-content" class="main-content" role="main" tabindex="-1">
-      <div class="container">
-        {{ page.content }}
-      </div>
+      {% if is_front and front_life_occasion_cards is defined and front_life_occasion_cards %}
+        <section
+          class="home-hero{{ front_hero_has_image ? ' home-hero--with-image home-hero--text-' ~ front_hero_text_mode : '' }}"
+          {% if front_hero_image_url %}
+            style="--home-hero-image: url('{{ front_hero_image_url|e('html_attr') }}');"
+          {% endif %}
+        >
+          <div class="container home-hero__inner">
+            <div class="home-hero__content">
+              <p class="home-hero__eyebrow">{{ 'Atelier O Design'|t }}</p>
+              <h1 class="home-hero__title">
+                {{ 'Des créations en bois personnalisées pour les moments qui comptent.'|t }}
+              </h1>
+              <p class="home-hero__intro">
+                {{ 'Le site guide d’abord vers les grandes occasions de vie, pour aider les clients à trouver plus vite une idée juste, lisible et simple à personnaliser.'|t }}
+              </p>
+              <div class="home-hero__actions">
+                <a href="{{ front_catalogue_url }}" class="btn btn--primary">{{ 'Voir tout le catalogue'|t }}</a>
+                <a href="{{ front_primary_life_occasion_url }}" class="btn btn--secondary">{{ 'Découvrir les univers'|t }}</a>
+              </div>
+            </div>
+
+            <aside class="home-hero__panel" aria-label="{{ 'Points forts Atelier O Design'|t }}">
+              <ul class="home-hero__highlights">
+                <li>{{ 'Atelier réel, fabrication soignée et personnalisations lisibles.'|t }}</li>
+                <li>{{ 'Univers pensés pour le mariage, la naissance et les cadeaux personnalisés.'|t }}</li>
+                <li>{{ 'Base simple à enrichir ensuite avec campagnes et mises en avant saisonnières.'|t }}</li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="home-universes">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="section-heading__eyebrow">{{ 'Entrées principales'|t }}</p>
+                <h2 class="section-heading__title">{{ 'Choisir par occasion de vie'|t }}</h2>
+              </div>
+              <p class="section-heading__meta">
+                {{ 'Une structure plus simple pour les clients et plus facile à piloter pour la boutique.'|t }}
+              </p>
+            </div>
+
+            <div class="life-occasion-cards">
+              {% for card in front_life_occasion_cards %}
+                <article class="life-occasion-card">
+                  <div class="life-occasion-card__header">
+                    <h3 class="life-occasion-card__title">
+                      <a href="{{ card.url }}">{{ card.title }}</a>
+                    </h3>
+                    {% if card.product_count %}
+                      <p class="life-occasion-card__count">
+                        {{ '@count produit(s)'|t({'@count': card.product_count}) }}
+                      </p>
+                    {% endif %}
+                  </div>
+
+                  {% if card.intro %}
+                    <p class="life-occasion-card__intro">{{ card.intro }}</p>
+                  {% endif %}
+
+                  {% if card.reassurance_items %}
+                    <ul class="life-occasion-card__reassurance">
+                      {% for item in card.reassurance_items %}
+                        <li>{{ item }}</li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+
+                  {% if card.product_teasers %}
+                    <div class="product-grid product-grid--compact">
+                      {{ card.product_teasers }}
+                    </div>
+                  {% endif %}
+
+                  <div class="life-occasion-card__actions">
+                    <a href="{{ card.url }}" class="btn btn--secondary">{{ 'Explorer cet univers'|t }}</a>
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <section class="home-method">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="section-heading__eyebrow">{{ 'Méthode simple'|t }}</p>
+                <h2 class="section-heading__title">{{ 'Un socle facile à faire vivre'|t }}</h2>
+              </div>
+            </div>
+
+            <div class="home-method__grid">
+              <article class="home-method__item">
+                <h3>{{ '1. Faire vivre les univers'|t }}</h3>
+                <p>{{ 'La gestionnaire édite surtout les introductions, les réassurances et les produits mis en avant via les termes “Occasions de vie”.'|t }}</p>
+              </article>
+              <article class="home-method__item">
+                <h3>{{ '2. Enrichir sans refondre'|t }}</h3>
+                <p>{{ 'La homepage s’alimente automatiquement avec les produits déjà rangés dans chaque univers, sans duplication de contenu.'|t }}</p>
+              </article>
+              <article class="home-method__item">
+                <h3>{{ '3. Préparer la saisonnalité'|t }}</h3>
+                <p>{{ 'Cette structure pourra ensuite accueillir des temps forts et des mises en avant saisonnières sans casser la navigation.'|t }}</p>
+              </article>
+            </div>
+          </div>
+        </section>
+      {% else %}
+        <div class="container">
+          {{ page.content }}
+        </div>
+      {% endif %}
     </main>
 
     {# Footer #}

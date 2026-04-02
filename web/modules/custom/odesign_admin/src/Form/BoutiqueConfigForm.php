@@ -4,6 +4,7 @@ namespace Drupal\odesign_admin\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Entity\File;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,6 +36,7 @@ class BoutiqueConfigForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $smtp   = \Drupal::configFactory()->get('smtp.settings');
     $stripe = \Drupal::configFactory()->get('commerce_payment.commerce_payment_gateway.stripe_sandbox');
+    $settings = \Drupal::configFactory()->get('odesign_admin.settings');
     $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
 
     // ── Statuts détectés ─────────────────────────────────────────────────────
@@ -219,6 +221,49 @@ class BoutiqueConfigForm extends FormBase {
     ];
 
     // ────────────────────────────────────────────────────────────────────────
+    // SECTION 4 — Hero de la page d'accueil
+    // ────────────────────────────────────────────────────────────────────────
+    $hero_fid = (int) ($settings->get('homepage_hero_image') ?? 0);
+    $hero_file = $hero_fid ? File::load($hero_fid) : NULL;
+    $form['homepage_hero'] = [
+      '#type'       => 'details',
+      '#title'      => 'Hero de la page d’accueil',
+      '#open'       => FALSE,
+      '#attributes' => ['class' => ['config-section', 'config-section--hero']],
+    ];
+
+    $form['homepage_hero']['hero_help'] = [
+      '#markup' => '<div class="config-help">'
+        . '<strong>À quoi ça sert ?</strong> Vous pouvez remplacer le fond coloré du hero d’accueil par une photo plus incarnée.'
+        . ' Si aucune photo n’est choisie, le fond actuel reste automatiquement en place.'
+        . '</div>',
+    ];
+
+    $form['homepage_hero']['homepage_hero_image'] = [
+      '#type' => 'managed_file',
+      '#title' => 'Photo de fond du hero',
+      '#description' => 'Photo optionnelle. Recommandé : image horizontale, simple à lire, au moins 1600 px de large. Si vous la supprimez, le fond coloré revient automatiquement.',
+      '#default_value' => $hero_file ? [$hero_file->id()] : [],
+      '#upload_location' => 'public://homepage-hero/',
+      '#upload_validators' => [
+        'file_validate_extensions' => ['png jpg jpeg webp'],
+        'file_validate_size' => [8 * 1024 * 1024],
+      ],
+    ];
+
+    $form['homepage_hero']['homepage_hero_text_mode'] = [
+      '#type' => 'select',
+      '#title' => 'Couleur du texte sur la photo',
+      '#description' => 'Automatique analyse l’image et choisit la variante la plus lisible. En cas de doute, forcez Clair ou Sombre.',
+      '#options' => [
+        'auto' => 'Automatique',
+        'light' => 'Texte clair',
+        'dark' => 'Texte sombre',
+      ],
+      '#default_value' => $settings->get('homepage_hero_text_mode') ?: 'auto',
+    ];
+
+    // ────────────────────────────────────────────────────────────────────────
     // Submit
     // ────────────────────────────────────────────────────────────────────────
     $form['actions'] = [
@@ -318,6 +363,33 @@ class BoutiqueConfigForm extends FormBase {
       $config['stripe_user_id'] = '';
     }
     $stripe->set('configuration', $config)->save();
+
+    // ── Hero homepage ───────────────────────────────────────────────────────
+    $settings = \Drupal::configFactory()->getEditable('odesign_admin.settings');
+    $current_hero_fid = (int) ($settings->get('homepage_hero_image') ?? 0);
+    $new_hero_fids = array_values(array_filter($form_state->getValue('homepage_hero_image') ?? []));
+    $new_hero_fid = $new_hero_fids ? (int) reset($new_hero_fids) : 0;
+
+    if ($new_hero_fid) {
+      $hero_file = File::load($new_hero_fid);
+      if ($hero_file) {
+        $hero_file->setPermanent();
+        $hero_file->save();
+        \Drupal::service('file.usage')->add($hero_file, 'odesign_admin', 'config', 'homepage_hero_image');
+      }
+    }
+
+    if ($current_hero_fid && $current_hero_fid !== $new_hero_fid) {
+      $old_file = File::load($current_hero_fid);
+      if ($old_file) {
+        \Drupal::service('file.usage')->delete($old_file, 'odesign_admin', 'config', 'homepage_hero_image');
+      }
+    }
+
+    $settings
+      ->set('homepage_hero_image', $new_hero_fid ?: NULL)
+      ->set('homepage_hero_text_mode', $form_state->getValue('homepage_hero_text_mode') ?: 'auto')
+      ->save();
 
     // ── Boutique ─────────────────────────────────────────────────────────────
     $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);

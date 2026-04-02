@@ -9,23 +9,31 @@
  */
 #}
 {% import _self as menus %}
-{{ menus.menu_links(items, attributes, 0) }}
+{{ menus.menu_links(items, attributes, 0, life_occasion_links|default([])) }}
 
-{% macro menu_links(items, attributes, menu_level) %}
+{% macro menu_links(items, attributes, menu_level, life_occasion_links) %}
   {% import _self as menus %}
-  {% if items %}
+  {% set extra_links = menu_level == 0 and life_occasion_links is defined ? life_occasion_links : [] %}
+  {% if items or extra_links %}
     {% if menu_level == 0 %}
       <ul{{ attributes }}>
     {% else %}
       <ul>
     {% endif %}
+    {% for item in extra_links %}
+      <li{{ item.attributes.addClass('menu-item') }}>
+        {{ link(item.title, item.url, {
+          'class': ['menu-item__link'] + (item.in_active_trail ? ['is-active'] : [])
+        }) }}
+      </li>
+    {% endfor %}
     {% for item in items %}
       <li{{ item.attributes.addClass('menu-item') }}>
         {{ link(item.title, item.url, {
           'class': ['menu-item__link'] + (item.in_active_trail ? ['is-active'] : [])
         }) }}
         {% if item.below %}
-          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+          {{ menus.menu_links(item.below, attributes, menu_level + 1, []) }}
         {% endif %}
       </li>
     {% endfor %}

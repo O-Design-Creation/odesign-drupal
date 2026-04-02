@@ -1,0 +1,21 @@
+uuid: d68a257f-e46c-4ae0-8e16-2c2ea71f9ff9
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_reassurance
+    - taxonomy.vocabulary.life_occasion
+  module:
+    - text
+id: taxonomy_term.life_occasion.field_reassurance
+field_name: field_reassurance
+entity_type: taxonomy_term
+bundle: life_occasion
+label: 'Réassurance'
+description: "Texte de confiance : atelier, qualité, personnalisation, délais."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

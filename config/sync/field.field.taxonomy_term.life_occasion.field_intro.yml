@@ -1,0 +1,21 @@
+uuid: 8c77eca9-d03d-4ef6-8c2d-65f8cbccad8c
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_intro
+    - taxonomy.vocabulary.life_occasion
+  module:
+    - text
+id: taxonomy_term.life_occasion.field_intro
+field_name: field_intro
+entity_type: taxonomy_term
+bundle: life_occasion
+label: 'Introduction'
+description: "Texte court d’introduction pour la landing page de l’univers."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

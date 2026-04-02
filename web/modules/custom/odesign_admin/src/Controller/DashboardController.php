@@ -76,6 +76,11 @@ class DashboardController extends ControllerBase {
   public function marketingGuide(): array {
     $resource_links = [
       [
+        'title' => 'Gérer les univers',
+        'description' => 'Modifier les pages Mariage, Naissance et cadeaux personnalisés.',
+        'url' => Url::fromRoute('entity.taxonomy_vocabulary.overview_form', ['taxonomy_vocabulary' => 'life_occasion'])->toString(),
+      ],
+      [
         'title' => 'Mes produits',
         'description' => 'Mettre en avant les produits à pousser en ce moment.',
         'url' => Url::fromRoute('entity.commerce_product.collection')->toString(),

@@ -1,0 +1,147 @@
+uuid: 2d54af89-0616-4e4d-8cac-cb2eaa905b8b
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.life_occasion.field_hero_image
+    - field.field.taxonomy_term.life_occasion.field_hero_text_mode
+    - field.field.taxonomy_term.life_occasion.field_intro
+    - field.field.taxonomy_term.life_occasion.field_reassurance
+    - image.style.thumbnail
+    - taxonomy.vocabulary.life_occasion
+  module:
+    - field_group
+    - image
+    - options
+    - path
+    - text
+third_party_settings:
+  field_group:
+    group_life_occasion_tabs:
+      children:
+        - group_life_occasion_structure
+        - group_life_occasion_hero
+        - group_life_occasion_content
+      label: 'Onglets univers'
+      region: content
+      parent_name: ''
+      weight: -20
+      format_type: tabs
+      format_settings:
+        classes: group-life-occasion-tabs
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+    group_life_occasion_structure:
+      children:
+        - name
+        - status
+        - path
+      label: Structure
+      region: content
+      parent_name: group_life_occasion_tabs
+      weight: 0
+      format_type: tab
+      format_settings:
+        classes: group-life-occasion-structure
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_life_occasion_hero:
+      children:
+        - field_hero_image
+        - field_hero_text_mode
+      label: 'Hero visuel'
+      region: content
+      parent_name: group_life_occasion_tabs
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: group-life-occasion-hero
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
+    group_life_occasion_content:
+      children:
+        - description
+        - field_intro
+        - field_reassurance
+      label: Contenu
+      region: content
+      parent_name: group_life_occasion_tabs
+      weight: 2
+      format_type: tab
+      format_settings:
+        classes: group-life-occasion-content
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
+id: taxonomy_term.life_occasion.default
+targetEntityType: taxonomy_term
+bundle: life_occasion
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 20
+    region: content
+    settings:
+      rows: 4
+      placeholder: ''
+    third_party_settings: {  }
+  field_hero_image:
+    type: image_image
+    weight: 10
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  field_hero_text_mode:
+    type: options_select
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_intro:
+    type: text_textarea
+    weight: 21
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_reassurance:
+    type: text_textarea
+    weight: 22
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: 'Nom de l’univers visible sur le site'
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  langcode: true

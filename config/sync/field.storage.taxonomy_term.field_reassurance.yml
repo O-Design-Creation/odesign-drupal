@@ -1,0 +1,19 @@
+uuid: 5a96b3e9-bd67-49db-a6d5-6ae7d146f045
+langcode: fr
+status: true
+dependencies:
+  module:
+    - taxonomy
+    - text
+id: taxonomy_term.field_reassurance
+field_name: field_reassurance
+entity_type: taxonomy_term
+type: text_long
+settings: {  }
+module: text
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

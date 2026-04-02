@@ -45,8 +45,9 @@ exclude_paths: |-
   /batch
   /node/add*
   /node/*/*
+  /taxonomy/term/*/edit
   /user/*/*
-exclude_admin_theme: false
+exclude_admin_theme: true
 cookie_lifetime: 365
 use_mobile_message: false
 use_bare_css: false

@@ -1,0 +1,30 @@
+uuid: e34fdac8-9847-4b27-8a1e-bdde4020cb67
+langcode: fr
+status: true
+dependencies:
+  module:
+    - options
+    - taxonomy
+id: taxonomy_term.field_hero_text_mode
+field_name: field_hero_text_mode
+entity_type: taxonomy_term
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: auto
+      label: Automatique
+    -
+      value: light
+      label: 'Texte clair'
+    -
+      value: dark
+      label: 'Texte sombre'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

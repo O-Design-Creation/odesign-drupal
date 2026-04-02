@@ -1,0 +1,20 @@
+uuid: e49641f6-b7ab-44f6-b4b1-1f1e1c0b2e34
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_product
+    - taxonomy
+id: commerce_product.field_life_occasion
+field_name: field_life_occasion
+entity_type: commerce_product
+type: entity_reference
+settings:
+  target_type: taxonomy_term
+module: core
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

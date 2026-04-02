@@ -1,0 +1,10 @@
+odesign_admin.settings:
+  type: config_object
+  label: 'Réglages O Design Admin'
+  mapping:
+    homepage_hero_image:
+      type: integer
+      label: 'Fichier image du hero de la page d’accueil'
+    homepage_hero_text_mode:
+      type: string
+      label: 'Mode de contraste du texte du hero de la page d’accueil'

@@ -1,0 +1,23 @@
+uuid: 4ce9a724-763d-4de8-94ea-c0339900b254
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_hero_text_mode
+    - taxonomy.vocabulary.life_occasion
+  module:
+    - options
+id: taxonomy_term.life_occasion.field_hero_text_mode
+field_name: field_hero_text_mode
+entity_type: taxonomy_term
+bundle: life_occasion
+label: 'Style du texte sur la photo'
+description: "Laisser sur automatique dans la plupart des cas. Utiliser 'Texte clair' ou 'Texte sombre' seulement si le rendu automatique n’est pas assez lisible."
+required: false
+translatable: true
+default_value:
+  -
+    value: auto
+default_value_callback: ''
+settings: {  }
+field_type: list_string

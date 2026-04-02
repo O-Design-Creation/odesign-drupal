@@ -1,0 +1,9 @@
+uuid: 910f9f13-3910-4d68-95b3-b2dc2f9f5c63
+langcode: fr
+status: true
+dependencies: {  }
+name: 'Occasions de vie'
+vid: life_occasion
+description: 'Univers principaux d’achat et de mise en avant commerciale'
+weight: 1
+new_revision: false

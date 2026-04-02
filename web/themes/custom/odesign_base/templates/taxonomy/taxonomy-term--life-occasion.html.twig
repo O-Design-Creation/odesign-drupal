@@ -1,0 +1,76 @@
+{#
+/**
+ * @file
+ * Landing page d'un univers "Occasion de vie".
+ */
+#}
+<article{{ attributes.addClass('life-occasion-page') }}>
+  {%
+    set hero_classes = [
+      'life-occasion-page__hero',
+      life_occasion_hero_has_image ? 'life-occasion-page__hero--with-image',
+      'life-occasion-page__hero--text-' ~ life_occasion_hero_text_mode,
+    ]
+  %}
+  <header
+    class="{{ hero_classes|join(' ') }}"
+    {% if life_occasion_hero_image_url %}
+      style="--life-occasion-hero-image: url('{{ life_occasion_hero_image_url|e('html_attr') }}');"
+    {% endif %}
+  >
+    <div class="container">
+      <div class="life-occasion-page__hero-content">
+        <p class="life-occasion-page__eyebrow">{{ 'Univers Atelier O Design'|t }}</p>
+        <h1 class="life-occasion-page__title">{{ life_occasion_title }}</h1>
+
+        {% if life_occasion_intro %}
+          <p class="life-occasion-page__intro">{{ life_occasion_intro }}</p>
+        {% endif %}
+
+        <div class="life-occasion-page__actions">
+          <a href="{{ life_occasion_catalogue_url }}" class="btn btn--primary">
+            {{ 'Voir tout le catalogue'|t }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {% if life_occasion_reassurance_items %}
+    <section class="life-occasion-page__reassurance">
+      <div class="container">
+        <ul class="life-occasion-page__reassurance-list">
+          {% for item in life_occasion_reassurance_items %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  {% endif %}
+
+  <section class="life-occasion-page__products">
+    <div class="container">
+      <div class="section-heading">
+        <div>
+          <p class="section-heading__eyebrow">{{ 'Sélection du moment'|t }}</p>
+          <h2 class="section-heading__title">{{ 'Produits à découvrir'|t }}</h2>
+        </div>
+        {% if life_occasion_product_count %}
+          <p class="section-heading__meta">
+            {{ '@count produit(s) liés à cet univers'|t({'@count': life_occasion_product_count}) }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% if life_occasion_product_teasers %}
+        <div class="product-grid">
+          {{ life_occasion_product_teasers }}
+        </div>
+      {% else %}
+        <p class="life-occasion-page__empty">
+          {{ 'Cet univers est prêt côté structure, mais la sélection de produits n’a pas encore été finalisée.'|t }}
+        </p>
+      {% endif %}
+    </div>
+  </section>
+</article>

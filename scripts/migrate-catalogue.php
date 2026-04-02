@@ -122,6 +122,26 @@ function create_media(object $file, string $name, string $alt = ''): object {
   return $media;
 }
 
+/**
+ * Retourne les ids de produits déjà liés à un alias donné.
+ */
+function find_product_ids_by_alias(string $alias): array {
+  $query = \Drupal::database()->select('path_alias', 'pa')
+    ->fields('pa', ['path'])
+    ->condition('alias', $alias);
+
+  $paths = $query->execute()->fetchCol();
+  $ids = [];
+
+  foreach ($paths as $path) {
+    if (preg_match('#^/product/(\d+)$#', $path, $matches)) {
+      $ids[] = (int) $matches[1];
+    }
+  }
+
+  return array_values(array_unique($ids));
+}
+
 // ---------------------------------------------------------------------------
 // Lecture et groupement du CSV par handle
 // ---------------------------------------------------------------------------
@@ -215,11 +235,20 @@ foreach ($products as $handle => $data) {
 
   $alias = '/products/' . $handle;
 
-  // --- Idempotence : vérifier si un produit avec cet alias existe déjà. ---
-  // Méthode robuste : chercher par titre exact.
+  // --- Idempotence forte : alias Shopify d'abord, titre ensuite en fallback. ---
+  $existing_ids_by_alias = find_product_ids_by_alias($alias);
+  if (!empty($existing_ids_by_alias)) {
+    $duplicate_note = count($existing_ids_by_alias) > 1
+      ? ' — ALERTE doublons locaux alias=' . count($existing_ids_by_alias)
+      : '';
+    echo "[{$n}] SKIP alias : '{$data['title']}' ({$alias}) existe déjà{$duplicate_note}.\n";
+    $count_skipped++;
+    continue;
+  }
+
   $existing_products = $product_storage->loadByProperties(['title' => $data['title']]);
   if (!empty($existing_products)) {
-    echo "[{$n}] SKIP : '{$data['title']}' existe déjà.\n";
+    echo "[{$n}] SKIP titre : '{$data['title']}' existe déjà.\n";
     $count_skipped++;
     continue;
   }

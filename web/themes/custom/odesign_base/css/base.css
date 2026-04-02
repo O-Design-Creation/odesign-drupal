@@ -1833,6 +1833,36 @@ nav ul {
   margin-right: var(--space-2);
 }
 
+.feed-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.feed-icon::before {
+  content: "\edd0";
+  font-family: "Phosphor" !important;
+  font-size: 1rem;
+  line-height: 1;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.feed-icon:hover,
+.feed-icon:focus-visible {
+  color: var(--color-primary);
+}
+
 /* ---------------------------------------------------------------------------
    28. Éléments auto-générés par Drupal — masquage ciblé
    --------------------------------------------------------------------------- */
@@ -1850,4 +1880,384 @@ nav ul {
   width: 1px; height: 1px;
   overflow: hidden;
   clip: rect(0,0,0,0);
+}
+
+.menu-item--life-occasion .menu-item__link {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------------
+   29. Homepage par occasions de vie
+   --------------------------------------------------------------------------- */
+.home-hero {
+  padding: clamp(3rem, 6vw, 5.5rem) 0 clamp(2.5rem, 5vw, 4rem);
+  background:
+    radial-gradient(circle at top left, rgba(217, 183, 164, 0.34), transparent 38%),
+    linear-gradient(180deg, #fffaf7 0%, #f8f2ee 100%);
+}
+
+.home-hero--with-image {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(22, 16, 12, 0.28) 0%, rgba(22, 16, 12, 0.48) 100%),
+    var(--home-hero-image) center/cover no-repeat;
+}
+
+.home-hero--with-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.20) 100%);
+  pointer-events: none;
+}
+
+.home-hero--with-image > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero__inner {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.home-hero__eyebrow,
+.section-heading__eyebrow,
+.life-occasion-page__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-brand-dark);
+}
+
+.home-hero__title,
+.section-heading__title,
+.life-occasion-page__title {
+  margin: 0;
+  color: var(--color-brand-dark);
+}
+
+.home-hero__title {
+  max-width: 14ch;
+}
+
+.home-hero__intro,
+.life-occasion-page__intro {
+  max-width: 60ch;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+}
+
+.home-hero__actions,
+.life-occasion-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.home-hero__panel {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  border: 1px solid var(--color-brand-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-hero--text-light .home-hero__eyebrow,
+.home-hero--text-light .home-hero__title,
+.home-hero--text-light .home-hero__intro,
+.home-hero--text-light .home-hero__highlights li {
+  color: #fff;
+}
+
+.home-hero--text-light .home-hero__eyebrow {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.home-hero--text-light .home-hero__title,
+.home-hero--text-light .home-hero__intro,
+.home-hero--text-light .home-hero__highlights li {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
+}
+
+.home-hero--text-light .home-hero__panel {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+.home-hero--text-light .home-hero__highlights li::before {
+  color: #fff;
+}
+
+.home-hero--text-dark {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 247, 0.78) 0%, rgba(255, 247, 242, 0.90) 100%),
+    var(--home-hero-image) center/cover no-repeat;
+}
+
+.home-hero--text-dark::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.28) 100%);
+}
+
+.home-hero__highlights,
+.life-occasion-card__reassurance,
+.life-occasion-page__reassurance-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.home-hero__highlights li,
+.life-occasion-card__reassurance li,
+.life-occasion-page__reassurance-list li {
+  position: relative;
+  padding-left: 1.2rem;
+  color: var(--color-text-muted);
+}
+
+.home-hero__highlights li::before,
+.life-occasion-card__reassurance li::before,
+.life-occasion-page__reassurance-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-brand);
+}
+
+.home-universes,
+.home-method,
+.life-occasion-page__products {
+  padding: clamp(2.75rem, 5vw, 4.5rem) 0;
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.section-heading__meta {
+  margin: 0;
+  color: var(--color-text-muted);
+  max-width: 54ch;
+}
+
+.life-occasion-cards {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.life-occasion-card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: #fff;
+  border: 1px solid rgba(139, 97, 81, 0.16);
+  box-shadow: var(--shadow-sm);
+}
+
+.life-occasion-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.life-occasion-card__title {
+  margin: 0;
+}
+
+.life-occasion-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.life-occasion-card__title a:hover {
+  text-decoration: underline;
+}
+
+.life-occasion-card__count {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.life-occasion-card__intro,
+.life-occasion-page__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.product-grid--compact {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.life-occasion-card__actions {
+  display: flex;
+}
+
+.home-method {
+  background: var(--color-brand-cream);
+}
+
+.home-method__grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.home-method__item {
+  padding: var(--space-5);
+  background: #fff;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(139, 97, 81, 0.14);
+}
+
+.home-method__item h3 {
+  margin-top: 0;
+  margin-bottom: var(--space-2);
+}
+
+.home-method__item p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+/* ---------------------------------------------------------------------------
+   30. Landing pages taxonomy "Occasions de vie"
+   --------------------------------------------------------------------------- */
+.life-occasion-page__hero {
+  padding: clamp(3rem, 6vw, 5rem) 0 clamp(2rem, 4vw, 3rem);
+  background:
+    radial-gradient(circle at top right, rgba(217, 183, 164, 0.3), transparent 34%),
+    linear-gradient(180deg, #fffdfb 0%, #fbf5f1 100%);
+}
+
+.life-occasion-page__hero--with-image {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(22, 16, 12, 0.34) 0%, rgba(22, 16, 12, 0.54) 100%),
+    var(--life-occasion-hero-image) center/cover no-repeat;
+}
+
+.life-occasion-page__hero--with-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.24) 100%);
+  pointer-events: none;
+}
+
+.life-occasion-page__hero > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.life-occasion-page__hero-content {
+  max-width: min(720px, 100%);
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+  border-radius: var(--radius-xl);
+}
+
+.life-occasion-page__hero--text-light .life-occasion-page__eyebrow,
+.life-occasion-page__hero--text-light .life-occasion-page__title,
+.life-occasion-page__hero--text-light .life-occasion-page__intro {
+  color: #fff;
+}
+
+.life-occasion-page__hero--text-light .life-occasion-page__eyebrow {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.life-occasion-page__hero--text-light .life-occasion-page__title,
+.life-occasion-page__hero--text-light .life-occasion-page__intro {
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.28);
+}
+
+.life-occasion-page__hero--with-image.life-occasion-page__hero--text-light .life-occasion-page__hero-content {
+  background: linear-gradient(180deg, rgba(20, 14, 10, 0.52) 0%, rgba(20, 14, 10, 0.36) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(8px);
+}
+
+.life-occasion-page__hero--with-image.life-occasion-page__hero--text-dark {
+  background:
+    linear-gradient(180deg, rgba(255, 250, 247, 0.82) 0%, rgba(255, 247, 242, 0.9) 100%),
+    var(--life-occasion-hero-image) center/cover no-repeat;
+}
+
+.life-occasion-page__hero--with-image.life-occasion-page__hero--text-dark::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.30) 100%);
+}
+
+.life-occasion-page__hero--with-image.life-occasion-page__hero--text-dark .life-occasion-page__hero-content {
+  background: linear-gradient(180deg, rgba(255, 250, 247, 0.80) 0%, rgba(255, 247, 242, 0.68) 100%);
+  border: 1px solid rgba(78, 38, 32, 0.10);
+  box-shadow: 0 14px 36px rgba(43, 24, 20, 0.10);
+  backdrop-filter: blur(8px);
+}
+
+.life-occasion-page__hero--text-dark:not(.life-occasion-page__hero--with-image) {
+  background:
+    radial-gradient(circle at top right, rgba(217, 183, 164, 0.3), transparent 34%),
+    linear-gradient(180deg, #fffdfb 0%, #fbf5f1 100%);
+}
+
+.life-occasion-page__reassurance {
+  padding-bottom: var(--space-6);
+}
+
+.life-occasion-page__reassurance-list {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(139, 97, 81, 0.14);
+  background: #fff;
+}
+
+.page-life-occasion #block-odesign-base-page-title {
+  display: none;
+}
+
+.page-admin #sliding-popup,
+.page-admin .eu-cookie-withdraw-wrapper,
+.page-admin .eu-cookie-withdraw-tab,
+.logged-in #sliding-popup,
+.logged-in .eu-cookie-withdraw-wrapper,
+.logged-in .eu-cookie-withdraw-tab {
+  display: none !important;
+}
+
+@media (min-width: 900px) {
+  .home-hero__inner {
+    grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.9fr);
+    align-items: center;
+  }
+
+  .section-heading {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+  }
+
+  .section-heading__meta {
+    text-align: right;
+  }
+
+  .life-occasion-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .home-method__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }

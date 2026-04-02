@@ -1,0 +1,26 @@
+uuid: 1a2a7d23-fca3-4d35-952b-80b5ba3b1f92
+langcode: fr
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.storage.commerce_product.field_life_occasion
+    - taxonomy.vocabulary.life_occasion
+id: commerce_product.default.field_life_occasion
+field_name: field_life_occasion
+entity_type: commerce_product
+bundle: default
+label: 'Occasions de vie'
+description: "Univers commerciaux principaux : mariage, naissance & bébé, cadeaux personnalisés / famille."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      life_occasion: life_occasion
+    auto_create: true
+    auto_create_bundle: life_occasion
+field_type: entity_reference

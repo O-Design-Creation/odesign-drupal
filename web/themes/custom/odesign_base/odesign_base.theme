@@ -6,6 +6,12 @@
  */
 
 use Drupal\image\Entity\ImageStyle;
+use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Url;
+use Drupal\commerce_product\Entity\ProductInterface;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Implements hook_page_attachments_alter().
@@ -14,11 +20,24 @@ use Drupal\image\Entity\ImageStyle;
  * générés depuis le logo SVG.
  */
 function odesign_base_page_attachments_alter(array &$attachments): void {
+  $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+
   // Supprimer la favicon Drupal core
   if (isset($attachments['#attached']['html_head'])) {
     foreach ($attachments['#attached']['html_head'] as $key => $item) {
       if (isset($item[1]) && $item[1] === 'favicon') {
         unset($attachments['#attached']['html_head'][$key]);
+      }
+
+      if (
+        $route_term instanceof TermInterface &&
+        $route_term->bundle() === 'life_occasion' &&
+        isset($attachments['#attached']['html_head'][$key][0]['#tag'], $attachments['#attached']['html_head'][$key][0]['#attributes']['type']) &&
+        $attachments['#attached']['html_head'][$key][0]['#tag'] === 'link' &&
+        $attachments['#attached']['html_head'][$key][0]['#attributes']['type'] === 'application/rss+xml' &&
+        isset($attachments['#attached']['html_head'][$key][0]['#attributes']['title'])
+      ) {
+        $attachments['#attached']['html_head'][$key][0]['#attributes']['title'] = Html::decodeEntities((string) $attachments['#attached']['html_head'][$key][0]['#attributes']['title']);
       }
     }
   }
@@ -61,4 +80,410 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
   $variables['product_gallery_items'] = $gallery_items;
   $variables['product_gallery_count'] = count($gallery_items);
   $variables['product_gallery_has_multiple'] = count($gallery_items) > 1;
+}
+
+/**
+ * Charge les univers "Occasions de vie" publiés.
+ *
+ * @return \Drupal\taxonomy\TermInterface[]
+ *   Les termes triés par poids puis nom.
+ */
+function odesign_base_load_life_occasion_terms(): array {
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $term_ids = $term_storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('vid', 'life_occasion')
+    ->condition('status', 1)
+    ->sort('weight')
+    ->sort('name')
+    ->execute();
+
+  if (!$term_ids) {
+    return [];
+  }
+
+  return $term_storage->loadMultiple($term_ids);
+}
+
+/**
+ * Charge des produits publiés liés à un univers.
+ *
+ * @param \Drupal\taxonomy\TermInterface $term
+ *   Le terme d'univers.
+ * @param int $limit
+ *   Le nombre maximum de produits.
+ *
+ * @return \Drupal\commerce_product\Entity\ProductInterface[]
+ *   Les produits trouvés.
+ */
+function odesign_base_load_products_for_life_occasion(TermInterface $term, int $limit = 6): array {
+  $product_storage = \Drupal::entityTypeManager()->getStorage('commerce_product');
+  $product_ids = $product_storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('status', 1)
+    ->condition('field_life_occasion.target_id', $term->id())
+    ->sort('title')
+    ->range(0, $limit)
+    ->execute();
+
+  if (!$product_ids) {
+    return [];
+  }
+
+  return $product_storage->loadMultiple($product_ids);
+}
+
+/**
+ * Compte les produits publiés liés à un univers.
+ */
+function odesign_base_count_products_for_life_occasion(TermInterface $term): int {
+  return (int) \Drupal::entityTypeManager()->getStorage('commerce_product')->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('status', 1)
+    ->condition('field_life_occasion.target_id', $term->id())
+    ->count()
+    ->execute();
+}
+
+/**
+ * Construit les teasers produits pour Twig.
+ *
+ * @param \Drupal\commerce_product\Entity\ProductInterface[] $products
+ *   Les produits à rendre.
+ *
+ * @return array
+ *   Un render array.
+ */
+function odesign_base_build_product_teasers(array $products): array {
+  if (!$products) {
+    return [];
+  }
+
+  return \Drupal::entityTypeManager()
+    ->getViewBuilder('commerce_product')
+    ->viewMultiple($products, 'teaser');
+}
+
+/**
+ * Extrait une version courte d'un champ texte.
+ */
+function odesign_base_extract_term_text(TermInterface $term, string $field_name, int $max_length = 180): string {
+  if (!$term->hasField($field_name) || $term->get($field_name)->isEmpty()) {
+    return '';
+  }
+
+  $value = trim(strip_tags((string) $term->get($field_name)->value));
+  if ($value === '') {
+    return '';
+  }
+
+  return Unicode::truncate($value, $max_length, TRUE, TRUE);
+}
+
+/**
+ * Extrait une liste simple depuis le champ de réassurance.
+ *
+ * @return string[]
+ *   Une liste de points courts.
+ */
+function odesign_base_extract_reassurance_items(TermInterface $term): array {
+  if (!$term->hasField('field_reassurance') || $term->get('field_reassurance')->isEmpty()) {
+    return [];
+  }
+
+  $value = trim(strip_tags((string) $term->get('field_reassurance')->value));
+  if ($value === '') {
+    return [];
+  }
+
+  $lines = preg_split('/\r\n|\r|\n/', $value) ?: [];
+  $items = [];
+  foreach ($lines as $line) {
+    $line = trim($line, " \t\n\r\0\x0B-•");
+    if ($line !== '') {
+      $items[] = $line;
+    }
+  }
+
+  return $items;
+}
+
+/**
+ * Détermine la meilleure couleur de texte pour une image.
+ */
+function odesign_base_detect_hero_text_mode(string $file_uri): string {
+  $file_system = \Drupal::service('file_system');
+  assert($file_system instanceof FileSystemInterface);
+  $realpath = $file_system->realpath($file_uri);
+
+  if (!$realpath || !is_readable($realpath)) {
+    return 'light';
+  }
+
+  $image_data = @file_get_contents($realpath);
+  if ($image_data === FALSE) {
+    return 'light';
+  }
+
+  $source = @imagecreatefromstring($image_data);
+  if (!$source) {
+    return 'light';
+  }
+
+  $width = imagesx($source);
+  $height = imagesy($source);
+  $sample_width = min(24, max(1, $width));
+  $sample_height = min(24, max(1, $height));
+  $sample = imagecreatetruecolor($sample_width, $sample_height);
+
+  if (!$sample) {
+    imagedestroy($source);
+    return 'light';
+  }
+
+  imagecopyresampled($sample, $source, 0, 0, 0, 0, $sample_width, $sample_height, $width, $height);
+
+  $pixels = 0;
+  $luminance_total = 0.0;
+  for ($x = 0; $x < $sample_width; $x++) {
+    for ($y = 0; $y < $sample_height; $y++) {
+      $rgb = imagecolorat($sample, $x, $y);
+      $red = ($rgb >> 16) & 0xFF;
+      $green = ($rgb >> 8) & 0xFF;
+      $blue = $rgb & 0xFF;
+      $luminance_total += (0.299 * $red) + (0.587 * $green) + (0.114 * $blue);
+      $pixels++;
+    }
+  }
+
+  imagedestroy($sample);
+  imagedestroy($source);
+
+  if ($pixels === 0) {
+    return 'light';
+  }
+
+  $average_luminance = $luminance_total / $pixels;
+  return $average_luminance >= 150 ? 'dark' : 'light';
+}
+
+/**
+ * Prépare les données visuelles du hero d'un univers.
+ *
+ * @return array{url: string|null, text_mode: string, has_image: bool}
+ *   Les données de rendu du hero.
+ */
+function odesign_base_build_life_occasion_hero(TermInterface $term): array {
+  $text_mode = 'light';
+  if ($term->hasField('field_hero_text_mode') && !$term->get('field_hero_text_mode')->isEmpty()) {
+    $value = (string) $term->get('field_hero_text_mode')->value;
+    if (in_array($value, ['auto', 'light', 'dark'], TRUE)) {
+      $text_mode = $value;
+    }
+  }
+
+  if (!$term->hasField('field_hero_image') || $term->get('field_hero_image')->isEmpty()) {
+    return [
+      'url' => NULL,
+      'text_mode' => 'dark',
+      'has_image' => FALSE,
+    ];
+  }
+
+  $file = $term->get('field_hero_image')->entity;
+  if (!$file) {
+    return [
+      'url' => NULL,
+      'text_mode' => 'dark',
+      'has_image' => FALSE,
+    ];
+  }
+
+  $file_url = \Drupal::service('file_url_generator')->generateString($file->getFileUri());
+  $resolved_mode = $text_mode === 'auto'
+    ? odesign_base_detect_hero_text_mode($file->getFileUri())
+    : $text_mode;
+
+  return [
+    'url' => $file_url,
+    'text_mode' => in_array($resolved_mode, ['light', 'dark'], TRUE) ? $resolved_mode : 'light',
+    'has_image' => TRUE,
+  ];
+}
+
+/**
+ * Prépare les données visuelles du hero de la homepage.
+ *
+ * @return array{url: string|null, text_mode: string, has_image: bool}
+ *   Les données de rendu du hero.
+ */
+function odesign_base_build_homepage_hero(): array {
+  $settings = \Drupal::config('odesign_admin.settings');
+  $text_mode = (string) ($settings->get('homepage_hero_text_mode') ?? 'auto');
+  if (!in_array($text_mode, ['auto', 'light', 'dark'], TRUE)) {
+    $text_mode = 'auto';
+  }
+
+  $file_id = (int) ($settings->get('homepage_hero_image') ?? 0);
+  if (!$file_id) {
+    return [
+      'url' => NULL,
+      'text_mode' => 'light',
+      'has_image' => FALSE,
+    ];
+  }
+
+  $file = \Drupal\file\Entity\File::load($file_id);
+  if (!$file) {
+    return [
+      'url' => NULL,
+      'text_mode' => 'light',
+      'has_image' => FALSE,
+    ];
+  }
+
+  $resolved_mode = $text_mode === 'auto'
+    ? odesign_base_detect_hero_text_mode($file->getFileUri())
+    : $text_mode;
+
+  return [
+    'url' => \Drupal::service('file_url_generator')->generateString($file->getFileUri()),
+    'text_mode' => in_array($resolved_mode, ['light', 'dark'], TRUE) ? $resolved_mode : 'light',
+    'has_image' => TRUE,
+  ];
+}
+
+/**
+ * Prépare une carte d'univers pour la homepage.
+ */
+function odesign_base_build_life_occasion_card(TermInterface $term, int $product_limit = 3): array {
+  $products = odesign_base_load_products_for_life_occasion($term, $product_limit);
+  $hero = odesign_base_build_life_occasion_hero($term);
+
+  return [
+    'title' => $term->label(),
+    'url' => $term->toUrl()->toString(),
+    'intro' => odesign_base_extract_term_text($term, 'field_intro'),
+    'hero_image_url' => $hero['url'],
+    'hero_text_mode' => $hero['text_mode'],
+    'reassurance_items' => array_slice(odesign_base_extract_reassurance_items($term), 0, 3),
+    'product_count' => odesign_base_count_products_for_life_occasion($term),
+    'product_teasers' => odesign_base_build_product_teasers($products),
+  ];
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function odesign_base_preprocess_page(array &$variables): void {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $variables['attributes']['class'][] = 'page-admin';
+  }
+
+  $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+  if ($route_term instanceof TermInterface && $route_term->bundle() === 'life_occasion') {
+    $variables['attributes']['class'][] = 'page-life-occasion';
+  }
+
+  if (empty($variables['is_front'])) {
+    return;
+  }
+
+  $terms = odesign_base_load_life_occasion_terms();
+  if (!$terms) {
+    return;
+  }
+
+  $variables['front_life_occasion_cards'] = array_map(
+    static fn(TermInterface $term) => odesign_base_build_life_occasion_card($term, 3),
+    $terms
+  );
+  $hero = odesign_base_build_homepage_hero();
+  $variables['front_hero_image_url'] = $hero['url'];
+  $variables['front_hero_text_mode'] = $hero['text_mode'];
+  $variables['front_hero_has_image'] = $hero['has_image'];
+  $first_term = reset($terms);
+  if ($first_term instanceof TermInterface) {
+    $variables['front_primary_life_occasion_url'] = $first_term->toUrl()->toString();
+  }
+  $variables['front_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
+}
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+function odesign_base_preprocess_menu(array &$variables): void {
+  if (($variables['menu_name'] ?? '') !== 'main') {
+    return;
+  }
+
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+
+  $existing_urls = [];
+  foreach ($variables['items'] ?? [] as $item) {
+    if (!empty($item['url']) && $item['url'] instanceof Url) {
+      $existing_urls[] = $item['url']->toString();
+    }
+  }
+
+  $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
+  $variables['life_occasion_links'] = [];
+  foreach (odesign_base_load_life_occasion_terms() as $term) {
+    $url = $term->toUrl();
+    $url_string = $url->toString();
+    if (in_array($url_string, $existing_urls, TRUE)) {
+      continue;
+    }
+
+    $variables['life_occasion_links'][] = [
+      'title' => $term->label(),
+      'url' => $url,
+      'in_active_trail' => $route_term instanceof TermInterface
+        && $route_term->bundle() === 'life_occasion'
+        && (int) $route_term->id() === (int) $term->id(),
+      'attributes' => new \Drupal\Core\Template\Attribute(['class' => ['menu-item', 'menu-item--life-occasion']]),
+      'below' => [],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_taxonomy_term().
+ */
+function odesign_base_preprocess_taxonomy_term(array &$variables): void {
+  if (empty($variables['term']) || !$variables['term'] instanceof TermInterface) {
+    return;
+  }
+
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $variables['term'];
+  if ($term->bundle() !== 'life_occasion') {
+    return;
+  }
+
+  $products = odesign_base_load_products_for_life_occasion($term, 12);
+  $hero = odesign_base_build_life_occasion_hero($term);
+
+  $variables['life_occasion_title'] = $term->label();
+  $variables['life_occasion_intro'] = odesign_base_extract_term_text($term, 'field_intro', 260);
+  $variables['life_occasion_reassurance_items'] = odesign_base_extract_reassurance_items($term);
+  $variables['life_occasion_product_count'] = odesign_base_count_products_for_life_occasion($term);
+  $variables['life_occasion_product_teasers'] = odesign_base_build_product_teasers($products);
+  $variables['life_occasion_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
+  $variables['life_occasion_hero_image_url'] = $hero['url'];
+  $variables['life_occasion_hero_text_mode'] = $hero['text_mode'];
+  $variables['life_occasion_hero_has_image'] = $hero['has_image'];
+}
+
+/**
+ * Implements hook_preprocess_feed_icon().
+ */
+function odesign_base_preprocess_feed_icon(array &$variables): void {
+  if (!isset($variables['title']) || !is_string($variables['title'])) {
+    return;
+  }
+
+  $variables['title'] = Html::decodeEntities($variables['title']);
 }
