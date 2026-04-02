@@ -14,7 +14,7 @@
    --------------------------------------------------------------------------- */
 :root {
   /* Palette officielle Atelier O Design — fournie par la cliente */
-  --color-brand-dark:     #4E2620;   /* 🤎 Marron profond       — footer, header barre annonce, accents forts */
+  --color-brand-dark:     #8B6151;   /* 🪵 Éclairci depuis le logo — footer, header barre annonce, accents forts */
   --color-brand-medium:   #BB7570;   /* 🌸 Rose terracotta doux — barres, hover, boutons secondaires */
   --color-brand-warm:     #8B6151;   /* 🪵 Brun naturel chaud   — prix, CTA forts, icônes */
   --color-brand-beige:    #D9B7A4;   /* 🕊️ Beige rosé lumineux  — fonds chauds, cartes, bordures */
