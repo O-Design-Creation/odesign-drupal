@@ -2,6 +2,14 @@ services:
   odesign_orders.order_workflow_helper:
     class: Drupal\odesign_orders\Order\OrderWorkflowHelper
 
+  odesign_orders.lazy_builders:
+    class: Drupal\odesign_orders\LazyBuilders\OrderToolbarLazyBuilders
+    arguments:
+      - '@entity_type.manager'
+      - '@odesign_orders.order_workflow_helper'
+    tags:
+      - { name: drupal.lazy_builder }
+
   odesign_orders.order_workflow_subscriber:
     class: Drupal\odesign_orders\EventSubscriber\OrderWorkflowSubscriber
     arguments:
