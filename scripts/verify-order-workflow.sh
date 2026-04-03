@@ -26,7 +26,7 @@ for expected in \
   fi
 done
 
-TOOLBAR_URL="$(run_drush php:eval '$container = \Drupal::getContainer(); $service_id = $container->has("odesign_orders.lazy_builders") ? "odesign_orders.lazy_builders" : "odesign_admin.lazy_builders"; $lb = \Drupal::service($service_id); $build = $lb->renderOrdersInbox(); echo $build["#url"]->toString();')"
+TOOLBAR_URL="$(run_drush php:eval '$lb = \Drupal::service("odesign_orders.lazy_builders"); $build = $lb->renderOrdersInbox(); echo $build["#url"]->toString();')"
 echo "toolbar_url=${TOOLBAR_URL}"
 
 if grep -Fq "/admin/boutique/commandes-a-traiter" <<< "${TOOLBAR_URL}"; then
