@@ -81,7 +81,7 @@
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-haspopup', 'menu');
       toggle.setAttribute('aria-controls', menuId);
-      toggle.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">expand_more</span><span class="visually-hidden">Afficher les actions supplémentaires</span>';
+      toggle.innerHTML = '<span class="visually-hidden">Afficher les actions supplémentaires</span>';
 
       menu.className = 'odesign-actions__menu';
       menu.id = menuId;
