@@ -1,0 +1,339 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: odesign\n"
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "#"
+msgstr "N°"
+
+msgid "@interval ago"
+msgstr "il y a @interval"
+
+msgid "@interval hence"
+msgstr "dans @interval"
+
+msgid "A list of new users"
+msgstr "Nouveaux inscrits"
+
+msgid "A list of users that are currently logged in."
+msgstr "Liste des utilisateurs actuellement connectés."
+
+msgid "A user is considered online for this long after they have last viewed a page."
+msgstr "Durée après laquelle un utilisateur est considéré hors ligne."
+
+msgid "Add credit memo"
+msgstr "Ajouter une note de crédit"
+
+msgid "Add invoice"
+msgstr "Ajouter une facture"
+
+msgid "Add order items"
+msgstr "Ajouter des articles de commande"
+
+msgid "All content, by letter."
+msgstr "Tout le contenu, par lettre."
+
+msgid "All content, by month."
+msgstr "Tout le contenu, par mois."
+
+msgid "Archive"
+msgstr "Archives"
+
+msgctxt "workflow state"
+msgid "Canceled"
+msgstr "Annulée"
+
+msgid "Cart form"
+msgstr "Panier"
+
+msgid "Carts"
+msgstr "Paniers"
+
+msgid "Change text format?"
+msgstr "Changer le format de texte ?"
+
+msgid "Checkout order summary"
+msgstr "Récapitulatif de la commande"
+
+msgid "Choose an option"
+msgstr "Sélectionner…"
+
+msgid "Choose some options"
+msgstr "Sélectionner…"
+
+msgid "Close sidebar panel"
+msgstr "Fermer le panneau latéral"
+
+msgid "Collapse sidebar"
+msgstr "Réduire la barre latérale"
+
+msgid "Commerce Activity"
+msgstr "Activité boutique"
+
+msgid "Commerce inbox (@count)"
+msgstr "Boîte de réception Commerce (@count)"
+
+msgid "Commerce inbox <span>@count</span>"
+msgstr "Boîte de réception Commerce <span>@count</span>"
+
+msgid "Completed"
+msgstr "Terminée"
+
+msgctxt "workflow state"
+msgid "Completed"
+msgstr "Terminée"
+
+msgid "Content Overview"
+msgstr "Vue d'ensemble du contenu"
+
+msgid "Content Type"
+msgstr "Type de contenu"
+
+msgid "Coupons"
+msgstr "Codes promo"
+
+msgid "Credit memo"
+msgstr "Avoir"
+
+msgid "Credit memos"
+msgstr "Avoirs"
+
+msgid "Current product variation"
+msgstr "Variation actuelle"
+
+msgid "Customer comments"
+msgstr "Commentaires du client"
+
+msgid "Default hreflang"
+msgstr "hreflang par défaut"
+
+msgid "Default product variation"
+msgstr "Variation par défaut"
+
+msgid "Display a list of placed orders for a user."
+msgstr "Affiche la liste des commandes d'un client."
+
+msgid "Display a set of order items in a table."
+msgstr "Affiche les articles d'une commande."
+
+msgctxt "Workflow state label"
+msgid "Draft"
+msgstr "Brouillon"
+
+msgctxt "workflow state"
+msgid "Draft"
+msgstr "Brouillon"
+
+msgid "Edit @bundle"
+msgstr "Modifier @bundle"
+
+msgid "Edit billing information"
+msgstr "Modifier les informations de facturation"
+
+msgid "Edit user account"
+msgstr "Modifier le compte utilisateur"
+
+msgid "Expand sidebar"
+msgstr "Développer la barre latérale"
+
+msgid "Files overview"
+msgstr "Aperçu des fichiers"
+
+msgid "Find and manage content"
+msgstr "Gérer le contenu du site"
+
+msgid "Find and manage files."
+msgstr "Gérer les fichiers et médias."
+
+msgid "Find and manage people interacting with your site."
+msgstr "Trouver et gérer les clients et utilisateurs de votre site."
+
+msgid "Glossary"
+msgstr "Glossaire"
+
+msgid "Hide sidebar panel"
+msgstr "Masquer le panneau latéral"
+
+msgid "Inline Operations"
+msgstr "Actions rapides"
+
+msgid "Invoice date"
+msgstr "Date de facture"
+
+msgid "Invoice type"
+msgstr "Type de facture"
+
+msgid "Item"
+msgstr "Élément"
+
+msgid "Last payment"
+msgstr "Dernier paiement"
+
+msgid "Last update"
+msgstr "Dernière mise à jour"
+
+msgid "List of redirects"
+msgstr "Liste des redirections"
+
+msgid "Make content sticky"
+msgstr "Épingler le contenu"
+
+msgid "Monthly archive"
+msgstr "Archives mensuelles"
+
+msgid "Name or email contains"
+msgstr "Nom ou email contient"
+
+msgid "New"
+msgstr "Nouvelle"
+
+msgctxt "workflow state"
+msgid "New"
+msgstr "Nouvelle"
+
+msgid "No content available."
+msgstr "Aucun contenu disponible."
+
+msgid "No files available."
+msgstr "Aucun fichier disponible."
+
+msgid "No invoices yet."
+msgstr "Aucune facture pour l'instant."
+
+msgid "No log entries."
+msgstr "Aucune entrée dans les journaux."
+
+msgid "No orders available."
+msgstr "Aucune commande pour le moment."
+
+msgid "No payments yet."
+msgstr "Aucun paiement enregistré."
+
+msgid "No products available."
+msgstr "Aucun produit pour le moment."
+
+msgid "No results match"
+msgstr "Aucun résultat"
+
+msgid "No stores available."
+msgstr "Aucune boutique configurée."
+
+msgid "Not scheduled"
+msgstr "Non planifié"
+
+msgid "Order details"
+msgstr "Détails de la commande"
+
+msgid "Order items table (admin)"
+msgstr "Articles commandés"
+
+msgid "Order shipments"
+msgstr "Expéditions de la commande"
+
+msgctxt "workflow state"
+msgid "Pending"
+msgstr "En attente"
+
+msgid "Per customer limit"
+msgstr "Limite par client"
+
+msgid "Placed order"
+msgstr "Commande passée"
+
+msgid "Recent content"
+msgstr "Contenu récent"
+
+msgid "Recent content."
+msgstr "Derniers contenus publiés."
+
+msgid "Recent log messages"
+msgstr "Derniers messages du journal"
+
+msgid "Refunded:"
+msgstr "Remboursée :"
+
+msgid "Registering module"
+msgstr "Enregistrement du module"
+
+msgid "Scheduling options"
+msgstr "Programmation"
+
+msgid "Show sidebar panel"
+msgstr "Afficher le panneau latéral"
+
+msgid "Shows a list of the newest user accounts on the site."
+msgstr "Affiche les derniers comptes créés sur le site."
+
+msgid "Shows the user names of the most recently active users, and the total number of active users."
+msgstr "Affiche les utilisateurs récemment actifs."
+
+msgid "Teaser"
+msgstr "Extrait"
+
+msgid "There are currently 0 users online."
+msgstr "Il y a actuellement 0 utilisateur en ligne."
+
+msgid "There are currently @total users online."
+msgstr "Il y a actuellement @total utilisateur(s) en ligne."
+
+msgid "There are no invoices yet."
+msgstr "Aucune facture pour le moment."
+
+msgid "There are no order items yet."
+msgstr "Aucun article dans cette commande."
+
+msgid "There are no profiles yet."
+msgstr "Aucun profil client enregistré."
+
+msgid "There is no redirect yet."
+msgstr "Aucune redirection configurée."
+
+msgid "Unlock order"
+msgstr "Déverrouiller la commande"
+
+msgid "Update URL alias"
+msgstr "Mettre à jour l'alias d'URL"
+
+msgid "Upload date"
+msgstr "Date d'ajout"
+
+msgid "User orders"
+msgstr "Commandes du client"
+
+msgid "Welcome!"
+msgstr "Bienvenue !"
+
+msgid "Who's new"
+msgstr "Nouveaux inscrits"
+
+msgid "Who's online"
+msgstr "Utilisateurs en ligne"
+
+msgid "Who's online block"
+msgstr "Bloc : utilisateurs en ligne"
+
+msgid "With selection"
+msgstr "Sur la sélection"
+
+msgid "You have not placed any orders with us yet."
+msgstr "Vous n'avez pas encore passé de commande."
+
+msgid "\\nYou can view your order on your account page when logged in."
+msgstr "Votre numéro de commande est [commerce_order:order_number].\\nVous pouvez consulter votre commande dans votre espace personnel une fois connecté(e)."
+
+msgid "last »"
+msgstr "dernière »"
+
+msgid "next ›"
+msgstr "suivante ›"
+
+msgid "noindex"
+msgstr "Ne pas indexer"
+
+msgid "« first"
+msgstr "« première"
+
+msgid "‹ previous"
+msgstr "‹ précédente"
