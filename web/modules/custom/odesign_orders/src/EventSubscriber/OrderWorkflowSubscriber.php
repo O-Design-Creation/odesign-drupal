@@ -178,7 +178,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
     ];
 
     $this->mailManager->mail(
-      'odesign_admin',
+      'odesign_orders',
       'order_status_' . $transition_id,
       $customer_email,
       $this->languageManager->getDefaultLanguage()->getId(),
@@ -204,7 +204,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
     ];
 
     $this->mailManager->mail(
-      'odesign_admin',
+      'odesign_orders',
       'order_atelier_' . $transition_id,
       $atelier_email,
       $this->languageManager->getDefaultLanguage()->getId(),
