@@ -364,13 +364,6 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
     }
   }
 
-  // Améliorer le libellé de sauvegarde des commandes.
-  if (str_starts_with($form_id, 'commerce_order_')) {
-    if (isset($form['actions']['submit'])) {
-      $form['actions']['submit']['#value'] = t('Enregistrer la commande');
-    }
-  }
-
   // Ajouter des aides sur le formulaire ajout/édition de média image produit.
   if (in_array($form_id, ['media_product_image_add_form', 'media_product_image_edit_form'])) {
     if (isset($form['name'])) {
