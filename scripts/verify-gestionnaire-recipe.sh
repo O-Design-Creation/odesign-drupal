@@ -13,7 +13,7 @@ get_uli() {
   if [[ "${TARGET}" == "local" ]]; then
     ddev drush uli --name=odesign
   else
-    terminus drush "${TARGET}" -- user:login odesign | tail -n 1
+    terminus drush "${TARGET}" -- user:login --name=odesign | tail -n 1
   fi
 }
 
