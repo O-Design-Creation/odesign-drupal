@@ -206,46 +206,11 @@ function odesign_admin_mail(string $key, array &$message, array $params): void {
     return;
   }
 
-  // ── Notifications de statut commande ─────────────────────────────────────
-  $order = $params['order'] ?? NULL;
-  $label = $params['label'] ?? '';
-  $subject = $params['subject'] ?? $label;
-
-  $message['subject'] = $subject;
-
-  if (!$order) {
-    return;
+  // Compatibilité transitoire :
+  // les notifications commandes sont désormais gérées par odesign_orders.
+  if (function_exists('odesign_orders_mail')) {
+    odesign_orders_mail($key, $message, $params);
   }
-
-  $order_number = $order->getOrderNumber();
-  $total        = $order->getTotalPrice() ? \Drupal::service('commerce_price.currency_formatter')->format($order->getTotalPrice()->getNumber(), $order->getTotalPrice()->getCurrencyCode()) : '—';
-  $customer     = $order->getEmail();
-
-  // Corps HTML minimal brandé
-  $body = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">';
-  $body .= '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;">';
-  $body .= '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>';
-  $body .= '<tr><td style="padding:28px 24px;">';
-  $body .= '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">' . htmlspecialchars($label) . '</p>';
-  $body .= '<p style="margin:0 0 8px;"><strong>Commande</strong> : #' . htmlspecialchars($order_number ?? '—') . '</p>';
-  $body .= '<p style="margin:0 0 8px;"><strong>Client</strong> : ' . htmlspecialchars($customer) . '</p>';
-  $body .= '<p style="margin:0 0 24px;"><strong>Total</strong> : ' . htmlspecialchars($total) . '</p>';
-
-  // Lien de suivi pour les transitions expédiée/livrée
-  if (in_array($params['transition_id'] ?? '', ['ship', 'deliver'], TRUE)) {
-    $order_url = \Drupal\Core\Url::fromRoute('commerce_order.order_user_view', [
-      'user'           => $order->getCustomerId(),
-      'commerce_order' => $order->id(),
-    ])->setAbsolute()->toString();
-    $body .= '<p><a href="' . $order_url . '" style="display:inline-block;padding:10px 24px;background:#8b6f47;color:#fff;text-decoration:none;font-size:13px;border-radius:2px;">Voir ma commande</a></p>';
-  }
-
-  $body .= '</td></tr>';
-  $body .= '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">';
-  $body .= 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>';
-  $body .= '</table>';
-
-  $message['body'][] = $body;
 }
 
 /**
