@@ -6,6 +6,23 @@
 function odesign_orders_mail(string $key, array &$message, array $params): void {
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
 
+  if ($key === 'new_order_notification') {
+    $order = $params['order'] ?? NULL;
+    $order_number = $params['order_number'] ?? ($order ? $order->getOrderNumber() : '—');
+    $total = $params['total'] ?? '—';
+    $message['subject'] = 'Nouvelle commande reçue — #' . $order_number;
+    $message['body'][] = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">'
+      . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;"><span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>'
+      . '<tr><td style="padding:28px 24px;">'
+      . '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">Nouvelle commande à traiter</p>'
+      . '<p style="margin:0 0 8px;"><strong>Commande</strong> : #' . htmlspecialchars((string) $order_number) . '</p>'
+      . '<p style="margin:0 0 8px;"><strong>Total</strong> : ' . htmlspecialchars((string) $total) . '</p>'
+      . '</td></tr>'
+      . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">Atelier O Design</td></tr>'
+      . '</table>';
+    return;
+  }
+
   $order = $params['order'] ?? NULL;
   $label = $params['label'] ?? '';
   $subject = $params['subject'] ?? $label;
@@ -48,4 +65,51 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
   $body .= '</table>';
 
   $message['body'][] = $body;
+}
+
+/**
+ * Implémente hook_commerce_order_post_save().
+ *
+ * Envoie une notification interne lors d'une nouvelle commande en attente.
+ */
+function odesign_orders_commerce_order_post_save(\Drupal\commerce_order\Entity\OrderInterface $order): void {
+  if ($order->getState()->getId() !== 'pending') {
+    return;
+  }
+
+  $manager_emails = [];
+  $ids = \Drupal::entityQuery('user')
+    ->condition('roles', 'gestionnaire_boutique')
+    ->condition('status', 1)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  foreach (\Drupal::entityTypeManager()->getStorage('user')->loadMultiple($ids) as $user) {
+    $manager_emails[] = $user->getEmail();
+  }
+
+  $store = $order->getStore();
+  if ($store) {
+    $manager_emails[] = $store->getEmail();
+  }
+
+  $manager_emails = array_unique(array_filter($manager_emails));
+  if (empty($manager_emails)) {
+    return;
+  }
+
+  $order_number = $order->getOrderNumber();
+  $total = $order->getTotalPrice();
+  $total_formatted = \Drupal::service('commerce_price.currency_formatter')
+    ->format($total->getNumber(), $total->getCurrencyCode());
+
+  foreach ($manager_emails as $email) {
+    \Drupal::service('plugin.manager.mail')->mail(
+      'odesign_orders',
+      'new_order_notification',
+      $email,
+      'fr',
+      ['order' => $order, 'order_number' => $order_number, 'total' => $total_formatted],
+    );
+  }
 }

@@ -542,56 +542,6 @@ function odesign_admin_mail_alter(array &$message): void {
 }
 
 /**
- * Implémente hook_commerce_order_transition_post_transition().
- *
- * Envoie une notification email au gestionnaire boutique lors d'une nouvelle commande.
- */
-function odesign_admin_commerce_order_post_save(\Drupal\commerce_order\Entity\OrderInterface $order): void {
-  // Notifier uniquement quand une commande passe en statut 'pending' (payée).
-  if ($order->getState()->getId() !== 'pending') {
-    return;
-  }
-
-  // Récupérer l'email du gestionnaire (depuis les comptes avec le bon rôle).
-  $manager_emails = [];
-  $ids = \Drupal::entityQuery('user')
-    ->condition('roles', 'gestionnaire_boutique')
-    ->condition('status', 1)
-    ->accessCheck(FALSE)
-    ->execute();
-
-  foreach (\Drupal::entityTypeManager()->getStorage('user')->loadMultiple($ids) as $user) {
-    $manager_emails[] = $user->getEmail();
-  }
-
-  // Ajouter aussi l'email admin du store.
-  $store = $order->getStore();
-  if ($store) {
-    $manager_emails[] = $store->getEmail();
-  }
-
-  $manager_emails = array_unique(array_filter($manager_emails));
-  if (empty($manager_emails)) {
-    return;
-  }
-
-  $order_number = $order->getOrderNumber();
-  $total = $order->getTotalPrice();
-  $total_formatted = \Drupal::service('commerce_price.currency_formatter')
-    ->format($total->getNumber(), $total->getCurrencyCode());
-
-  foreach ($manager_emails as $email) {
-    \Drupal::service('plugin.manager.mail')->mail(
-      'odesign_admin',
-      'new_order_notification',
-      $email,
-      'fr',
-      ['order' => $order, 'order_number' => $order_number, 'total' => $total_formatted],
-    );
-  }
-}
-
-/**
  * Implements hook_form_alter().
  *
  * Corrige le libellé du bouton add-to-cart :
