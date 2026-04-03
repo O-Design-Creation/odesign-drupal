@@ -1,7 +1,14 @@
 uuid: 9c0df0b5-9100-413d-b4af-92af75676dcb
 langcode: fr
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - scheduler
+third_party_settings:
+  scheduler:
+    publish_enable: true
+    publish_past_date: publish
+    unpublish_enable: true
 name: Article
 type: article
 description: 'Articles de blog pour le journal Atelier O Design (ADR-005).'

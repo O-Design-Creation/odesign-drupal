@@ -1,7 +1,14 @@
 uuid: 53e26445-6a13-4b34-9929-d9fe4ed92d04
 langcode: fr
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - scheduler
+third_party_settings:
+  scheduler:
+    publish_enable: true
+    publish_past_date: publish
+    unpublish_enable: true
 name: Guide
 type: guide
 description: 'Guides marketing éditoriaux de la boutique (D-09).'

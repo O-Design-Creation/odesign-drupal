@@ -1,0 +1,79 @@
+label: 'Scheduled Products'
+description: 'Find and manage scheduled commerce products.'
+display:
+  default:
+    display_title: Master
+    display_options:
+      exposed_form:
+        options:
+          submit_button: Filter
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        options:
+          expose:
+            items_per_page_label: 'Items per page'
+            items_per_page_options_all_label: '- All -'
+            offset_label: Offset
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« first'
+            last: 'last »'
+      fields:
+        commerce_product_bulk_form:
+          label: 'Bulk update'
+          action_title: Action
+        title:
+          label: Title
+          separator: ', '
+        type:
+          label: Type
+          separator: ', '
+        status:
+          label: Status
+          settings:
+            format_custom_true: Published
+            format_custom_false: Unpublished
+          separator: ', '
+        publish_on:
+          label: 'Publish on'
+          separator: ', '
+        unpublish_on:
+          label: 'Unpublish on'
+          separator: ', '
+        operations:
+          label: Operations
+        stores_target_id:
+          label: Stores
+          separator: ', '
+      filters:
+        type:
+          expose:
+            label: Type
+        title:
+          expose:
+            label: Title
+        status:
+          expose:
+            label: Status
+          group_info:
+            label: 'Published status'
+            group_items:
+              1:
+                title: Published
+              2:
+                title: Unpublished
+      empty:
+        area_text_custom:
+          content: 'No scheduled products.'
+      title: 'Scheduled Products'
+  overview:
+    display_title: 'Products Overview'
+    display_options:
+      display_description: 'Overview of all scheduled products, via main commerce product page'
+      menu:
+        title: 'Scheduled Products'
+        description: 'Commerce products that are scheduled for publishing or unpublishing'
