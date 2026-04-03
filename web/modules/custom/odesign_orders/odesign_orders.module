@@ -68,6 +68,18 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
 }
 
 /**
+ * Implémente hook_theme_registry_alter() pour les emails commandes.
+ */
+function odesign_orders_theme_registry_alter(array &$theme_registry): void {
+  $module_path = \Drupal::service('extension.list.module')->getPath('odesign_orders');
+  $email_path = $module_path . '/templates/email';
+  if (isset($theme_registry['commerce_order_receipt'])) {
+    $theme_registry['commerce_order_receipt']['path'] = $email_path;
+    $theme_registry['commerce_order_receipt']['template'] = 'commerce-order-receipt';
+  }
+}
+
+/**
  * Implémente hook_commerce_order_post_save().
  *
  * Envoie une notification interne lors d'une nouvelle commande en attente.

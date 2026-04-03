@@ -166,21 +166,6 @@ function odesign_admin_theme(): array {
   ];
 }
 /**
- * Implémente hook_theme_registry_alter().
- *
- * Surcharge les templates email Commerce par les versions brandées studio.
- */
-function odesign_admin_theme_registry_alter(array &$theme_registry): void {
-  $module_path = \Drupal::service('extension.list.module')->getPath('odesign_admin');
-  $email_path = $module_path . '/templates/email';
-  if (isset($theme_registry['commerce_order_receipt'])) {
-    $theme_registry['commerce_order_receipt']['path'] = $email_path;
-    $theme_registry['commerce_order_receipt']['template'] = 'commerce-order-receipt';
-  }
-}
-
-
-/**
  * Implémente hook_mail().
  *
  * Définit l'email de test depuis la page de configuration boutique.
