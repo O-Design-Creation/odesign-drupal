@@ -1,0 +1,6 @@
+services:
+  odesign_promotions.volume_rules_order_processor:
+    class: Drupal\odesign_promotions\OrderProcessor\VolumeRulesOrderProcessor
+    tags:
+      - { name: commerce_order.order_processor, priority: 10 }
+

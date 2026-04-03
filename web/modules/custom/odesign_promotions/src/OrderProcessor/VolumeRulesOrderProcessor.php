@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\odesign_admin\OrderProcessor;
+namespace Drupal\odesign_promotions\OrderProcessor;
 
 use Drupal\commerce_order\Adjustment;
 use Drupal\commerce_order\Entity\OrderInterface;
@@ -9,9 +9,9 @@ use Drupal\commerce_price\Price;
 use Drupal\commerce_product\Entity\ProductInterface;
 
 /**
- * Applique des remises dégressives configurées depuis le back-office.
+ * Applique des remises volume configurées depuis le back-office.
  */
-class PancarteVolumeDiscountProcessor implements OrderProcessorInterface {
+class VolumeRulesOrderProcessor implements OrderProcessorInterface {
 
   /**
    * {@inheritdoc}
@@ -96,7 +96,7 @@ class PancarteVolumeDiscountProcessor implements OrderProcessorInterface {
         'type' => 'promotion',
         'label' => $rule['label'] . ' (-' . rtrim(rtrim(number_format((float) $tier['discount'], 2, '.', ''), '0'), '.') . '€ panier)',
         'amount' => new Price('-' . number_format($discount_total, 2, '.', ''), $currency_code),
-        'source_id' => 'odesign_admin:volume_rule:' . substr(hash('sha256', $rule['label'] . '|' . json_encode($rule['target_ids'])), 0, 16),
+        'source_id' => 'odesign_promotions:volume_rule:' . substr(hash('sha256', $rule['label'] . '|' . json_encode($rule['target_ids'])), 0, 16),
         'included' => FALSE,
       ]));
 
@@ -193,3 +193,4 @@ class PancarteVolumeDiscountProcessor implements OrderProcessorInterface {
   }
 
 }
+

@@ -1,0 +1,9 @@
+name: 'ODesign Promotions'
+type: module
+description: 'Moteur de promotions métier low-code pour Atelier O Design.'
+package: ODesign
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:commerce_order
+  - drupal:commerce_product
+
