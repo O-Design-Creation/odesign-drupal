@@ -617,7 +617,8 @@ function odesign_base_preprocess_page(array &$variables): void {
 
   $current_path = \Drupal::service('path.current')->getPath();
   $current_alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
-  $variables['is_contact_page'] = ($current_alias === '/contact');
+  $request_path = \Drupal::request()->getPathInfo();
+  $variables['is_contact_page'] = ($current_alias === '/contact' || $request_path === '/contact');
   if ($variables['is_contact_page']) {
     $variables['attributes']['class'][] = 'page-contact';
     $shop_contact_email = (string) (\Drupal::config('odesign_admin.settings')->get('shop_contact_email') ?? '');
