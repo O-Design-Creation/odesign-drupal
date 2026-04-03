@@ -3,6 +3,10 @@
 namespace Drupal\odesign_admin\EventSubscriber;
 
 use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
+use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\state_machine\Event\WorkflowTransitionEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,6 +17,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * Chaque transition déclenche un email client ET un email interne atelier.
  */
 class OrderWorkflowSubscriber implements EventSubscriberInterface {
+
+  public function __construct(
+    private readonly MailManagerInterface $mailManager,
+    private readonly LanguageManagerInterface $languageManager,
+    private readonly ConfigFactoryInterface $configFactory,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
+  ) {}
 
   /**
    * Labels FR des transitions pour les emails.
@@ -136,7 +147,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
    * Vérifie qu'une valeur de suivi atelier est autorisée.
    */
   private function isAllowedAtelierStatus(string $value): bool {
-    $storage = \Drupal::entityTypeManager()
+    $storage = $this->entityTypeManager
       ->getStorage('field_storage_config')
       ->load('commerce_order.field_atelier_status');
     if (!$storage) {
@@ -174,11 +185,11 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
       'subject'       => $label . ' — Commande #' . $order->getOrderNumber(),
     ];
 
-    \Drupal::service('plugin.manager.mail')->mail(
+    $this->mailManager->mail(
       'odesign_admin',
       'order_status_' . $transition_id,
       $customer_email,
-      \Drupal::languageManager()->getDefaultLanguage()->getId(),
+      $this->languageManager->getDefaultLanguage()->getId(),
       $params,
       $store->getEmail()
     );
@@ -188,7 +199,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
    * Envoie une notification interne à l'équipe atelier.
    */
   private function sendAtelierNotification(OrderInterface $order, string $transition_id, string $label): void {
-    $atelier_email = \Drupal::config('system.site')->get('mail');
+    $atelier_email = $this->configFactory->get('system.site')->get('mail');
     if (!$atelier_email) {
       return;
     }
@@ -200,11 +211,11 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
       'subject'       => '[Atelier] ' . $label . ' — #' . $order->getOrderNumber(),
     ];
 
-    \Drupal::service('plugin.manager.mail')->mail(
+    $this->mailManager->mail(
       'odesign_admin',
       'order_atelier_' . $transition_id,
       $atelier_email,
-      \Drupal::languageManager()->getDefaultLanguage()->getId(),
+      $this->languageManager->getDefaultLanguage()->getId(),
       $params
     );
   }
