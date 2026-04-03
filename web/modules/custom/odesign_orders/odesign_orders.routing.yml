@@ -1,0 +1,9 @@
+odesign_orders.actionable_orders:
+  path: '/admin/boutique/commandes-a-traiter'
+  defaults:
+    _controller: '\Drupal\odesign_orders\Controller\ActionableOrdersController::redirect'
+    _title: 'Commandes à traiter'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
