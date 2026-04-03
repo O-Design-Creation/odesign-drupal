@@ -1,4 +1,9 @@
 services:
+  odesign_orders.route_subscriber:
+    class: Drupal\odesign_orders\EventSubscriber\CheckoutRouteSubscriber
+    tags:
+      - { name: event_subscriber }
+
   odesign_orders.order_workflow_helper:
     class: Drupal\odesign_orders\Order\OrderWorkflowHelper
 

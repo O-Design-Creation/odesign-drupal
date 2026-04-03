@@ -1,5 +1,0 @@
-services:
-  odesign_admin.route_subscriber:
-    class: Drupal\odesign_admin\EventSubscriber\RouteSubscriber
-    tags:
-      - { name: event_subscriber }
