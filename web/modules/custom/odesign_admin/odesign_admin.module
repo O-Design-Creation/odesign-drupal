@@ -454,30 +454,6 @@ function odesign_admin_menu_links_discovered_alter(array &$links): void {
 }
 
 /**
- * Implémente hook_toolbar_alter().
- *
- * Pour le gestionnaire_boutique :
- * - Remplace le lien "Boîte de réception Commerce" (messages marketing du module)
- *   par un lien direct vers la liste des commandes.
- * - Corrige le libellé trompeur "Boîte de réception (3)" qui ne désigne pas des
- *   commandes mais des messages promotionnels du projet Drupal Commerce.
- */
-function odesign_admin_toolbar_alter(array &$items): void {
-  $account = \Drupal::currentUser();
-  if (!$account->hasRole('gestionnaire_boutique')) {
-    return;
-  }
-
-  // Remplacer le lien Commerce Inbox par un lien vers les commandes.
-  if (isset($items['commerce_inbox'])) {
-    $items['commerce_inbox']['tab']['#lazy_builder'] = [
-      'odesign_admin.lazy_builders:renderOrdersInbox',
-      [],
-    ];
-  }
-}
-
-/**
  * Implémente hook_mail_alter().
  *
  * Personnalise les emails Commerce envoyés au gestionnaire et au client.

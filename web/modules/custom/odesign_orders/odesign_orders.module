@@ -147,6 +147,23 @@ function odesign_orders_form_commerce_order_item_add_to_cart_form_alter(array &$
 }
 
 /**
+ * Implémente hook_toolbar_alter() pour le raccourci commandes gestionnaire.
+ */
+function odesign_orders_toolbar_alter(array &$items): void {
+  $account = \Drupal::currentUser();
+  if (!$account->hasRole('gestionnaire_boutique')) {
+    return;
+  }
+
+  if (isset($items['commerce_inbox'])) {
+    $items['commerce_inbox']['tab']['#lazy_builder'] = [
+      'odesign_orders.lazy_builders:renderOrdersInbox',
+      [],
+    ];
+  }
+}
+
+/**
  * Masque les champs techniques et ajoute des descriptions métier commande.
  */
 function _odesign_orders_clean_order_form(array &$form): void {
