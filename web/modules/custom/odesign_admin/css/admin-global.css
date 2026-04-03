@@ -1,216 +1,201 @@
-/* ODesign Admin — CSS global admin */
+/* ============================================================================
+   ODesign Admin — admin-global.css
+   Refonte architecture atomique/moléculaire — v2.0
 
-/* ─── Google Fonts : Material Symbols Outlined ───────────────────────────── */
-/* CDN Material Symbols supprimé — Phosphor Icons utilisé (D-07) */
+   SECTIONS
+   ────────────────────────────────────────────────────────────────────────────
+   §1  Design Tokens (CSS custom properties)
+   §2  Base & Gin offset
+   §3  Views tables  ← atoms: th, td + mobile overflow + hyphens
+   §4  Views exposed form
+   §5  .odesign-actions widget (split-button)  ← molecule
+   §6  Form cards (shared card wrapper)
+   §7  Form fields (inputs, selects, textareas)
+   §8  File upload widget
+   §9  Product variations table
+   §10 Media library widget
+   §11 Order admin (sidebar + main, mobile stack)
+   §12 Product form (onglets, entité-meta)
+   §13 Article / node form
+   §14 Page titles + sticky form actions
+   §15 Gin overrides (sticky header, home icon, Commerce inbox)
+   §16 Mode gestionnaire (masque toolbar Gin, corrige offsets)
+   §17 Buttons — filter, primary page, bulk, local tasks
+   §18 Status badges
+   §19 Orders toolbar badge
+   §20 Focus visible (accessibility)
+   §21 Responsive breakpoints
+   ============================================================================ */
 
-/* ─── Correction offset sidebar Gin ─────────────────────────────────────────
- * Gin 5.x gère l'offset de la sidebar via --drupal-displace-offset-left (Drupal JS).
- * On ne surcharge pas main.page-content pour ne pas doubler l'offset.
- * Seul un espacement visuel minimal est ajouté pour respiration.
- */
-body.gin--sidebar-toolbar .page-content-header,
-body.gin--sidebar-toolbar .gin-secondary-toolbar {
-  /* Gin gère nativement via --gin-toolbar-x-offset */
-}
 
-/* ─── Commerce Shipping — masquer les blocs promotionnels tiers ──────────────
- * Le module commerce_shipping affiche un bloc publicitaire ShipStation
- * inutile et source de confusion pour le gestionnaire boutique.
- * Sélecteur DOM vérifié : .system-status-general-info.commerce-shipping-info
- */
-.system-status-general-info.commerce-shipping-info {
-  display: none !important;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   §1 — DESIGN TOKENS
+   Toutes les couleurs, ombres et rayons du design system en variables CSS.
+   Référence unique : modifier ici pour propager partout.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-/* ─── Habillage des vues admin pour le gestionnaire ───────────────────────── */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas {
-  background:
-    radial-gradient(circle at top right, rgba(139, 111, 71, 0.06), transparent 24%),
-    linear-gradient(180deg, #f8f4ef 0%, #f3ece4 100%);
-  min-height: 100vh;
-}
+:root {
+  /* Palette principale */
+  --od-brand-900: #3a1c17;
+  --od-brand-800: #4E2620;
+  --od-brand-700: #6a3a32;
+  --od-brand-500: #8B6151;
+  --od-brand-400: #BB7570;
+  --od-brand-200: #D9B7A4;
+  --od-brand-100: #f3e6d6;
+  --od-brand-50:  #fbf6f2;
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas main,
-.gin--sidebar-toolbar .layout-container main {
-  padding-inline: 24px;
-}
+  /* Tons neutres chauds */
+  --od-gold-700: #50371d;
+  --od-gold-600: #6e4f28;
+  --od-gold-500: #8b6f47;
+  --od-gold-400: #b0a090;
+  --od-gold-200: #d9c3a8;
+  --od-gold-100: #f0dfca;
+  --od-gold-50:  #fffdf9;
 
-.gin--sidebar-toolbar .page-content {
-  max-width: 1240px;
-}
-
-.gin--sidebar-toolbar .block-local-tasks-block {
-  margin-bottom: 18px;
-}
-
-.gin--sidebar-toolbar .views-exposed-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px 16px;
-  align-items: flex-end;
-  padding: 20px 22px;
-  margin: 0 0 18px;
-  border: 1px solid #e6ddd2;
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at top right, rgba(139, 111, 71, 0.10), transparent 26%),
+  /* Surfaces */
+  --od-surface:      #fffdfa;
+  --od-surface-alt:  #f8f4ef;
+  --od-surface-warm: #f7f0e8;
+  --od-surface-card: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
+  --od-surface-card-radial:
+    radial-gradient(circle at top right, rgba(139, 111, 71, 0.08), transparent 28%),
     linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  box-shadow: 0 10px 28px rgba(61, 43, 31, 0.04);
+
+  /* Bordures */
+  --od-border:       #e4d9cb;
+  --od-border-soft:  #f0e7dc;
+  --od-border-light: #ede1d4;
+
+  /* Texte */
+  --od-text-primary: #3d2b1f;
+  --od-text-muted:   #6e5a48;
+  --od-text-faint:   #7f6a55;
+
+  /* Ombres */
+  --od-shadow-sm:  0 4px 10px rgba(61, 43, 31, 0.06);
+  --od-shadow-md:  0 10px 24px rgba(61, 43, 31, 0.08);
+  --od-shadow-lg:  0 14px 30px rgba(61, 43, 31, 0.10);
+  --od-shadow-xl:  0 18px 34px rgba(36, 25, 20, 0.14);
+
+  /* Rayons */
+  --od-radius-sm:  8px;
+  --od-radius-md:  12px;
+  --od-radius-lg:  18px;
+  --od-radius-xl:  20px;
+  --od-radius-full: 999px;
+
+  /* Transitions */
+  --od-transition: .15s ease;
 }
 
-.gin--sidebar-toolbar .views-exposed-form .form-item {
-  min-width: 180px;
-  margin: 0;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §2 — BASE & GIN OFFSET
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Compensation du décalage créé par la sidebar Gin */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas {
+  padding-top: 0;
 }
 
-.gin--sidebar-toolbar .views-exposed-form .form-item label {
-  display: block;
-  margin-bottom: 6px;
-  color: #3d2b1f;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+/* Suppression des blocs promotionnels Commerce Shipping */
+.gin--sidebar-toolbar .layout-region--node-secondary .commerce-shipping-method-options > *,
+.gin--sidebar-toolbar .pane--commerce-shipping-methods {
+  display: none;
 }
 
-.gin--sidebar-toolbar .views-exposed-form input[type="text"],
-.gin--sidebar-toolbar .views-exposed-form input[type="search"],
-.gin--sidebar-toolbar .views-exposed-form input[type="number"],
-.gin--sidebar-toolbar .views-exposed-form select {
-  min-height: 42px;
-  border: 1px solid #d9cdbd;
-  border-radius: 10px;
-  background: #fff;
-  padding: 9px 12px;
-  box-shadow: inset 0 1px 2px rgba(61, 43, 31, 0.03);
+/* Conteneur principal des pages admin — limite la largeur max */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-container main {
+  padding-inline: 24px;
+  padding-block: 20px;
 }
 
-.gin--sidebar-toolbar .views-exposed-form .form-actions {
-  display: flex;
-  gap: 10px;
-  margin: 0;
+/* Tous les titres, boutons et labels admin ne s'hyphenent jamais */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas h1,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas h2,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas h3,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas h4 {
+  hyphens: none;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
-.gin--sidebar-toolbar .views-exposed-form .button {
-  min-height: 42px;
-  border-radius: 999px;
-  padding: 0 18px;
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas a.button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="submit"],
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="button"] {
+  white-space: nowrap;
+  hyphens: none;
 }
 
-.gin--sidebar-toolbar .views-bulk-form,
-.gin--sidebar-toolbar .views-bulk-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  margin: 0 0 16px;
-  border: 1px solid #ddc5b6;
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at top right, rgba(187, 117, 112, 0.10), transparent 28%),
-    linear-gradient(180deg, #fdf8f4 0%, #f4e7dc 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.78), 0 10px 24px rgba(78,38,32,.06);
-}
+/* Seuls les formulaires produit sont contraints — pas le canvas entier */
 
-.gin--sidebar-toolbar .views-bulk-form .form-item-action,
-.gin--sidebar-toolbar .views-bulk-form .form-actions,
-.gin--sidebar-toolbar .views-bulk-actions .form-item-action,
-.gin--sidebar-toolbar .views-bulk-actions .form-actions {
-  margin: 0;
-}
 
-.gin--sidebar-toolbar .views-bulk-form .form-item-action,
-.gin--sidebar-toolbar .views-bulk-actions .form-item-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: #6b4e44;
-  font-weight: 600;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   §3 — VIEWS TABLES
+   Atome de base : en-têtes, cellules, lignes, overflow mobile.
+   Règle fondamentale : hyphens: none sur tout — le français hyphenate
+   agressivement sans cette déclaration explicite.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-.gin--sidebar-toolbar .views-bulk-form label,
-.gin--sidebar-toolbar .views-bulk-actions label {
-  margin: 0;
-  color: #6b4e44;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.gin--sidebar-toolbar .views-bulk-form select,
-.gin--sidebar-toolbar .views-bulk-actions select {
-  min-height: 40px;
-  min-width: 220px;
-  border: 1px solid #d6b9a7;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fffdfa 0%, #fbf2eb 100%);
-  color: #4E2620;
-  padding: 0 16px;
-  box-shadow: inset 0 1px 2px rgba(61, 43, 31, 0.04);
-}
-
-.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form),
-.gin--sidebar-toolbar .views-element-container .views-form,
-.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) {
-  padding: 16px 18px 18px;
-  margin: 0 0 18px;
-  border: 1px solid #e4d9cb;
-  border-radius: 18px;
-  background: #fffdfa;
-  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
-}
-
-.gin--sidebar-toolbar .view-content,
-.gin--sidebar-toolbar .views-element-container,
-.gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form),
-.gin--sidebar-toolbar .views-element-container .views-form {
-  border: 1px solid #e4d9cb;
-  border-radius: 18px;
-  overflow: visible;
-  background: #fff;
-  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
-}
-
-.gin--sidebar-toolbar table.views-table,
-.gin--sidebar-toolbar .views-element-container table,
-.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table {
-  width: 100%;
-  margin: 0;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.gin--sidebar-toolbar table.views-table thead,
-.gin--sidebar-toolbar .views-element-container table thead,
-.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table thead {
-  position: static !important;
-  inset-block-start: auto !important;
-}
-
+/* ─── En-têtes ───────────────────────────────────────────────────────────── */
 .gin--sidebar-toolbar table.views-table thead th,
 .gin--sidebar-toolbar .views-element-container table thead th,
-.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table thead th {
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table thead th,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table thead th {
   padding: 14px 16px;
   background: linear-gradient(180deg, #f8f1e8 0%, #f2e7da 100%);
-  color: #3d2b1f;
+  color: var(--od-text-primary);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border-bottom: 1px solid #e0d3c3;
+  white-space: nowrap;
+  hyphens: none;
+  overflow-wrap: normal;
 }
 
+/* ─── Cellules ───────────────────────────────────────────────────────────── */
 .gin--sidebar-toolbar table.views-table tbody td,
 .gin--sidebar-toolbar .views-element-container table tbody td,
-.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody td {
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table tbody td {
   padding: 14px 16px;
   vertical-align: top;
-  border-bottom: 1px solid #f0e7dc;
+  border-bottom: 1px solid var(--od-border-soft);
+  hyphens: none;
+  /* Pas de overflow-wrap:break-word ici — cela empêche le scroll horizontal mobile.
+     Les champs texte longs (titre, description) définissent eux-mêmes leur wrapping. */
 }
 
+/* Titres de contenu longs — on autorise le wrapping naturel uniquement */
+.gin--sidebar-toolbar table .views-field-title,
+.gin--sidebar-toolbar table .views-field-name,
+.gin--sidebar-toolbar table .views-field-label {
+  overflow-wrap: break-word;
+  /* Pas de word-break: break-word ni de max-width — cela force le mid-word break
+     dans les colonnes étroites. Le min-width sur la table gère l'espace. */
+}
+
+/* Emails — truncation avec ellipsis plutôt que wrapping sur plusieurs lignes */
+.gin--sidebar-toolbar table .views-field-mail a,
+.gin--sidebar-toolbar table .views-field-mail,
+.gin--sidebar-toolbar table .views-field-uid .username {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+/* ─── Lignes alternées + survol ──────────────────────────────────────────── */
 .gin--sidebar-toolbar table.views-table tbody tr:nth-child(odd),
 .gin--sidebar-toolbar .views-element-container table tbody tr:nth-child(odd),
 .gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody tr:nth-child(odd) {
-  background: #fffdfa;
+  background: var(--od-surface);
 }
 
 .gin--sidebar-toolbar table.views-table tbody tr:hover,
@@ -219,6 +204,52 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   background: #fcf6ef;
 }
 
+/* ─── Cellule colspan (état vide) ────────────────────────────────────────── */
+.gin--sidebar-toolbar table.views-table tbody td[colspan],
+.gin--sidebar-toolbar .views-element-container table tbody td[colspan],
+.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody td[colspan] {
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--od-text-faint);
+  background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
+}
+
+/* ─── Overflow horizontal mobile — toutes les vues ──────────────────────── */
+.gin--sidebar-toolbar .view-content {
+  min-width: 0;
+}
+
+/* Le tableau lui-même devient scrollable sur mobile */
+.gin--sidebar-toolbar .view-content table,
+.gin--sidebar-toolbar .views-element-container table {
+  min-width: 0;
+}
+
+/* ─── Table taxonomie (drag-drop terms) — hyphens + scroll ──────────────── */
+/* La taxonomy overview n'est pas une views-table, elle a son propre structure */
+.gin--sidebar-toolbar form.taxonomy-overview-terms {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.gin--sidebar-toolbar form.taxonomy-overview-terms table {
+  min-width: 400px;
+  width: 100%;
+}
+
+.gin--sidebar-toolbar form.taxonomy-overview-terms table th,
+.gin--sidebar-toolbar form.taxonomy-overview-terms table td {
+  hyphens: none;
+  overflow-wrap: break-word;
+}
+
+
+.gin--sidebar-toolbar table .views-field-status,
+.gin--sidebar-toolbar table .views-field-state {
+  white-space: nowrap;
+}
+
+/* ─── Barre d'actions bulk (déplacer au-dessus du tableau via JS) ─────────── */
 .gin--sidebar-toolbar .views-element-container > form:not(.views-exposed-form) .form-item-action,
 .gin--sidebar-toolbar .views-element-container .views-form .form-item-action,
 .gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) .form-item-action {
@@ -232,7 +263,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .views-element-container .views-form .form-item-action label,
 .gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) .form-item-action label {
   margin: 0;
-  color: #6e5a48;
+  color: var(--od-text-muted);
   font-weight: 600;
 }
 
@@ -249,438 +280,216 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .views-element-container .views-form select,
 .gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) select {
   min-height: 40px;
-  border-radius: 12px;
+  border-radius: var(--od-radius-md);
 }
 
+/* État vide d'une vue */
 .gin--sidebar-toolbar .view-empty {
   padding: 26px 24px;
-  color: #6e5a48;
+  color: var(--od-text-muted);
   background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
 }
 
-/* ─── Dropbuttons — design moderne avec icônes ───────────────────────────── */
 
-/* Conteneur global */
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper {
-  position: relative;
-  display: inline-flex;
+/* ═══════════════════════════════════════════════════════════════════════════
+   §4 — VIEWS EXPOSED FORM (filtres)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.gin--sidebar-toolbar .views-exposed-form {
+  padding: 18px 22px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-lg);
+  background: var(--od-surface-card-radial);
+  box-shadow: var(--od-shadow-md);
+  margin-bottom: 20px;
 }
 
-.gin--sidebar-toolbar .views-field-operations .dropbutton-widget {
-  position: relative;
-  display: inline-flex;
-  align-items: stretch;
-  min-height: 32px;
-  overflow: visible;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton {
-  position: relative;
-  display: inline-flex;
-  align-items: stretch;
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border: 1px solid #7c5a4f;
-  border-radius: 14px;
-  background: #fbf6f2;
-  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.10), 0 1px 0 rgba(255, 255, 255, 0.72) inset;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton > li {
+.gin--sidebar-toolbar .views-exposed-form .form-item {
   display: flex;
-  align-items: stretch;
-  margin: 0;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .secondary-action {
-  display: none;
+.gin--sidebar-toolbar .views-exposed-form label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--od-text-muted);
 }
 
-/* Bouton d'action principal — action sémantique claire */
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-action > a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-height: 32px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 10px 0 0 10px;
-  background: #BB7570;
-  color: #fff;
-  font-size: 12.5px;
-  font-weight: 600;
-  line-height: 1;
-  text-decoration: none;
-  letter-spacing: .01em;
-  transition: background .15s, transform .15s;
-  white-space: nowrap;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-action:first-child > a {
-  background: #BB7570;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-action > a:hover,
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-action > a:focus-visible {
-  background: #8B6151;
-  outline: none;
-  transform: translateY(-1px);
-}
-
-/* Bouton toggle — icône expand_more Material Symbols */
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-toggle {
-  border-left: 1px solid rgba(124, 90, 79, 0.22);
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-toggle > button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  min-height: 32px;
-  padding: 0;
-  border: 0;
-  background-image: none;
-  border-radius: 0 10px 10px 0;
-  background: linear-gradient(180deg, #fffdfa 0%, #f1e6dd 100%);
-  color: #3d2b1f;
-  cursor: pointer;
-  transition: background .15s, color .15s;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-toggle > button:hover,
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-toggle > button:focus-visible {
-  background: #f0e1d6;
-  color: #4E2620;
-  outline: none;
-}
-
-/* Le bouton réel ne contient qu'un label masqué ; le chevron est recréé ici. */
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-toggle > button::after {
-  font-family: 'Material Symbols Outlined', sans-serif;
-  content: "\e313";
-  display: block;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 1;
-  color: currentColor;
-  font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton > .dropbutton-toggle > button .visually-hidden {
-  position: absolute;
-}
-
-/* Dropdown ouvert — vrai menu flottant, sans effet "widget empilé" */
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .dropbutton-toggle > button::after {
-  content: "\e316";
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open {
-  position: relative;
-  z-index: 40;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton-widget {
-  overflow: visible;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open .dropbutton {
-  box-shadow: 0 10px 24px rgba(36, 25, 20, 0.16), 0 2px 0 rgba(255, 255, 255, 0.65) inset;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .dropbutton-toggle > button {
-  background: #8B6151;
-  color: #fff;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action {
-  display: block;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action > .dropbutton__items {
-  position: absolute !important;
-  top: calc(100% + 10px) !important;
-  right: 0 !important;
-  left: auto !important;
-  margin: 0;
-  padding: 8px 0;
-  min-width: 176px;
-  list-style: none;
-  border: 1px solid #e5d7c9;
-  border-radius: 14px;
-  background: #fffdfa;
-  box-shadow: 0 18px 34px rgba(36, 25, 20, 0.18), 0 4px 12px rgba(36, 25, 20, 0.10);
-  overflow: hidden;
-  z-index: 60;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .dropbutton-action > a {
-  background: #8B6151;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action > .dropbutton__items > li {
-  display: block;
-  width: 100%;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action > .dropbutton__items > li + li {
-  border-top: 1px solid #eee1d5;
-}
-
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action > .dropbutton__items a {
-  display: flex;
-  align-items: center;
-  min-height: 40px;
+.gin--sidebar-toolbar .views-exposed-form input[type="text"],
+.gin--sidebar-toolbar .views-exposed-form input[type="search"] {
+  min-height: 42px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-sm);
   padding: 0 14px;
-  color: #3d2b1f;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background .12s, padding-left .12s;
+  background: #fff;
+  font-size: 13.5px;
+  color: var(--od-text-primary);
+  transition: border-color var(--od-transition);
 }
 
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action > .dropbutton__items a:hover,
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.open > .dropbutton-widget > .dropbutton > .secondary-action > .dropbutton__items a:focus-visible {
-  background: #f6eee8;
-  padding-left: 18px;
+.gin--sidebar-toolbar .views-exposed-form input[type="text"]:focus,
+.gin--sidebar-toolbar .views-exposed-form input[type="search"]:focus {
+  border-color: var(--od-brand-400);
   outline: none;
 }
 
-.gin--sidebar-toolbar .views-field-operations {
-  white-space: nowrap;
+.gin--sidebar-toolbar .views-exposed-form select {
+  min-height: 42px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-sm);
+  background: #fff;
+  font-size: 13.5px;
+  color: var(--od-text-primary);
 }
 
-.gin--sidebar-toolbar td.views-field-operations:empty,
-.gin--sidebar-toolbar td.views-field-operations:not(:has(*)) {
-  text-align: center;
-}
 
-.gin--sidebar-toolbar td.views-field-operations:empty::before,
-.gin--sidebar-toolbar td.views-field-operations:not(:has(*))::before {
-  content: "—";
-  color: #a08c76;
-  font-weight: 600;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   §5 — .odesign-actions WIDGET (split-button)
+   Molécule : bouton primaire + toggle chevron CSS-only + menu flottant.
+   Ce composant remplace le dropbutton natif Drupal/Gin via admin-actions.js.
+   Le chevron est dessiné en CSS pur (border trick) — aucune dépendance police.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-/* ─── Split-button custom oDesign — remplace le DOM natif une fois JS chargé ─── */
-.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.odesign-actions-ready {
-  display: inline-flex;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions {
-  position: relative;
-  display: inline-flex;
-  align-items: stretch;
-  border: 1px solid #7c5a4f;
-  border-radius: 14px;
-  background: #fbf6f2;
-  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.10), 0 1px 0 rgba(255, 255, 255, 0.72) inset;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary,
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle {
-  min-height: 32px;
-  border: 0;
-  text-decoration: none;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px;
-  border-radius: 10px 0 0 10px;
-  background: #BB7570;
-  color: #fff;
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  line-height: 1;
-  white-space: nowrap;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
-  transition: background .15s, transform .15s;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary:hover,
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary:focus-visible {
-  background: #8B6151;
-  outline: none;
-  transform: translateY(-1px);
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  padding: 0;
-  border-left: 1px solid rgba(124, 90, 79, 0.22);
-  border-radius: 0 10px 10px 0;
-  appearance: none;
-  -webkit-appearance: none;
-  background: linear-gradient(180deg, #fffdfa 0%, #f1e6dd 100%);
-  color: #3d2b1f;
-  cursor: pointer;
-  transition: background .15s, color .15s;
-  box-shadow: none;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle:hover,
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle:focus-visible,
-.gin--sidebar-toolbar .views-field-operations .odesign-actions.is-open .odesign-actions__toggle {
-  background: #8B6151;
-  color: #fff;
-  outline: none;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
-  min-width: 176px;
-  padding: 8px 0;
-  border: 1px solid #e5d7c9;
-  border-radius: 14px;
-  background: #fffdfa;
-  box-shadow: 0 18px 34px rgba(36, 25, 20, 0.18), 0 4px 12px rgba(36, 25, 20, 0.10);
-  overflow: hidden;
-  z-index: 60;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__item {
-  display: flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0 14px;
-  color: #3d2b1f;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background .12s, padding-left .12s;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__item + .odesign-actions__item {
-  border-top: 1px solid #eee1d5;
-}
-
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__item:hover,
-.gin--sidebar-toolbar .views-field-operations .odesign-actions__item:focus-visible {
-  background: #f6eee8;
-  padding-left: 18px;
-  outline: none;
-}
-
-/* Même composant custom sur le tableau des variations produit. */
+/* Deux contextes d'utilisation — styles partagés via sélecteur combiné */
+.gin--sidebar-toolbar .views-field-operations .dropbutton-wrapper.odesign-actions-ready,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-wrapper.odesign-actions-ready {
   display: inline-flex;
 }
 
+.gin--sidebar-toolbar .views-field-operations .odesign-actions,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions {
   position: relative;
   display: inline-flex;
   align-items: stretch;
   border: 1px solid #7c5a4f;
   border-radius: 14px;
-  background: #fbf6f2;
-  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.10), 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+  background: var(--od-brand-50);
+  box-shadow: 0 6px 14px rgba(78, 38, 32, 0.09), 0 1px 0 rgba(255, 255, 255, 0.72) inset;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle {
-  min-height: 32px;
-  border: 0;
-  text-decoration: none;
-}
-
+/* ─── Bouton primaire ────────────────────────────────────────────────────── */
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-height: 32px;
   padding: 0 16px;
+  border: 0;
   border-radius: 10px 0 0 10px;
-  background: #BB7570;
+  background: var(--od-brand-400);
   color: #fff;
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 1;
+  text-decoration: none;
   white-space: nowrap;
+  hyphens: none;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
-  transition: background .15s, transform .15s;
+  transition: background var(--od-transition), transform var(--od-transition);
 }
 
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary:hover,
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__primary:focus-visible,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary:hover,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__primary:focus-visible {
-  background: #8B6151;
+  background: var(--od-brand-500);
   outline: none;
   transform: translateY(-1px);
 }
 
+/* ─── Bouton toggle ──────────────────────────────────────────────────────── */
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 34px;
+  min-height: 32px;
   padding: 0;
+  border: 0;
   border-left: 1px solid rgba(124, 90, 79, 0.22);
   border-radius: 0 10px 10px 0;
   appearance: none;
   -webkit-appearance: none;
-  background: linear-gradient(180deg, #fffdfa 0%, #f1e6dd 100%);
-  color: #3d2b1f;
+  background: linear-gradient(180deg, var(--od-surface) 0%, #f1e6dd 100%);
+  color: var(--od-text-primary);
   cursor: pointer;
-  transition: background .15s, color .15s;
-  box-shadow: none;
+  transition: background var(--od-transition), color var(--od-transition);
 }
 
+/* Chevron CSS-only — aucune dépendance police */
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle::after,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle::after {
+  content: '';
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -2px);
+  transition: transform .2s ease;
+}
+
+.gin--sidebar-toolbar .views-field-operations .odesign-actions.is-open .odesign-actions__toggle::after,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions.is-open .odesign-actions__toggle::after {
+  transform: rotate(-135deg) translate(-1px, 2px);
+}
+
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle:hover,
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__toggle:focus-visible,
+.gin--sidebar-toolbar .views-field-operations .odesign-actions.is-open .odesign-actions__toggle,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle:hover,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__toggle:focus-visible,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions.is-open .odesign-actions__toggle {
-  background: #8B6151;
+  background: var(--od-brand-500);
   color: #fff;
   outline: none;
 }
 
+/* ─── Menu déroulant ─────────────────────────────────────────────────────── */
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__menu,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__menu {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
   min-width: 176px;
   padding: 8px 0;
-  border: 1px solid #e5d7c9;
+  border: 1px solid var(--od-border);
   border-radius: 14px;
-  background: #fffdfa;
-  box-shadow: 0 18px 34px rgba(36, 25, 20, 0.18), 0 4px 12px rgba(36, 25, 20, 0.10);
+  background: var(--od-surface);
+  box-shadow: var(--od-shadow-xl), 0 4px 12px rgba(36, 25, 20, 0.10);
   overflow: hidden;
   z-index: 60;
 }
 
+/* Items du menu */
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__item,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item {
   display: flex;
   align-items: center;
   min-height: 40px;
   padding: 0 14px;
-  color: #3d2b1f;
+  color: var(--od-text-primary);
   font-size: 13px;
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
+  hyphens: none;
   transition: background .12s, padding-left .12s;
 }
 
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__item + .odesign-actions__item,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item + .odesign-actions__item {
   border-top: 1px solid #eee1d5;
 }
 
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__item:hover,
+.gin--sidebar-toolbar .views-field-operations .odesign-actions__item:focus-visible,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item:hover,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .odesign-actions__item:focus-visible {
   background: #f6eee8;
@@ -688,7 +497,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   outline: none;
 }
 
-/* Le menu d'actions des variations doit passer au-dessus des bandes/blocs du tableau. */
+/* Overflow: visible sur les cellules contenant le menu */
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations tbody,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations tr,
@@ -710,16 +519,11 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   z-index: 30;
 }
 
-.gin--sidebar-toolbar table.views-table tbody td[colspan],
-.gin--sidebar-toolbar .views-element-container table tbody td[colspan],
-.gin--sidebar-toolbar .layout-content > form:not(.views-exposed-form) table tbody td[colspan] {
-  padding: 28px 24px;
-  text-align: center;
-  color: #7f6a55;
-  background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-}
 
-/* ─── Polish des formulaires admin et écrans de commande ─────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   §6 — FORM CARDS (enveloppe commune des sections de formulaire)
+   ══════════════════════════════════════════════════════════════════════════ */
+
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form,
@@ -739,6 +543,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   gap: 18px;
 }
 
+/* ─── Carte (padding + fond + ombre) ─────────────────────────────────────── */
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form > .form-wrapper,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form > .form-wrapper,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-region--commerce-main > *,
@@ -747,12 +552,10 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main > *,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > * {
   padding: 22px 24px;
-  border: 1px solid #e4d9cb;
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at top right, rgba(139, 111, 71, 0.08), transparent 28%),
-    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  box-shadow: 0 14px 30px rgba(61, 43, 31, 0.05);
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-xl);
+  background: var(--od-surface-card-radial);
+  box-shadow: var(--od-shadow-lg);
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-item,
@@ -765,9 +568,59 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form label,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar h2,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main h2 {
-  color: #3d2b1f;
+  color: var(--od-text-primary);
   font-weight: 700;
 }
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar .button {
+  min-height: 44px;
+  border-radius: var(--od-radius-full);
+  padding: 0 18px;
+  white-space: nowrap;
+}
+
+
+/* Badge compact dans les en-têtes de card Commerce (order-details, etc.)
+   Surcharge le rule .order-admin__sidebar .button pour éviter le débordement
+   du card__header flex sur mobile */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .card__header a,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .card__header .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .card__header .use-ajax {
+  min-height: unset;
+  padding: 4px 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  hyphens: none;
+  flex-shrink: 0;
+}
+
+/* Le titre du card header peut wrapper mais ne s'hyphenate pas.
+   IMPORTANT: pas de min-width: 0 ici — cela permet au flex de comprimer le titre
+   en dessous de son contenu minimum, causant des coupures mid-word.
+   word-break: normal est explicite pour contra-carrer tout héritage. */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .card__title {
+  hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
+  flex: 1 1 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §7 — FORM FIELDS (inputs, selects, textareas)
+   ══════════════════════════════════════════════════════════════════════════ */
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="text"],
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="search"],
@@ -792,7 +645,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form textarea {
   min-height: 46px;
   border: 1px solid #d9cdbd;
-  border-radius: 12px;
+  border-radius: var(--od-radius-md);
   background: #fff;
   padding: 10px 14px;
   box-shadow: inset 0 1px 2px rgba(61, 43, 31, 0.03);
@@ -805,10 +658,15 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-item__description,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-item__description {
   margin-top: 8px;
-  color: #6e5a48;
+  color: var(--od-text-muted);
   font-size: 14px;
   line-height: 1.45;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §8 — FILE UPLOAD WIDGET
+   ══════════════════════════════════════════════════════════════════════════ */
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .image-widget,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .image-widget-data {
@@ -816,33 +674,391 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   gap: 12px;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form input[type="file"] {
-  display: block;
+/* Upload zone commune */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="file"] {
   width: 100%;
-  padding: 18px;
-  border: 1px dashed #c9b49a;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.82);
+  padding: 14px 16px;
+  border: 2px dashed #d0bfa9;
+  border-radius: var(--od-radius-lg);
+  background: var(--od-surface);
+  color: var(--od-text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions {
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="file"]:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="file"]:focus {
+  border-color: var(--od-brand-400);
+  background: #fdf6f0;
+  outline: none;
+}
+
+/* Zone d'image article */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .field--name-field-image,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .field--name-field-image {
+  padding: 20px 22px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-lg);
+  background: linear-gradient(180deg, var(--od-surface) 0%, var(--od-surface-warm) 100%);
+  box-shadow: var(--od-shadow-sm);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .field--name-field-image .form-item__label,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .field--name-field-image .form-item__label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--od-text-primary);
+  margin-bottom: 10px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §9 — PRODUCT VARIATIONS TABLE
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations {
+  display: grid;
+  gap: 18px;
+  align-items: start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > .tabledrag-toggle-weight-wrapper,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > .form-actions,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > table {
+  padding: 18px 22px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-lg);
+  background: var(--od-surface-card-radial);
+  box-shadow: var(--od-shadow-md);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .tabledrag-toggle-weight-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
+  justify-content: flex-end;
+  justify-self: end;
+  width: fit-content;
+  padding: 14px 18px;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form .form-actions .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form .form-actions .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar .button {
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .tabledrag-toggle-weight {
+  min-height: 40px;
+  border-radius: var(--od-radius-full);
+  padding: 0 16px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table thead {
+  position: static !important;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table tbody tr:nth-child(odd) {
+  background: var(--od-surface);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations select.weight {
+  min-width: 84px;
+  min-height: 40px;
+  border: 1px solid #d8cbbb;
+  border-radius: var(--od-radius-md);
+  background: #fff;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .description {
+  margin-top: 8px;
+  color: var(--od-text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .form-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .form-actions .button {
   min-height: 44px;
-  border-radius: 999px;
+  border-radius: var(--od-radius-full);
   padding: 0 18px;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §10 — MEDIA LIBRARY WIDGET
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .field--widget-media-library-widget {
+  border: 1px dashed #d7c5af;
+  border-radius: var(--od-radius-lg);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .js-hide {
+  display: none !important;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget legend {
+  margin-bottom: 10px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .fieldset-legend {
+  color: var(--od-text-primary);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .fieldset-wrapper {
+  display: grid;
+  gap: 12px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-prefix {
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+  padding: 14px 16px;
+  border-radius: var(--od-radius-md);
+  border: 1px dashed #dbcbb8;
+  background: linear-gradient(180deg, var(--od-surface) 0%, var(--od-surface-warm) 100%);
+  color: var(--od-text-muted);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-suffix {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: var(--od-radius-full);
+  background: linear-gradient(180deg, var(--od-gold-50) 0%, var(--od-gold-100) 100%);
+  border: 1px solid var(--od-gold-200);
+  color: var(--od-gold-700);
+  font-weight: 700;
+  box-shadow: var(--od-shadow-md);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button:focus-visible {
+  background: #ecddc8;
+  outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-disabled textarea,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form textarea[disabled] {
+  min-height: 104px;
+  padding: 16px 18px;
+  border: 1px solid #e3d4c1;
+  border-radius: var(--od-radius-lg);
+  background: linear-gradient(180deg, var(--od-surface) 0%, var(--od-surface-warm) 100%);
+  color: var(--od-text-muted);
+  opacity: 1;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .odesign-readonly-longtext[disabled] {
+  min-height: 124px;
+  font-style: italic;
+  cursor: not-allowed;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §11 — ORDER ADMIN (commande Drupal Commerce)
+   Sidebar + main, mobile stack à 768px.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
+  display: grid;
+  gap: 18px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
+  align-content: start;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > .form-wrapper {
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Tables dans le formulaire de commande */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table th,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table th {
+  padding: 12px 10px;
+  border-bottom: 1px solid #ebdfd1;
+  vertical-align: top;
+  hyphens: none;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table tr:last-child td,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Layout principal (grid deux colonnes, fourni par Gin/Commerce) */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+/* Cartes sidebar commande */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .entity-meta,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form details.seven-details {
+  padding: 22px 24px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-lg);
+  background: var(--od-surface-card-radial);
+  box-shadow: var(--od-shadow-md);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form details.seven-details > summary {
+  margin: 0 0 14px;
+  color: var(--od-text-primary);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  hyphens: none;
+}
+
+/* Boutons sidebar commande */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #dbc9b4;
+  border-radius: var(--od-radius-full);
+  background: linear-gradient(180deg, var(--od-gold-50) 0%, var(--od-brand-100) 100%);
+  color: var(--od-gold-600);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  hyphens: none;
+  box-shadow: var(--od-shadow-md);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit:focus-visible {
+  background: #ecddc8;
+  color: var(--od-gold-700);
+  outline: none;
+}
+
+/* Carte actions + details */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card {
+  display: grid;
+  gap: 12px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main a.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 1px solid #dbc9b4;
+  border-radius: var(--od-radius-full);
+  background: linear-gradient(180deg, var(--od-gold-50) 0%, var(--od-brand-100) 100%);
+  color: var(--od-gold-600);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: var(--od-shadow-md);
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button {
+  justify-content: center;
+  width: 100%;
+  min-height: 46px;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button:focus-visible,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button:focus-visible {
+  background: #ecddc8;
+  color: var(--od-gold-700);
+  outline: none;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__details-card .button,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__details-card a.button {
+  margin-left: 10px;
+}
+
+/* Boutons edit/delete sur les lignes de commande */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-edit-action,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  margin-right: 8px;
+  border: 1px solid #ddcebb;
+  border-radius: var(--od-radius-full);
+  background: #fffaf4;
+  color: var(--od-gold-600);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action {
+  color: #8b4b35;
+}
+
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-edit-action:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action:hover,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-edit-action:focus-visible,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action:focus-visible {
+  background: #efe0cd;
+  outline: none;
+}
+
+/* Details dans les panneaux de commande */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main details {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §12 — PRODUCT FORM (onglets, entité-meta)
+   ══════════════════════════════════════════════════════════════════════════ */
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs {
   margin: 0;
@@ -871,9 +1087,9 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   min-height: 40px;
   padding: 0 16px;
   border: 1px solid #dcccb7;
-  border-radius: 999px;
+  border-radius: var(--od-radius-full);
   background: #fffaf4;
-  color: #6e4f28;
+  color: var(--od-gold-600);
   font-weight: 700;
   text-decoration: none;
 }
@@ -882,7 +1098,7 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button a:hover,
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tab-button a:focus-visible {
   background: linear-gradient(180deg, #f5eadc 0%, #ecdcc7 100%);
-  color: #50371d;
+  color: var(--od-gold-700);
   outline: none;
 }
 
@@ -890,25 +1106,25 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   margin: 0;
 }
 
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-pane > summary {
+  display: none;
+}
+
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .layout-region--commerce-footer > * {
   max-width: 760px;
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button--primary {
-  background: linear-gradient(180deg, #fffdf9 0%, #f0dfca 100%);
-  border: 1px solid #d8c2a7;
-  color: #50371d;
-  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+  background: linear-gradient(180deg, var(--od-gold-50) 0%, var(--od-gold-100) 100%);
+  border: 1px solid var(--od-gold-200);
+  color: var(--od-gold-700);
+  box-shadow: var(--od-shadow-md);
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-actions .button:not(.button--primary) {
   background: #fff;
   border: 1px solid #d9cdbd;
-  color: #6e4f28;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .horizontal-tabs-pane > summary {
-  display: none;
+  color: var(--od-gold-600);
 }
 
 .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .entity-meta {
@@ -923,414 +1139,389 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   box-shadow: none;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card {
-  display: grid;
-  gap: 12px;
+/* Formulaire produit — empêche le débordement horizontal */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form {
+  min-width: 0;
+  overflow-x: hidden;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main a.button {
-  display: inline-flex;
-  align-items: center;
-  min-height: 42px;
-  padding: 0 18px;
-  border: 1px solid #dbc9b4;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fffdf9 0%, #f3e6d6 100%);
-  color: #5f4322;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §13 — ARTICLE FORM (node/add/article, node/*/edit)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Carte principale du formulaire article */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .layout-region--node-main > *,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .layout-region--node-main > * {
+  padding: 22px 24px;
+  border: 1px solid var(--od-border);
+  border-radius: var(--od-radius-xl);
+  background: var(--od-surface-card-radial);
+  box-shadow: var(--od-shadow-lg);
+  margin-bottom: 16px;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button {
-  justify-content: center;
-  width: 100%;
-  min-height: 46px;
-  background: linear-gradient(180deg, #fffdf9 0%, #f3e6d6 100%);
-  color: #5f4322;
-  border: 1px solid #dbc9b4;
-  text-decoration: none;
-  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §14 — PAGE TITLES + STICKY FORM ACTIONS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Titre de page (h1) */
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .page-title,
+.gin--sidebar-toolbar .dialog-off-canvas-main-canvas h1.page-title {
+  hyphens: none;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__actions-card .button:focus-visible,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .button:focus-visible {
-  background: #ecddc8;
-  color: #50371d;
-  outline: none;
+/* Barre d'actions sticky Gin — alignement correct sous notre navbar */
+.gin--sidebar-toolbar .gin-sticky-form-actions {
+  background: rgba(255, 253, 250, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--od-border);
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__details-card .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__details-card a.button {
-  margin-left: 10px;
+/* Le "Dernier enregistrement" ne doit pas déborder à droite */
+.gin--sidebar-toolbar .gin-sticky-form-actions__secondary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-edit-action,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action {
-  display: inline-flex;
-  align-items: center;
-  min-height: 30px;
-  padding: 0 10px;
-  margin-right: 8px;
-  border: 1px solid #ddcebb;
-  border-radius: 999px;
-  background: #fffaf4;
-  color: #6e4f28;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §15 — GIN OVERRIDES
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Icône home dans la toolbar Gin */
+.toolbar-icon-home::before {
+  font-family: 'Material Symbols Outlined', sans-serif;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action {
-  color: #8b4b35;
+/* Empêche la troncature gauche causée par la sidebar */
+.gin--sidebar-toolbar .gin-toolbar.is-sticky + .dialog-off-canvas-main-canvas,
+.gin--sidebar-toolbar .gin-toolbar + .dialog-off-canvas-main-canvas {
+  min-width: 0;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-edit-action:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-edit-action:focus-visible,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main .order-item-delete-action:focus-visible {
-  background: #efe0cd;
-  outline: none;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .field--widget-media-library-widget {
-  border: 1px dashed #d7c5af;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.68);
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .js-hide {
+/* Suppression du double en-tête sticky Gin */
+.gin--sticky-table-header {
   display: none !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget legend {
-  margin-bottom: 10px;
+/* Cache le bouton "Boîte de réception Commerce" (marketing, sans valeur métier) */
+.commerce-inbox-action-link-wrapper,
+li.commerce-inbox-action-link-wrapper,
+.local-actions .commerce-inbox-action-link-wrapper {
+  display: none !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .fieldset-legend {
-  color: #3d2b1f;
-  font-size: 16px;
-  font-weight: 700;
+.toolbar-icon-commerce-inbox:not(.odesign-toolbar-orders) {
+  display: none !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .fieldset-wrapper {
-  display: grid;
-  gap: 12px;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §16 — MODE GESTIONNAIRE
+   La classe .odesign-gestionnaire est ajoutée par hook_preprocess_html()
+   uniquement pour le rôle gestionnaire_boutique (sans admin).
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Masquer la toolbar Gin standard */
+.odesign-gestionnaire #toolbar-administration,
+.odesign-gestionnaire .toolbar-bar,
+.odesign-gestionnaire .toolbar,
+.odesign-gestionnaire #toolbar-item-administration-tray,
+.odesign-gestionnaire .gin-toolbar,
+.odesign-gestionnaire .gin-secondary-toolbar {
+  display: none !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-prefix {
-  display: flex;
-  align-items: center;
-  min-height: 72px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  border: 1px dashed #dbcbb8;
-  background: linear-gradient(180deg, #fffdfa 0%, #f7efe6 100%);
-  color: #6e5a48;
+/* Sans toolbar Gin : annuler les offsets */
+.odesign-gestionnaire.gin--sidebar-toolbar .dialog-off-canvas-main-canvas {
+  margin-left: 0 !important;
+  padding-top: 0 !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-widget .field-suffix {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 14px;
+.odesign-gestionnaire body.gin--sidebar-toolbar,
+.odesign-gestionnaire.gin--sidebar-toolbar {
+  margin-top: 0 !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button {
-  min-height: 42px;
-  padding: 0 18px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fffdf9 0%, #f0dfca 100%);
-  border: 1px solid #d9c3a8;
-  color: #50371d;
-  font-weight: 700;
-  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+/* La nav bar odesign prend toute la largeur */
+.odesign-gestionnaire .odesign-admin-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .js-media-library-open-button:focus-visible {
-  background: #ecddc8;
-  outline: none;
+/* Décaler le contenu pour la nav fixe (44px) */
+.odesign-gestionnaire .dialog-off-canvas-main-canvas {
+  margin-top: 44px !important;
+  padding-left: 0 !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .form-disabled textarea,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form textarea[disabled] {
-  min-height: 104px;
-  padding: 16px 18px;
-  border: 1px solid #e3d4c1;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  color: #6e5a48;
-  opacity: 1;
+/* Décaler les actions sticky pour éviter le recouvrement */
+.odesign-gestionnaire .gin-sticky-form-actions {
+  top: 44px !important;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form .odesign-readonly-longtext[disabled] {
-  min-height: 124px;
-  font-style: italic;
-  cursor: not-allowed;
-}
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations {
-  display: grid;
-  gap: 18px;
-  align-items: start;
-}
+/* ═══════════════════════════════════════════════════════════════════════════
+   §17 — BUTTONS
+   Molécules boutons : filtrer, primaire page, bulk actions, local tasks.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > .tabledrag-toggle-weight-wrapper,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > .form-actions,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations > table {
-  padding: 18px 22px;
-  border: 1px solid #e4d9cb;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at top right, rgba(139, 111, 71, 0.07), transparent 28%),
-    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .tabledrag-toggle-weight-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  justify-self: end;
-  width: fit-content;
-  padding: 14px 18px;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .tabledrag-toggle-weight {
-  min-height: 40px;
-  border-radius: 999px;
-  padding: 0 16px;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-widget {
-  position: relative;
-  display: inline-flex;
-  align-items: stretch;
+/* ─── Bouton Filtrer (views exposed form) ───────────────────────────────── */
+.gin--sidebar-toolbar .views-exposed-form .form-actions .button:not([name*="reset"]):not([id*="reset"]),
+.gin--sidebar-toolbar .views-exposed-form .form-submit:not([id*="reset"]) {
   min-height: 38px;
-  border: 1px solid #d7c7b2;
-  border-radius: 999px;
-  overflow: hidden;
-  background: linear-gradient(180deg, #fffefd 0%, #f6ede2 100%);
-  box-shadow: 0 6px 16px rgba(61, 43, 31, 0.08);
+  border-radius: var(--od-radius-sm);
+  padding: 0 18px;
+  background: var(--od-brand-400);
+  border: 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(78, 38, 32, 0.18);
+  transition: background var(--od-transition), box-shadow var(--od-transition);
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton {
-  display: inline-flex;
-  align-items: stretch;
-  gap: 0;
-  margin: 0;
+.gin--sidebar-toolbar .views-exposed-form .form-actions .button:not([name*="reset"]):not([id*="reset"]):hover,
+.gin--sidebar-toolbar .views-exposed-form .form-submit:not([id*="reset"]):hover {
+  background: var(--od-brand-500);
+  box-shadow: 0 6px 14px rgba(78, 38, 32, 0.22);
+}
+
+/* ─── Bouton Réinitialiser ──────────────────────────────────────────────── */
+.gin--sidebar-toolbar .views-exposed-form .form-actions .button[id*="reset"],
+.gin--sidebar-toolbar .views-exposed-form .form-actions .button[name*="reset"],
+.gin--sidebar-toolbar .views-exposed-form [data-drupal-selector*="reset"] {
+  min-height: 38px;
+  border-radius: var(--od-radius-sm);
+  padding: 0 16px;
+  background: transparent;
+  border: 1px solid #c9b49a;
+  color: var(--od-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: none;
+  transition: background var(--od-transition), border-color var(--od-transition);
+}
+
+.gin--sidebar-toolbar .views-exposed-form .form-actions .button[id*="reset"]:hover,
+.gin--sidebar-toolbar .views-exposed-form .form-actions .button[name*="reset"]:hover {
+  background: #f5ece4;
+  border-color: #a87e6e;
+}
+
+/* ─── Bouton principal de page (Créer / Ajouter) ──────────────────────── */
+.gin--sidebar-toolbar .layout-content .button--primary,
+.gin--sidebar-toolbar .page-content .button--primary,
+.gin--sidebar-toolbar .region-content .button--primary {
+  min-height: 40px;
+  border-radius: var(--od-radius-sm);
+  padding: 0 18px;
+  background: var(--od-brand-800);
+  border: 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(78, 38, 32, 0.22);
+  transition: background var(--od-transition), box-shadow var(--od-transition);
+}
+
+.gin--sidebar-toolbar .layout-content .button--primary:hover,
+.gin--sidebar-toolbar .region-content .button--primary:hover {
+  background: var(--od-brand-900);
+  box-shadow: 0 6px 16px rgba(78, 38, 32, 0.28);
+}
+
+/* ─── Bouton "Appliquer aux éléments sélectionnés" (bulk actions) ──────── */
+.gin--sidebar-toolbar .views-bulk-form input[type="submit"],
+.gin--sidebar-toolbar .views-bulk-form .button,
+.gin--sidebar-toolbar .views-bulk-actions input[type="submit"],
+.gin--sidebar-toolbar .views-bulk-actions .button,
+.gin--sidebar-toolbar .views-bulk-form input.form-submit,
+.gin--sidebar-toolbar .views-bulk-actions input.form-submit,
+.gin--sidebar-toolbar .views-bulk-form .form-actions .button,
+.gin--sidebar-toolbar .views-bulk-actions .form-actions .button,
+.gin--sidebar-toolbar .views-bulk-form .form-actions input[type="submit"],
+.gin--sidebar-toolbar .views-bulk-actions .form-actions input[type="submit"] {
+  min-height: 40px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: var(--od-radius-full);
+  padding: 0 18px;
+  background-color: var(--od-brand-800) !important;
+  background-image: linear-gradient(180deg, var(--od-brand-700) 0%, var(--od-brand-800) 100%) !important;
+  border: 1px solid var(--od-brand-800) !important;
+  color: #fff !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  box-shadow: 0 10px 20px rgba(78, 38, 32, 0.18), 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+  transition: background var(--od-transition), transform var(--od-transition);
+}
+
+.gin--sidebar-toolbar .views-bulk-form input[type="submit"]:hover,
+.gin--sidebar-toolbar .views-bulk-form .button:hover,
+.gin--sidebar-toolbar .views-bulk-actions input[type="submit"]:hover,
+.gin--sidebar-toolbar .views-bulk-actions .button:hover,
+.gin--sidebar-toolbar .views-bulk-form input.form-submit:hover,
+.gin--sidebar-toolbar .views-bulk-actions input.form-submit:hover,
+.gin--sidebar-toolbar .views-bulk-form .form-actions .button:hover,
+.gin--sidebar-toolbar .views-bulk-actions .form-actions .button:hover {
+  background-color: var(--od-brand-700) !important;
+  background-image: linear-gradient(180deg, var(--od-brand-500) 0%, var(--od-brand-700) 100%) !important;
+  border-color: var(--od-brand-700) !important;
+  transform: translateY(-1px);
+}
+
+/* ─── Local tasks tabs (Commandes/Paniers, Contenu/Médias) ────────────── */
+.gin--sidebar-toolbar .block-local-tasks-block .tabs {
+  display: flex;
+  gap: 4px;
   padding: 0;
+  border: 0;
+  margin-bottom: 18px;
+}
+
+.gin--sidebar-toolbar .block-local-tasks-block .tabs__tab {
   list-style: none;
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton li {
-  display: flex;
-  align-items: stretch;
-  margin: 0;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-action > a {
+.gin--sidebar-toolbar .block-local-tasks-block .tabs__link,
+.gin--sidebar-toolbar .block-local-tasks-block .tabs a {
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
-  padding: 0 14px;
-  color: #6e4f28;
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle {
-  border-left: 1px solid #e4d7c7;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  min-width: 38px;
-  height: 38px;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-action > a:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-action > a:focus-visible,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle button:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .dropbutton-toggle button:focus-visible {
-  background: #ede0d0;
-  color: #50371d;
-  outline: none;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations td .commerce-copy-link {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  color: #6e4f28;
-  border: 1px solid #d7c7b2;
-  border-radius: 999px;
-  background-color: currentColor;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table thead {
-  position: static !important;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table thead th {
-  padding: 14px 16px;
-  background: linear-gradient(180deg, #f8f1e8 0%, #f2e7da 100%);
-  color: #3d2b1f;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  border-bottom: 1px solid #e0d3c3;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table tbody td {
-  padding: 14px 16px;
-  vertical-align: top;
-  border-bottom: 1px solid #f0e7dc;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations table tbody tr:nth-child(odd) {
-  background: #fffdfa;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations select.weight {
-  min-width: 84px;
-  min-height: 40px;
-  border: 1px solid #d8cbbb;
-  border-radius: 12px;
-  background: #fff;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .description {
-  margin-top: 8px;
-  color: #6e5a48;
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .form-actions {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-variations .form-actions .button {
-  min-height: 44px;
-  border-radius: 999px;
-  padding: 0 18px;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
-  display: grid;
-  gap: 18px;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table td,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table th,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table td,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table th {
-  padding: 12px 10px;
-  border-bottom: 1px solid #ebdfd1;
-  vertical-align: top;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table tr:last-child td,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table tr:last-child td {
-  border-bottom: 0;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar {
-  align-content: start;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > .form-wrapper {
-  font-size: 15px;
-  line-height: 1.55;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary {
-  display: grid;
-  gap: 18px;
-  align-content: start;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .entity-meta,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form details.seven-details {
-  padding: 22px 24px;
-  border: 1px solid #e4d9cb;
-  border-radius: 18px;
-  background:
-    radial-gradient(circle at top right, rgba(139, 111, 71, 0.07), transparent 28%),
-    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  box-shadow: 0 12px 28px rgba(61, 43, 31, 0.05);
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form details.seven-details > summary {
-  margin: 0 0 14px;
-  color: #3d2b1f;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary .button,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  padding: 0 18px;
-  border: 1px solid #dbc9b4;
-  border-radius: 999px;
-  background: linear-gradient(180deg, #fffdf9 0%, #f3e6d6 100%);
+  min-height: 34px;
+  padding: 0 16px;
+  border: 1px solid #d9cdbd;
+  border-radius: var(--od-radius-sm);
+  background: var(--od-surface);
   color: #5f4322;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 8px 18px rgba(61, 43, 31, 0.08);
+  white-space: nowrap;
+  transition: background var(--od-transition), border-color var(--od-transition);
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary input.form-submit:focus-visible {
-  background: #ecddc8;
-  color: #50371d;
-  outline: none;
+.gin--sidebar-toolbar .block-local-tasks-block .tabs__link:hover,
+.gin--sidebar-toolbar .block-local-tasks-block .tabs a:hover {
+  background: #f5ece4;
+  border-color: var(--od-brand-400);
+  color: var(--od-text-primary);
 }
 
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main details {
-  margin: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
+.gin--sidebar-toolbar .block-local-tasks-block .tabs__link.is-active,
+.gin--sidebar-toolbar .block-local-tasks-block .tabs__link[aria-current],
+.gin--sidebar-toolbar .block-local-tasks-block .tabs a.is-active {
+  background: var(--od-brand-800);
+  border-color: var(--od-brand-800);
+  color: #fff;
+  font-weight: 600;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §18 — STATUS BADGES
+   Atome badge : Publié, Brouillon, et variantes Commerce.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.gin--sidebar-toolbar .status-badge,
+.gin--sidebar-toolbar table td .status--published,
+.gin--sidebar-toolbar table td .status--draft {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--od-radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  hyphens: none;
+}
+
+.gin--sidebar-toolbar table td .status--published {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.gin--sidebar-toolbar table td .status--draft {
+  background: #fff3e0;
+  color: #c66a00;
+}
+
+/* Badge "Publié" Gin */
+.gin--sidebar-toolbar .gin-status-label--published,
+.gin--sidebar-toolbar [data-status="published"] .gin-status-label {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-color: transparent;
+}
+
+.gin--sidebar-toolbar .gin-status-label--unpublished,
+.gin--sidebar-toolbar [data-status="unpublished"] .gin-status-label {
+  background: #fff3e0;
+  color: #c66a00;
+  border-color: transparent;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §19 — ORDERS TOOLBAR BADGE
+   Badge compteur commandes dans la nav bar.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.odesign-toolbar-orders .odesign-toolbar-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  margin-left: 4px;
+  border-radius: var(--od-radius-full);
+  background: var(--od-brand-400);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §20 — FOCUS VISIBLE (accessibilité)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.gin--sidebar-toolbar a:focus-visible,
+.gin--sidebar-toolbar button:focus-visible,
+.gin--sidebar-toolbar input:focus-visible,
+.gin--sidebar-toolbar select:focus-visible,
+.gin--sidebar-toolbar textarea:focus-visible {
+  outline: 2px solid var(--od-brand-400);
+  outline-offset: 2px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   §21 — RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Tablette 900px ─────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .gin--sidebar-toolbar .dialog-off-canvas-main-canvas main,
   .gin--sidebar-toolbar .layout-container main {
@@ -1354,547 +1545,76 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   }
 }
 
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   FIX : Double en-tête Gin sticky (toutes les vues tables)
-   Gin crée .gin--sticky-table-header toujours visible — supprime le doublon.
-   ══════════════════════════════════════════════════════════════════════════ */
-.gin--sticky-table-header {
-  display: none !important;
-}
-
-   FORMULAIRE ARTICLE (node/add/article et node/*/edit)
-   Fix file input "Choose File / No file chosen" (anglais navigateur) → stylé
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* Zone d'upload image de couverture — article */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .field--name-field-image,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .field--name-field-image {
-  padding: 20px 22px;
-  border: 1px solid #e4d9cb;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  box-shadow: 0 10px 24px rgba(61,43,31,.04);
-}
-
-/* Input type=file — remplacer l'apparence navigateur par un bouton brandé */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="file"] {
-  width: 100%;
-  padding: 14px 16px;
-  border: 2px dashed #d0bfa9;
-  border-radius: 14px;
-  background: #fffdfa;
-  color: #6e5a48;
-  font-size: 13px;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="file"]:hover,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas input[type="file"]:focus {
-  border-color: #BB7570;
-  background: #fdf6f0;
-  outline: none;
-}
-
-/* Libellé "Image de couverture" → forcer French-friendly description */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .field--name-field-image .form-item__label,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .field--name-field-image .form-item__label {
-  font-size: 15px;
-  font-weight: 700;
-  color: #3d2b1f;
-  margin-bottom: 10px;
-}
-
-/* Formulaire article — carte principale */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .layout-region--node-main > *,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .layout-region--node-main > * {
-  padding: 22px 24px;
-  border: 1px solid #e4d9cb;
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at top right, rgba(139,111,71,.08), transparent 28%),
-    linear-gradient(180deg, #fffdfa 0%, #f7f0e8 100%);
-  box-shadow: 0 14px 30px rgba(61,43,31,.05);
-  margin-bottom: 16px;
-}
-
-/* Formulaire article — sidebar droite */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form .layout-region--node-secondary > *,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form .layout-region--node-secondary > * {
-  padding: 18px 20px;
-  border: 1px solid #e4d9cb;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #fffdfa 0%, #f5ede3 100%);
-  box-shadow: 0 8px 20px rgba(61,43,31,.04);
-  margin-bottom: 12px;
-}
-
-/* Champ titre article */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form input[type="text"],
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form input[type="text"] {
-  min-height: 48px;
-  border: 1px solid #d9cdbd;
-  border-radius: 12px;
-  background: #fff;
-  padding: 10px 14px;
-  font-size: 15px;
-  box-shadow: inset 0 1px 2px rgba(61,43,31,.03);
-}
-
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-form input[type="text"]:focus,
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas .node-article-edit-form input[type="text"]:focus {
-  border-color: #BB7570;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(187,117,112,.12);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MÉDIATHÈQUE — grille de vignettes plus lisible
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* Vue médiathèque — liste → améliorer densité et lisibilité */
-.gin--sidebar-toolbar .view-media .views-row,
-.gin--sidebar-toolbar .view-id-media .views-row {
-  transition: background .15s;
-}
-
-.gin--sidebar-toolbar .view-media .views-row:hover,
-.gin--sidebar-toolbar .view-id-media .views-row:hover {
-  background: #fdf5ed;
-}
-
-/* Vignettes image dans la table */
-.gin--sidebar-toolbar .views-element-container table img {
-  border-radius: 8px;
-  display: block;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   CORRECTIONS GLOBALES DIVERSES
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* Bandeau cookie — éviter qu'il recouvre les boutons de formulaire */
-.eu-cookie-compliance-banner {
-  z-index: 400 !important;
-}
-
-/* Correction : "Boîte de réception" — ajustement accent sur les notifications */
-.gin-toolbar__notifications .notifications-tray__title,
-.toolbar-icon-notification {
-  font-variant: normal;
-}
-
-/* Lien "Retour au site" Gin — icône cohérente */
-.gin-toolbar-link--drupal-home::before,
-.toolbar-icon-home::before {
-  font-family: 'Material Symbols Outlined', sans-serif;
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-}
-
-/* Fix overflow sur les pages avec sidebar Gin — éviter troncature gauche */
-.gin--sidebar-toolbar .gin-toolbar.is-sticky + .dialog-off-canvas-main-canvas,
-.gin--sidebar-toolbar .gin-toolbar + .dialog-off-canvas-main-canvas {
-  min-width: 0;
-}
-
-/* Formulaire produit — sidebar droite ne doit pas déborder */
-.gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-product-form {
-  min-width: 0;
-  overflow-x: hidden;
-}
-
-/* Amélioration focus visible globale admin pour l'accessibilité */
-.gin--sidebar-toolbar a:focus-visible,
-.gin--sidebar-toolbar button:focus-visible,
-.gin--sidebar-toolbar input:focus-visible,
-.gin--sidebar-toolbar select:focus-visible,
-.gin--sidebar-toolbar textarea:focus-visible {
-  outline: 2px solid #BB7570;
-  outline-offset: 2px;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   BADGE "COMMANDES EN ATTENTE" dans la toolbar Gin
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* Remplacement du badge Commerce inbox par badge commandes */
-.odesign-toolbar-orders .odesign-toolbar-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  margin-left: 4px;
-  border-radius: 999px;
-  background: #BB7570;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
-  vertical-align: middle;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   MODE GESTIONNAIRE — masquer la toolbar Gin standard
-   La classe .odesign-gestionnaire est ajoutée par hook_preprocess_html()
-   uniquement pour le rôle gestionnaire_boutique (sans admin).
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* Masquer entièrement la toolbar Gin (barre noire en haut + sidebar) */
-.odesign-gestionnaire #toolbar-administration,
-.odesign-gestionnaire .toolbar-bar,
-.odesign-gestionnaire .toolbar,
-.odesign-gestionnaire #toolbar-item-administration-tray,
-.odesign-gestionnaire .gin-toolbar,
-.odesign-gestionnaire .gin-secondary-toolbar {
-  display: none !important;
-}
-
-/* Sans toolbar Gin : annuler les offsets de déplacement du contenu */
-.odesign-gestionnaire.gin--sidebar-toolbar .dialog-off-canvas-main-canvas {
-  margin-left: 0 !important;
-  padding-top: 0 !important;
-}
-
-.odesign-gestionnaire body.gin--sidebar-toolbar,
-.odesign-gestionnaire.gin--sidebar-toolbar {
-  margin-top: 0 !important;
-}
-
-/* La nav bar odesign prend toute la largeur en mode gestionnaire */
-.odesign-gestionnaire .odesign-admin-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-/* Décaler le contenu de la page pour tenir compte de la nav fixe (44px) */
-.odesign-gestionnaire .dialog-off-canvas-main-canvas {
-  margin-top: 44px !important;
-  padding-left: 0 !important;
-}
-
-/* Décaler les actions sticky Gin pour éviter le recouvrement par la nav fixe */
-.odesign-gestionnaire .gin-sticky-form-actions {
-  top: 44px !important;
-}
-
-/* ─── Éléments droite de la nav bar ──────────────────────────────────────── */
-.odesign-admin-nav__right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.odesign-admin-nav__site-link,
-.odesign-admin-nav__logout {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 10px;
-  height: 32px;
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255,255,255,.7);
-  text-decoration: none;
-  border-radius: 6px;
-  transition: background .15s, color .15s;
-  white-space: nowrap;
-}
-
-.odesign-admin-nav__site-link .material-symbols-outlined,
-.odesign-admin-nav__logout .material-symbols-outlined {
-  font-size: 16px;
-  color: rgba(255,255,255,.5);
-  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-}
-
-.odesign-admin-nav__site-link:hover,
-.odesign-admin-nav__logout:hover {
-  background: rgba(255,255,255,.12);
-  color: #fff;
-}
-
-.odesign-admin-nav__logout {
-  border-left: 1px solid rgba(255,255,255,.12);
-  padding-left: 12px;
-  margin-left: 4px;
-}
-
-/* Profil utilisateur — non cliquable */
-.odesign-admin-nav__user {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 10px;
-  height: 32px;
-  border-left: 1px solid rgba(255,255,255,.12);
-  border-right: 1px solid rgba(255,255,255,.12);
-}
-
-.odesign-admin-nav__user .material-symbols-outlined {
-  font-size: 18px;
-  color: #D9B7A4;
-  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 20;
-}
-
-.odesign-admin-nav__username {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,.75);
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Tablette : masquer texte dans les actions droite */
-@media (max-width: 860px) {
-  .odesign-admin-nav__site-link span:not(.material-symbols-outlined),
-  .odesign-admin-nav__logout span:not(.material-symbols-outlined),
-  .odesign-admin-nav__username {
-    display: none;
+/* ─── Mobile 768px — overflow tables + stack order form ─────────────────── */
+@media (max-width: 768px) {
+  /* Toutes les vues-tables deviennent scrollables horizontalement */
+  .gin--sidebar-toolbar .view-content {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 4px;
   }
 
-  .odesign-admin-nav__user {
-    padding: 0 8px;
+  .gin--sidebar-toolbar .views-element-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .odesign-admin-nav__site-link,
-  .odesign-admin-nav__logout {
-    padding: 0 8px;
+  /* Empêche le tableau de réduire en deçà de sa largeur minimale */
+  .gin--sidebar-toolbar table.views-table,
+  .gin--sidebar-toolbar .views-element-container table {
+    min-width: 600px;
+  }
+
+  /* Order form — passer de 2 colonnes à 1 colonne */
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-primary,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .layout-order-form .layout-region-order-secondary {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Les tables dans la commande deviennent scrollables — PAS le conteneur entier
+     (overflow-x: auto sur le conteneur cliperait les h2 et autres contenus) */
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  /* SKUs et chaînes longues dans les cellules — ciblage précis, pas table td en général
+     overflow-wrap: anywhere permet la coupure uniquement si nécessaire (pas word-break: break-all
+     qui coupe unconditionnellement et rend les messages Activity log illisibles) */
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main table tbody td,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar table tbody td {
+    max-width: 200px;
+    overflow-wrap: anywhere;
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   SUPPRIMER "Boîte de réception Commerce" — partout pour le gestionnaire
-   Ce bouton pointe vers des annonces marketing du module Commerce,
-   sans valeur métier pour la gestionnaire boutique.
-   ══════════════════════════════════════════════════════════════════════════ */
+/* ─── Mobile 640px — form cards + actions ───────────────────────────────── */
+@media (max-width: 640px) {
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.media-form > .form-wrapper,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas form.commerce-order-form > .form-wrapper,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__main > *,
+  .gin--sidebar-toolbar .dialog-off-canvas-main-canvas .order-admin__sidebar > * {
+    padding: 14px 12px;
+  }
 
-/* Cache le bouton local action "Boîte de réception" sur toutes les pages */
-.commerce-inbox-action-link-wrapper,
-li.commerce-inbox-action-link-wrapper,
-.local-actions .commerce-inbox-action-link-wrapper {
-  display: none !important;
-}
+  /* Bulk action form */
+  .gin--sidebar-toolbar .views-exposed-form {
+    padding: 12px;
+  }
 
-/* Cache aussi le lien dans la toolbar (fallback si hook_toolbar_alter n'est pas actif) */
-.toolbar-icon-commerce-inbox:not(.odesign-toolbar-orders) {
-  display: none !important;
-}
-
-/* ─── Boutons Filtrer / Réinitialiser dans les views exposed forms ─────── */
-
-/* Bouton Filtrer — action primaire terracotta */
-.gin--sidebar-toolbar .views-exposed-form .form-actions .button:not([name*="reset"]):not([id*="reset"]),
-.gin--sidebar-toolbar .views-exposed-form .form-submit:not([id*="reset"]) {
-  min-height: 38px;
-  border-radius: 8px;
-  padding: 0 18px;
-  background: #BB7570;
-  border: 0;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .02em;
-  box-shadow: 0 4px 10px rgba(78,38,32,.18);
-  transition: background .15s, box-shadow .15s;
-}
-
-.gin--sidebar-toolbar .views-exposed-form .form-actions .button:not([name*="reset"]):not([id*="reset"]):hover,
-.gin--sidebar-toolbar .views-exposed-form .form-submit:not([id*="reset"]):hover {
-  background: #8B6151;
-  box-shadow: 0 6px 14px rgba(78,38,32,.22);
-}
-
-/* Bouton Réinitialiser — action secondaire neutre */
-.gin--sidebar-toolbar .views-exposed-form .form-actions .button[id*="reset"],
-.gin--sidebar-toolbar .views-exposed-form .form-actions .button[name*="reset"],
-.gin--sidebar-toolbar .views-exposed-form [data-drupal-selector*="reset"] {
-  min-height: 38px;
-  border-radius: 8px;
-  padding: 0 16px;
-  background: transparent;
-  border: 1px solid #c9b49a;
-  color: #6e5a48;
-  font-size: 13px;
-  font-weight: 500;
-  box-shadow: none;
-  transition: background .15s, border-color .15s;
-}
-
-.gin--sidebar-toolbar .views-exposed-form .form-actions .button[id*="reset"]:hover,
-.gin--sidebar-toolbar .views-exposed-form .form-actions .button[name*="reset"]:hover {
-  background: #f5ece4;
-  border-color: #a87e6e;
-}
-
-/* ─── Bouton principal de page (Créer / Ajouter) ──────────────────────── */
-
-/* Bouton "Créer un produit", "Ajouter du contenu", etc. */
-.gin--sidebar-toolbar .views-element-container ~ .views-element-container .button--primary,
-.gin--sidebar-toolbar .layout-content .button--primary,
-.gin--sidebar-toolbar .page-content .button--primary,
-.gin--sidebar-toolbar .region-content .button--primary {
-  min-height: 40px;
-  border-radius: 8px;
-  padding: 0 18px;
-  background: #4E2620;
-  border: 0;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .02em;
-  box-shadow: 0 4px 12px rgba(78,38,32,.22);
-  transition: background .15s, box-shadow .15s;
-}
-
-.gin--sidebar-toolbar .layout-content .button--primary:hover,
-.gin--sidebar-toolbar .region-content .button--primary:hover {
-  background: #3a1c17;
-  box-shadow: 0 6px 16px rgba(78,38,32,.28);
-}
-
-/* ─── Local tasks tabs (Commandes/Paniers, Contenu/Médias) ────────────── */
-
-.gin--sidebar-toolbar .block-local-tasks-block .tabs {
-  display: flex;
-  gap: 4px;
-  padding: 0;
-  border: 0;
-  margin-bottom: 18px;
-}
-
-.gin--sidebar-toolbar .block-local-tasks-block .tabs__tab {
-  list-style: none;
-}
-
-.gin--sidebar-toolbar .block-local-tasks-block .tabs__link,
-.gin--sidebar-toolbar .block-local-tasks-block .tabs a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 16px;
-  border: 1px solid #d9cdbd;
-  border-radius: 8px;
-  background: #fffdfa;
-  color: #5f4322;
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background .15s, border-color .15s;
-}
-
-.gin--sidebar-toolbar .block-local-tasks-block .tabs__link:hover,
-.gin--sidebar-toolbar .block-local-tasks-block .tabs a:hover {
-  background: #f5ece4;
-  border-color: #BB7570;
-  color: #3d2b1f;
-}
-
-.gin--sidebar-toolbar .block-local-tasks-block .tabs__link.is-active,
-.gin--sidebar-toolbar .block-local-tasks-block .tabs__link[aria-current],
-.gin--sidebar-toolbar .block-local-tasks-block .tabs a.is-active {
-  background: #4E2620;
-  border-color: #4E2620;
-  color: #fff;
-  font-weight: 600;
-}
-
-/* ─── Bouton "Appliquer aux éléments sélectionnés" (bulk actions) ──────── */
-
-.gin--sidebar-toolbar .views-bulk-form input[type="submit"],
-.gin--sidebar-toolbar .views-bulk-form .button,
-.gin--sidebar-toolbar .views-bulk-actions input[type="submit"],
-.gin--sidebar-toolbar .views-bulk-actions .button,
-.gin--sidebar-toolbar .views-bulk-form input.form-submit,
-.gin--sidebar-toolbar .views-bulk-actions input.form-submit,
-.gin--sidebar-toolbar .views-bulk-form .form-actions .button,
-.gin--sidebar-toolbar .views-bulk-actions .form-actions .button,
-.gin--sidebar-toolbar .views-bulk-form .form-actions input[type="submit"],
-.gin--sidebar-toolbar .views-bulk-actions .form-actions input[type="submit"] {
-  min-height: 40px;
-  -webkit-appearance: none;
-  appearance: none;
-  border-radius: 999px;
-  padding: 0 18px;
-  background-color: #4E2620 !important;
-  background-image: linear-gradient(180deg, #6a3a32 0%, #4E2620 100%) !important;
-  border: 1px solid #4E2620 !important;
-  color: #fff !important;
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: .01em;
-  box-shadow: 0 10px 20px rgba(78,38,32,.18), 0 1px 0 rgba(255,255,255,.12) inset;
-  transition: background .15s, transform .15s;
-}
-
-.gin--sidebar-toolbar .views-bulk-form input[type="submit"]:hover,
-.gin--sidebar-toolbar .views-bulk-form .button:hover,
-.gin--sidebar-toolbar .views-bulk-actions input[type="submit"]:hover,
-.gin--sidebar-toolbar .views-bulk-actions .button:hover,
-.gin--sidebar-toolbar .views-bulk-form input.form-submit:hover,
-.gin--sidebar-toolbar .views-bulk-actions input.form-submit:hover,
-.gin--sidebar-toolbar .views-bulk-form .form-actions .button:hover,
-.gin--sidebar-toolbar .views-bulk-actions .form-actions .button:hover,
-.gin--sidebar-toolbar .views-bulk-form .form-actions input[type="submit"]:hover,
-.gin--sidebar-toolbar .views-bulk-actions .form-actions input[type="submit"]:hover {
-  background-color: #5f342d !important;
-  background-image: linear-gradient(180deg, #8B6151 0%, #5f342d 100%) !important;
-  border-color: #5f342d !important;
-  transform: translateY(-1px);
-}
-
-/* ─── Badges de statut dans les tableaux ("Publié", "Brouillon") ──────── */
-
-.gin--sidebar-toolbar table .views-field-status,
-.gin--sidebar-toolbar table .views-field-state {
-  white-space: nowrap;
-}
-
-/* Badge générique réutilisable */
-.gin--sidebar-toolbar .status-badge,
-.gin--sidebar-toolbar table td .status--published,
-.gin--sidebar-toolbar table td .status--draft {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 10px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-
-.gin--sidebar-toolbar table td .status--published {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-.gin--sidebar-toolbar table td .status--draft {
-  background: #fff3e0;
-  color: #c66a00;
-}
-
-/* Badge "Publié" dans la liste produits (classe Gin) */
-.gin--sidebar-toolbar .gin-status-label--published,
-.gin--sidebar-toolbar [data-status="published"] .gin-status-label {
-  background: #e8f5e9;
-  color: #2e7d32;
-  border-color: transparent;
-}
-
-.gin--sidebar-toolbar .gin-status-label--unpublished,
-.gin--sidebar-toolbar [data-status="unpublished"] .gin-status-label {
-  background: #fff3e0;
-  color: #c66a00;
-  border-color: transparent;
+  /* Bouton "Appliquer" pleine largeur */
+  .gin--sidebar-toolbar .views-bulk-actions .form-actions {
+    display: flex;
+    flex-direction: column;
+  }
 }

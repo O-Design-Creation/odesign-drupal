@@ -115,6 +115,7 @@
   width: 100%;
   border-collapse: collapse;
   font-size: 13.5px;
+  min-width: 560px; /* Force scroll horizontal sur mobile */
 }
 
 .odesign-orders__table th {
@@ -127,12 +128,16 @@
   text-transform: uppercase;
   letter-spacing: .04em;
   border-bottom: 1px solid var(--orders-border);
+  white-space: nowrap;
+  hyphens: none;
 }
 
 .odesign-orders__table td {
   padding: 12px 14px;
   vertical-align: middle;
   border-bottom: 1px solid #f0e8e0;
+  hyphens: none;
+  /* Pas de overflow-wrap:break-word — laisse le min-width déclencher le scroll */
 }
 
 .odesign-orders__table tr:last-child td {
@@ -157,6 +162,10 @@
   display: block;
   font-weight: 500;
   color: #2c1f1b;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .odesign-orders__customer-email {
@@ -164,6 +173,10 @@
   font-size: 12px;
   color: #888;
   margin-top: 2px;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ─── Badges état ────────────────────────────────────────────────────────── */
