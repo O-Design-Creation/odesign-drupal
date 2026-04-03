@@ -1110,8 +1110,24 @@ textarea {
 .pager {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: var(--space-2);
   padding-top: var(--space-8);
+}
+
+.pager__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pager__item {
+  margin: 0;
 }
 
 .pager__item a,
@@ -1981,6 +1997,18 @@ textarea {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-4);
   }
+
+  .pager {
+    gap: var(--space-1);
+    padding-top: var(--space-6);
+  }
+
+  .pager__item a,
+  .pager__item.is-active a {
+    width: 36px;
+    height: 36px;
+    font-size: var(--font-size-xs);
+  }
 }
 
 @media (max-width: 480px) {
@@ -2016,6 +2044,11 @@ textarea {
   .blog-grid {
     grid-template-columns: 1fr;
     gap: var(--space-4);
+  }
+
+  .pager__item--first,
+  .pager__item--last {
+    display: none;
   }
 }
 
