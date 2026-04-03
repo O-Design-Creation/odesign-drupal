@@ -234,20 +234,32 @@ class BoutiqueConfigForm extends FormBase {
 
     $form['homepage_hero']['hero_help'] = [
       '#markup' => '<div class="config-help">'
-        . '<strong>À quoi ça sert ?</strong> Vous pouvez remplacer le fond coloré du hero d’accueil par une photo plus incarnée.'
-        . ' Si aucune photo n’est choisie, le fond actuel reste automatiquement en place.'
+        . '<strong>À quoi ça sert ?</strong> Vous pouvez choisir si le hero d’accueil affiche une image de fond ou un fond coloré simple.'
+        . ' Quand l’image est activée, vous pouvez téléverser ou remplacer la photo à tout moment.'
         . '</div>',
+    ];
+
+    $hero_enabled = (bool) ($settings->get('homepage_hero_enable_image') ?? TRUE);
+    $form['homepage_hero']['homepage_hero_enable_image'] = [
+      '#type' => 'checkbox',
+      '#title' => 'Afficher une image de fond dans le hero',
+      '#default_value' => $hero_enabled,
     ];
 
     $form['homepage_hero']['homepage_hero_image'] = [
       '#type' => 'managed_file',
       '#title' => 'Photo de fond du hero',
-      '#description' => 'Photo optionnelle. Recommandé : image horizontale, simple à lire, au moins 1600 px de large. Si vous la supprimez, le fond coloré revient automatiquement.',
+      '#description' => 'Photo optionnelle. Recommandé : image horizontale, simple à lire, au moins 1600 px de large.',
       '#default_value' => $hero_file ? [$hero_file->id()] : [],
       '#upload_location' => 'public://homepage-hero/',
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg webp'],
         'file_validate_size' => [8 * 1024 * 1024],
+      ],
+      '#states' => [
+        'visible' => [
+          ':input[name="homepage_hero_enable_image"]' => ['checked' => TRUE],
+        ],
       ],
     ];
 
@@ -261,6 +273,11 @@ class BoutiqueConfigForm extends FormBase {
         'dark' => 'Texte sombre',
       ],
       '#default_value' => $settings->get('homepage_hero_text_mode') ?: 'auto',
+      '#states' => [
+        'visible' => [
+          ':input[name="homepage_hero_enable_image"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     // ────────────────────────────────────────────────────────────────────────
@@ -446,9 +463,10 @@ class BoutiqueConfigForm extends FormBase {
 
     // ── Hero homepage ───────────────────────────────────────────────────────
     $settings = \Drupal::configFactory()->getEditable('odesign_admin.settings');
+    $hero_enabled = (bool) $form_state->getValue('homepage_hero_enable_image');
     $current_hero_fid = (int) ($settings->get('homepage_hero_image') ?? 0);
     $new_hero_fids = array_values(array_filter($form_state->getValue('homepage_hero_image') ?? []));
-    $new_hero_fid = $new_hero_fids ? (int) reset($new_hero_fids) : 0;
+    $new_hero_fid = $hero_enabled && $new_hero_fids ? (int) reset($new_hero_fids) : 0;
 
     if ($new_hero_fid) {
       $hero_file = File::load($new_hero_fid);
@@ -467,6 +485,7 @@ class BoutiqueConfigForm extends FormBase {
     }
 
     $settings
+      ->set('homepage_hero_enable_image', $hero_enabled)
       ->set('homepage_hero_image', $new_hero_fid ?: NULL)
       ->set('homepage_hero_text_mode', $form_state->getValue('homepage_hero_text_mode') ?: 'auto')
       ->save();

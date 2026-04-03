@@ -2416,6 +2416,61 @@ nav ul {
   padding: clamp(2.75rem, 5vw, 4.5rem) 0;
 }
 
+.home-universe-quick {
+  padding: clamp(2rem, 4vw, 3rem) 0 clamp(1.2rem, 2.4vw, 2rem);
+  background: linear-gradient(180deg, #fff 0%, #fdf9f7 100%);
+}
+
+.home-universe-quick__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.home-universe-quick__card {
+  display: grid;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: var(--color-text);
+  border: 1px solid rgba(139, 97, 81, 0.16);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.home-universe-quick__media {
+  display: block;
+  background: var(--color-brand-cream);
+}
+
+.home-universe-quick__media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.home-universe-quick__title {
+  padding: 0 var(--space-4);
+  font-weight: 700;
+}
+
+.home-universe-quick__cta {
+  padding: 0 var(--space-4) var(--space-4);
+  color: var(--color-brand-dark);
+  font-weight: 600;
+}
+
+.home-universe-quick__card:hover,
+.home-universe-quick__card:focus-visible {
+  border-color: var(--color-brand-medium);
+  transform: translateY(-1px);
+}
+
 .section-heading {
   display: flex;
   flex-direction: column;
@@ -2442,6 +2497,21 @@ nav ul {
   background: #fff;
   border: 1px solid rgba(139, 97, 81, 0.16);
   box-shadow: var(--shadow-sm);
+}
+
+.life-occasion-card__media {
+  display: block;
+  margin: calc(var(--space-5) * -1) calc(var(--space-5) * -1) 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  background: var(--color-brand-cream);
+}
+
+.life-occasion-card__media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
 }
 
 .life-occasion-card__header {

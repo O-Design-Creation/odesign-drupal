@@ -2,6 +2,9 @@ odesign_admin.settings:
   type: config_object
   label: 'Réglages O Design Admin'
   mapping:
+    homepage_hero_enable_image:
+      type: boolean
+      label: 'Activer une image de fond sur le hero de la page d’accueil'
     homepage_hero_image:
       type: integer
       label: 'Fichier image du hero de la page d’accueil'

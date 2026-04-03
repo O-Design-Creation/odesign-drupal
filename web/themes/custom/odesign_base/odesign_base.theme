@@ -407,26 +407,36 @@ function odesign_base_build_life_occasion_hero(TermInterface $term): array {
  */
 function odesign_base_build_homepage_hero(): array {
   $settings = \Drupal::config('odesign_admin.settings');
+  $hero_enabled = (bool) ($settings->get('homepage_hero_enable_image') ?? TRUE);
+  if (!$hero_enabled) {
+    return [
+      'url' => NULL,
+      'text_mode' => 'dark',
+      'has_image' => FALSE,
+    ];
+  }
+
   $text_mode = (string) ($settings->get('homepage_hero_text_mode') ?? 'auto');
   if (!in_array($text_mode, ['auto', 'light', 'dark'], TRUE)) {
     $text_mode = 'auto';
   }
 
+  $default_hero_url = odesign_base_theme_asset_url('media/home-hero-historique.png');
   $file_id = (int) ($settings->get('homepage_hero_image') ?? 0);
   if (!$file_id) {
     return [
-      'url' => NULL,
+      'url' => $default_hero_url,
       'text_mode' => 'light',
-      'has_image' => FALSE,
+      'has_image' => (bool) $default_hero_url,
     ];
   }
 
   $file = \Drupal\file\Entity\File::load($file_id);
   if (!$file) {
     return [
-      'url' => NULL,
+      'url' => $default_hero_url,
       'text_mode' => 'light',
-      'has_image' => FALSE,
+      'has_image' => (bool) $default_hero_url,
     ];
   }
 
@@ -439,6 +449,18 @@ function odesign_base_build_homepage_hero(): array {
     'text_mode' => in_array($resolved_mode, ['light', 'dark'], TRUE) ? $resolved_mode : 'light',
     'has_image' => TRUE,
   ];
+}
+
+/**
+ * Retourne l'URL publique d'un asset du thème si le fichier existe.
+ */
+function odesign_base_theme_asset_url(string $relative_path): ?string {
+  $theme_path = \Drupal::service('extension.list.theme')->getPath('odesign_base');
+  $full_path = DRUPAL_ROOT . '/' . $theme_path . '/' . ltrim($relative_path, '/');
+  if (!is_file($full_path)) {
+    return NULL;
+  }
+  return base_path() . $theme_path . '/' . ltrim($relative_path, '/');
 }
 
 /**
@@ -461,17 +483,46 @@ function odesign_base_file_url_from_id(int $file_id): ?string {
 function odesign_base_build_life_occasion_card(TermInterface $term, int $product_limit = 3): array {
   $products = odesign_base_load_products_for_life_occasion($term, $product_limit);
   $hero = odesign_base_build_life_occasion_hero($term);
+  $preview_image_url = $hero['url']
+    ?: odesign_base_first_product_image_url($products)
+    ?: odesign_base_theme_asset_url('media/home-hero-historique.png');
 
   return [
     'title' => $term->label(),
     'url' => $term->toUrl()->toString(),
     'intro' => odesign_base_extract_term_text($term, 'field_intro'),
     'hero_image_url' => $hero['url'],
+    'preview_image_url' => $preview_image_url,
     'hero_text_mode' => $hero['text_mode'],
     'reassurance_items' => array_slice(odesign_base_extract_reassurance_items($term), 0, 3),
     'product_count' => odesign_base_count_products_for_life_occasion($term),
     'product_teasers' => odesign_base_build_product_teasers($products),
   ];
+}
+
+/**
+ * Retourne la première image produit disponible pour un univers.
+ */
+function odesign_base_first_product_image_url(array $products): ?string {
+  $file_url_generator = \Drupal::service('file_url_generator');
+  foreach ($products as $product) {
+    if (!$product instanceof ProductInterface) {
+      continue;
+    }
+    if (!$product->hasField('field_product_images') || $product->get('field_product_images')->isEmpty()) {
+      continue;
+    }
+    foreach ($product->get('field_product_images')->referencedEntities() as $media) {
+      if (!$media->hasField('field_media_image') || $media->get('field_media_image')->isEmpty()) {
+        continue;
+      }
+      $file = $media->get('field_media_image')->entity;
+      if ($file instanceof \Drupal\file\FileInterface) {
+        return $file_url_generator->generateString($file->getFileUri());
+      }
+    }
+  }
+  return NULL;
 }
 
 /**

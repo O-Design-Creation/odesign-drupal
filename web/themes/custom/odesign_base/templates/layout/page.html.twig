@@ -158,7 +158,7 @@
                 {{ 'Le site guide d’abord vers les grandes occasions de vie, pour aider les clients à trouver plus vite une idée juste, lisible et simple à personnaliser.'|t }}
               </p>
               <div class="home-hero__actions">
-                <a href="#home-universes" class="btn btn--primary">{{ 'Voir les univers'|t }}</a>
+                <a href="#home-universes-quick" class="btn btn--primary">{{ 'Voir les univers'|t }}</a>
                 <a href="{{ front_primary_life_occasion_url }}" class="btn btn--secondary">{{ 'Découvrir les univers'|t }}</a>
               </div>
             </div>
@@ -170,6 +170,41 @@
                 <li>{{ 'Base simple à enrichir ensuite avec campagnes et mises en avant saisonnières.'|t }}</li>
               </ul>
             </aside>
+          </div>
+        </section>
+
+        <section id="home-universes-quick" class="home-universe-quick">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="section-heading__eyebrow">{{ 'Univers avec photo'|t }}</p>
+                <h2 class="section-heading__title">{{ 'Choisir rapidement votre univers'|t }}</h2>
+              </div>
+              <p class="section-heading__meta">
+                {{ 'Un accès direct dès le haut de page, puis des blocs détaillés juste après.'|t }}
+              </p>
+            </div>
+
+            <ul class="home-universe-quick__grid">
+              {% for item in front_featured_life_occasions %}
+                <li>
+                  <a href="{{ item.url }}" class="home-universe-quick__card">
+                    {% if item.preview_image_url %}
+                      <span class="home-universe-quick__media">
+                        <img
+                          src="{{ item.preview_image_url }}"
+                          alt="{{ item.title }}"
+                          loading="lazy"
+                          decoding="async"
+                        >
+                      </span>
+                    {% endif %}
+                    <span class="home-universe-quick__title">{{ item.title }}</span>
+                    <span class="home-universe-quick__cta">{{ 'Explorer'|t }} ›</span>
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
           </div>
         </section>
 
@@ -188,6 +223,17 @@
             <div class="life-occasion-cards">
               {% for card in front_life_occasion_cards %}
                 <article class="life-occasion-card">
+                  {% if card.preview_image_url %}
+                    <a href="{{ card.url }}" class="life-occasion-card__media">
+                      <img
+                        src="{{ card.preview_image_url }}"
+                        alt="{{ card.title }}"
+                        loading="lazy"
+                        decoding="async"
+                      >
+                    </a>
+                  {% endif %}
+
                   <div class="life-occasion-card__header">
                     <h3 class="life-occasion-card__title">
                       <a href="{{ card.url }}">{{ card.title }}</a>
