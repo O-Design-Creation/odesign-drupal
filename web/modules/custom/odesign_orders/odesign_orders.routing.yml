@@ -1,9 +1,40 @@
 odesign_orders.actionable_orders:
   path: '/admin/boutique/commandes-a-traiter'
   defaults:
-    _controller: '\Drupal\odesign_orders\Controller\ActionableOrdersController::redirect'
+    _controller: '\Drupal\odesign_orders\Controller\ActionableOrdersController::page'
     _title: 'Commandes à traiter'
   requirements:
     _permission: 'access commerce administration pages'
   options:
     _admin_route: TRUE
+
+odesign_orders.order_detail:
+  path: '/admin/boutique/commandes/{commerce_order}'
+  defaults:
+    _controller: '\Drupal\odesign_orders\Controller\OrderDetailController::page'
+    _title: 'Détail de la commande'
+  requirements:
+    _permission: 'access commerce administration pages'
+    commerce_order: \d+
+  options:
+    _admin_route: TRUE
+  parameters:
+    commerce_order:
+      type: entity:commerce_order
+
+odesign_orders.order_transition:
+  path: '/admin/boutique/commandes/{commerce_order}/transition/{transition}'
+  defaults:
+    _controller: '\Drupal\odesign_orders\Controller\OrderDetailController::applyTransition'
+    _title: 'Appliquer une transition'
+  requirements:
+    _permission: 'access commerce administration pages'
+    commerce_order: \d+
+    transition: '[a-z_]+'
+    _method: 'POST'
+  options:
+    _admin_route: TRUE
+  parameters:
+    commerce_order:
+      type: entity:commerce_order
+

@@ -1,0 +1,176 @@
+{#
+/**
+ * @file
+ * Page de détail d'une commande — vue gestionnaire boutique.
+ *
+ * Variables :
+ * - order_id        : int
+ * - order_number    : string
+ * - order_date      : string
+ * - state_id        : string (machine name)
+ * - state_label     : string
+ * - customer_name   : string
+ * - customer_email  : string
+ * - billing_address : array|null (name, address_line1, city, postal_code, country, phone)
+ * - shipping_address: array|null
+ * - items           : array (title, qty, unit_price, subtotal, currency)
+ * - total           : string (formatted)
+ * - currency        : string
+ * - transitions     : array (id, label, url, token)
+ * - edit_url        : string
+ * - back_url        : string
+ */
+#}
+
+<div class="odesign-order-detail">
+
+  {# En-tête commande #}
+  <div class="odesign-order-detail__header">
+    <div class="odesign-order-detail__header-left">
+      <a href="{{ back_url }}" class="odesign-order-detail__back">
+        <i class="ph ph-arrow-left" aria-hidden="true"></i>
+        Retour aux commandes à traiter
+      </a>
+      <h2 class="odesign-order-detail__title">
+        <i class="ph ph-receipt" aria-hidden="true"></i>
+        Commande {{ order_number }}
+      </h2>
+      <p class="odesign-order-detail__date">Passée le {{ order_date }}</p>
+    </div>
+    <div class="odesign-order-detail__header-right">
+      <span class="odesign-order-detail__state odesign-orders__state-badge odesign-orders__state-badge--{{ state_id }}">
+        {{ state_label }}
+      </span>
+      <a href="{{ edit_url }}" class="odesign-order-detail__edit-link" title="Modifier dans l'admin Commerce (avancé)">
+        <i class="ph ph-pencil" aria-hidden="true"></i>
+        Vue avancée
+      </a>
+    </div>
+  </div>
+
+  {# Actions workflow #}
+  {% if transitions %}
+    <div class="odesign-order-detail__transitions">
+      <p class="odesign-order-detail__transitions-label">Actions disponibles :</p>
+      <div class="odesign-order-detail__transitions-list">
+        {% for t in transitions %}
+          <form method="post" action="{{ t.url }}" class="odesign-order-detail__transition-form">
+            <input type="hidden" name="token" value="{{ t.token }}">
+            <button type="submit" class="odesign-order-detail__transition-btn{% if t.id == 'cancel' or t.id == 'refund' %} odesign-order-detail__transition-btn--danger{% endif %}">
+              <i class="ph ph-arrow-right" aria-hidden="true"></i>
+              {{ t.label }}
+            </button>
+          </form>
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="odesign-order-detail__transitions odesign-order-detail__transitions--none">
+      <i class="ph ph-check-circle" aria-hidden="true"></i>
+      Aucune action disponible pour cet état.
+    </div>
+  {% endif %}
+
+  {# Corps : deux colonnes #}
+  <div class="odesign-order-detail__body">
+
+    {# Colonne gauche : client + adresses #}
+    <div class="odesign-order-detail__sidebar">
+
+      <div class="odesign-order-detail__card">
+        <h3 class="odesign-order-detail__card-title">
+          <i class="ph ph-user" aria-hidden="true"></i>
+          Client
+        </h3>
+        <p class="odesign-order-detail__customer-name">{{ customer_name }}</p>
+        <a href="mailto:{{ customer_email }}" class="odesign-order-detail__customer-email">{{ customer_email }}</a>
+      </div>
+
+      {% if shipping_address %}
+        <div class="odesign-order-detail__card">
+          <h3 class="odesign-order-detail__card-title">
+            <i class="ph ph-map-pin" aria-hidden="true"></i>
+            Adresse de livraison
+          </h3>
+          {% if shipping_address.name %}
+            <p class="odesign-order-detail__address-name">{{ shipping_address.name }}</p>
+          {% endif %}
+          {% if shipping_address.address_line1 %}
+            <p>{{ shipping_address.address_line1 }}</p>
+          {% endif %}
+          {% if shipping_address.address_line2 %}
+            <p>{{ shipping_address.address_line2 }}</p>
+          {% endif %}
+          {% if shipping_address.postal_code or shipping_address.city %}
+            <p>{{ shipping_address.postal_code }} {{ shipping_address.city }}</p>
+          {% endif %}
+          {% if shipping_address.phone %}
+            <p class="odesign-order-detail__address-phone">
+              <i class="ph ph-phone" aria-hidden="true"></i>
+              {{ shipping_address.phone }}
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if billing_address %}
+        <div class="odesign-order-detail__card">
+          <h3 class="odesign-order-detail__card-title">
+            <i class="ph ph-credit-card" aria-hidden="true"></i>
+            Adresse de facturation
+          </h3>
+          {% if billing_address.name %}
+            <p class="odesign-order-detail__address-name">{{ billing_address.name }}</p>
+          {% endif %}
+          {% if billing_address.address_line1 %}
+            <p>{{ billing_address.address_line1 }}</p>
+          {% endif %}
+          {% if billing_address.city %}
+            <p>{{ billing_address.postal_code }} {{ billing_address.city }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+
+    </div>{# /.sidebar #}
+
+    {# Colonne droite : articles + totaux #}
+    <div class="odesign-order-detail__main">
+
+      <div class="odesign-order-detail__card">
+        <h3 class="odesign-order-detail__card-title">
+          <i class="ph ph-package" aria-hidden="true"></i>
+          Articles commandés
+        </h3>
+        <table class="odesign-order-detail__items">
+          <thead>
+            <tr>
+              <th scope="col">Produit</th>
+              <th scope="col" class="text-center">Qté</th>
+              <th scope="col" class="text-right">P.U.</th>
+              <th scope="col" class="text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in items %}
+              <tr>
+                <td>{{ item.title }}</td>
+                <td class="text-center">{{ item.qty }}</td>
+                <td class="text-right">{{ item.unit_price|number_format(2, ',', ' ') }} {{ item.currency }}</td>
+                <td class="text-right">{{ item.subtotal|number_format(2, ',', ' ') }} {{ item.currency }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr class="odesign-order-detail__total-row">
+              <td colspan="3" class="text-right"><strong>Total</strong></td>
+              <td class="text-right"><strong>{{ total }} {{ currency }}</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+    </div>{# /.main #}
+
+  </div>{# /.body #}
+
+</div>
