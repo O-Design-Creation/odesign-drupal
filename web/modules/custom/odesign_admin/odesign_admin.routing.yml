@@ -8,6 +8,26 @@ odesign_admin.dashboard:
   options:
     _admin_route: TRUE
 
+odesign_admin.catalogue:
+  path: '/admin/boutique/catalogue'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\CatalogueHubController::page'
+    _title: 'Catalogue produits'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
+
+odesign_admin.editorial:
+  path: '/admin/boutique/editorial'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\EditorialHubController::page'
+    _title: 'Éditorial'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
+
 odesign_admin.config:
   path: '/admin/boutique/configuration'
   defaults:

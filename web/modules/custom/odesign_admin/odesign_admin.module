@@ -182,23 +182,25 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
   $items['catalogue'] = [
     'label'         => 'Catalogue',
     'icon'          => 'ph-package',
-    'route'         => 'entity.commerce_product.collection',
+    'route'         => 'odesign_admin.catalogue',
     'weight'        => 30,
     'active_routes' => [
-      'entity.commerce_product.collection',
+      'odesign_admin.catalogue',
       'entity.commerce_product.add_form',
       'entity.commerce_product.edit_form',
       'entity.commerce_product.delete_form',
       'entity.commerce_product_variation.edit_form',
+      'entity.commerce_product.add_page',
     ],
     'badge'         => NULL,
   ];
   $items['editorial'] = [
     'label'         => 'Éditorial',
     'icon'          => 'ph-article',
-    'route'         => 'system.admin_content',
+    'route'         => 'odesign_admin.editorial',
     'weight'        => 40,
     'active_routes' => [
+      'odesign_admin.editorial',
       'system.admin_content',
       'node.add',
       'entity.node.edit_form',
@@ -644,6 +646,7 @@ function _odesign_admin_alter_article_form(array &$form): void {
  *
  * Masque les champs techniques du formulaire d'édition des univers (UX-03)
  * et clarifie les libellés techniques (UX-01).
+ * Ajoute un lien "Voir sur le site" vers la page de l'univers (Lot 6).
  */
 function odesign_admin_form_taxonomy_term_life_occasion_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
   // UX-03 : masquer les blocs de gestion des révisions et des métadonnées système.
@@ -654,9 +657,7 @@ function odesign_admin_form_taxonomy_term_life_occasion_form_alter(array &$form,
   }
 
   // UX-03 : masquer les champs techniques dans la section "relations".
-  // Le terme parent est géré via l'onglet "Structure" dans le formulaire.
   if (isset($form['relations']['#type']) && $form['relations']['#type'] === 'details') {
-    // Renommer le groupe "Relations" en libellé métier clair.
     $form['relations']['#title'] = t('Organisation (terme parent)');
     $form['relations']['#description'] = t('Si cet univers appartient à une catégorie parente, sélectionnez-la ici. Laissez vide pour un univers de premier niveau.');
   }
@@ -676,10 +677,33 @@ function odesign_admin_form_taxonomy_term_life_occasion_form_alter(array &$form,
       $form['description']['widget'][0]['value']['#description'] =
         t('Texte d\'introduction affiché sur la page de cet univers. Décrivez les occasions concernées et les créations proposées.');
     }
-    // Masquer le sélecteur de format de texte via #after_build (même raison que pour les articles).
+    // Masquer le sélecteur de format de texte via #after_build.
     if (isset($form['description']['widget'][0])) {
       $form['description']['widget'][0]['#after_build'][] = '_odesign_admin_article_body_after_build';
     }
+  }
+
+  // Lot 6 : titre contextuel + lien "Voir sur le site".
+  /** @var \Drupal\taxonomy\TermInterface|null $term */
+  $term = $form_state->getFormObject()->getEntity();
+  if ($term && !$term->isNew()) {
+    // Titre contextuel : "Modifier l'univers : Mariage"
+    $form['#title'] = t('Modifier l\'univers : @name', ['@name' => $term->label()]);
+
+    // Lien "Voir sur le site" dans la barre d'actions.
+    $term_url = \Drupal\Core\Url::fromRoute('entity.taxonomy_term.canonical', ['taxonomy_term' => $term->id()]);
+    $form['actions']['view_on_site'] = [
+      '#type'       => 'link',
+      '#title'      => t('Voir sur le site'),
+      '#url'        => $term_url,
+      '#attributes' => [
+        'class'  => ['button', 'button--secondary'],
+        'target' => '_blank',
+        'rel'    => 'noopener',
+      ],
+      '#prefix' => '<i class="ph ph-arrow-square-out" aria-hidden="true"></i> ',
+      '#weight' => 10,
+    ];
   }
 }
 
