@@ -387,6 +387,7 @@ class BoutiqueConfigForm extends FormBase {
         'priority' => 0,
         'stop_further' => FALSE,
       ];
+      $default_target_values = $this->buildPromotionTargetDefaults((string) ($rule['scope'] ?? 'life_occasion'), (array) ($rule['target_ids'] ?? []));
 
       $form['promotions_volume']["promotion_rule_{$i}"] = [
         '#type' => 'details',
@@ -409,16 +410,37 @@ class BoutiqueConfigForm extends FormBase {
         '#type' => 'select',
         '#title' => 'Cible',
         '#options' => [
-          'life_occasion' => 'Univers (taxonomy life_occasion)',
-          'product' => 'Produits précis (IDs)',
+          'life_occasion' => 'Univers',
+          'product' => 'Produits',
         ],
         '#default_value' => (string) ($rule['scope'] ?? 'life_occasion'),
       ];
-      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_target_ids"] = [
-        '#type' => 'textfield',
-        '#title' => 'IDs cibles (séparés par virgules)',
-        '#default_value' => implode(',', (array) ($rule['target_ids'] ?? [])),
-        '#description' => 'Exemple univers: 27. Exemple produits: 20,44,69',
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_target_terms"] = [
+        '#type' => 'entity_autocomplete',
+        '#title' => 'Univers ciblés',
+        '#target_type' => 'taxonomy_term',
+        '#selection_settings' => ['target_bundles' => ['life_occasion' => 'life_occasion']],
+        '#tags' => TRUE,
+        '#default_value' => (string) ($rule['scope'] ?? 'life_occasion') === 'life_occasion' ? $default_target_values : [],
+        '#description' => 'Sélectionnez un ou plusieurs univers.',
+        '#states' => [
+          'visible' => [
+            ':input[name="promotion_rule_' . $i . '_scope"]' => ['value' => 'life_occasion'],
+          ],
+        ],
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_target_products"] = [
+        '#type' => 'entity_autocomplete',
+        '#title' => 'Produits ciblés',
+        '#target_type' => 'commerce_product',
+        '#tags' => TRUE,
+        '#default_value' => (string) ($rule['scope'] ?? 'life_occasion') === 'product' ? $default_target_values : [],
+        '#description' => 'Sélectionnez un ou plusieurs produits.',
+        '#states' => [
+          'visible' => [
+            ':input[name="promotion_rule_' . $i . '_scope"]' => ['value' => 'product'],
+          ],
+        ],
       ];
       $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_tiers"] = [
         '#type' => 'textarea',
@@ -501,6 +523,33 @@ class BoutiqueConfigForm extends FormBase {
     }
     else {
       $this->messenger()->addError("Échec de l'envoi. Vérifiez vos identifiants Mailgun ci-dessus.");
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
+    for ($i = 0; $i < 3; $i++) {
+      if (!(bool) $form_state->getValue("promotion_rule_{$i}_enabled")) {
+        continue;
+      }
+      $label = trim((string) $form_state->getValue("promotion_rule_{$i}_label"));
+      $scope = (string) $form_state->getValue("promotion_rule_{$i}_scope");
+      $targets = $this->extractTargetIdsFromFormState($form_state, $i, $scope);
+      $tiers_raw = trim((string) $form_state->getValue("promotion_rule_{$i}_tiers"));
+      $tiers = $this->parseTierLines($tiers_raw);
+
+      if ($label === '') {
+        $form_state->setErrorByName("promotion_rule_{$i}_label", 'Le nom commercial est obligatoire pour une règle active.');
+      }
+      if (!$targets) {
+        $target_field = $scope === 'product' ? "promotion_rule_{$i}_target_products" : "promotion_rule_{$i}_target_terms";
+        $form_state->setErrorByName($target_field, 'Sélectionnez au moins une cible.');
+      }
+      if ($tiers_raw === '' || !$tiers) {
+        $form_state->setErrorByName("promotion_rule_{$i}_tiers", 'Ajoutez des paliers valides au format quantité:remise (ex: 3:3).');
+      }
     }
   }
 
@@ -611,7 +660,7 @@ class BoutiqueConfigForm extends FormBase {
       $enabled = (bool) $form_state->getValue("promotion_rule_{$i}_enabled");
       $label = trim((string) $form_state->getValue("promotion_rule_{$i}_label"));
       $scope = (string) $form_state->getValue("promotion_rule_{$i}_scope");
-      $target_ids_raw = trim((string) $form_state->getValue("promotion_rule_{$i}_target_ids"));
+      $target_ids = $this->extractTargetIdsFromFormState($form_state, $i, $scope);
       $tiers_raw = trim((string) $form_state->getValue("promotion_rule_{$i}_tiers"));
       $priority = (int) $form_state->getValue("promotion_rule_{$i}_priority");
       $stop_further = (bool) $form_state->getValue("promotion_rule_{$i}_stop_further");
@@ -620,7 +669,6 @@ class BoutiqueConfigForm extends FormBase {
         continue;
       }
 
-      $target_ids = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', $target_ids_raw) ?: [])));
       $tiers = $this->parseTierLines($tiers_raw);
       if ($label === '' || !$target_ids || !$tiers) {
         continue;
@@ -724,6 +772,52 @@ class BoutiqueConfigForm extends FormBase {
     }
     usort($tiers, static fn(array $a, array $b): int => $a['threshold'] <=> $b['threshold']);
     return $tiers;
+  }
+
+  /**
+   * Extrait les IDs ciblés depuis les widgets autocomplete.
+   */
+  private function extractTargetIdsFromFormState(FormStateInterface $form_state, int $rule_index, string $scope): array {
+    $field_name = $scope === 'product'
+      ? "promotion_rule_{$rule_index}_target_products"
+      : "promotion_rule_{$rule_index}_target_terms";
+    $raw_values = $form_state->getValue($field_name);
+    if (!is_array($raw_values)) {
+      return [];
+    }
+
+    $ids = [];
+    foreach ($raw_values as $value) {
+      if (is_array($value) && isset($value['target_id'])) {
+        $ids[] = (int) $value['target_id'];
+        continue;
+      }
+      if (is_scalar($value)) {
+        $ids[] = (int) $value;
+      }
+    }
+    return array_values(array_filter($ids));
+  }
+
+  /**
+   * Retourne les entités par défaut pour l'autocomplete de cible promotion.
+   */
+  private function buildPromotionTargetDefaults(string $scope, array $target_ids): array {
+    $ids = array_values(array_filter(array_map('intval', $target_ids)));
+    if (!$ids) {
+      return [];
+    }
+
+    if ($scope === 'product') {
+      $storage = \Drupal::entityTypeManager()->getStorage('commerce_product');
+      return array_values($storage->loadMultiple($ids));
+    }
+
+    $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $entities = array_values($storage->loadMultiple($ids));
+    return array_values(array_filter($entities, static function ($term): bool {
+      return method_exists($term, 'bundle') && $term->bundle() === 'life_occasion';
+    }));
   }
 
 }
