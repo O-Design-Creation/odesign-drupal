@@ -122,6 +122,12 @@
         {{- product|without('title', 'body', 'field_product_images') -}}
       </div>
 
+      <p class="product-detail__contact">
+        <a href="/contact" class="product-detail__contact-link">
+          {{ 'Une question sur ce produit ? Contactez-nous'|t }}
+        </a>
+      </p>
+
       {# Réassurance — icônes Phosphor #}
       <ul class="reassurance-list" aria-label="{{ 'Arguments de vente'|t }}">
         <li class="reassurance-list__item">

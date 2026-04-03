@@ -498,12 +498,13 @@ function odesign_base_load_latest_articles(int $limit = 3): array {
 /**
  * Prépare des cartes d'articles compactes pour la homepage.
  *
- * @return array<int, array{title: string, url: string, excerpt: string}>
+ * @return array<int, array{title: string, url: string, excerpt: string, image_url: ?string, image_alt: string}>
  *   Données d'articles.
  */
 function odesign_base_build_latest_article_items(int $limit = 3): array {
   $items = [];
   foreach (odesign_base_load_latest_articles($limit) as $article) {
+    $article = \Drupal::service('entity.repository')->getTranslationFromContext($article);
     $title = trim((string) $article->label());
     $url = $article->toUrl()->toString();
     $excerpt = '';
@@ -514,10 +515,36 @@ function odesign_base_build_latest_article_items(int $limit = 3): array {
     if (mb_strlen($excerpt) > 140) {
       $excerpt = rtrim(mb_substr($excerpt, 0, 137)) . '...';
     }
+    $image_url = NULL;
+    $image_alt = $title;
+    if ($article->hasField('field_image') && !$article->get('field_image')->isEmpty()) {
+      $image_field_item = $article->get('field_image')->first();
+      $image_entity = $image_field_item?->entity;
+      if ($image_entity instanceof \Drupal\file\FileInterface) {
+        $image_url = \Drupal::service('file_url_generator')->generateString($image_entity->getFileUri());
+        $alt = trim((string) ($image_field_item->alt ?? ''));
+        if ($alt !== '') {
+          $image_alt = $alt;
+        }
+      }
+      elseif ($image_entity && $image_entity->hasField('field_media_image') && !$image_entity->get('field_media_image')->isEmpty()) {
+        $media_image_item = $image_entity->get('field_media_image')->first();
+        $file = $media_image_item?->entity;
+        if ($file instanceof \Drupal\file\FileInterface) {
+          $image_url = \Drupal::service('file_url_generator')->generateString($file->getFileUri());
+          $alt = trim((string) ($media_image_item->alt ?? ''));
+          if ($alt !== '') {
+            $image_alt = $alt;
+          }
+        }
+      }
+    }
     $items[] = [
       'title' => $title,
       'url' => $url,
       'excerpt' => $excerpt,
+      'image_url' => $image_url,
+      'image_alt' => $image_alt,
     ];
   }
   return $items;
@@ -660,7 +687,7 @@ function odesign_base_preprocess_taxonomy_term(array &$variables): void {
   $variables['life_occasion_reassurance_items'] = odesign_base_extract_reassurance_items($term);
   $variables['life_occasion_product_count'] = odesign_base_count_products_for_life_occasion($term);
   $variables['life_occasion_product_teasers'] = odesign_base_build_product_teasers($products);
-  $variables['life_occasion_catalogue_url'] = Url::fromUri('internal:/produits#home-universes')->toString();
+  $variables['life_occasion_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
   $variables['life_occasion_hero_image_url'] = $hero['url'];
   $variables['life_occasion_hero_text_mode'] = $hero['text_mode'];
   $variables['life_occasion_hero_has_image'] = $hero['has_image'];

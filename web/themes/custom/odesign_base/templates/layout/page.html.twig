@@ -296,6 +296,16 @@
                   <div class="home-bridge__articles">
                     {% for article in front_latest_articles %}
                       <div class="home-bridge__article">
+                        {% if article.image_url %}
+                          <a href="{{ article.url }}" class="home-bridge__article-media">
+                            <img
+                              src="{{ article.image_url }}"
+                              alt="{{ article.image_alt }}"
+                              loading="lazy"
+                              decoding="async"
+                            >
+                          </a>
+                        {% endif %}
                         <h3 class="home-bridge__article-title">
                           <a href="{{ article.url }}">{{ article.title }}</a>
                         </h3>
