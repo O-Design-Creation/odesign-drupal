@@ -56,11 +56,16 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
   $variables['product_back_to_catalog_url'] = Url::fromUri('internal:/produits')->toString();
   $variables['product_life_occasion_links'] = [];
   $variables['product_related_teasers'] = '';
+  $variables['product_has_volume_offer'] = FALSE;
+  $variables['product_volume_offer_label'] = '';
+  $variables['product_volume_offer_tiers'] = [];
+  $product_term_ids = [];
 
   if ($product->hasField('field_life_occasion') && !$product->get('field_life_occasion')->isEmpty()) {
     $terms = $product->get('field_life_occasion')->referencedEntities();
     foreach ($terms as $term) {
       if ($term instanceof TermInterface) {
+        $product_term_ids[] = (int) $term->id();
         $variables['product_life_occasion_links'][] = [
           'title' => $term->label(),
           'url' => $term->toUrl()->toString(),
@@ -84,6 +89,61 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
       if ($related_ids) {
         $related_products = $storage->loadMultiple($related_ids);
         $variables['product_related_teasers'] = odesign_base_build_product_teasers($related_products);
+      }
+    }
+  }
+
+  // Offre volume configurable (scope univers/produits), 1ère règle applicable.
+  $raw_rules = \Drupal::config('odesign_admin.settings')->get('promotion_volume_rules') ?? [];
+  if (is_array($raw_rules)) {
+    $normalized_rules = [];
+    foreach ($raw_rules as $rule) {
+      if (!is_array($rule) || empty($rule['enabled'])) {
+        continue;
+      }
+      $scope = (string) ($rule['scope'] ?? 'life_occasion');
+      if (!in_array($scope, ['life_occasion', 'product'], TRUE)) {
+        continue;
+      }
+      $target_ids = array_values(array_filter(array_map('intval', (array) ($rule['target_ids'] ?? []))));
+      $tiers = [];
+      foreach ((array) ($rule['tiers'] ?? []) as $tier) {
+        if (!is_array($tier)) {
+          continue;
+        }
+        $threshold = (int) ($tier['threshold'] ?? 0);
+        $discount = (float) ($tier['discount'] ?? 0);
+        if ($threshold > 0 && $discount > 0) {
+          $tiers[] = ['quantity' => $threshold, 'discount' => $discount];
+        }
+      }
+      if (!$target_ids || !$tiers) {
+        continue;
+      }
+      usort($tiers, static fn(array $a, array $b): int => $a['quantity'] <=> $b['quantity']);
+      $normalized_rules[] = [
+        'label' => trim((string) ($rule['label'] ?? 'Offre lot')),
+        'scope' => $scope,
+        'target_ids' => $target_ids,
+        'tiers' => $tiers,
+        'priority' => (int) ($rule['priority'] ?? 0),
+      ];
+    }
+    usort($normalized_rules, static fn(array $a, array $b): int => $b['priority'] <=> $a['priority']);
+
+    foreach ($normalized_rules as $rule) {
+      $matches = FALSE;
+      if ($rule['scope'] === 'product') {
+        $matches = in_array((int) $product->id(), $rule['target_ids'], TRUE);
+      }
+      else {
+        $matches = count(array_intersect($product_term_ids, $rule['target_ids'])) > 0;
+      }
+      if ($matches) {
+        $variables['product_has_volume_offer'] = TRUE;
+        $variables['product_volume_offer_label'] = $rule['label'];
+        $variables['product_volume_offer_tiers'] = $rule['tiers'];
+        break;
       }
     }
   }

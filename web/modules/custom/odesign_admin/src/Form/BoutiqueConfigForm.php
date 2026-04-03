@@ -292,6 +292,7 @@ class BoutiqueConfigForm extends FormBase {
 
     $default_founder_text = "Je m’appelle Océane, j’ai 22 ans, je suis mariée et maman d’un petit garçon.\n\nEn 2023, j’ai créé mon entreprise avec un rêve simple mais essentiel : construire une vie professionnelle qui me permette d’être présente pour ma famille et pour l’éducation de mon enfant.\n\nAujourd’hui, je vis de mon travail passion, un projet né du cœur, qui me ressemble et qui donne du sens à chaque journée.";
     $default_video_text = 'Une vidéo réelle de fabrication pour montrer le niveau de finition, la précision de la gravure et le soin apporté aux créations.';
+    $promotion_rules = $this->normalizePromotionRules((array) ($settings->get('promotion_volume_rules') ?? []));
 
     $form['homepage_story'] = [
       '#type' => 'details',
@@ -359,6 +360,84 @@ class BoutiqueConfigForm extends FormBase {
         'file_validate_size' => [8 * 1024 * 1024],
       ],
     ];
+
+    // ────────────────────────────────────────────────────────────────────────
+    // SECTION 6 — Promotions volume (low-code)
+    // ────────────────────────────────────────────────────────────────────────
+    $form['promotions_volume'] = [
+      '#type' => 'details',
+      '#title' => 'Promotions volume (lots)',
+      '#open' => FALSE,
+      '#attributes' => ['class' => ['config-section', 'config-section--promotions']],
+    ];
+    $form['promotions_volume']['promotions_volume_help'] = [
+      '#markup' => '<div class="config-help">'
+        . '<strong>À quoi ça sert ?</strong> Créez des remises dégressives par lot, sans code (ex: -3€ dès 3, -5€ dès 5). '
+        . 'Vous pouvez cibler un univers (taxonomy) ou une liste de produits.'
+        . '</div>',
+    ];
+
+    for ($i = 0; $i < 3; $i++) {
+      $rule = $promotion_rules[$i] ?? [
+        'enabled' => FALSE,
+        'label' => '',
+        'scope' => 'life_occasion',
+        'target_ids' => [],
+        'tiers' => [],
+        'priority' => 0,
+        'stop_further' => FALSE,
+      ];
+
+      $form['promotions_volume']["promotion_rule_{$i}"] = [
+        '#type' => 'details',
+        '#title' => 'Règle volume #' . ($i + 1),
+        '#open' => ($i === 0),
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_enabled"] = [
+        '#type' => 'checkbox',
+        '#title' => 'Activer cette règle',
+        '#default_value' => !empty($rule['enabled']),
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_label"] = [
+        '#type' => 'textfield',
+        '#title' => 'Nom commercial de la règle',
+        '#default_value' => (string) ($rule['label'] ?? ''),
+        '#placeholder' => 'Ex: Offre lot pancartes',
+        '#maxlength' => 160,
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_scope"] = [
+        '#type' => 'select',
+        '#title' => 'Cible',
+        '#options' => [
+          'life_occasion' => 'Univers (taxonomy life_occasion)',
+          'product' => 'Produits précis (IDs)',
+        ],
+        '#default_value' => (string) ($rule['scope'] ?? 'life_occasion'),
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_target_ids"] = [
+        '#type' => 'textfield',
+        '#title' => 'IDs cibles (séparés par virgules)',
+        '#default_value' => implode(',', (array) ($rule['target_ids'] ?? [])),
+        '#description' => 'Exemple univers: 27. Exemple produits: 20,44,69',
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_tiers"] = [
+        '#type' => 'textarea',
+        '#title' => 'Paliers (une ligne = quantité:remise)',
+        '#default_value' => $this->tiersToLines((array) ($rule['tiers'] ?? [])),
+        '#description' => "Exemple :\n3:3\n5:5\n10:10",
+        '#rows' => 4,
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_priority"] = [
+        '#type' => 'number',
+        '#title' => 'Priorité (plus grand = appliqué d’abord)',
+        '#default_value' => (int) ($rule['priority'] ?? 0),
+      ];
+      $form['promotions_volume']["promotion_rule_{$i}"]["promotion_rule_{$i}_stop_further"] = [
+        '#type' => 'checkbox',
+        '#title' => 'Arrêter après cette règle (bloquer les suivantes)',
+        '#default_value' => !empty($rule['stop_further']),
+      ];
+    }
 
     // ────────────────────────────────────────────────────────────────────────
     // Submit
@@ -526,6 +605,41 @@ class BoutiqueConfigForm extends FormBase {
       ->set('homepage_story_video_text', trim((string) $form_state->getValue('homepage_story_video_text')))
       ->save();
 
+    // ── Promotions volume (low-code) ──────────────────────────────────────
+    $promotion_rules = [];
+    for ($i = 0; $i < 3; $i++) {
+      $enabled = (bool) $form_state->getValue("promotion_rule_{$i}_enabled");
+      $label = trim((string) $form_state->getValue("promotion_rule_{$i}_label"));
+      $scope = (string) $form_state->getValue("promotion_rule_{$i}_scope");
+      $target_ids_raw = trim((string) $form_state->getValue("promotion_rule_{$i}_target_ids"));
+      $tiers_raw = trim((string) $form_state->getValue("promotion_rule_{$i}_tiers"));
+      $priority = (int) $form_state->getValue("promotion_rule_{$i}_priority");
+      $stop_further = (bool) $form_state->getValue("promotion_rule_{$i}_stop_further");
+
+      if (!$enabled) {
+        continue;
+      }
+
+      $target_ids = array_values(array_filter(array_map('intval', preg_split('/\s*,\s*/', $target_ids_raw) ?: [])));
+      $tiers = $this->parseTierLines($tiers_raw);
+      if ($label === '' || !$target_ids || !$tiers) {
+        continue;
+      }
+
+      $promotion_rules[] = [
+        'enabled' => TRUE,
+        'label' => $label,
+        'scope' => in_array($scope, ['life_occasion', 'product'], TRUE) ? $scope : 'life_occasion',
+        'target_ids' => $target_ids,
+        'tiers' => $tiers,
+        'priority' => $priority,
+        'stop_further' => $stop_further,
+      ];
+    }
+    $settings
+      ->set('promotion_volume_rules', $promotion_rules)
+      ->save();
+
     // ── Boutique ─────────────────────────────────────────────────────────────
     $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
     if ($store) {
@@ -542,6 +656,74 @@ class BoutiqueConfigForm extends FormBase {
 
     // Vider le cache de config.
     \Drupal::service('config.factory')->reset();
+  }
+
+  /**
+   * Normalise les règles de promotions volume.
+   */
+  private function normalizePromotionRules(array $rules): array {
+    $normalized = [];
+    foreach ($rules as $rule) {
+      if (!is_array($rule)) {
+        continue;
+      }
+      $scope = (string) ($rule['scope'] ?? 'life_occasion');
+      $scope = in_array($scope, ['life_occasion', 'product'], TRUE) ? $scope : 'life_occasion';
+      $target_ids = array_values(array_filter(array_map('intval', (array) ($rule['target_ids'] ?? []))));
+      $tiers = $this->parseTierLines($this->tiersToLines((array) ($rule['tiers'] ?? [])));
+      $normalized[] = [
+        'enabled' => !empty($rule['enabled']),
+        'label' => trim((string) ($rule['label'] ?? '')),
+        'scope' => $scope,
+        'target_ids' => $target_ids,
+        'tiers' => $tiers,
+        'priority' => (int) ($rule['priority'] ?? 0),
+        'stop_further' => !empty($rule['stop_further']),
+      ];
+    }
+    return $normalized;
+  }
+
+  /**
+   * Convertit les paliers en texte éditable.
+   */
+  private function tiersToLines(array $tiers): string {
+    $lines = [];
+    foreach ($tiers as $tier) {
+      if (!is_array($tier)) {
+        continue;
+      }
+      $threshold = (int) ($tier['threshold'] ?? 0);
+      $discount = (float) ($tier['discount'] ?? 0);
+      if ($threshold > 0 && $discount > 0) {
+        $lines[] = $threshold . ':' . rtrim(rtrim(number_format($discount, 2, '.', ''), '0'), '.');
+      }
+    }
+    return implode("\n", $lines);
+  }
+
+  /**
+   * Parse des paliers saisis au format "quantité:remise".
+   *
+   * @return array<int, array{threshold:int, discount:float}>
+   *   Paliers normalisés.
+   */
+  private function parseTierLines(string $input): array {
+    $tiers = [];
+    foreach (preg_split('/\R+/', $input) ?: [] as $line) {
+      $line = trim($line);
+      if ($line === '' || !str_contains($line, ':')) {
+        continue;
+      }
+      [$threshold_raw, $discount_raw] = array_map('trim', explode(':', $line, 2));
+      $threshold = (int) $threshold_raw;
+      $discount = (float) str_replace(',', '.', $discount_raw);
+      if ($threshold > 0 && $discount > 0) {
+        $tiers[] = ['threshold' => $threshold, 'discount' => $discount];
+      }
+    }
+    usort($tiers, static fn(array $a, array $b): int => $a['threshold'] <=> $b['threshold']);
+    return $tiers;
   }
 
 }

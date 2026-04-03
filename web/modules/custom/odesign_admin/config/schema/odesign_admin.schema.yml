@@ -32,3 +32,41 @@ odesign_admin.settings:
     homepage_story_video_poster:
       type: integer
       label: 'Poster vidéo homepage'
+    promotion_volume_rules:
+      type: sequence
+      label: 'Règles de remise volume'
+      sequence:
+        type: mapping
+        mapping:
+          enabled:
+            type: boolean
+            label: 'Règle active'
+          label:
+            type: string
+            label: 'Libellé règle'
+          scope:
+            type: string
+            label: 'Périmètre de ciblage'
+          target_ids:
+            type: sequence
+            label: 'IDs cibles'
+            sequence:
+              type: integer
+          tiers:
+            type: sequence
+            label: 'Paliers quantité/remise'
+            sequence:
+              type: mapping
+              mapping:
+                threshold:
+                  type: integer
+                  label: 'Quantité minimale'
+                discount:
+                  type: float
+                  label: 'Remise unitaire'
+          priority:
+            type: integer
+            label: 'Priorité'
+          stop_further:
+            type: boolean
+            label: 'Stopper après application'

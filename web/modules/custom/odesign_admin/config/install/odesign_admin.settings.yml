@@ -1,3 +1,22 @@
 homepage_hero_enable_image: true
 homepage_hero_image: null
 homepage_hero_text_mode: auto
+promotion_volume_rules:
+  -
+    enabled: true
+    label: 'Offre lot pancartes'
+    scope: life_occasion
+    target_ids:
+      - 27
+    tiers:
+      -
+        threshold: 3
+        discount: 3
+      -
+        threshold: 5
+        discount: 5
+      -
+        threshold: 10
+        discount: 10
+    priority: 100
+    stop_further: true

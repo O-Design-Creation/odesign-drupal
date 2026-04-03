@@ -110,6 +110,17 @@
         {% endif %}
       {%- endif -%}
 
+      {% if product_has_volume_offer %}
+        <section class="product-detail__offer" aria-label="{{ 'Offre volume'|t }}">
+          <p class="product-detail__offer-title">{{ product_volume_offer_label ?: 'Offre lot'|t }}</p>
+          <ul class="product-detail__offer-list">
+            {% for tier in product_volume_offer_tiers %}
+              <li>{{ '-@discount€ sur le panier dès @quantity pancartes'|t({'@discount': tier.discount, '@quantity': tier.quantity}) }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+
       {# Description produit #}
       {%- if product_entity.body.value -%}
         <div class="product-detail__description">
