@@ -1,4 +1,44 @@
 (function () {
+  /* ─── Registre module-level des instances actives ────────────────────────
+     Un seul jeu de 4 listeners globaux (click, keydown, resize, scroll) est
+     installé au chargement du module. Chaque instance s'y enregistre au lieu
+     d'ajouter ses propres listeners — ce qui évite l'accumulation de N×4
+     listeners quand la page contient N dropbuttons.
+     ─────────────────────────────────────────────────────────────────────── */
+  const activeMenus = new Set();
+
+  document.addEventListener('click', function (event) {
+    activeMenus.forEach(function (instance) {
+      if (!instance.root.contains(event.target)) {
+        instance.close();
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      activeMenus.forEach(function (instance) {
+        instance.close();
+      });
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    activeMenus.forEach(function (instance) {
+      if (instance.root.classList.contains('is-open')) {
+        instance.reposition();
+      }
+    });
+  });
+
+  window.addEventListener('scroll', function () {
+    activeMenus.forEach(function (instance) {
+      if (instance.root.classList.contains('is-open')) {
+        instance.reposition();
+      }
+    });
+  }, true);
+
   function isEligibleWrapper(wrapper) {
     return Boolean(
       wrapper.closest('.views-field-operations')
@@ -62,20 +102,6 @@
       const menu = document.createElement('div');
       const menuId = `odesign-actions-menu-${index}`;
 
-      const positionMenu = () => {
-        menu.hidden = false;
-        const rootRect = root.getBoundingClientRect();
-        const menuRect = menu.getBoundingClientRect();
-        const margin = 12;
-        const left = Math.max(margin, rootRect.right - menuRect.width);
-        const top = rootRect.bottom + 10;
-
-        menu.style.position = 'fixed';
-        menu.style.left = `${left}px`;
-        menu.style.top = `${top}px`;
-        menu.style.right = 'auto';
-      };
-
       toggle.type = 'button';
       toggle.className = 'odesign-actions__toggle';
       toggle.setAttribute('aria-expanded', 'false');
@@ -97,6 +123,24 @@
         menu.hidden = true;
       };
 
+      const repositionMenu = () => {
+        menu.hidden = false;
+        const rootRect = root.getBoundingClientRect();
+        const menuRect = menu.getBoundingClientRect();
+        const margin = 12;
+        const left = Math.max(margin, rootRect.right - menuRect.width);
+        const top = rootRect.bottom + 10;
+
+        menu.style.position = 'fixed';
+        menu.style.left = `${left}px`;
+        menu.style.top = `${top}px`;
+        menu.style.right = 'auto';
+      };
+
+      /* Enregistrement dans le registre module-level */
+      const instance = { root, close: closeMenu, reposition: repositionMenu };
+      activeMenus.add(instance);
+
       toggle.addEventListener('click', function (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -104,33 +148,9 @@
         toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
         menu.hidden = !isOpen;
         if (isOpen) {
-          positionMenu();
+          repositionMenu();
         }
       });
-
-      document.addEventListener('click', function (event) {
-        if (!root.contains(event.target)) {
-          closeMenu();
-        }
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-          closeMenu();
-        }
-      });
-
-      window.addEventListener('resize', function () {
-        if (root.classList.contains('is-open')) {
-          positionMenu();
-        }
-      });
-
-      window.addEventListener('scroll', function () {
-        if (root.classList.contains('is-open')) {
-          positionMenu();
-        }
-      }, true);
 
       root.appendChild(toggle);
       root.appendChild(menu);
