@@ -113,3 +113,36 @@ function odesign_orders_commerce_order_post_save(\Drupal\commerce_order\Entity\O
     );
   }
 }
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour la création de commande.
+ */
+function odesign_orders_form_commerce_order_add_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, string $form_id): void {
+  _odesign_orders_clean_order_form($form);
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour l'édition de commande.
+ */
+function odesign_orders_form_commerce_order_default_edit_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, string $form_id): void {
+  _odesign_orders_clean_order_form($form);
+}
+
+/**
+ * Masque les champs techniques et ajoute des descriptions métier commande.
+ */
+function _odesign_orders_clean_order_form(array &$form): void {
+  if (isset($form['uid'])) {
+    $form['uid']['#access'] = FALSE;
+  }
+
+  if (isset($form['customer_type'])) {
+    $form['customer_type']['#description'] = t('Indiquez si ce client est déjà enregistré dans la boutique ou s\'il s\'agit d\'un nouvel acheteur.');
+  }
+  if (isset($form['custom_placed_date'])) {
+    $form['custom_placed_date']['#description'] = t('Cochez cette case uniquement si vous souhaitez enregistrer la commande à une date différente d\'aujourd\'hui.');
+  }
+  if (isset($form['placed']) && isset($form['placed']['widget'][0]['value'])) {
+    $form['placed']['widget'][0]['value']['#description'] = t('Date à laquelle la commande a été passée.');
+  }
+}

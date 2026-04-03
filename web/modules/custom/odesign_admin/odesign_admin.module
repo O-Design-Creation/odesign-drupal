@@ -8,7 +8,6 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
-use Drupal\commerce_order\Entity\OrderInterface;
 
 /**
  * Implémente hook_page_attachments().
@@ -408,20 +407,6 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
 }
 
 /**
- * Implémente hook_form_FORM_ID_alter() pour le formulaire de création de commande.
- *
- * - Masque le champ technique uid (règle UX-03).
- * - Ajoute des descriptions sur les champs clés (règle UX-02).
- */
-function odesign_admin_form_commerce_order_add_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  _odesign_admin_clean_order_form($form);
-}
-
-function odesign_admin_form_commerce_order_default_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
-  _odesign_admin_clean_order_form($form);
-}
-
-/**
  * Implémente hook_form_FORM_ID_alter() pour la page des variantes produit.
  */
 function odesign_admin_form_commerce_product_variations_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
@@ -440,29 +425,6 @@ function odesign_admin_form_commerce_product_variations_alter(array &$form, Form
     }
 
     $form['variations'][$variation_id]['weight']['#description'] = t('Utilisez ce poids pour changer l’ordre d’affichage des variantes sur la page produit. 0 = position actuelle, un nombre plus petit remonte plus haut.');
-  }
-}
-
-/**
- * Masque les champs techniques et ajoute des descriptions métier sur les formulaires commande.
- */
-function _odesign_admin_clean_order_form(array &$form): void {
-  // UX-03 : masquer le champ uid (sélecteur d'utilisateur technique).
-  if (isset($form['uid'])) {
-    $form['uid']['#access'] = FALSE;
-  }
-
-  // UX-02 : descriptions sur les champs visibles.
-  if (isset($form['customer_type'])) {
-    $form['customer_type']['#description'] = t('Indiquez si ce client est déjà enregistré dans la boutique ou s\'il s\'agit d\'un nouvel acheteur.');
-  }
-  if (isset($form['custom_placed_date'])) {
-    $form['custom_placed_date']['#description'] = t('Cochez cette case uniquement si vous souhaitez enregistrer la commande à une date différente d\'aujourd\'hui.');
-  }
-  if (isset($form['placed'])) {
-    if (isset($form['placed']['widget'][0]['value'])) {
-      $form['placed']['widget'][0]['value']['#description'] = t('Date à laquelle la commande a été passée.');
-    }
   }
 }
 
