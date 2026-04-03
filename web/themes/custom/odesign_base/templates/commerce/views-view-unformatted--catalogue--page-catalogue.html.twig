@@ -12,7 +12,15 @@
  */
 #}
 {% if title %}
-  <h1 class="catalogue__title">{{ title }}</h1>
+  <header class="catalogue__header">
+    <h1 class="catalogue__title">{{ title }}</h1>
+    <p class="catalogue__intro">
+      {{ 'Choisissez votre création personnalisée et, si besoin, utilisez le lien contact pour une demande spécifique.'|t }}
+    </p>
+    <p class="catalogue__contact">
+      <a href="/contact" class="catalogue__contact-link">{{ 'Une question ? Contactez l’atelier'|t }}</a>
+    </p>
+  </header>
 {% endif %}
 
 <div class="product-grid">

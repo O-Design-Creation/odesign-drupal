@@ -944,6 +944,41 @@ textarea {
 /* ---------------------------------------------------------------------------
    14. Grille catalogue
    --------------------------------------------------------------------------- */
+.catalogue__header {
+  margin-top: var(--space-4);
+}
+
+.catalogue__title {
+  margin-bottom: var(--space-2);
+  max-width: 22ch;
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  overflow-wrap: anywhere;
+}
+
+.catalogue__intro {
+  color: var(--color-text-muted);
+  max-width: 68ch;
+  margin-bottom: var(--space-2);
+}
+
+.catalogue__contact {
+  margin-bottom: var(--space-4);
+}
+
+.catalogue__contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.catalogue__contact-link::before {
+  content: "↗";
+  font-size: .95em;
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
