@@ -8,3 +8,10 @@ odesign_admin/admin_global:
     theme:
       css/admin-global.css: {}
 
+hub:
+  css:
+    theme:
+      css/hub.css: {}
+  dependencies:
+    - core/drupal
+
