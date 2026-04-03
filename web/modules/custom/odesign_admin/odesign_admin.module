@@ -488,15 +488,3 @@ function odesign_admin_mail_alter(array &$message): void {
     $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
   }
 }
-
-/**
- * Implements hook_form_alter().
- *
- * Corrige le libellé du bouton add-to-cart :
- * "Enregistrer la commande" → "Ajouter au panier".
- */
-function odesign_admin_form_commerce_order_item_add_to_cart_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  if (isset($form['actions']['submit'])) {
-    $form['actions']['submit']['#value'] = t('Ajouter au panier');
-  }
-}
