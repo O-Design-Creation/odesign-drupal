@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Barre de navigation back-office gestionnaire boutique.
+ *
+ * Variables :
+ * - nav_items  : array — items déclarés via hook_odesign_boutique_nav_items_alter()
+ *                Chaque item : id, label, icon (classe Phosphor), url, is_active, badge
+ * - site_url   : string — URL de la page d'accueil du site
+ * - username   : string — nom affiché de l'utilisateur courant
+ * - logout_url : string — URL de déconnexion
+ */
+#}
+
+<nav class="odesign-admin-nav" aria-label="Navigation boutique">
+
+  {# Logo — lien vers le dashboard #}
+  <a href="/admin/boutique" class="odesign-admin-nav__logo" aria-label="Tableau de bord">
+    <i class="ph ph-storefront" aria-hidden="true"></i>
+    <span class="odesign-admin-nav__logo-text">O Design</span>
+  </a>
+
+  {# Items de navigation (déclarés par les modules via hook) #}
+  <ul class="odesign-admin-nav__items" role="list">
+    {% for item in nav_items %}
+      <li>
+        <a href="{{ item.url }}"
+           class="odesign-admin-nav__link{% if item.is_active %} odesign-admin-nav__link--active{% endif %}"
+           {% if item.is_active %}aria-current="page"{% endif %}>
+          <i class="ph {{ item.icon }}" aria-hidden="true"></i>
+          <span class="odesign-admin-nav__link-label">{{ item.label }}</span>
+          {% if item.badge %}
+            <span class="odesign-admin-nav__badge" aria-label="{{ item.badge }} en attente">{{ item.badge }}</span>
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  {# Zone droite : voir le site, utilisateur, déconnexion #}
+  <div class="odesign-admin-nav__right">
+    <a href="{{ site_url }}" class="odesign-admin-nav__site-link" target="_blank" rel="noopener noreferrer" title="Voir le site">
+      <i class="ph ph-arrow-square-out" aria-hidden="true"></i>
+      <span>Voir le site</span>
+    </a>
+    <span class="odesign-admin-nav__user" title="{{ username }}">
+      <i class="ph ph-user-circle" aria-hidden="true"></i>
+      <span class="odesign-admin-nav__username">{{ username }}</span>
+    </span>
+    <a href="{{ logout_url }}" class="odesign-admin-nav__logout" title="Se déconnecter">
+      <i class="ph ph-sign-out" aria-hidden="true"></i>
+      <span class="odesign-admin-nav__logout-label">Déconnexion</span>
+    </a>
+  </div>
+
+</nav>

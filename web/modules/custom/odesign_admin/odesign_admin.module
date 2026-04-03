@@ -12,21 +12,51 @@ use Drupal\Core\Url;
 /**
  * Implémente hook_page_attachments().
  *
- * Injecte directement les CSS admin (contourne le système de library
- * qui ne sort pas le link tag dans ce contexte).
+ * Injecte les CSS admin via html_head (contourne le système de library
+ * qui ne sort pas le link tag dans ce contexte avec Gin).
+ * Charge Phosphor (self-hosted dans odesign_base) à la place du CDN Google.
  */
 function odesign_admin_page_attachments(array &$attachments): void {
   if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
     return;
   }
-  // CSS global admin — sidebar offset + Material Symbols.
+
+  // Phosphor Icons — self-hosted dans odesign_base (D-07 : migrer de Material Symbols).
   $attachments['#attached']['html_head'][] = [
     [
       '#type' => 'html_tag',
-      '#tag' => 'link',
+      '#tag'  => 'link',
       '#attributes' => [
-        'rel' => 'stylesheet',
-        'href' => '/modules/custom/odesign_admin/css/admin-global.css',
+        'rel'   => 'stylesheet',
+        'href'  => '/themes/custom/odesign_base/css/phosphor.css',
+        'media' => 'all',
+      ],
+    ],
+    'odesign_admin_phosphor_css',
+  ];
+
+  // CSS nav admin (scopé : barre de navigation uniquement).
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag'  => 'link',
+      '#attributes' => [
+        'rel'   => 'stylesheet',
+        'href'  => '/modules/custom/odesign_admin/css/admin-nav.css',
+        'media' => 'all',
+      ],
+    ],
+    'odesign_admin_nav_css',
+  ];
+
+  // CSS global admin (hors nav — views, forms, Gin overrides).
+  $attachments['#attached']['html_head'][] = [
+    [
+      '#type' => 'html_tag',
+      '#tag'  => 'link',
+      '#attributes' => [
+        'rel'   => 'stylesheet',
+        'href'  => '/modules/custom/odesign_admin/css/admin-global.css',
         'media' => 'all',
       ],
     ],
@@ -36,9 +66,9 @@ function odesign_admin_page_attachments(array &$attachments): void {
   $attachments['#attached']['html_head'][] = [
     [
       '#type' => 'html_tag',
-      '#tag' => 'script',
+      '#tag'  => 'script',
       '#attributes' => [
-        'src' => '/modules/custom/odesign_admin/js/admin-actions.js',
+        'src'   => '/modules/custom/odesign_admin/js/admin-actions.js',
         'defer' => TRUE,
       ],
     ],
@@ -80,81 +110,28 @@ function odesign_admin_preprocess_html(array &$variables): void {
 /**
  * Implémente hook_page_top().
  *
- * Injecte la barre de navigation rapide sur toutes les pages admin.
+ * Injecte la barre de navigation boutique via le template Twig odesign_admin_nav.
+ * Les items sont collectés via hook_odesign_boutique_nav_items_alter() (D-03 déclaratif).
  */
 function odesign_admin_page_top(array &$page_top): void {
   if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
     return;
   }
 
-  $current_path = \Drupal::service('path.current')->getPath();
-
-  $nav_items = [
-    ['label' => 'Tableau de bord', 'icon' => 'storefront',    'path' => '/admin/boutique'],
-    ['label' => 'Guide marketing', 'icon' => 'campaign',      'path' => '/admin/boutique/guide-marketing'],
-    ['label' => 'Articles',        'icon' => 'article',       'path' => '/admin/content?type=article'],
-    ['label' => 'Produits',        'icon' => 'inventory_2',   'path' => '/admin/commerce/products'],
-    ['label' => 'Commandes',       'icon' => 'receipt_long',  'path' => '/admin/commerce/orders'],
-    ['label' => 'Factures',        'icon' => 'description',   'path' => '/admin/commerce/invoices'],
-    ['label' => 'Promotions',      'icon' => 'local_offer',   'path' => '/admin/commerce/promotions'],
-    ['label' => 'Médias',          'icon' => 'photo_library', 'path' => '/admin/content/media'],
-  ];
-
-  $items_html = '';
-  // Sélectionne l'item actif par correspondance de préfixe la plus longue.
-  // Cela évite que '/admin/boutique' soit actif sur '/admin/content/media'
-  // ou que '/admin/content' (Articles) soit actif sur '/admin/content/media' (Médias).
-  $best_match_path = '';
-  foreach ($nav_items as $item) {
-    $nav_path = explode('?', $item['path'])[0];
-    if (str_starts_with($current_path, $nav_path) && strlen($nav_path) > strlen($best_match_path)) {
-      $best_match_path = $nav_path;
-    }
-  }
-
-  foreach ($nav_items as $item) {
-    $nav_path = explode('?', $item['path'])[0];
-    $active = ($nav_path === $best_match_path && $best_match_path !== '') ? ' aria-current="page"' : '';
-    $items_html .= '<li><a href="' . htmlspecialchars($item['path']) . '"' . $active . '>'
-      . '<span class="material-symbols-outlined" aria-hidden="true">' . htmlspecialchars($item['icon']) . '</span>'
-      . '<span>' . htmlspecialchars($item['label']) . '</span>'
-      . '</a></li>';
-  }
-
-  // Lien "Retour au site" et déconnexion à droite
-  $account        = \Drupal::currentUser();
-  $username       = htmlspecialchars($account->getDisplayName());
-  $logout_url     = \Drupal\Core\Url::fromRoute('user.logout')->toString();
-  $site_url       = \Drupal\Core\Url::fromRoute('<front>')->toString();
-
-  $right_html  = '<div class="odesign-admin-nav__right">';
-  $right_html .= '<a href="' . htmlspecialchars($site_url) . '" class="odesign-admin-nav__site-link" target="_blank" title="Voir le site">'
-    . '<span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>'
-    . '<span>Voir le site</span>'
-    . '</a>';
-  $right_html .= '<span class="odesign-admin-nav__user">'
-    . '<span class="material-symbols-outlined" aria-hidden="true">account_circle</span>'
-    . '<span class="odesign-admin-nav__username">' . $username . '</span>'
-    . '</span>';
-  $right_html .= '<a href="' . htmlspecialchars($logout_url) . '" class="odesign-admin-nav__logout" title="Se déconnecter">'
-    . '<span class="material-symbols-outlined" aria-hidden="true">logout</span>'
-    . '<span>Déconnexion</span>'
-    . '</a>';
-  $right_html .= '</div>';
+  /** @var \Drupal\odesign_admin\Service\BoutiqueNavRegistry $registry */
+  $registry = \Drupal::service('odesign_admin.boutique_nav_registry');
+  $account  = \Drupal::currentUser();
 
   $page_top['odesign_admin_nav'] = [
-    '#type'   => 'markup',
-    '#markup' => '<nav class="odesign-admin-nav" aria-label="Navigation boutique">'
-      . '<a href="/admin/boutique" class="odesign-admin-nav__logo" aria-label="Tableau de bord">'
-      . '<span class="material-symbols-outlined" aria-hidden="true">storefront</span>'
-      . '<span class="odesign-admin-nav__logo-text">O Design</span>'
-      . '</a>'
-      . '<ul class="odesign-admin-nav__items">' . $items_html . '</ul>'
-      . $right_html
-      . '</nav>',
-    '#weight' => -100,
-    '#cache'  => [
-      'contexts' => ['user', 'url.path'],
+    '#theme'      => 'odesign_admin_nav',
+    '#nav_items'  => $registry->getNavItems(),
+    '#site_url'   => Url::fromRoute('<front>')->toString(),
+    '#username'   => $account->getDisplayName(),
+    '#logout_url' => Url::fromRoute('user.logout')->toString(),
+    '#weight'     => -100,
+    '#cache'      => [
+      'contexts' => ['route', 'user.roles'],
+      'tags'     => ['commerce_order_list'],
     ],
   ];
 }
@@ -164,19 +141,136 @@ function odesign_admin_page_top(array &$page_top): void {
  */
 function odesign_admin_theme(): array {
   return [
-    'odesign_admin_dashboard' => [
-      'template' => 'odesign-admin-dashboard',
+    'odesign_admin_nav' => [
+      'template'  => 'odesign-admin-nav',
       'variables' => [
-        'stats' => [],
-        'pending_orders_url' => '',
-        'orders_url' => '',
-        'orders_view' => NULL,
+        'nav_items'  => [],
+        'site_url'   => '',
+        'username'   => '',
+        'logout_url' => '',
+      ],
+    ],
+    'odesign_admin_dashboard' => [
+      'template'  => 'odesign-admin-dashboard',
+      'variables' => [
+        'cards'           => [],
+        'alert_messages'  => [],
+        'orders_url'      => '',
+        'orders_view'     => NULL,
         'recent_articles' => [],
-        'quick_links' => [],
       ],
     ],
   ];
 }
+
+/**
+ * Implémente hook_odesign_boutique_nav_items_alter().
+ *
+ * Déclare les items de navigation propres à odesign_admin :
+ * Tableau de bord, Catalogue, Éditorial, Configuration.
+ * Les items de domaine (Commandes) sont déclarés par leurs modules respectifs.
+ */
+function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
+  $items['dashboard'] = [
+    'label'         => 'Tableau de bord',
+    'icon'          => 'ph-storefront',
+    'route'         => 'odesign_admin.dashboard',
+    'weight'        => 0,
+    'active_routes' => ['odesign_admin.dashboard'],
+    'badge'         => NULL,
+  ];
+  $items['catalogue'] = [
+    'label'         => 'Catalogue',
+    'icon'          => 'ph-package',
+    'route'         => 'entity.commerce_product.collection',
+    'weight'        => 30,
+    'active_routes' => [
+      'entity.commerce_product.collection',
+      'entity.commerce_product.add_form',
+      'entity.commerce_product.edit_form',
+      'entity.commerce_product.delete_form',
+      'entity.commerce_product_variation.edit_form',
+    ],
+    'badge'         => NULL,
+  ];
+  $items['editorial'] = [
+    'label'         => 'Éditorial',
+    'icon'          => 'ph-article',
+    'route'         => 'system.admin_content',
+    'weight'        => 40,
+    'active_routes' => [
+      'system.admin_content',
+      'node.add',
+      'entity.node.edit_form',
+      'entity.node.delete_form',
+      'entity.taxonomy_vocabulary.overview_form',
+      'entity.taxonomy_term.add_form',
+      'entity.taxonomy_term.edit_form',
+      'entity.taxonomy_term.delete_form',
+    ],
+    'badge'         => NULL,
+  ];
+  $items['configuration'] = [
+    'label'         => 'Configuration',
+    'icon'          => 'ph-gear',
+    'route'         => 'odesign_admin.config',
+    'weight'        => 90,
+    'active_routes' => [
+      'odesign_admin.config',
+      'odesign_admin.marketing_guide',
+    ],
+    'badge'         => NULL,
+  ];
+}
+
+/**
+ * Implémente hook_odesign_boutique_dashboard_cards_alter().
+ *
+ * Déclare les tuiles de statistiques : produits en ligne + articles publiés.
+ */
+function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): void {
+  try {
+    $total_products = (int) \Drupal::entityQuery('commerce_product')
+      ->condition('status', 1)
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+  }
+  catch (\Exception) {
+    $total_products = 0;
+  }
+
+  $cards['produits'] = [
+    'title'     => 'Produits en ligne',
+    'value'     => $total_products,
+    'url'       => Url::fromRoute('entity.commerce_product.collection')->toString(),
+    'icon'      => 'ph-package',
+    'highlight' => FALSE,
+    'weight'    => 20,
+  ];
+
+  try {
+    $total_articles = (int) \Drupal::entityQuery('node')
+      ->condition('type', 'article')
+      ->condition('status', 1)
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+  }
+  catch (\Exception) {
+    $total_articles = 0;
+  }
+
+  $cards['articles'] = [
+    'title'     => 'Articles publiés',
+    'value'     => $total_articles,
+    'url'       => Url::fromRoute('system.admin_content', [], ['query' => ['type' => 'article']])->toString(),
+    'icon'      => 'ph-article',
+    'highlight' => FALSE,
+    'weight'    => 30,
+  ];
+}
+
 /**
  * Implémente hook_mail().
  *

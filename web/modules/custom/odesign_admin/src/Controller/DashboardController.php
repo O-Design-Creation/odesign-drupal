@@ -5,27 +5,27 @@ namespace Drupal\odesign_admin\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Url;
-use Drupal\odesign_orders\Dashboard\OrderStatsProvider;
+use Drupal\odesign_admin\Service\BoutiqueNavRegistry;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Tableau de bord du gestionnaire boutique.
+ *
+ * Les statistiques (cards) sont collectées via hook_odesign_boutique_dashboard_cards_alter().
+ * La navigation est gérée par BoutiqueNavRegistry (injectée dans hook_page_top).
  */
 class DashboardController extends ControllerBase {
 
-  protected Connection $database;
-  protected OrderStatsProvider $orderStatsProvider;
-
-  public function __construct(Connection $database, OrderStatsProvider $orderStatsProvider) {
-    $this->database = $database;
-    $this->orderStatsProvider = $orderStatsProvider;
-  }
+  public function __construct(
+    protected Connection $database,
+    protected BoutiqueNavRegistry $navRegistry,
+  ) {}
 
   public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('database'),
-      $container->get('odesign_orders.dashboard_order_stats_provider'),
+      $container->get('odesign_admin.boutique_nav_registry'),
     );
   }
 
@@ -33,49 +33,49 @@ class DashboardController extends ControllerBase {
    * Page principale du tableau de bord.
    */
   public function page(): array {
-    $build = [];
+    // Cards de statistiques via hook (chaque module déclare les siennes).
+    $cards = [];
+    $this->moduleHandler()->alter('odesign_boutique_dashboard_cards', $cards);
+    uasort($cards, fn($a, $b) => ($a['weight'] ?? 50) <=> ($b['weight'] ?? 50));
 
-    // Statistiques rapides.
-    $stats = $this->getStats();
+    // Bandeaux d'alerte si des sections de config critiques sont incomplètes.
+    $alert_messages = $this->getAlertMessages();
 
-    // Vue des commandes récentes.
+    // Vue des commandes récentes embarquée dans le dashboard.
     $orders_view = NULL;
     $view = Views::getView('commerce_orders');
     if ($view && $view->access('default')) {
       $view->setDisplay('default');
-      $view->setItemsPerPage(10);
+      $view->setItemsPerPage(5);
       $view->execute();
       $orders_view = $view->buildRenderable('default', [], FALSE);
     }
 
-    $build['dashboard'] = [
-      '#theme' => 'odesign_admin_dashboard',
-      '#stats' => $stats,
-      '#pending_orders_url' => (string) Url::fromRoute('odesign_orders.actionable_orders')->toString(),
-      '#orders_url' => (string) Url::fromRoute('entity.commerce_order.collection')->toString(),
-      '#orders_view' => $orders_view,
-      '#recent_articles' => $this->getRecentArticles(),
-      '#quick_links' => $this->getQuickLinks(),
-      '#cache' => ['max-age' => 0],
-      '#attached' => [
-        'html_head' => [
-          [
+    return [
+      'dashboard' => [
+        '#theme'           => 'odesign_admin_dashboard',
+        '#cards'           => array_values($cards),
+        '#alert_messages'  => $alert_messages,
+        '#orders_url'      => Url::fromRoute('entity.commerce_order.collection')->toString(),
+        '#orders_view'     => $orders_view,
+        '#recent_articles' => $this->getRecentArticles(),
+        '#cache'           => ['max-age' => 0],
+        '#attached'        => [
+          'html_head' => [[
             [
-              '#type' => 'html_tag',
-              '#tag' => 'link',
+              '#type'       => 'html_tag',
+              '#tag'        => 'link',
               '#attributes' => [
-                'rel' => 'stylesheet',
-                'href' => '/modules/custom/odesign_admin/css/dashboard.css',
+                'rel'   => 'stylesheet',
+                'href'  => '/modules/custom/odesign_admin/css/dashboard.css',
                 'media' => 'all',
               ],
             ],
             'odesign_admin_dashboard_css',
-          ],
+          ]],
         ],
       ],
     ];
-
-    return $build;
   }
 
   /**
@@ -84,20 +84,21 @@ class DashboardController extends ControllerBase {
   public function marketingGuide(): array {
     $resource_links = [
       [
-        'title' => 'Gérer les univers',
+        'title'       => 'Gérer les univers',
         'description' => 'Modifier les pages Mariage, Naissance et cadeaux personnalisés.',
-        'url' => Url::fromRoute('entity.taxonomy_vocabulary.overview_form', ['taxonomy_vocabulary' => 'life_occasion'])->toString(),
+        'url'         => Url::fromRoute('entity.taxonomy_vocabulary.overview_form', ['taxonomy_vocabulary' => 'life_occasion'])->toString(),
       ],
       [
-        'title' => 'Mes produits',
+        'title'       => 'Mes produits',
         'description' => 'Mettre en avant les produits à pousser en ce moment.',
-        'url' => Url::fromRoute('entity.commerce_product.collection')->toString(),
+        'url'         => Url::fromRoute('entity.commerce_product.collection')->toString(),
       ],
       [
-        'title' => 'Gérer le blog',
+        'title'       => 'Gérer le blog',
         'description' => 'Publier un article utile pour un temps fort ou une catégorie.',
-        'url' => Url::fromRoute('system.admin_content')->toString(),
+        'url'         => Url::fromRoute('system.admin_content')->toString(),
       ],
+
       [
         'title' => 'Ajouter une image',
         'description' => 'Mettre en ligne une photo produit ou une photo atelier.',
@@ -279,35 +280,27 @@ class DashboardController extends ControllerBase {
   }
 
   /**
-   * Statistiques clés pour les compteurs du dashboard.
+   * Bandeaux d'alerte si des clés critiques (SMTP, Stripe) ne sont pas configurées.
    */
-  protected function getStats(): array {
-    $stats = $this->orderStatsProvider->getStats();
+  protected function getAlertMessages(): array {
+    $messages = [];
+    $config = $this->config('odesign_admin.settings');
 
-    // Produits publiés.
-    try {
-      $products = $this->database->select('commerce_product_field_data', 'p')
-        ->condition('p.status', 1)
-        ->countQuery()->execute()->fetchField();
-      $stats['total_products'] = (int) $products;
-    }
-    catch (\Exception $e) {
-      $stats['total_products'] = 0;
+    if (!$config->get('mailgun_api_key')) {
+      $messages[] = [
+        'type'    => 'warning',
+        'message' => "L'envoi d'e-mails n'est pas configuré. Ajoutez votre clé Mailgun dans la <a href=\"/admin/boutique/configuration#mailgun\">configuration boutique</a>.",
+      ];
     }
 
-    // Articles de blog publiés.
-    try {
-      $articles = $this->database->select('node_field_data', 'n')
-        ->condition('n.type', 'article')
-        ->condition('n.status', 1)
-        ->countQuery()->execute()->fetchField();
-      $stats['total_articles'] = (int) $articles;
-    }
-    catch (\Exception $e) {
-      $stats['total_articles'] = 0;
+    if (!$config->get('stripe_secret_key')) {
+      $messages[] = [
+        'type'    => 'warning',
+        'message' => "Le paiement Stripe n'est pas encore activé. Configurez vos clés Stripe dans la <a href=\"/admin/boutique/configuration#stripe\">configuration boutique</a>.",
+      ];
     }
 
-    return $stats;
+    return $messages;
   }
 
   /**
@@ -334,133 +327,10 @@ class DashboardController extends ControllerBase {
         ];
       }
     }
-    catch (\Exception $e) {
+    catch (\Exception) {
       // Silently fail if table doesn't exist.
     }
     return $articles;
-  }
-
-  /**
-   * Raccourcis vers les actions fréquentes.
-   */
-  protected function getQuickLinks(): array {
-    $links = [
-      [
-        'title'       => 'Promotions volume (simple)',
-        'route_name'  => 'odesign_admin.config',
-        'route_options' => ['fragment' => 'edit-promotions-volume'],
-        'description' => 'Régler rapidement les offres type lots (-3€, -5€, -10€)',
-        'icon'        => 'percent',
-      ],
-      [
-        'title'       => 'Gérer les univers',
-        'route_name'  => 'entity.taxonomy_vocabulary.overview_form',
-        'route_params' => ['taxonomy_vocabulary' => 'life_occasion'],
-        'description' => 'Modifier les univers visibles côté boutique',
-        'icon'        => 'category',
-      ],
-      [
-        'title'       => 'Créer un produit',
-        'route_name'  => 'entity.commerce_product.add_form',
-        'route_params' => ['commerce_product_type' => 'default'],
-        'description' => 'Ajouter un nouveau produit à votre boutique',
-        'icon'        => 'add_circle',
-      ],
-      [
-        'title'       => 'Écrire un article',
-        'route_name'  => 'node.add',
-        'route_params' => ['node_type' => 'article'],
-        'description' => 'Rédiger un nouvel article de blog',
-        'icon'        => 'edit_note',
-      ],
-      [
-        'title'       => 'Commandes à traiter',
-        'route_name'  => 'odesign_orders.actionable_orders',
-        'description' => 'Voir les commandes de la fabrication à l’expédition',
-        'icon'        => 'pending_actions',
-      ],
-      [
-        'title'       => 'Toutes les commandes',
-        'route_name'  => 'entity.commerce_order.collection',
-        'description' => 'Gérer et suivre vos commandes',
-        'icon'        => 'receipt_long',
-      ],
-      [
-        'title'       => 'Expéditions',
-        'route_name'  => 'entity.commerce_shipping_method.collection',
-        'description' => 'Gérer les modes de livraison',
-        'icon'        => 'local_shipping',
-      ],
-      [
-        'title'       => 'Factures',
-        'route_name'  => 'view.commerce_invoices.page_1',
-        'description' => 'Consulter et télécharger les factures',
-        'icon'        => 'description',
-      ],
-      [
-        'title'       => 'Mes clients',
-        'route_name'  => 'entity.user.collection',
-        'description' => 'Consulter les comptes clients',
-        'icon'        => 'group',
-      ],
-      [
-        'title'       => 'Mes produits',
-        'route_name'  => 'entity.commerce_product.collection',
-        'description' => 'Modifier votre catalogue',
-        'icon'        => 'inventory_2',
-      ],
-      [
-        'title'       => 'Gérer le blog',
-        'route_name'  => 'system.admin_content',
-        'description' => 'Voir et modifier vos articles',
-        'icon'        => 'article',
-      ],
-      [
-        'title'       => 'Promotions',
-        'route_name'  => 'entity.commerce_promotion.collection',
-        'description' => 'Créer et gérer vos codes promo',
-        'icon'        => 'local_offer',
-      ],
-      [
-        'title'       => 'Ajouter une image',
-        'route_name'  => 'entity.media.add_form',
-        'route_params' => ['media_type' => 'product_image'],
-        'description' => 'Télécharger une photo produit',
-        'icon'        => 'add_photo_alternate',
-      ],
-      [
-        'title'       => 'Configuration boutique',
-        'route_name'  => 'odesign_admin.config',
-        'description' => 'Mailgun, Stripe, informations boutique',
-        'icon'        => 'settings',
-      ],
-      [
-        'title'       => 'Guide marketing',
-        'route_name'  => 'odesign_admin.marketing_guide',
-        'description' => 'Retrouver les priorités et actions utiles pour la boutique',
-        'icon'        => 'campaign',
-      ],
-    ];
-
-    $account = $this->currentUser();
-    $access_manager = \Drupal::service('access_manager');
-    $quick_links = [];
-
-    foreach ($links as $link) {
-      $route_name = $link['route_name'];
-      $route_params = $link['route_params'] ?? [];
-      $route_options = $link['route_options'] ?? [];
-      $access = $access_manager->checkNamedRoute($route_name, $route_params, $account, TRUE);
-      if (!$access->isAllowed()) {
-        continue;
-      }
-
-      $link['url'] = Url::fromRoute($route_name, $route_params, $route_options)->toString();
-      unset($link['route_name'], $link['route_params'], $link['route_options']);
-      $quick_links[] = $link;
-    }
-
-    return $quick_links;
   }
 
 }

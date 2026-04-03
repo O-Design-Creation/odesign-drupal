@@ -1,0 +1,274 @@
+/* ============================================================================
+   ODesign Admin — Barre de navigation boutique
+   admin-nav.css — extrait de admin-global.css (Lot 1 refonte Shell Boutique)
+
+   Icônes : Phosphor Icons (self-hosted dans odesign_base, D-07)
+   Toutes les références .material-symbols-outlined remplacées par .ph
+   Breakpoint tablette corrigé : 860px → 640px (F-38)
+   ============================================================================ */
+
+/* ─── Nav bar principale ─────────────────────────────────────────────────── */
+
+.odesign-admin-nav {
+  position: sticky;
+  top: 0;
+  z-index: 499;
+  background: linear-gradient(135deg, #4E2620 0%, #3a1c17 100%);
+  padding: 0 20px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 44px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.30), 0 1px 0 rgba(255,255,255,.05) inset;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ─── Logo — lien vers le dashboard ─────────────────────────────────────── */
+
+.odesign-admin-nav__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 0 0;
+  margin-right: 8px;
+  border-right: 1px solid rgba(255,255,255,.12);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.odesign-admin-nav__logo .ph {
+  font-size: 20px;
+  color: #D9B7A4;
+}
+
+.odesign-admin-nav__logo-text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  white-space: nowrap;
+}
+
+.odesign-admin-nav__logo:hover .ph {
+  color: #fff;
+}
+
+.odesign-admin-nav__logo:hover .odesign-admin-nav__logo-text {
+  color: rgba(255,255,255,.8);
+}
+
+/* ─── Liste des items ────────────────────────────────────────────────────── */
+
+.odesign-admin-nav__items {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.odesign-admin-nav__items::-webkit-scrollbar {
+  display: none;
+}
+
+.odesign-admin-nav__items li {
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.odesign-admin-nav__items a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 11px;
+  height: 32px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+  letter-spacing: .01em;
+  position: relative;
+}
+
+/* Icône Phosphor dans les liens */
+.odesign-admin-nav__items a .ph {
+  font-size: 17px;
+  line-height: 1;
+  color: rgba(255,255,255,.55);
+  flex-shrink: 0;
+  transition: color .15s;
+}
+
+.odesign-admin-nav__items a:hover {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+.odesign-admin-nav__items a:hover .ph {
+  color: #D9B7A4;
+}
+
+.odesign-admin-nav__items a:focus-visible {
+  outline: 2px solid rgba(217,183,164,.7);
+  outline-offset: 1px;
+  color: #fff;
+}
+
+.odesign-admin-nav__items a[aria-current="page"],
+.odesign-admin-nav__items a.is-active-trail {
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  font-weight: 600;
+}
+
+.odesign-admin-nav__items a[aria-current="page"] .ph,
+.odesign-admin-nav__items a.is-active-trail .ph {
+  color: #D9B7A4;
+}
+
+/* ─── Badge (commandes en attente, etc.) ─────────────────────────────────── */
+
+.odesign-admin-nav__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: #e05a3a;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 9px;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+/* ─── Zone droite (voir site, utilisateur, déconnexion) ──────────────────── */
+
+.odesign-admin-nav__right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.odesign-admin-nav__site-link,
+.odesign-admin-nav__logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  height: 30px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+}
+
+.odesign-admin-nav__site-link:hover,
+.odesign-admin-nav__logout:hover {
+  background: rgba(255,255,255,.10);
+  color: #fff;
+}
+
+.odesign-admin-nav__site-link .ph,
+.odesign-admin-nav__logout .ph {
+  font-size: 16px;
+}
+
+.odesign-admin-nav__user {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  height: 30px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+  border-radius: 6px;
+}
+
+.odesign-admin-nav__user .ph {
+  font-size: 18px;
+  color: rgba(255,255,255,.55);
+}
+
+.odesign-admin-nav__username {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Séparateur (futur usage) ───────────────────────────────────────────── */
+
+.odesign-admin-nav__sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(255,255,255,.18);
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+/* ─── Ajustement Gin sidebar ─────────────────────────────────────────────── */
+
+.gin--sidebar-toolbar .odesign-admin-nav {
+  margin-left: 0;
+}
+
+/* ─── Masquer sur overlays / dialogs ─────────────────────────────────────── */
+
+.ui-dialog .odesign-admin-nav {
+  display: none;
+}
+
+/* ─── Tablette (max-width: 640px — corrigé depuis 860px, F-38) ───────────── */
+
+@media (max-width: 640px) {
+  .odesign-admin-nav {
+    height: 40px;
+    padding: 0 12px;
+  }
+
+  .odesign-admin-nav__logo-text {
+    display: none;
+  }
+
+  .odesign-admin-nav__logo {
+    padding-right: 10px;
+    margin-right: 4px;
+  }
+
+  /* Masquer les labels texte — garder les icônes seules */
+  .odesign-admin-nav__link-label {
+    display: none;
+  }
+
+  .odesign-admin-nav__items a {
+    padding: 0 8px;
+    height: 30px;
+  }
+
+  .odesign-admin-nav__items a .ph {
+    font-size: 19px;
+  }
+
+  /* Masquer labels dans la zone droite */
+  .odesign-admin-nav__site-link span:not(.ph),
+  .odesign-admin-nav__logout-label,
+  .odesign-admin-nav__username {
+    display: none;
+  }
+}

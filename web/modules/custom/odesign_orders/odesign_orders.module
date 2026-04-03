@@ -205,3 +205,79 @@ function odesign_orders_menu_links_discovered_alter(array &$links): void {
     $links['commerce_order.admin']['title'] = 'Mes commandes';
   }
 }
+
+/**
+ * Implémente hook_odesign_boutique_nav_items_alter().
+ *
+ * Déclare l'item "Commandes" dans la navigation boutique avec badge dynamique
+ * (nombre de commandes en attente de traitement).
+ */
+function odesign_orders_odesign_boutique_nav_items_alter(array &$items): void {
+  $badge = NULL;
+  try {
+    /** @var \Drupal\odesign_orders\Dashboard\OrderStatsProvider $stats_provider */
+    $stats_provider = \Drupal::service('odesign_orders.dashboard_order_stats_provider');
+    $stats = $stats_provider->getStats();
+    $pending = (int) ($stats['pending_orders'] ?? 0);
+    if ($pending > 0) {
+      $badge = $pending > 99 ? '99+' : (string) $pending;
+    }
+  }
+  catch (\Exception) {
+    // Service indisponible — pas de badge.
+  }
+
+  $items['commandes'] = [
+    'label'         => 'Commandes',
+    'icon'          => 'ph-receipt',
+    'route'         => 'entity.commerce_order.collection',
+    'weight'        => 20,
+    'active_routes' => [
+      'entity.commerce_order.collection',
+      'odesign_orders.actionable_orders',
+      'entity.commerce_order.edit_form',
+      'entity.commerce_order.canonical',
+    ],
+    'badge'         => $badge,
+  ];
+}
+
+/**
+ * Implémente hook_odesign_boutique_dashboard_cards_alter().
+ *
+ * Déclare la tuile "Commandes à traiter" sur le tableau de bord.
+ * La tuile est mise en évidence (highlight) quand il y a des commandes en attente.
+ */
+function odesign_orders_odesign_boutique_dashboard_cards_alter(array &$cards): void {
+  $pending  = 0;
+  $total    = 0;
+
+  try {
+    /** @var \Drupal\odesign_orders\Dashboard\OrderStatsProvider $stats_provider */
+    $stats_provider = \Drupal::service('odesign_orders.dashboard_order_stats_provider');
+    $stats   = $stats_provider->getStats();
+    $pending = (int) ($stats['pending_orders'] ?? 0);
+    $total   = (int) ($stats['total_orders'] ?? 0);
+  }
+  catch (\Exception) {
+    // Service indisponible — valeurs à 0.
+  }
+
+  $cards['commandes_a_traiter'] = [
+    'title'     => $pending > 0 ? 'Commande' . ($pending > 1 ? 's' : '') . ' à traiter' : 'Commandes à traiter',
+    'value'     => $pending,
+    'url'       => \Drupal\Core\Url::fromRoute('odesign_orders.actionable_orders')->toString(),
+    'icon'      => 'ph-clock-countdown',
+    'highlight' => $pending > 0,
+    'weight'    => 0,
+  ];
+
+  $cards['commandes_total'] = [
+    'title'     => 'Commandes au total',
+    'value'     => $total,
+    'url'       => \Drupal\Core\Url::fromRoute('entity.commerce_order.collection')->toString(),
+    'icon'      => 'ph-shopping-bag',
+    'highlight' => FALSE,
+    'weight'    => 10,
+  ];
+}
