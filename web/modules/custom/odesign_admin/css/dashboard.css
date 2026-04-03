@@ -80,6 +80,22 @@
   box-shadow: 0 10px 24px rgba(61, 43, 31, 0.05);
 }
 
+.odesign-dashboard__stat--link {
+  text-decoration: none;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.odesign-dashboard__stat--link:hover {
+  border-color: #8b6f47;
+  box-shadow: 0 14px 28px rgba(61, 43, 31, 0.09);
+  transform: translateY(-1px);
+}
+
+.odesign-dashboard__stat--link:focus-visible {
+  outline: 2px solid #BB7570;
+  outline-offset: 2px;
+}
+
 .odesign-dashboard__stat--highlight {
   border-color: #8b6f47;
   background: linear-gradient(135deg, #fdf9f5 0%, #faf4ec 100%);

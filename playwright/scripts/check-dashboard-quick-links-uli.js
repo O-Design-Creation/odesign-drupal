@@ -18,6 +18,9 @@ if (!uli) {
   const titles = await page.$$eval('.quick-action-btn__title', (els) =>
     els.map((el) => (el.textContent || '').trim()).filter(Boolean)
   );
-  console.log(JSON.stringify(titles));
+  const statLinks = await page.$$eval('.odesign-dashboard__stats .odesign-dashboard__stat--link', (els) =>
+    els.map((el) => (el.getAttribute('href') || '').trim()).filter(Boolean)
+  );
+  console.log(JSON.stringify({ titles, statLinks }));
   await browser.close();
 })();

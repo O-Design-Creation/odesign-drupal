@@ -24,16 +24,16 @@
 
   {# Compteurs rapides #}
   <div class="odesign-dashboard__stats">
-    <div class="odesign-dashboard__stat odesign-dashboard__stat--highlight">
+    <a href="/admin/commerce/orders" class="odesign-dashboard__stat odesign-dashboard__stat--highlight odesign-dashboard__stat--link">
       <span class="material-symbols-outlined stat-icon">pending_actions</span>
       <span class="stat-value">{{ stats.pending_orders }}</span>
       <span class="stat-label">Commande{{ stats.pending_orders != 1 ? 's' : '' }} en attente</span>
-    </div>
-    <div class="odesign-dashboard__stat">
+    </a>
+    <a href="/admin/commerce/orders" class="odesign-dashboard__stat odesign-dashboard__stat--link">
       <span class="material-symbols-outlined stat-icon">shopping_bag</span>
       <span class="stat-value">{{ stats.total_orders }}</span>
       <span class="stat-label">Commande{{ stats.total_orders != 1 ? 's' : '' }} au total</span>
-    </div>
+    </a>
     <div class="odesign-dashboard__stat">
       <span class="material-symbols-outlined stat-icon">inventory_2</span>
       <span class="stat-value">{{ stats.total_products }}</span>
@@ -137,4 +137,3 @@
   </div>{# /.two-col #}
 
 </div>
-
