@@ -639,6 +639,9 @@ function _odesign_admin_alter_article_form(array &$form): void {
     $form['status']['widget']['value']['#description'] =
       t('Coché : l\'article est visible sur le blog. Décoché : brouillon, invisible pour les visiteurs.');
   }
+
+  // Lot 7 : section "Publication programmée" (scheduler).
+  _odesign_admin_alter_scheduler_fields($form, 'article');
 }
 
 /**
@@ -789,4 +792,50 @@ function _odesign_admin_alter_guide_form(array &$form): void {
     $form['moderation_state']['widget'][0]['state']['#description'] =
       t('Brouillon : travail en cours. En relecture : à valider. Publié : visible sur le site.');
   }
+
+  // Lot 7 : section "Publication programmée" (scheduler).
+  _odesign_admin_alter_scheduler_fields($form, 'guide');
+}
+
+/**
+ * Améliore les champs scheduler dans un formulaire de nœud.
+ *
+ * Utilise #after_build pour garantir que la traduction du groupe scheduler
+ * s'applique APRÈS tous les form_alters (scheduler crée son groupe en
+ * hook_form_alter, notre hook_form_FORM_ID_alter peut tourner en parallèle).
+ *
+ * @param array $form
+ *   Le formulaire à modifier.
+ * @param string $entity_type_label
+ *   Libellé du type de contenu pour les messages contextuels.
+ */
+function _odesign_admin_alter_scheduler_fields(array &$form, string $entity_type_label): void {
+  // Traduire les libellés des champs directement (accessibles à la racine du form).
+  if (isset($form['publish_on']['widget'][0]['value']['#title'])) {
+    $form['publish_on']['widget'][0]['value']['#title'] = t('Publier automatiquement le');
+    $form['publish_on']['widget'][0]['value']['#description'] =
+      t('Date et heure auxquelles ce @type sera automatiquement publié. Laissez vide pour publier manuellement.', ['@type' => $entity_type_label]);
+  }
+
+  if (isset($form['unpublish_on']['widget'][0]['value']['#title'])) {
+    $form['unpublish_on']['widget'][0]['value']['#title'] = t('Dépublier automatiquement le');
+    $form['unpublish_on']['widget'][0]['value']['#description'] =
+      t('Date et heure auxquelles ce @type sera automatiquement retiré du site. Laissez vide pour conserver la publication indéfiniment.', ['@type' => $entity_type_label]);
+  }
+
+  // Renommer le groupe scheduler via #after_build (scheduler peut tourner après
+  // notre hook si les poids modules sont égaux → after_build est garanti dernier).
+  $form['#after_build'][] = '_odesign_admin_scheduler_after_build';
+}
+
+/**
+ * Callback #after_build : renomme le groupe "Scheduling options" → "Programmation".
+ */
+function _odesign_admin_scheduler_after_build(array $form, \Drupal\Core\Form\FormStateInterface $form_state): array {
+  foreach (['scheduler_settings', 'scheduler_settings_2', 'scheduler_settings_3'] as $key) {
+    if (isset($form[$key]['#title'])) {
+      $form[$key]['#title'] = t('Programmation');
+    }
+  }
+  return $form;
 }

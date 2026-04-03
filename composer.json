@@ -48,7 +48,8 @@
         "oomphinc/composer-installers-extender": "^2.0",
         "bower-asset/chosen": "^1.8",
         "drupal/default_content": "^2.0.0-beta1",
-        "drupal/default_content_deploy": "^2.1"
+        "drupal/default_content_deploy": "^2.1",
+        "drupal/scheduler": "^2.0"
     },
     "config": {
         "allow-plugins": {

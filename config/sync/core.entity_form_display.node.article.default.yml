@@ -15,6 +15,7 @@ dependencies:
     - field_group
     - image
     - path
+    - scheduler
     - text
 third_party_settings:
   field_group:
@@ -148,6 +149,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  publish_on:
+    type: datetime_timestamp_no_default
+    weight: 41
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  scheduler_settings:
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   simple_sitemap:
     weight: 10
     region: content
@@ -177,6 +189,12 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  unpublish_on:
+    type: datetime_timestamp_no_default
+    weight: 42
+    region: content
+    settings: {  }
     third_party_settings: {  }
   url_redirects:
     weight: 50
