@@ -1009,6 +1009,89 @@ textarea {
   }
 }
 
+.page-contact #block-odesign-base-page-title {
+  display: none;
+}
+
+.contact-hero {
+  margin: var(--space-4) 0 var(--space-6);
+  padding: clamp(1rem, 1.3vw + .7rem, 2rem);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(139, 97, 81, 0.16);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(217, 183, 164, 0.35), transparent 40%),
+    linear-gradient(145deg, #ffffff 0%, #f8f1ed 100%);
+  box-shadow: 0 10px 24px rgba(78, 38, 32, 0.08);
+}
+
+.contact-hero__eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.contact-hero__title {
+  margin-bottom: var(--space-2);
+  font-size: clamp(1.45rem, 1.8vw + 1rem, 2.15rem);
+}
+
+.contact-hero__intro {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--color-text-muted);
+}
+
+.contact-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.contact-hero__quick {
+  margin-top: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.contact-hero__card {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(139, 97, 81, 0.12);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.contact-hero__card h2 {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  margin: 0 0 var(--space-2);
+}
+
+.contact-hero__card p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.page-contact #block-odesign-base-main article {
+  border: 1px solid rgba(139, 97, 81, 0.12);
+  border-radius: var(--radius-lg);
+  padding: clamp(1rem, 1vw + .8rem, 1.4rem);
+  background: #fff;
+}
+
+.page-contact #block-odesign-base-main article h2:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 800px) {
+  .contact-hero__quick {
+    grid-template-columns: 1fr;
+  }
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

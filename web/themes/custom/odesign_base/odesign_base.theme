@@ -615,6 +615,18 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['catalogue_contact_url'] = Url::fromUri('internal:/contact')->toString();
   }
 
+  $current_path = \Drupal::service('path.current')->getPath();
+  $current_alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+  $variables['is_contact_page'] = ($current_alias === '/contact');
+  if ($variables['is_contact_page']) {
+    $variables['attributes']['class'][] = 'page-contact';
+    $shop_contact_email = (string) (\Drupal::config('odesign_admin.settings')->get('shop_contact_email') ?? '');
+    $contact_email = $shop_contact_email !== '' ? $shop_contact_email : 'odesigncrea@gmail.com';
+    $variables['contact_email'] = $contact_email;
+    $variables['contact_mailto'] = 'mailto:' . $contact_email;
+    $variables['contact_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
+  }
+
   $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
   if ($route_term instanceof TermInterface && $route_term->bundle() === 'life_occasion') {
     $variables['attributes']['class'][] = 'page-life-occasion';

@@ -397,6 +397,35 @@
         </section>
       {% else %}
         <div class="container">
+          {% if is_contact_page %}
+            <section class="contact-hero" aria-label="{{ 'Contacter Atelier O Design'|t }}">
+              <div class="contact-hero__content">
+                <p class="contact-hero__eyebrow">{{ 'Atelier O Design'|t }}</p>
+                <h1 class="contact-hero__title">{{ 'Parlons de votre création personnalisée'|t }}</h1>
+                <p class="contact-hero__intro">
+                  {{ 'Une question sur un produit, une personnalisation ou un délai ? Nous vous répondons rapidement.'|t }}
+                </p>
+              </div>
+              <div class="contact-hero__actions">
+                <a href="{{ contact_mailto }}" class="btn btn--primary">{{ 'Envoyer un email'|t }}</a>
+                <a href="{{ contact_catalogue_url }}" class="btn btn--secondary">{{ 'Voir le catalogue'|t }}</a>
+              </div>
+              <div class="contact-hero__quick">
+                <article class="contact-hero__card">
+                  <h2>{{ 'Email'|t }}</h2>
+                  <p><a href="{{ contact_mailto }}">{{ contact_email }}</a></p>
+                </article>
+                <article class="contact-hero__card">
+                  <h2>{{ 'Réponse'|t }}</h2>
+                  <p>{{ 'En général sous 24h ouvrées.'|t }}</p>
+                </article>
+                <article class="contact-hero__card">
+                  <h2>{{ 'Besoin précis'|t }}</h2>
+                  <p>{{ 'Indiquez le produit, le texte et la date souhaitée.'|t }}</p>
+                </article>
+              </div>
+            </section>
+          {% endif %}
           {% if is_catalogue_page %}
             <section class="catalogue-assist" aria-label="{{ 'Aide choix produit'|t }}">
               <p class="catalogue-assist__lead">
