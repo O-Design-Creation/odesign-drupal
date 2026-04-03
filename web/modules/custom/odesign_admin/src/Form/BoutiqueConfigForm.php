@@ -539,6 +539,7 @@ class BoutiqueConfigForm extends FormBase {
       $targets = $this->extractTargetIdsFromFormState($form_state, $i, $scope);
       $tiers_raw = trim((string) $form_state->getValue("promotion_rule_{$i}_tiers"));
       $tiers = $this->parseTierLines($tiers_raw);
+      $tier_errors = $this->validateTierLines($tiers_raw);
 
       if ($label === '') {
         $form_state->setErrorByName("promotion_rule_{$i}_label", 'Le nom commercial est obligatoire pour une règle active.');
@@ -547,7 +548,13 @@ class BoutiqueConfigForm extends FormBase {
         $target_field = $scope === 'product' ? "promotion_rule_{$i}_target_products" : "promotion_rule_{$i}_target_terms";
         $form_state->setErrorByName($target_field, 'Sélectionnez au moins une cible.');
       }
-      if ($tiers_raw === '' || !$tiers) {
+      if ($tiers_raw === '') {
+        $form_state->setErrorByName("promotion_rule_{$i}_tiers", 'Ajoutez des paliers valides au format quantité:remise (ex: 3:3).');
+      }
+      elseif ($tier_errors) {
+        $form_state->setErrorByName("promotion_rule_{$i}_tiers", $tier_errors[0]);
+      }
+      elseif (!$tiers) {
         $form_state->setErrorByName("promotion_rule_{$i}_tiers", 'Ajoutez des paliers valides au format quantité:remise (ex: 3:3).');
       }
     }
@@ -772,6 +779,49 @@ class BoutiqueConfigForm extends FormBase {
     }
     usort($tiers, static fn(array $a, array $b): int => $a['threshold'] <=> $b['threshold']);
     return $tiers;
+  }
+
+  /**
+   * Valide les lignes de paliers saisies par la gestionnaire.
+   *
+   * @return array<int, string>
+   *   Liste de messages d'erreur.
+   */
+  private function validateTierLines(string $input): array {
+    $errors = [];
+    $seen_thresholds = [];
+    $lines = preg_split('/\R+/', $input) ?: [];
+    foreach ($lines as $index => $line) {
+      $line = trim($line);
+      if ($line === '') {
+        continue;
+      }
+      $line_number = $index + 1;
+      if (!str_contains($line, ':')) {
+        $errors[] = "Ligne {$line_number} invalide : utilisez le format quantité:remise (ex: 3:3).";
+        continue;
+      }
+
+      [$threshold_raw, $discount_raw] = array_map('trim', explode(':', $line, 2));
+      if (!is_numeric($threshold_raw) || !is_numeric(str_replace(',', '.', $discount_raw))) {
+        $errors[] = "Ligne {$line_number} invalide : quantité et remise doivent être numériques.";
+        continue;
+      }
+
+      $threshold = (int) $threshold_raw;
+      $discount = (float) str_replace(',', '.', $discount_raw);
+      if ($threshold <= 0 || $discount <= 0) {
+        $errors[] = "Ligne {$line_number} invalide : quantité et remise doivent être supérieures à 0.";
+        continue;
+      }
+
+      if (in_array($threshold, $seen_thresholds, TRUE)) {
+        $errors[] = "Ligne {$line_number} invalide : la quantité {$threshold} est déjà utilisée.";
+        continue;
+      }
+      $seen_thresholds[] = $threshold;
+    }
+    return $errors;
   }
 
   /**
