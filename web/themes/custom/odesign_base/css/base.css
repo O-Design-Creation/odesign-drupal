@@ -1440,6 +1440,7 @@ textarea {
 #sliding-popup {
   background: var(--color-brand-dark) !important;
   box-shadow: var(--shadow-xl);
+  z-index: 80 !important;
 }
 
 #sliding-popup .popup-content {
