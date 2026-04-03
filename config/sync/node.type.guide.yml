@@ -1,0 +1,11 @@
+uuid: 53e26445-6a13-4b34-9929-d9fe4ed92d04
+langcode: fr
+status: true
+dependencies: {  }
+name: Guide
+type: guide
+description: 'Guides marketing éditoriaux de la boutique (D-09).'
+help: null
+new_revision: true
+preview_mode: 1
+display_submitted: true

@@ -12,7 +12,7 @@ field_name: field_hero_image
 entity_type: taxonomy_term
 bundle: life_occasion
 label: 'Photo du hero'
-description: "Image optionnelle pour remplacer le fond coloré du hero de cette page. Choisir une image simple, lisible et représentative de l’univers."
+description: 'Image optionnelle pour remplacer le fond coloré du hero de cette page. Choisir une image simple, lisible et représentative de l’univers.'
 required: false
 translatable: true
 default_value: {  }

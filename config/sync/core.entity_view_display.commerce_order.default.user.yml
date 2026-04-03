@@ -55,6 +55,11 @@ content:
     third_party_settings: {  }
     weight: 8
     region: content
+  entity_print_view_pdf:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   mail:
     type: basic_string
     label: inline
@@ -106,6 +111,8 @@ hidden:
   changed: true
   created: true
   customer_comments: true
+  entity_print_view_epub: true
+  entity_print_view_word_docx: true
   field_atelier_status: true
   field_notes_atelier: true
   ip_address: true
