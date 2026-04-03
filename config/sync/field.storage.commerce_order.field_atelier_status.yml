@@ -13,19 +13,34 @@ settings:
   allowed_values:
     -
       value: a_verifier
-      label: 'À vérifier'
+      label: 'À valider'
     -
       value: validee_atelier
       label: 'Validée atelier'
     -
       value: en_production
-      label: 'En production'
+      label: 'En fabrication'
+    -
+      value: controle_qualite
+      label: 'Contrôle qualité'
+    -
+      value: emballee_prete
+      label: 'Emballée / prête à expédier'
+    -
+      value: expediee
+      label: Expédiée
     -
       value: en_attente_client
       label: 'En attente client'
     -
       value: livraison_prevue
       label: 'Livraison prévue'
+    -
+      value: annulee
+      label: Annulée
+    -
+      value: remboursee
+      label: Remboursée
     -
       value: termine
       label: Terminée

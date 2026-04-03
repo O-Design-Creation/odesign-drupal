@@ -38,6 +38,20 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
   private const ATELIER_TRANSITIONS = ['place', 'confirm_payment', 'quality_check', 'pack', 'cancel', 'refund'];
 
   /**
+   * Mapping transition -> valeur du champ "Suivi interne atelier".
+   */
+  private const ATELIER_STATUS_BY_TRANSITION = [
+    'place' => 'a_verifier',
+    'confirm_payment' => 'en_production',
+    'quality_check' => 'controle_qualite',
+    'pack' => 'emballee_prete',
+    'ship' => 'expediee',
+    'deliver' => 'termine',
+    'cancel' => 'annulee',
+    'refund' => 'remboursee',
+  ];
+
+  /**
    * {@inheritdoc}
    */
   public static function getSubscribedEvents(): array {
@@ -66,6 +80,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
 
     $transition_id = $event->getTransition()->getId();
     $label = self::TRANSITION_LABELS[$transition_id] ?? $transition_id;
+    $this->syncAtelierStatus($order, $transition_id);
 
     // Email client
     if (in_array($transition_id, self::CLIENT_TRANSITIONS, TRUE)) {
@@ -87,9 +102,59 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
     if (!$order instanceof OrderInterface) {
       return;
     }
+    $this->syncAtelierStatus($order, 'place');
     // Email de confirmation commande (receipt) déjà géré par Commerce.
     // On envoie uniquement la notif interne atelier.
     $this->sendAtelierNotification($order, 'place', 'Nouvelle commande reçue');
+  }
+
+  /**
+   * Met à jour le champ interne atelier selon la transition.
+   */
+  private function syncAtelierStatus(OrderInterface $order, string $transition_id): void {
+    $value = self::ATELIER_STATUS_BY_TRANSITION[$transition_id] ?? NULL;
+    if (!$value || !$order->hasField('field_atelier_status')) {
+      return;
+    }
+
+    // Garde-fou : ne pas écrire une valeur non autorisée si la config locale
+    // n'a pas encore été mise à jour sur un environnement.
+    if (!$this->isAllowedAtelierStatus($value)) {
+      return;
+    }
+
+    try {
+      $order->set('field_atelier_status', $value);
+      $order->save();
+    }
+    catch (\Throwable $e) {
+      // Ne pas bloquer une transition de workflow pour un échec de méta-suivi.
+    }
+  }
+
+  /**
+   * Vérifie qu'une valeur de suivi atelier est autorisée.
+   */
+  private function isAllowedAtelierStatus(string $value): bool {
+    $storage = \Drupal::entityTypeManager()
+      ->getStorage('field_storage_config')
+      ->load('commerce_order.field_atelier_status');
+    if (!$storage) {
+      return FALSE;
+    }
+
+    $allowed = $storage->getSetting('allowed_values') ?? [];
+    if (isset($allowed[$value])) {
+      return TRUE;
+    }
+
+    // Compatibilité si la structure est normalisée en liste value/label.
+    foreach ($allowed as $item) {
+      if (is_array($item) && ($item['value'] ?? NULL) === $value) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**

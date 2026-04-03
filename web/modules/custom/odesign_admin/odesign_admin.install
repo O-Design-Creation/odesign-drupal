@@ -1,0 +1,31 @@
+<?php
+
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Aligne les valeurs de suivi atelier avec le workflow artisanal.
+ */
+function odesign_admin_update_11001(): string {
+  $storage = FieldStorageConfig::loadByName('commerce_order', 'field_atelier_status');
+  if (!$storage) {
+    return 'Champ field_atelier_status introuvable, aucune mise à jour appliquée.';
+  }
+
+  $storage->setSetting('allowed_values', [
+    'a_verifier' => 'À valider',
+    'validee_atelier' => 'Validée atelier',
+    'en_production' => 'En fabrication',
+    'controle_qualite' => 'Contrôle qualité',
+    'emballee_prete' => 'Emballée / prête à expédier',
+    'expediee' => 'Expédiée',
+    'en_attente_client' => 'En attente client',
+    'livraison_prevue' => 'Livraison prévue',
+    'annulee' => 'Annulée',
+    'remboursee' => 'Remboursée',
+    'termine' => 'Terminée',
+  ]);
+  $storage->save();
+
+  return 'Valeurs du suivi interne atelier mises à jour.';
+}
+
