@@ -31,11 +31,13 @@ class AdminLazyBuilders implements TrustedCallbackInterface {
    * de commandes en attente de traitement.
    */
   public function renderOrdersInbox(): array {
+    $actionable_states = ['pending_payment', 'processing', 'quality_check', 'packaged'];
+
     // Compter les commandes à traiter selon le workflow réel du projet.
     $pending_count = $this->entityTypeManager
       ->getStorage('commerce_order')
       ->getQuery()
-      ->condition('state', ['pending_payment', 'processing', 'quality_check', 'packaged'], 'IN')
+      ->condition('state', $actionable_states, 'IN')
       ->accessCheck(FALSE)
       ->count()
       ->execute();
@@ -47,7 +49,9 @@ class AdminLazyBuilders implements TrustedCallbackInterface {
     return [
       '#type'  => 'link',
       '#title' => $title,
-      '#url'   => Url::fromUserInput('/admin/commerce/orders'),
+      '#url'   => Url::fromRoute('entity.commerce_order.collection', [], [
+        'query' => ['state' => $actionable_states],
+      ]),
       '#attributes' => [
         'title' => t('Voir les commandes en attente de traitement.'),
         'class' => [
