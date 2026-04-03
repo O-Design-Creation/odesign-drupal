@@ -682,3 +682,19 @@ function odesign_admin_form_taxonomy_term_life_occasion_form_alter(array &$form,
     }
   }
 }
+
+/**
+ * Implémente hook_odesign_boutique_config_sections_alter().
+ *
+ * Déclare les sections de configuration de la boutique (D-04) :
+ * Mailgun, Stripe, Boutique, Hero, "Je me présente", Promotions volume.
+ * D'autres modules peuvent ajouter leurs propres sections via ce hook.
+ */
+function odesign_admin_odesign_boutique_config_sections_alter(array &$sections): void {
+  $sections['emails']           = new \Drupal\odesign_admin\Config\MailgunConfigSection();
+  $sections['stripe']           = new \Drupal\odesign_admin\Config\StripeConfigSection();
+  $sections['boutique']         = new \Drupal\odesign_admin\Config\BoutiqueInfoConfigSection();
+  $sections['homepage_hero']    = new \Drupal\odesign_admin\Config\HeroConfigSection();
+  $sections['homepage_story']   = new \Drupal\odesign_admin\Config\StoryConfigSection();
+  $sections['promotions_volume'] = new \Drupal\odesign_admin\Config\PromotionsVolumeConfigSection();
+}
