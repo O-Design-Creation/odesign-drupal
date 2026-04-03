@@ -360,6 +360,20 @@ class DashboardController extends ControllerBase {
   protected function getQuickLinks(): array {
     $links = [
       [
+        'title'       => 'Promotions volume (simple)',
+        'route_name'  => 'odesign_admin.config',
+        'route_options' => ['fragment' => 'edit-promotions-volume'],
+        'description' => 'Régler rapidement les offres type lots (-3€, -5€, -10€)',
+        'icon'        => 'percent',
+      ],
+      [
+        'title'       => 'Gérer les univers',
+        'route_name'  => 'entity.taxonomy_vocabulary.overview_form',
+        'route_params' => ['taxonomy_vocabulary' => 'life_occasion'],
+        'description' => 'Modifier les univers visibles côté boutique',
+        'icon'        => 'category',
+      ],
+      [
         'title'       => 'Créer un produit',
         'route_name'  => 'entity.commerce_product.add_form',
         'route_params' => ['commerce_product_type' => 'default'],
@@ -443,13 +457,14 @@ class DashboardController extends ControllerBase {
     foreach ($links as $link) {
       $route_name = $link['route_name'];
       $route_params = $link['route_params'] ?? [];
+      $route_options = $link['route_options'] ?? [];
       $access = $access_manager->checkNamedRoute($route_name, $route_params, $account, TRUE);
       if (!$access->isAllowed()) {
         continue;
       }
 
-      $link['url'] = Url::fromRoute($route_name, $route_params)->toString();
-      unset($link['route_name'], $link['route_params']);
+      $link['url'] = Url::fromRoute($route_name, $route_params, $route_options)->toString();
+      unset($link['route_name'], $link['route_params'], $link['route_options']);
       $quick_links[] = $link;
     }
 
