@@ -80,8 +80,98 @@ class DashboardController extends ControllerBase {
 
   /**
    * Guide marketing opérationnel pour la boutique.
+   *
+   * Charge le dernier nœud de type `guide` publié via le workflow éditorial.
+   * Si aucun guide n'est publié, affiche un CTA de création.
    */
   public function marketingGuide(): array {
+    // Chercher le guide le plus récent publié (moderation_state = published).
+    $nids = $this->entityTypeManager()
+      ->getStorage('node')
+      ->getQuery()
+      ->accessCheck(FALSE)
+      ->condition('type', 'guide')
+      ->condition('status', 1)
+      ->sort('changed', 'DESC')
+      ->range(0, 1)
+      ->execute();
+
+    if (!empty($nids)) {
+      $node = $this->entityTypeManager()->getStorage('node')->load(reset($nids));
+      if ($node) {
+        $view_builder = $this->entityTypeManager()->getViewBuilder('node');
+        $rendered = $view_builder->view($node, 'full');
+        $create_url = Url::fromRoute('node.add', ['node_type' => 'guide'])->toString();
+        $edit_url = Url::fromRoute('entity.node.edit_form', ['node' => $node->id()])->toString();
+
+        return [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['odesign-dashboard', 'odesign-marketing-guide']],
+          'actions' => [
+            '#markup' => '<div class="odesign-marketing-guide__actions">'
+              . '<a class="button button--primary" href="' . $edit_url . '"><i class="ph ph-pencil-simple" aria-hidden="true"></i> Modifier ce guide</a>'
+              . '<a class="button" href="' . $create_url . '"><i class="ph ph-plus" aria-hidden="true"></i> Créer un nouveau guide</a>'
+              . '</div>',
+          ],
+          'guide_content' => $rendered,
+          '#cache' => ['max-age' => 0],
+          '#attached' => [
+            'html_head' => [[
+              [
+                '#type' => 'html_tag',
+                '#tag' => 'link',
+                '#attributes' => [
+                  'rel' => 'stylesheet',
+                  'href' => '/modules/custom/odesign_admin/css/dashboard.css',
+                  'media' => 'all',
+                ],
+              ],
+              'odesign_admin_dashboard_css',
+            ]],
+          ],
+        ];
+      }
+    }
+
+    // Aucun guide publié — CTA de création.
+    $create_url = Url::fromRoute('node.add', ['node_type' => 'guide'])->toString();
+    return [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['odesign-dashboard', 'odesign-marketing-guide']],
+      'empty' => [
+        '#markup' => '<div class="odesign-marketing-guide__empty">'
+          . '<i class="ph ph-book-open" aria-hidden="true" style="font-size:3rem;opacity:.4;display:block;margin-bottom:1rem"></i>'
+          . '<h2>Aucun guide marketing publié</h2>'
+          . '<p>Créez votre premier guide pour avoir une feuille de route visible ici.</p>'
+          . '<a class="button button--primary" href="' . $create_url . '">'
+          . '<i class="ph ph-plus" aria-hidden="true"></i> Créer un guide marketing'
+          . '</a>'
+          . '</div>',
+      ],
+      '#cache' => ['max-age' => 0],
+      '#attached' => [
+        'html_head' => [[
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'link',
+            '#attributes' => [
+              'rel' => 'stylesheet',
+              'href' => '/modules/custom/odesign_admin/css/dashboard.css',
+              'media' => 'all',
+            ],
+          ],
+          'odesign_admin_dashboard_css',
+        ]],
+      ],
+    ];
+  }
+
+  /**
+   * Guide marketing opérationnel (fallback statique — conservé pour référence).
+   *
+   * @deprecated Remplacé par la version dynamique (guide node type — Lot 4).
+   */
+  protected function marketingGuideStatic(): array {
     $resource_links = [
       [
         'title'       => 'Gérer les univers',

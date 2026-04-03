@@ -698,3 +698,71 @@ function odesign_admin_odesign_boutique_config_sections_alter(array &$sections):
   $sections['homepage_story']   = new \Drupal\odesign_admin\Config\StoryConfigSection();
   $sections['promotions_volume'] = new \Drupal\odesign_admin\Config\PromotionsVolumeConfigSection();
 }
+
+/**
+ * Implémente hook_form_node_guide_form_alter().
+ *
+ * Personnalise le formulaire de création d'un guide marketing (Lot 4 / D-09).
+ */
+function odesign_admin_form_node_guide_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_alter_guide_form($form);
+}
+
+/**
+ * Implémente hook_form_node_guide_edit_form_alter().
+ *
+ * Personnalise le formulaire d'édition d'un guide marketing (Lot 4 / D-09).
+ */
+function odesign_admin_form_node_guide_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_alter_guide_form($form);
+}
+
+/**
+ * Personnalise le formulaire guide (création et édition).
+ *
+ * Masque les éléments techniques, améliore les libellés, adopte le workflow
+ * éditorial (Brouillon → En relecture → Publié).
+ */
+function _odesign_admin_alter_guide_form(array &$form): void {
+  // Masquer le sélecteur de format de texte via #after_build (même pattern qu'article).
+  if (isset($form['body']['widget'][0])) {
+    $form['body']['widget'][0]['#after_build'][] = '_odesign_admin_article_body_after_build';
+  }
+
+  // Masquer le journal de révision.
+  foreach (['revision_log', 'revision_log_message', 'revision_information'] as $key) {
+    if (isset($form[$key])) {
+      $form[$key]['#access'] = FALSE;
+    }
+  }
+
+  // Libellés boutons : adapté au contexte guide.
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = t('Enregistrer le guide');
+  }
+  if (isset($form['actions']['publish'])) {
+    $form['actions']['publish']['#value'] = t('Enregistrer et publier');
+  }
+  if (isset($form['actions']['unpublish'])) {
+    $form['actions']['unpublish']['#value'] = t('Enregistrer comme brouillon');
+  }
+
+  // Textes d'aide contextuels.
+  if (isset($form['title'])) {
+    $form['title']['widget'][0]['value']['#description'] =
+      t('Le titre du guide marketing, tel qu\'il apparaîtra sur la page.');
+  }
+  if (isset($form['body'])) {
+    if (isset($form['body']['widget'][0]['value'])) {
+      $form['body']['widget'][0]['value']['#description'] =
+        t('Contenu du guide. Utilisez la barre d\'outils pour structurer le texte, ajouter des images ou des liens.');
+    }
+  }
+
+  // Améliorer le libellé du champ workflow (content_moderation) si présent.
+  if (isset($form['moderation_state'])) {
+    $form['moderation_state']['widget'][0]['state']['#title'] = t('Statut de publication');
+    $form['moderation_state']['widget'][0]['state']['#description'] =
+      t('Brouillon : travail en cours. En relecture : à valider. Publié : visible sur le site.');
+  }
+}

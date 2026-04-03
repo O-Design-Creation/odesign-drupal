@@ -11,11 +11,12 @@ id: taxonomy_term.life_occasion.field_reassurance
 field_name: field_reassurance
 entity_type: taxonomy_term
 bundle: life_occasion
-label: 'Réassurance'
-description: "Texte de confiance : atelier, qualité, personnalisation, délais."
+label: Réassurance
+description: 'Texte de confiance : atelier, qualité, personnalisation, délais.'
 required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long

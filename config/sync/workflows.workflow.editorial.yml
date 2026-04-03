@@ -1,0 +1,66 @@
+uuid: dcb1f53f-2020-4513-bb29-bcf37aa3a642
+langcode: fr
+status: true
+dependencies:
+  config:
+    - node.type.article
+    - node.type.guide
+  module:
+    - content_moderation
+id: editorial
+label: 'Workflow éditorial'
+type: content_moderation
+type_settings:
+  states:
+    draft:
+      label: Brouillon
+      weight: -5
+      published: false
+      default_revision: false
+    needs_review:
+      label: 'En relecture'
+      weight: 0
+      published: false
+      default_revision: false
+    published:
+      label: Publié
+      weight: 5
+      published: true
+      default_revision: true
+  transitions:
+    archive_from_review:
+      label: 'Archiver depuis la relecture'
+      from:
+        - needs_review
+      to: draft
+      weight: 15
+    create_new_draft:
+      label: 'Créer un brouillon'
+      from:
+        - draft
+        - published
+      to: draft
+      weight: -5
+    publish:
+      label: Publier
+      from:
+        - draft
+        - needs_review
+      to: published
+      weight: 5
+    send_for_review:
+      label: 'Envoyer en relecture'
+      from:
+        - draft
+      to: needs_review
+      weight: 0
+    unpublish:
+      label: 'Dépublier (revenir en brouillon)'
+      from:
+        - published
+      to: draft
+      weight: 10
+  entity_types:
+    node:
+      - article
+      - guide

@@ -11,7 +11,7 @@ field_name: field_life_occasion
 entity_type: commerce_product
 bundle: default
 label: 'Occasions de vie'
-description: "Univers commerciaux principaux : mariage, naissance & bébé, cadeaux personnalisés / famille."
+description: 'Univers commerciaux principaux : mariage, naissance & bébé, cadeaux personnalisés / famille.'
 required: false
 translatable: true
 default_value: {  }

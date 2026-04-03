@@ -15,14 +15,17 @@ bundle: default
 mode: checkout
 content:
   shipping_method:
-    label: above
     type: commerce_shipping_method
-    weight: 0
-    region: content
+    label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   amount: true
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   items: true
   original_amount: true
   package_type: true

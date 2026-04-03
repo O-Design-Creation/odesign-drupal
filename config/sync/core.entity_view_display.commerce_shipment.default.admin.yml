@@ -25,11 +25,11 @@ content:
     region: content
   shipping_method:
     type: commerce_shipping_method
-    weight: 1
     label: inline
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
   shipping_profile:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -41,12 +41,15 @@ content:
     region: content
   tracking_code:
     type: commerce_tracking_link
-    weight: 3
     label: inline
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
   items: true
   original_amount: true
   package_type: true

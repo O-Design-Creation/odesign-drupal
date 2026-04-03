@@ -11,11 +11,12 @@ id: taxonomy_term.life_occasion.field_intro
 field_name: field_intro
 entity_type: taxonomy_term
 bundle: life_occasion
-label: 'Introduction'
-description: "Texte court d’introduction pour la landing page de l’univers."
+label: Introduction
+description: 'Texte court d’introduction pour la landing page de l’univers.'
 required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
-settings: {  }
+settings:
+  allowed_formats: {  }
 field_type: text_long
