@@ -4,68 +4,50 @@
  * Template du tableau de bord gestionnaire boutique — ODesign Admin.
  *
  * Variables :
- * - stats : array (pending_orders, total_orders, total_products, total_articles)
- * - pending_orders_url : URL vers les commandes à traiter
- * - orders_url : URL vers toutes les commandes
- * - orders_view : render array de la vue commandes
- * - recent_articles : array de {title, url, date, status}
- * - quick_links : array de raccourcis (title, url, description, icon)
+ * - cards          : array — tuiles de stats déclarées via hook_odesign_boutique_dashboard_cards_alter()
+ *                    Chaque card : title, value, url, icon (Phosphor), highlight, weight
+ * - alert_messages : array — bandeaux d'alerte {type, message}
+ * - orders_url     : URL vers toutes les commandes
+ * - orders_view    : render array de la vue commandes
+ * - recent_articles: array de {title, edit_url, view_url, date, status}
  */
 #}
 
 <div class="odesign-dashboard">
 
+  {# Bandeaux d'alerte (clés manquantes, config incomplète) #}
+  {% if alert_messages is not empty %}
+    <div class="odesign-dashboard__alerts">
+      {% for alert in alert_messages %}
+        <div class="odesign-dashboard__alert odesign-dashboard__alert--{{ alert.type }}" role="alert">
+          <i class="ph ph-warning" aria-hidden="true"></i>
+          <span>{{ alert.message|raw }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   {# Bannière d'accueil #}
   <div class="odesign-dashboard__welcome">
-    <span class="material-symbols-outlined odesign-dashboard__welcome-icon">storefront</span>
+    <i class="ph ph-storefront odesign-dashboard__welcome-icon" aria-hidden="true"></i>
     <div class="odesign-dashboard__welcome-text">
       <h2>Bienvenue dans votre boutique</h2>
       <p>Retrouvez ici vos commandes, vos produits et toutes les actions du quotidien.</p>
     </div>
   </div>
 
-  {# Compteurs rapides #}
-  <div class="odesign-dashboard__stats">
-    <a href="{{ pending_orders_url }}" class="odesign-dashboard__stat odesign-dashboard__stat--highlight odesign-dashboard__stat--link">
-      <span class="material-symbols-outlined stat-icon">pending_actions</span>
-      <span class="stat-value">{{ stats.pending_orders }}</span>
-      <span class="stat-label">Commande{{ stats.pending_orders != 1 ? 's' : '' }} à traiter</span>
-    </a>
-    <a href="{{ orders_url }}" class="odesign-dashboard__stat odesign-dashboard__stat--link">
-      <span class="material-symbols-outlined stat-icon">shopping_bag</span>
-      <span class="stat-value">{{ stats.total_orders }}</span>
-      <span class="stat-label">Commande{{ stats.total_orders != 1 ? 's' : '' }} au total</span>
-    </a>
-    <div class="odesign-dashboard__stat">
-      <span class="material-symbols-outlined stat-icon">inventory_2</span>
-      <span class="stat-value">{{ stats.total_products }}</span>
-      <span class="stat-label">Produit{{ stats.total_products != 1 ? 's' : '' }} en ligne</span>
-    </div>
-    <div class="odesign-dashboard__stat">
-      <span class="material-symbols-outlined stat-icon">article</span>
-      <span class="stat-value">{{ stats.total_articles }}</span>
-      <span class="stat-label">Article{{ stats.total_articles != 1 ? 's' : '' }} de blog</span>
-    </div>
-  </div>
-
-  {# Actions rapides #}
-  <div class="odesign-dashboard__quick-links">
-    <h3 class="odesign-dashboard__section-label">Actions rapides</h3>
-    <div class="quick-actions-grid">
-      {% for link in quick_links %}
-        <a href="{{ link.url }}" class="quick-action-btn">
-          <span class="quick-action-btn__icon">
-            <span class="material-symbols-outlined">{{ link.icon }}</span>
-          </span>
-          <span class="quick-action-btn__body">
-            <span class="quick-action-btn__title">{{ link.title }}</span>
-            <span class="quick-action-btn__desc">{{ link.description }}</span>
-          </span>
-          <span class="material-symbols-outlined quick-action-btn__arrow">chevron_right</span>
+  {# Tuiles de statistiques (hook-driven) #}
+  {% if cards is not empty %}
+    <div class="odesign-dashboard__stats">
+      {% for card in cards %}
+        <a href="{{ card.url }}" class="odesign-dashboard__stat odesign-dashboard__stat--link{% if card.highlight %} odesign-dashboard__stat--highlight{% endif %}">
+          <i class="ph {{ card.icon }} stat-icon" aria-hidden="true"></i>
+          <span class="stat-value">{{ card.value }}</span>
+          <span class="stat-label">{{ card.title }}</span>
         </a>
       {% endfor %}
     </div>
-  </div>
+  {% endif %}
 
   {# Articles récents + Commandes récentes côte à côte #}
   <div class="odesign-dashboard__two-col">
@@ -75,7 +57,7 @@
       <div class="odesign-dashboard__recent-articles">
         <div class="odesign-dashboard__section-header">
           <h3>
-            <span class="material-symbols-outlined" aria-hidden="true">article</span>
+            <i class="ph ph-article" aria-hidden="true"></i>
             Articles récents
           </h3>
           <a href="/admin/content?type=article" class="odesign-dashboard__see-all">Voir tous les articles →</a>
@@ -91,11 +73,11 @@
                 <span class="article-item__status {{ article.status ? 'status--published' : 'status--draft' }}">
                   {{ article.status ? 'Publié' : 'Brouillon' }}
                 </span>
-                <a href="{{ article.view_url }}" class="article-item__btn article-item__btn--view" title="Voir l'article" target="_blank">
-                  <span class="material-symbols-outlined">visibility</span>
+                <a href="{{ article.view_url }}" class="article-item__btn article-item__btn--view" title="Voir l'article" target="_blank" rel="noopener noreferrer">
+                  <i class="ph ph-eye" aria-hidden="true"></i>
                 </a>
                 <a href="{{ article.edit_url }}" class="article-item__btn article-item__btn--edit" title="Modifier l'article">
-                  <span class="material-symbols-outlined">edit</span>
+                  <i class="ph ph-pencil" aria-hidden="true"></i>
                 </a>
               </div>
             </div>
@@ -103,7 +85,7 @@
         </div>
         <div class="odesign-dashboard__article-footer">
           <a href="/node/add/article" class="odesign-dashboard__new-article-btn">
-            <span class="material-symbols-outlined">add</span>
+            <i class="ph ph-plus" aria-hidden="true"></i>
             Écrire un nouvel article
           </a>
         </div>
@@ -111,12 +93,12 @@
     {% else %}
       <div class="odesign-dashboard__recent-articles odesign-dashboard__recent-articles--empty">
         <h3>
-          <span class="material-symbols-outlined" aria-hidden="true">article</span>
+          <i class="ph ph-article" aria-hidden="true"></i>
           Blog
         </h3>
         <p>Aucun article publié pour l'instant.</p>
         <a href="/node/add/article" class="odesign-dashboard__new-article-btn">
-          <span class="material-symbols-outlined">add</span>
+          <i class="ph ph-plus" aria-hidden="true"></i>
           Écrire votre premier article
         </a>
       </div>
@@ -127,7 +109,7 @@
       <div class="odesign-dashboard__orders">
         <div class="odesign-dashboard__section-header">
           <h3>
-            <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
+            <i class="ph ph-receipt" aria-hidden="true"></i>
             Commandes récentes
           </h3>
           <a href="{{ orders_url }}" class="odesign-dashboard__see-all">Voir toutes les commandes →</a>

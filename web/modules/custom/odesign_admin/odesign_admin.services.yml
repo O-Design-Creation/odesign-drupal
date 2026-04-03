@@ -1,0 +1,6 @@
+services:
+  odesign_admin.boutique_nav_registry:
+    class: Drupal\odesign_admin\Service\BoutiqueNavRegistry
+    arguments:
+      - '@module_handler'
+      - '@current_route_match'
