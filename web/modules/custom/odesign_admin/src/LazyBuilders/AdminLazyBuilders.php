@@ -52,9 +52,7 @@ class AdminLazyBuilders implements TrustedCallbackInterface {
     return [
       '#type'  => 'link',
       '#title' => $title,
-      '#url'   => Url::fromRoute('entity.commerce_order.collection', [], [
-        'query' => ['state' => $actionable_states],
-      ]),
+      '#url'   => Url::fromRoute('odesign_admin.actionable_orders'),
       '#attributes' => [
         'title' => t('Voir les commandes en attente de traitement.'),
         'class' => [

@@ -29,12 +29,15 @@ done
 TOOLBAR_URL="$(run_drush php:eval '$lb = \Drupal::service("odesign_admin.lazy_builders"); $build = $lb->renderOrdersInbox(); echo $build["#url"]->toString();')"
 echo "toolbar_url=${TOOLBAR_URL}"
 
-for expected_state in pending_payment processing quality_check packaged; do
-  if ! grep -Fq "${expected_state}" <<< "${TOOLBAR_URL}"; then
-    echo "ERREUR: état absent du filtre toolbar: ${expected_state}" >&2
-    exit 1
-  fi
-done
+if grep -Fq "/admin/boutique/commandes-a-traiter" <<< "${TOOLBAR_URL}"; then
+  echo "toolbar cible la route dédiée commandes à traiter."
+else
+  for expected_state in pending_payment processing quality_check packaged; do
+    if ! grep -Fq "${expected_state}" <<< "${TOOLBAR_URL}"; then
+      echo "ERREUR: état absent du filtre toolbar: ${expected_state}" >&2
+      exit 1
+    fi
+  done
+fi
 
 echo "OK: workflow + filtre toolbar conformes."
-

@@ -7,6 +7,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Url;
 use Drupal\odesign_admin\Order\OrderWorkflowHelper;
 use Drupal\views\Views;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -51,9 +52,7 @@ class DashboardController extends ControllerBase {
     $build['dashboard'] = [
       '#theme' => 'odesign_admin_dashboard',
       '#stats' => $stats,
-      '#pending_orders_url' => (string) Url::fromRoute('entity.commerce_order.collection', [], [
-        'query' => ['state' => $this->orderWorkflowHelper->getActionableStates()],
-      ])->toString(),
+      '#pending_orders_url' => (string) Url::fromRoute('odesign_admin.actionable_orders')->toString(),
       '#orders_url' => (string) Url::fromRoute('entity.commerce_order.collection')->toString(),
       '#orders_view' => $orders_view,
       '#recent_articles' => $this->getRecentArticles(),
@@ -399,8 +398,7 @@ class DashboardController extends ControllerBase {
       ],
       [
         'title'       => 'Commandes à traiter',
-        'route_name'  => 'entity.commerce_order.collection',
-        'route_options' => ['query' => ['state' => $this->orderWorkflowHelper->getActionableStates()]],
+        'route_name'  => 'odesign_admin.actionable_orders',
         'description' => 'Voir les commandes de la fabrication à l’expédition',
         'icon'        => 'pending_actions',
       ],
@@ -486,6 +484,17 @@ class DashboardController extends ControllerBase {
     }
 
     return $quick_links;
+  }
+
+  /**
+   * Redirige vers la liste des commandes filtrée "à traiter".
+   */
+  public function actionableOrders(): RedirectResponse {
+    $url = Url::fromRoute('entity.commerce_order.collection', [], [
+      'query' => ['state' => $this->orderWorkflowHelper->getActionableStates()],
+    ])->toString();
+
+    return new RedirectResponse($url);
   }
 
 }

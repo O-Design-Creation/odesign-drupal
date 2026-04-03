@@ -48,11 +48,15 @@ const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'https://odesign-drupal.ddev
 
   const result = {
     href: (href || '').trim(),
-    has_all_states: Boolean(href)
-      && href.includes('pending_payment')
-      && href.includes('processing')
-      && href.includes('quality_check')
-      && href.includes('packaged'),
+    has_all_states: Boolean(href) && (
+      href.includes('/admin/boutique/commandes-a-traiter')
+      || (
+        href.includes('pending_payment')
+        && href.includes('processing')
+        && href.includes('quality_check')
+        && href.includes('packaged')
+      )
+    ),
   };
 
   console.log(JSON.stringify(result));
