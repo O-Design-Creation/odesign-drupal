@@ -72,20 +72,12 @@ fs.mkdirSync(outDir, { recursive: true });
   await scope.selectOption('life_occasion');
   await page.waitForTimeout(250);
   if (!(await termsTarget.count())) {
-    const fieldNames = await page.$$eval('input,textarea,select', (els) =>
-      els.map((e) => e.getAttribute('name')).filter((name) => name && name.includes('promotion_rule_0'))
-    );
-    console.log('debug_fields=' + fieldNames.join('|'));
     throw new Error('Champ autocomplete Univers introuvable.');
   }
 
   await scope.selectOption('product');
   await page.waitForTimeout(250);
   if (!(await productsTarget.count())) {
-    const fieldNames = await page.$$eval('input,textarea,select', (els) =>
-      els.map((e) => e.getAttribute('name')).filter((name) => name && name.includes('promotion_rule_0'))
-    );
-    console.log('debug_fields=' + fieldNames.join('|'));
     throw new Error('Champ autocomplete Produits introuvable.');
   }
 
@@ -95,40 +87,6 @@ fs.mkdirSync(outDir, { recursive: true });
   }
 
   await tiers.fill('');
-  const enabledNow = await enabled.isChecked();
-  const tiersNow = await tiers.inputValue();
-  console.log(`rule1_enabled=${enabledNow ? 'yes' : 'no'}`);
-  console.log(`rule1_tiers_length=${tiersNow.length}`);
-  const submitDebug = await page.$$eval('input#edit-submit', (els) =>
-    els.map((el, idx) => {
-      const r = el.getBoundingClientRect();
-      const lineage = [];
-      let current = el.parentElement;
-      let depth = 0;
-      while (current && depth < 5) {
-        lineage.push({
-          tag: current.tagName.toLowerCase(),
-          cls: current.className || '',
-          position: window.getComputedStyle(current).position,
-          top: window.getComputedStyle(current).top,
-        });
-        current = current.parentElement;
-        depth++;
-      }
-      return {
-        idx,
-        top: Math.round(r.top),
-        left: Math.round(r.left),
-        width: Math.round(r.width),
-        height: Math.round(r.height),
-        classes: (el.className || '').toString(),
-        parent: el.closest('.region-sticky') ? 'region-sticky' : (el.closest('.form-actions') ? 'form-actions' : 'other'),
-        lineage,
-      };
-    })
-  );
-  console.log('submit_debug=' + JSON.stringify(submitDebug));
-
   await Promise.all([
     page.waitForNavigation({ waitUntil: 'networkidle', timeout: 30000 }),
     page.$eval('form.odesign-config-form', (form) => form.requestSubmit()),
