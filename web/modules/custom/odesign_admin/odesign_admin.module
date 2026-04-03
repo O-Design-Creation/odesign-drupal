@@ -420,10 +420,6 @@ function odesign_admin_menu_links_discovered_alter(array &$links): void {
   if (isset($links['commerce_product.admin'])) {
     $links['commerce_product.admin']['title'] = 'Mes produits';
   }
-  // "Commandes" → "Mes commandes"
-  if (isset($links['commerce_order.admin'])) {
-    $links['commerce_order.admin']['title'] = 'Mes commandes';
-  }
   // Raccourci vers le dashboard boutique
   $links['odesign_admin.dashboard_shortcut'] = [
     'title'       => 'Tableau de bord',

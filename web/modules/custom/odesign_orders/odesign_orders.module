@@ -193,3 +193,15 @@ function _odesign_orders_clean_order_form(array &$form): void {
     $form['placed']['widget'][0]['value']['#description'] = t('Date à laquelle la commande a été passée.');
   }
 }
+
+/**
+ * Implémente hook_menu_links_discovered_alter() pour le libellé commandes.
+ */
+function odesign_orders_menu_links_discovered_alter(array &$links): void {
+  if (isset($links['entity.commerce_order.collection'])) {
+    $links['entity.commerce_order.collection']['title'] = 'Mes commandes';
+  }
+  if (isset($links['commerce_order.admin'])) {
+    $links['commerce_order.admin']['title'] = 'Mes commandes';
+  }
+}
