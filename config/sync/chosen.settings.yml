@@ -1,0 +1,19 @@
+_core:
+  default_config_hash: OHFGY8dygN7xT4c0vdvK-HmdGFN61Sww_KLKfBkIrWc
+langcode: fr
+minimum_single: 0
+minimum_multiple: 0
+disable_search_threshold: 0
+minimum_width: 0
+max_shown_results: null
+use_relative_width: false
+jquery_selector: 'select:visible'
+search_contains: true
+disable_search: false
+allow_single_deselect: false
+add_helper_buttons: false
+disabled_themes: {  }
+chosen_include: 2
+placeholder_text_multiple: Sélectionner…
+placeholder_text_single: Sélectionner…
+no_results_text: 'Aucun résultat'

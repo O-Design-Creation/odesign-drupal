@@ -1,0 +1,221 @@
+{
+    "_links": {
+        "self": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/cgv?_format=hal_json"
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/node\/page"
+        },
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json",
+                "lang": "fr"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 1
+        }
+    ],
+    "uuid": [
+        {
+            "value": "798e729d-c9ff-4350-b51f-4684bdf2cb40"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr",
+            "lang": "fr"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "page"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2026-03-31T11:00:55+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ]
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ],
+                "lang": "fr"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "title": [
+        {
+            "value": "Conditions G\u00e9n\u00e9rales de Vente",
+            "lang": "fr"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-03-31T11:00:55+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-03-31T13:23:56+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "metatag": [
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "title",
+                "content": "Conditions G\u00e9n\u00e9rales de Vente | ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "description",
+                "content": "Consultez les conditions g\u00e9n\u00e9rales de vente d'Atelier O Design : modalit\u00e9s de commande, livraison, retours et paiement pour nos produits artisanaux personnalis\u00e9s."
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "link",
+            "attributes": {
+                "rel": "canonical",
+                "href": "https:\/\/odesign-drupal.ddev.site\/cgv"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:site_name",
+                "content": "ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:type",
+                "content": "article"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:url",
+                "content": "https:\/\/odesign-drupal.ddev.site\/cgv"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:title",
+                "content": "Conditions G\u00e9n\u00e9rales de Vente"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:description",
+                "content": "Consultez les conditions g\u00e9n\u00e9rales de vente d'Atelier O Design : modalit\u00e9s de commande, livraison, retours et paiement pour nos produits artisanaux personnalis\u00e9s."
+            },
+            "lang": "fr"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/cgv",
+            "pid": 1,
+            "langcode": "fr",
+            "lang": "fr"
+        }
+    ],
+    "body": [
+        {
+            "value": "<h2>Conditions G\u00e9n\u00e9rales de Vente<\/h2>\n<p>Les pr\u00e9sentes conditions g\u00e9n\u00e9rales de vente (CGV) r\u00e9gissent les relations contractuelles entre Atelier O Design et ses clients pour toute commande pass\u00e9e sur le site atelierodesign.fr.<\/p>\n\n<h3>1. Objet<\/h3>\n<p>Les pr\u00e9sentes CGV d\u00e9finissent les droits et obligations des parties dans le cadre de la vente en ligne de produits personnalis\u00e9s propos\u00e9s par Atelier O Design.<\/p>\n\n<h3>2. Produits<\/h3>\n<p>Les produits propos\u00e9s sont d\u00e9crits avec la plus grande pr\u00e9cision possible. Les photographies et visuels sont fournis \u00e0 titre indicatif. Les cr\u00e9ations personnalis\u00e9es sont r\u00e9alis\u00e9es sur commande.<\/p>\n\n<h3>3. Prix<\/h3>\n<p>Les prix sont indiqu\u00e9s en euros TTC. Atelier O Design se r\u00e9serve le droit de modifier ses prix \u00e0 tout moment, \u00e9tant entendu que le prix figurant au catalogue le jour de la commande sera le seul applicable.<\/p>\n\n<h3>4. Commande<\/h3>\n<p>Toute commande vaut acceptation des prix et descriptifs des produits disponibles \u00e0 la vente. En cas de litige, l'acheteur devra apporter la preuve de son paiement.<\/p>\n\n<h3>5. Livraison<\/h3>\n<p>Les d\u00e9lais de livraison indiqu\u00e9s sont donn\u00e9s \u00e0 titre indicatif. La livraison standard est \u00e0 4,90 \u20ac en France m\u00e9tropolitaine. La livraison est offerte pour toute commande \u00e9gale ou sup\u00e9rieure \u00e0 50 \u20ac.<\/p>\n\n<h3>6. Droit de r\u00e9tractation<\/h3>\n<p>Conform\u00e9ment \u00e0 l'article L221-18 du Code de la consommation, vous disposez d'un d\u00e9lai de 14 jours pour exercer votre droit de r\u00e9tractation. Ce droit ne s'applique pas aux produits personnalis\u00e9s selon l'article L221-28.<\/p>\n\n<h3>7. Contact<\/h3>\n<p>Pour toute question : odesigncrea@gmail.com<\/p>\n<p><em>Document \u00e0 compl\u00e9ter avec les informations juridiques compl\u00e8tes de l'entreprise avant mise en ligne.<\/em><\/p>",
+            "format": "basic_html",
+            "processed": "<h2>Conditions G\u00e9n\u00e9rales de Vente<\/h2>\n<p>Les pr\u00e9sentes conditions g\u00e9n\u00e9rales de vente (CGV) r\u00e9gissent les relations contractuelles entre Atelier O Design et ses clients pour toute commande pass\u00e9e sur le site atelierodesign.fr.<\/p>\n<h3>1. Objet<\/h3>\n<p>Les pr\u00e9sentes CGV d\u00e9finissent les droits et obligations des parties dans le cadre de la vente en ligne de produits personnalis\u00e9s propos\u00e9s par Atelier O Design.<\/p>\n<h3>2. Produits<\/h3>\n<p>Les produits propos\u00e9s sont d\u00e9crits avec la plus grande pr\u00e9cision possible. Les photographies et visuels sont fournis \u00e0 titre indicatif. Les cr\u00e9ations personnalis\u00e9es sont r\u00e9alis\u00e9es sur commande.<\/p>\n<h3>3. Prix<\/h3>\n<p>Les prix sont indiqu\u00e9s en euros TTC. Atelier O Design se r\u00e9serve le droit de modifier ses prix \u00e0 tout moment, \u00e9tant entendu que le prix figurant au catalogue le jour de la commande sera le seul applicable.<\/p>\n<h3>4. Commande<\/h3>\n<p>Toute commande vaut acceptation des prix et descriptifs des produits disponibles \u00e0 la vente. En cas de litige, l'acheteur devra apporter la preuve de son paiement.<\/p>\n<h3>5. Livraison<\/h3>\n<p>Les d\u00e9lais de livraison indiqu\u00e9s sont donn\u00e9s \u00e0 titre indicatif. La livraison standard est \u00e0 4,90 \u20ac en France m\u00e9tropolitaine. La livraison est offerte pour toute commande \u00e9gale ou sup\u00e9rieure \u00e0 50 \u20ac.<\/p>\n<h3>6. Droit de r\u00e9tractation<\/h3>\n<p>Conform\u00e9ment \u00e0 l'article L221-18 du Code de la consommation, vous disposez d'un d\u00e9lai de 14 jours pour exercer votre droit de r\u00e9tractation. Ce droit ne s'applique pas aux produits personnalis\u00e9s selon l'article L221-28.<\/p>\n<h3>7. Contact<\/h3>\n<p>Pour toute question : odesigncrea@gmail.com<\/p>\n<p><em>Document \u00e0 compl\u00e9ter avec les informations juridiques compl\u00e8tes de l'entreprise avant mise en ligne.<\/em><\/p>\n",
+            "summary": "Consultez les conditions g\u00e9n\u00e9rales de vente d'Atelier O Design : modalit\u00e9s de commande, livraison, retours et paiement pour nos produits artisanaux personnalis\u00e9s.",
+            "lang": "fr"
+        }
+    ],
+    "_dcd_metadata": {
+        "export_timestamp": 1775251697
+    }
+}
