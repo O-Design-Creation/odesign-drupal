@@ -75,20 +75,7 @@ class OrderDetailController extends ControllerBase {
       '#edit_url'   => Url::fromRoute('entity.commerce_order.edit_form', ['commerce_order' => $order->id()])->toString(),
       '#back_url'   => Url::fromRoute('odesign_orders.actionable_orders')->toString(),
       '#cache'      => ['max-age' => 0],
-      '#attached'   => [
-        'html_head' => [[
-          [
-            '#type'       => 'html_tag',
-            '#tag'        => 'link',
-            '#attributes' => [
-              'rel'   => 'stylesheet',
-              'href'  => '/modules/custom/odesign_orders/css/orders.css',
-              'media' => 'all',
-            ],
-          ],
-          'odesign_orders_css',
-        ]],
-      ],
+      '#attached'   => ['library' => ['odesign_orders/orders']],
     ];
   }
 

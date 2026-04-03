@@ -1,0 +1,4 @@
+# Ignore tout dans ce répertoire sauf ce fichier
+*
+!.gitignore
+!README.txt

@@ -47,7 +47,7 @@
         "drupal/chosen": "^4.0",
         "oomphinc/composer-installers-extender": "^2.0",
         "bower-asset/chosen": "^1.8",
-        "drupal/default_content": "2.0.x-dev",
+        "drupal/default_content": "^2.0.0-beta1",
         "drupal/default_content_deploy": "^2.1"
     },
     "config": {

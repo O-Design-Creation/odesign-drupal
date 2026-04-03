@@ -15,6 +15,7 @@ odesign_orders.order_detail:
     _title: 'Détail de la commande'
   requirements:
     _permission: 'access commerce administration pages'
+    _entity_access: 'commerce_order.view'
     commerce_order: \d+
   options:
     _admin_route: TRUE
@@ -29,6 +30,7 @@ odesign_orders.order_transition:
     _title: 'Appliquer une transition'
   requirements:
     _permission: 'access commerce administration pages'
+    _entity_access: 'commerce_order.update'
     commerce_order: \d+
     transition: '[a-z_]+'
     _method: 'POST'

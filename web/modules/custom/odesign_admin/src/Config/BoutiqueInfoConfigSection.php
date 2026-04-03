@@ -23,7 +23,7 @@ class BoutiqueInfoConfigSection implements ConfigSectionInterface {
 
   public function buildForm(array &$tab, FormStateInterface $form_state): void {
     $smtp  = \Drupal::configFactory()->get('smtp.settings');
-    $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
+    $store = $this->loadDefaultStore();
     $ok    = $this->isConfigured();
 
     $tab['#attributes']['class'][] = $ok ? 'config-ok' : 'config-warning';
@@ -62,7 +62,7 @@ class BoutiqueInfoConfigSection implements ConfigSectionInterface {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
+    $store = $this->loadDefaultStore();
     if ($store) {
       if ($name = $form_state->getValue('store_name')) {
         $store->setName($name);
@@ -82,8 +82,18 @@ class BoutiqueInfoConfigSection implements ConfigSectionInterface {
   }
 
   private function isConfigured(): bool {
-    $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->load(1);
+    $store = $this->loadDefaultStore();
     return $store && $store->getName() && $store->getEmail();
+  }
+
+  /**
+   * Charge le premier store actif (indépendant de l'ID — supporte le multi-store futur).
+   */
+  private function loadDefaultStore(): ?object {
+    $stores = \Drupal::entityTypeManager()
+      ->getStorage('commerce_store')
+      ->loadByProperties(['status' => 1]);
+    return $stores ? reset($stores) : NULL;
   }
 
   private function statusBadge(bool $ok): string {

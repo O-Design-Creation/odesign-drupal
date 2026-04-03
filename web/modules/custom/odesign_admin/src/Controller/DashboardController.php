@@ -101,17 +101,27 @@ class DashboardController extends ControllerBase {
       if ($node) {
         $view_builder = $this->entityTypeManager()->getViewBuilder('node');
         $rendered = $view_builder->view($node, 'full');
-        $create_url = Url::fromRoute('node.add', ['node_type' => 'guide'])->toString();
-        $edit_url = Url::fromRoute('entity.node.edit_form', ['node' => $node->id()])->toString();
 
         return [
           '#type' => 'container',
           '#attributes' => ['class' => ['odesign-dashboard', 'odesign-marketing-guide']],
           'actions' => [
-            '#markup' => '<div class="odesign-marketing-guide__actions">'
-              . '<a class="button button--primary" href="' . $edit_url . '"><i class="ph ph-pencil-simple" aria-hidden="true"></i> Modifier ce guide</a>'
-              . '<a class="button" href="' . $create_url . '"><i class="ph ph-plus" aria-hidden="true"></i> Créer un nouveau guide</a>'
-              . '</div>',
+            '#type' => 'container',
+            '#attributes' => ['class' => ['odesign-marketing-guide__actions']],
+            'edit' => [
+              '#type'       => 'link',
+              '#title'      => $this->t('Modifier ce guide'),
+              '#url'        => Url::fromRoute('entity.node.edit_form', ['node' => $node->id()]),
+              '#attributes' => ['class' => ['button', 'button--primary']],
+              '#prefix'     => '<i class="ph ph-pencil-simple" aria-hidden="true"></i> ',
+            ],
+            'create' => [
+              '#type'       => 'link',
+              '#title'      => $this->t('Créer un nouveau guide'),
+              '#url'        => Url::fromRoute('node.add', ['node_type' => 'guide']),
+              '#attributes' => ['class' => ['button']],
+              '#prefix'     => '<i class="ph ph-plus" aria-hidden="true"></i> ',
+            ],
           ],
           'guide_content' => $rendered,
           '#cache' => ['max-age' => 0],
