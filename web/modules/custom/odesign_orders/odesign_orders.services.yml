@@ -7,6 +7,12 @@ services:
   odesign_orders.order_workflow_helper:
     class: Drupal\odesign_orders\Order\OrderWorkflowHelper
 
+  odesign_orders.dashboard_order_stats_provider:
+    class: Drupal\odesign_orders\Dashboard\OrderStatsProvider
+    arguments:
+      - '@database'
+      - '@odesign_orders.order_workflow_helper'
+
   odesign_orders.lazy_builders:
     class: Drupal\odesign_orders\LazyBuilders\OrderToolbarLazyBuilders
     arguments:

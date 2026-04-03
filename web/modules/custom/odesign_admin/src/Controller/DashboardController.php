@@ -5,7 +5,7 @@ namespace Drupal\odesign_admin\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Url;
-use Drupal\odesign_orders\Order\OrderWorkflowHelper;
+use Drupal\odesign_orders\Dashboard\OrderStatsProvider;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -15,17 +15,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DashboardController extends ControllerBase {
 
   protected Connection $database;
-  protected OrderWorkflowHelper $orderWorkflowHelper;
+  protected OrderStatsProvider $orderStatsProvider;
 
-  public function __construct(Connection $database, OrderWorkflowHelper $orderWorkflowHelper) {
+  public function __construct(Connection $database, OrderStatsProvider $orderStatsProvider) {
     $this->database = $database;
-    $this->orderWorkflowHelper = $orderWorkflowHelper;
+    $this->orderStatsProvider = $orderStatsProvider;
   }
 
   public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('database'),
-      $container->get('odesign_orders.order_workflow_helper'),
+      $container->get('odesign_orders.dashboard_order_stats_provider'),
     );
   }
 
@@ -282,29 +282,7 @@ class DashboardController extends ControllerBase {
    * Statistiques clés pour les compteurs du dashboard.
    */
   protected function getStats(): array {
-    $stats = [];
-
-    // Commandes en attente de traitement.
-    try {
-      $pending = $this->database->select('commerce_order', 'o')
-        ->condition('o.state', $this->orderWorkflowHelper->getActionableStates(), 'IN')
-        ->countQuery()->execute()->fetchField();
-      $stats['pending_orders'] = (int) $pending;
-    }
-    catch (\Exception $e) {
-      $stats['pending_orders'] = 0;
-    }
-
-    // Total commandes.
-    try {
-      $total_orders = $this->database->select('commerce_order', 'o')
-        ->condition('o.state', 'draft', '<>')
-        ->countQuery()->execute()->fetchField();
-      $stats['total_orders'] = (int) $total_orders;
-    }
-    catch (\Exception $e) {
-      $stats['total_orders'] = 0;
-    }
+    $stats = $this->orderStatsProvider->getStats();
 
     // Produits publiés.
     try {
