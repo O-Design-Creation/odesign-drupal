@@ -5,6 +5,7 @@ namespace Drupal\odesign_admin\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Url;
+use Drupal\odesign_admin\Order\OrderWorkflowHelper;
 use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,13 +15,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DashboardController extends ControllerBase {
 
   protected Connection $database;
+  protected OrderWorkflowHelper $orderWorkflowHelper;
 
-  public function __construct(Connection $database) {
+  public function __construct(Connection $database, OrderWorkflowHelper $orderWorkflowHelper) {
     $this->database = $database;
+    $this->orderWorkflowHelper = $orderWorkflowHelper;
   }
 
   public static function create(ContainerInterface $container): static {
-    return new static($container->get('database'));
+    return new static(
+      $container->get('database'),
+      $container->get('odesign_admin.order_workflow_helper'),
+    );
   }
 
   /**
@@ -46,7 +52,7 @@ class DashboardController extends ControllerBase {
       '#theme' => 'odesign_admin_dashboard',
       '#stats' => $stats,
       '#pending_orders_url' => (string) Url::fromRoute('entity.commerce_order.collection', [], [
-        'query' => ['state' => $this->getActionableOrderStates()],
+        'query' => ['state' => $this->orderWorkflowHelper->getActionableStates()],
       ])->toString(),
       '#orders_url' => (string) Url::fromRoute('entity.commerce_order.collection')->toString(),
       '#orders_view' => $orders_view,
@@ -283,7 +289,7 @@ class DashboardController extends ControllerBase {
     // Commandes en attente de traitement.
     try {
       $pending = $this->database->select('commerce_order', 'o')
-        ->condition('o.state', $this->getActionableOrderStates(), 'IN')
+        ->condition('o.state', $this->orderWorkflowHelper->getActionableStates(), 'IN')
         ->countQuery()->execute()->fetchField();
       $stats['pending_orders'] = (int) $pending;
     }
@@ -394,7 +400,7 @@ class DashboardController extends ControllerBase {
       [
         'title'       => 'Commandes à traiter',
         'route_name'  => 'entity.commerce_order.collection',
-        'route_options' => ['query' => ['state' => $this->getActionableOrderStates()]],
+        'route_options' => ['query' => ['state' => $this->orderWorkflowHelper->getActionableStates()]],
         'description' => 'Voir les commandes de la fabrication à l’expédition',
         'icon'        => 'pending_actions',
       ],
@@ -480,18 +486,6 @@ class DashboardController extends ControllerBase {
     }
 
     return $quick_links;
-  }
-
-  /**
-   * États de commande considérés comme "à traiter" côté atelier.
-   */
-  protected function getActionableOrderStates(): array {
-    return [
-      'pending_payment',
-      'processing',
-      'quality_check',
-      'packaged',
-    ];
   }
 
 }

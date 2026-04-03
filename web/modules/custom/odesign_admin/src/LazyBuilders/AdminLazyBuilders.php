@@ -6,6 +6,7 @@ use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\odesign_admin\Order\OrderWorkflowHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,11 +16,13 @@ class AdminLazyBuilders implements TrustedCallbackInterface {
 
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
+    protected OrderWorkflowHelper $orderWorkflowHelper,
   ) {}
 
   public static function create(ContainerInterface $container): static {
     return new static(
       $container->get('entity_type.manager'),
+      $container->get('odesign_admin.order_workflow_helper'),
     );
   }
 
@@ -31,7 +34,7 @@ class AdminLazyBuilders implements TrustedCallbackInterface {
    * de commandes en attente de traitement.
    */
   public function renderOrdersInbox(): array {
-    $actionable_states = ['pending_payment', 'processing', 'quality_check', 'packaged'];
+    $actionable_states = $this->orderWorkflowHelper->getActionableStates();
 
     // Compter les commandes à traiter selon le workflow réel du projet.
     $pending_count = $this->entityTypeManager

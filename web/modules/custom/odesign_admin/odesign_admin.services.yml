@@ -1,4 +1,7 @@
 services:
+  odesign_admin.order_workflow_helper:
+    class: Drupal\odesign_admin\Order\OrderWorkflowHelper
+
   odesign_admin.route_subscriber:
     class: Drupal\odesign_admin\EventSubscriber\RouteSubscriber
     tags:
@@ -13,5 +16,6 @@ services:
     class: Drupal\odesign_admin\LazyBuilders\AdminLazyBuilders
     arguments:
       - '@entity_type.manager'
+      - '@odesign_admin.order_workflow_helper'
     tags:
       - { name: drupal.lazy_builder }
