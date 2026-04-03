@@ -6,7 +6,7 @@ use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\odesign_admin\Order\OrderWorkflowHelper;
+use Drupal\odesign_orders\Order\OrderWorkflowHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

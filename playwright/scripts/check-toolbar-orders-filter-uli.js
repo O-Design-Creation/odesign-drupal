@@ -41,10 +41,25 @@ const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'https://odesign-drupal.ddev
     }
   }
 
-  const href = await page
-    .locator('a.odesign-toolbar-orders')
-    .first()
-    .getAttribute('href');
+  const href = await page.evaluate(() => {
+    const candidates = Array.from(document.querySelectorAll('a[href]'))
+      .map((a) => a.getAttribute('href') || '')
+      .filter(Boolean);
+
+    const direct = candidates.find((value) => value.includes('/admin/boutique/commandes-a-traiter'));
+    if (direct) {
+      return direct;
+    }
+
+    const filtered = candidates.find((value) =>
+      value.includes('/admin/commerce/orders')
+      && value.includes('pending_payment')
+      && value.includes('processing')
+      && value.includes('quality_check')
+      && value.includes('packaged')
+    );
+    return filtered || '';
+  });
 
   const result = {
     href: (href || '').trim(),

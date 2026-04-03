@@ -1,6 +1,6 @@
 services:
   odesign_admin.order_workflow_helper:
-    class: Drupal\odesign_admin\Order\OrderWorkflowHelper
+    class: Drupal\odesign_orders\Order\OrderWorkflowHelper
 
   odesign_admin.route_subscriber:
     class: Drupal\odesign_admin\EventSubscriber\RouteSubscriber
@@ -8,7 +8,7 @@ services:
       - { name: event_subscriber }
 
   odesign_admin.order_workflow_subscriber:
-    class: Drupal\odesign_admin\EventSubscriber\OrderWorkflowSubscriber
+    class: Drupal\odesign_orders\EventSubscriber\OrderWorkflowSubscriber
     arguments:
       - '@plugin.manager.mail'
       - '@language_manager'

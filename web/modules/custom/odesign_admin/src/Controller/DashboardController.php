@@ -5,7 +5,7 @@ namespace Drupal\odesign_admin\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Url;
-use Drupal\odesign_admin\Order\OrderWorkflowHelper;
+use Drupal\odesign_orders\Order\OrderWorkflowHelper;
 use Drupal\views\Views;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;

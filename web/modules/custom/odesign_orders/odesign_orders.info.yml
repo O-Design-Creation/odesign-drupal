@@ -1,0 +1,7 @@
+name: 'ODesign Orders'
+type: module
+description: 'Logique métier des commandes (workflow atelier et états à traiter).'
+package: ODesign
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:commerce_order

@@ -51,6 +51,7 @@ module:
   mysql: 0
   node: 0
   odesign_admin: 0
+  odesign_orders: 0
   odesign_promotions: 0
   odesign_personalization_poc: 0
   options: 0
