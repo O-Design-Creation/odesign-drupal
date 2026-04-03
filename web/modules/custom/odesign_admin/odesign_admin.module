@@ -157,6 +157,8 @@ function odesign_admin_theme(): array {
       'template' => 'odesign-admin-dashboard',
       'variables' => [
         'stats' => [],
+        'pending_orders_url' => '',
+        'orders_url' => '',
         'orders_view' => NULL,
         'recent_articles' => [],
         'quick_links' => [],

@@ -45,10 +45,10 @@ class DashboardController extends ControllerBase {
     $build['dashboard'] = [
       '#theme' => 'odesign_admin_dashboard',
       '#stats' => $stats,
-      '#pending_orders_url' => Url::fromRoute('entity.commerce_order.collection', [], [
-        'query' => ['state' => ['pending', 'processing']],
+      '#pending_orders_url' => (string) Url::fromRoute('entity.commerce_order.collection', [], [
+        'query' => ['state' => $this->getActionableOrderStates()],
       ])->toString(),
-      '#orders_url' => Url::fromRoute('entity.commerce_order.collection')->toString(),
+      '#orders_url' => (string) Url::fromRoute('entity.commerce_order.collection')->toString(),
       '#orders_view' => $orders_view,
       '#recent_articles' => $this->getRecentArticles(),
       '#quick_links' => $this->getQuickLinks(),
@@ -283,7 +283,7 @@ class DashboardController extends ControllerBase {
     // Commandes en attente de traitement.
     try {
       $pending = $this->database->select('commerce_order', 'o')
-        ->condition('o.state', ['pending', 'processing'], 'IN')
+        ->condition('o.state', $this->getActionableOrderStates(), 'IN')
         ->countQuery()->execute()->fetchField();
       $stats['pending_orders'] = (int) $pending;
     }
@@ -394,7 +394,7 @@ class DashboardController extends ControllerBase {
       [
         'title'       => 'Commandes à traiter',
         'route_name'  => 'entity.commerce_order.collection',
-        'route_options' => ['query' => ['state' => ['pending', 'processing']]],
+        'route_options' => ['query' => ['state' => $this->getActionableOrderStates()]],
         'description' => 'Voir directement les commandes en attente / préparation',
         'icon'        => 'pending_actions',
       ],
@@ -480,6 +480,21 @@ class DashboardController extends ControllerBase {
     }
 
     return $quick_links;
+  }
+
+  /**
+   * États de commande considérés comme "à traiter" côté atelier.
+   */
+  protected function getActionableOrderStates(): array {
+    return [
+      'pending_payment',
+      'pending',
+      'processing',
+      'validation',
+      'en_fabrication',
+      'en_preparation',
+      'preparation',
+    ];
   }
 
 }
