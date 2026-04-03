@@ -395,7 +395,7 @@ class DashboardController extends ControllerBase {
         'title'       => 'Commandes à traiter',
         'route_name'  => 'entity.commerce_order.collection',
         'route_options' => ['query' => ['state' => $this->getActionableOrderStates()]],
-        'description' => 'Voir directement les commandes en attente / préparation',
+        'description' => 'Voir les commandes de la fabrication à l’expédition',
         'icon'        => 'pending_actions',
       ],
       [
@@ -488,12 +488,9 @@ class DashboardController extends ControllerBase {
   protected function getActionableOrderStates(): array {
     return [
       'pending_payment',
-      'pending',
       'processing',
-      'validation',
-      'en_fabrication',
-      'en_preparation',
-      'preparation',
+      'quality_check',
+      'packaged',
     ];
   }
 

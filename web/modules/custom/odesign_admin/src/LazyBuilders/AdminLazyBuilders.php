@@ -35,7 +35,7 @@ class AdminLazyBuilders implements TrustedCallbackInterface {
     $pending_count = $this->entityTypeManager
       ->getStorage('commerce_order')
       ->getQuery()
-      ->condition('state', ['pending_payment', 'processing'], 'IN')
+      ->condition('state', ['pending_payment', 'processing', 'quality_check', 'packaged'], 'IN')
       ->accessCheck(FALSE)
       ->count()
       ->execute();

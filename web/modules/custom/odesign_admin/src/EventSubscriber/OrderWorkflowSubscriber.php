@@ -18,7 +18,9 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
    * Labels FR des transitions pour les emails.
    */
   private const TRANSITION_LABELS = [
-    'confirm_payment' => 'Votre commande est en cours de préparation',
+    'confirm_payment' => 'Votre commande est en fabrication',
+    'quality_check'   => 'Votre commande est en contrôle qualité',
+    'pack'            => 'Votre commande est prête à être expédiée',
     'ship'            => 'Votre commande a été expédiée',
     'deliver'         => 'Votre commande a été livrée',
     'cancel'          => 'Votre commande a été annulée',
@@ -33,7 +35,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
   /**
    * Transitions qui génèrent un email interne ATELIER.
    */
-  private const ATELIER_TRANSITIONS = ['place', 'confirm_payment', 'cancel', 'refund'];
+  private const ATELIER_TRANSITIONS = ['place', 'confirm_payment', 'quality_check', 'pack', 'cancel', 'refund'];
 
   /**
    * {@inheritdoc}
@@ -42,6 +44,8 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
     return [
       // Format : commerce_order.TRANSITION_ID.post_transition
       'commerce_order.confirm_payment.post_transition' => 'onTransition',
+      'commerce_order.quality_check.post_transition'   => 'onTransition',
+      'commerce_order.pack.post_transition'            => 'onTransition',
       'commerce_order.ship.post_transition'            => 'onTransition',
       'commerce_order.deliver.post_transition'         => 'onTransition',
       'commerce_order.cancel.post_transition'          => 'onTransition',
