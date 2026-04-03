@@ -522,7 +522,9 @@ strong { font-weight: 600; }
     display: none !important;
     position: fixed;
     inset: 0;
-    background: #ffffff;
+    background:
+      radial-gradient(circle at 18% 0%, rgba(217, 183, 164, 0.24), transparent 34%),
+      linear-gradient(180deg, #fffdfb 0%, #f8f2ee 100%);
     z-index: 200;
     flex-direction: column;
     justify-content: flex-start;
@@ -576,7 +578,7 @@ strong { font-weight: 600; }
     font-size: var(--font-size-lg);
     font-weight: 500;
     padding: var(--space-3) var(--space-3);
-    border-bottom: 1px solid var(--color-border-light);
+    border-bottom: 1px solid rgba(139, 97, 81, 0.12);
   }
 
   .site-nav a {
@@ -587,7 +589,8 @@ strong { font-weight: 600; }
     font-weight: 600;
     text-decoration: none;
     padding: var(--space-4) 0;
-    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-brand-dark);
+    border-bottom: 1px solid rgba(139, 97, 81, 0.12);
     border-radius: 0;
     text-transform: none;
     letter-spacing: 0;
@@ -601,23 +604,32 @@ strong { font-weight: 600; }
     font-weight: 600;
     text-decoration: none;
     padding: var(--space-4) 0;
-    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-brand-dark);
+    border-bottom: 1px solid rgba(139, 97, 81, 0.12);
     border-radius: 0;
     text-transform: none;
     letter-spacing: 0;
   }
 
   .site-nav a:hover,
-  .site-nav a:focus-visible {
-    background: var(--color-brand-cream);
+  .site-nav a:focus-visible,
+  .site-nav .menu-item__summary:hover,
+  .site-nav .menu-item__summary:focus-visible {
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--color-brand-dark);
+    border-radius: var(--radius-sm);
     padding-left: var(--space-2);
+    padding-right: var(--space-2);
   }
 
   .site-nav a.is-active,
   .site-nav .menu-item--active > .menu-item__link {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.86);
     color: var(--color-brand-dark);
-    border-bottom-color: var(--color-brand-medium);
+    border-bottom-color: rgba(139, 97, 81, 0.2);
+    border-radius: var(--radius-sm);
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
   }
 
   .site-logo img,
