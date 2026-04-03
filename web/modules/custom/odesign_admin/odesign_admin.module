@@ -101,8 +101,20 @@ function odesign_admin_page_top(array &$page_top): void {
   ];
 
   $items_html = '';
+  // Sélectionne l'item actif par correspondance de préfixe la plus longue.
+  // Cela évite que '/admin/boutique' soit actif sur '/admin/content/media'
+  // ou que '/admin/content' (Articles) soit actif sur '/admin/content/media' (Médias).
+  $best_match_path = '';
   foreach ($nav_items as $item) {
-    $active = str_starts_with($current_path, explode('?', $item['path'])[0]) ? ' aria-current="page"' : '';
+    $nav_path = explode('?', $item['path'])[0];
+    if (str_starts_with($current_path, $nav_path) && strlen($nav_path) > strlen($best_match_path)) {
+      $best_match_path = $nav_path;
+    }
+  }
+
+  foreach ($nav_items as $item) {
+    $nav_path = explode('?', $item['path'])[0];
+    $active = ($nav_path === $best_match_path && $best_match_path !== '') ? ' aria-current="page"' : '';
     $items_html .= '<li><a href="' . htmlspecialchars($item['path']) . '"' . $active . '>'
       . '<span class="material-symbols-outlined" aria-hidden="true">' . htmlspecialchars($item['icon']) . '</span>'
       . '<span>' . htmlspecialchars($item['label']) . '</span>'
@@ -435,6 +447,22 @@ function odesign_admin_menu_links_discovered_alter(array &$links): void {
 }
 
 /**
+ * Callback #after_build pour masquer le sélecteur de format de texte.
+ *
+ * Le widget text_format construit l'élément 'format' via ses callbacks #process,
+ * lesquels s'exécutent après form_alter. On utilise #after_build (post-process)
+ * pour garantir que la suppression s'applique correctement.
+ *
+ * Appliqué sur le corps des articles et des descriptions d'univers.
+ */
+function _odesign_admin_article_body_after_build(array $element): array {
+  if (isset($element['format'])) {
+    $element['format']['#access'] = FALSE;
+  }
+  return $element;
+}
+
+/**
  * Implémente hook_mail_alter().
  *
  * Personnalise les emails Commerce envoyés au gestionnaire et au client.
@@ -443,5 +471,120 @@ function odesign_admin_mail_alter(array &$message): void {
   // S'assurer que les emails Commerce sont bien en français.
   if (str_starts_with($message['id'] ?? '', 'commerce_')) {
     $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+  }
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour le formulaire d'article.
+ *
+ * Masque les champs techniques non pertinents pour la gestionnaire (UX-03)
+ * et ajoute des textes d'aide sur les champs éditoriaux (UX-02).
+ */
+function odesign_admin_form_node_article_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_alter_article_form($form);
+}
+
+/**
+ * Implémente hook_form_FORM_ID_alter() pour l'édition d'article.
+ */
+function odesign_admin_form_node_article_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_admin_alter_article_form($form);
+}
+
+/**
+ * Personnalise le formulaire article (création et édition).
+ */
+function _odesign_admin_alter_article_form(array &$form): void {
+  // UX-03 : masquer le sélecteur de format de texte et le journal de révision.
+  // Note : l'élément 'format' est construit par les callbacks #process du widget
+  // text_format après l'exécution de form_alter → on utilise #after_build.
+  if (isset($form['body']['widget'][0])) {
+    $form['body']['widget'][0]['#after_build'][] = '_odesign_admin_article_body_after_build';
+  }
+
+  // UX-03 : masquer le journal de révision — détail technique sans valeur métier.
+  foreach (['revision_log', 'revision_log_message', 'revision_information'] as $key) {
+    if (isset($form[$key])) {
+      $form[$key]['#access'] = FALSE;
+    }
+  }
+
+  // UX-01 : améliorer le libellé du bouton de sauvegarde.
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = t('Enregistrer l\'article');
+  }
+  if (isset($form['actions']['publish'])) {
+    $form['actions']['publish']['#value'] = t('Enregistrer et publier');
+  }
+  if (isset($form['actions']['unpublish'])) {
+    $form['actions']['unpublish']['#value'] = t('Enregistrer comme brouillon');
+  }
+
+  // UX-02 : textes d'aide sur les champs clés.
+  if (isset($form['title'])) {
+    $form['title']['widget'][0]['value']['#description'] =
+      t('Le titre de votre article, tel qu\'il apparaîtra sur le blog.');
+  }
+  if (isset($form['body'])) {
+    if (isset($form['body']['widget'][0]['value'])) {
+      $form['body']['widget'][0]['value']['#description'] =
+        t('Le contenu principal de votre article. Utilisez la barre d\'outils pour mettre en forme le texte, ajouter des images ou des liens.');
+    }
+  }
+  if (isset($form['field_image'])) {
+    $form['field_image']['widget']['#description'] =
+      t('Photo principale de l\'article, affichée en tête de page et dans la liste du blog. Préférez une image horizontale, nette et en lien avec le sujet.');
+  }
+  if (isset($form['field_blog_category'])) {
+    $form['field_blog_category']['widget']['#description'] =
+      t('Catégorie thématique de l\'article (ex. : "Inspiration", "Conseils", "Nouveautés"). Saisir pour voir ou créer une catégorie.');
+  }
+  if (isset($form['status'])) {
+    $form['status']['widget']['value']['#description'] =
+      t('Coché : l\'article est visible sur le blog. Décoché : brouillon, invisible pour les visiteurs.');
+  }
+}
+
+/**
+ * Implémente hook_form_taxonomy_term_form_alter().
+ *
+ * Masque les champs techniques du formulaire d'édition des univers (UX-03)
+ * et clarifie les libellés techniques (UX-01).
+ */
+function odesign_admin_form_taxonomy_term_life_occasion_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  // UX-03 : masquer les blocs de gestion des révisions et des métadonnées système.
+  foreach (['revision_log_message', 'revision_information', 'revision'] as $key) {
+    if (isset($form[$key])) {
+      $form[$key]['#access'] = FALSE;
+    }
+  }
+
+  // UX-03 : masquer les champs techniques dans la section "relations".
+  // Le terme parent est géré via l'onglet "Structure" dans le formulaire.
+  if (isset($form['relations']['#type']) && $form['relations']['#type'] === 'details') {
+    // Renommer le groupe "Relations" en libellé métier clair.
+    $form['relations']['#title'] = t('Organisation (terme parent)');
+    $form['relations']['#description'] = t('Si cet univers appartient à une catégorie parente, sélectionnez-la ici. Laissez vide pour un univers de premier niveau.');
+  }
+
+  // UX-01 : améliorer le libellé du bouton de sauvegarde.
+  if (isset($form['actions']['submit'])) {
+    $form['actions']['submit']['#value'] = t('Enregistrer l\'univers');
+  }
+
+  // UX-02 : textes d'aide sur les champs éditoriaux de l'univers.
+  if (isset($form['name'])) {
+    $form['name']['widget'][0]['value']['#description'] =
+      t('Le nom de l\'univers, tel qu\'il apparaît sur le site (ex. : "Mariage", "Naissance").');
+  }
+  if (isset($form['description'])) {
+    if (isset($form['description']['widget'][0]['value'])) {
+      $form['description']['widget'][0]['value']['#description'] =
+        t('Texte d\'introduction affiché sur la page de cet univers. Décrivez les occasions concernées et les créations proposées.');
+    }
+    // Masquer le sélecteur de format de texte via #after_build (même raison que pour les articles).
+    if (isset($form['description']['widget'][0])) {
+      $form['description']['widget'][0]['#after_build'][] = '_odesign_admin_article_body_after_build';
+    }
   }
 }

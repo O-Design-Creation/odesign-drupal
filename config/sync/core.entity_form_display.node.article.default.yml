@@ -10,6 +10,7 @@ dependencies:
     - image.style.thumbnail
     - node.type.article
   module:
+    - field_group
     - image
     - path
     - text
@@ -113,3 +114,72 @@ content:
 hidden:
   promote: true
   sticky: true
+third_party_settings:
+  field_group:
+    group_article_tabs:
+      children:
+        - group_article_contenu
+        - group_article_medias
+        - group_article_publication
+      label: 'Onglets article'
+      region: content
+      parent_name: ''
+      weight: -20
+      format_type: tabs
+      format_settings:
+        classes: group-article-tabs
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+    group_article_contenu:
+      children:
+        - title
+        - body
+      label: Contenu
+      region: content
+      parent_name: group_article_tabs
+      weight: 0
+      format_type: tab
+      format_settings:
+        classes: group-article-contenu
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+    group_article_medias:
+      children:
+        - field_image
+      label: 'Image à la une'
+      region: content
+      parent_name: group_article_tabs
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: group-article-medias
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
+    group_article_publication:
+      children:
+        - status
+        - created
+        - field_blog_category
+        - field_tags
+        - uid
+        - langcode
+        - path
+        - simple_sitemap
+        - url_redirects
+      label: Publication
+      region: content
+      parent_name: group_article_tabs
+      weight: 2
+      format_type: tab
+      format_settings:
+        classes: group-article-publication
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: false
+
