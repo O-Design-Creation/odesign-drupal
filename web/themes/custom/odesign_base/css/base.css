@@ -1504,6 +1504,67 @@ textarea {
   border-color: #ffffff;
 }
 
+@media (max-width: 900px) {
+  #sliding-popup {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 36vh;
+    overflow-y: auto;
+  }
+
+  #sliding-popup .popup-content {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-2);
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  #sliding-popup .popup-content h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
+
+  #sliding-popup .popup-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.28;
+  }
+
+  #sliding-popup .popup-content #popup-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    width: 100%;
+    margin-top: var(--space-1);
+  }
+
+  #sliding-popup .agree-button,
+  #sliding-popup .decline-button,
+  #sliding-popup .find-more-button {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.95rem;
+  }
+
+  #sliding-popup .find-more-button {
+    border: 0;
+    background: transparent;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 0;
+    justify-self: start;
+  }
+
+  body.nav-is-open #sliding-popup {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100%);
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+  }
+}
+
 /* ---------------------------------------------------------------------------
    19. Breadcrumb
    --------------------------------------------------------------------------- */
