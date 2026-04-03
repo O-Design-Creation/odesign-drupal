@@ -45,6 +45,10 @@ class DashboardController extends ControllerBase {
     $build['dashboard'] = [
       '#theme' => 'odesign_admin_dashboard',
       '#stats' => $stats,
+      '#pending_orders_url' => Url::fromRoute('entity.commerce_order.collection', [], [
+        'query' => ['state' => ['pending', 'processing']],
+      ])->toString(),
+      '#orders_url' => Url::fromRoute('entity.commerce_order.collection')->toString(),
       '#orders_view' => $orders_view,
       '#recent_articles' => $this->getRecentArticles(),
       '#quick_links' => $this->getQuickLinks(),
@@ -386,6 +390,13 @@ class DashboardController extends ControllerBase {
         'route_params' => ['node_type' => 'article'],
         'description' => 'Rédiger un nouvel article de blog',
         'icon'        => 'edit_note',
+      ],
+      [
+        'title'       => 'Commandes à traiter',
+        'route_name'  => 'entity.commerce_order.collection',
+        'route_options' => ['query' => ['state' => ['pending', 'processing']]],
+        'description' => 'Voir directement les commandes en attente / préparation',
+        'icon'        => 'pending_actions',
       ],
       [
         'title'       => 'Toutes les commandes',

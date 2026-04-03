@@ -5,6 +5,8 @@
  *
  * Variables :
  * - stats : array (pending_orders, total_orders, total_products, total_articles)
+ * - pending_orders_url : URL vers les commandes à traiter
+ * - orders_url : URL vers toutes les commandes
  * - orders_view : render array de la vue commandes
  * - recent_articles : array de {title, url, date, status}
  * - quick_links : array de raccourcis (title, url, description, icon)
@@ -24,12 +26,12 @@
 
   {# Compteurs rapides #}
   <div class="odesign-dashboard__stats">
-    <a href="/admin/commerce/orders" class="odesign-dashboard__stat odesign-dashboard__stat--highlight odesign-dashboard__stat--link">
+    <a href="{{ pending_orders_url }}" class="odesign-dashboard__stat odesign-dashboard__stat--highlight odesign-dashboard__stat--link">
       <span class="material-symbols-outlined stat-icon">pending_actions</span>
       <span class="stat-value">{{ stats.pending_orders }}</span>
       <span class="stat-label">Commande{{ stats.pending_orders != 1 ? 's' : '' }} en attente</span>
     </a>
-    <a href="/admin/commerce/orders" class="odesign-dashboard__stat odesign-dashboard__stat--link">
+    <a href="{{ orders_url }}" class="odesign-dashboard__stat odesign-dashboard__stat--link">
       <span class="material-symbols-outlined stat-icon">shopping_bag</span>
       <span class="stat-value">{{ stats.total_orders }}</span>
       <span class="stat-label">Commande{{ stats.total_orders != 1 ? 's' : '' }} au total</span>
@@ -128,7 +130,7 @@
             <span class="material-symbols-outlined" aria-hidden="true">receipt_long</span>
             Commandes récentes
           </h3>
-          <a href="/admin/commerce/orders" class="odesign-dashboard__see-all">Voir toutes les commandes →</a>
+          <a href="{{ orders_url }}" class="odesign-dashboard__see-all">Voir toutes les commandes →</a>
         </div>
         {{ orders_view }}
       </div>
