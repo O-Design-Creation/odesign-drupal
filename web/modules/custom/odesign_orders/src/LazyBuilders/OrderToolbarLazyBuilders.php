@@ -47,7 +47,9 @@ class OrderToolbarLazyBuilders implements TrustedCallbackInterface {
     return [
       '#type' => 'link',
       '#title' => $title,
-      '#url' => Url::fromRoute('odesign_admin.actionable_orders'),
+      '#url' => Url::fromRoute('entity.commerce_order.collection', [], [
+        'query' => ['state' => $actionable_states],
+      ]),
       '#attributes' => [
         'title' => t('Voir les commandes en attente de traitement.'),
         'class' => [
