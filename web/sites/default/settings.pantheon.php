@@ -60,6 +60,16 @@ $settings['file_temp_path']    = $_ENV['HOME'] . '/tmp';
 // settings.local.php ne doit pas exister sur Pantheon.
 // Ce flag est informatif — la vérification d'existence dans settings.php suffit.
 
+// ── SMTP Mailgun — secrets injectés par variables d'environnement Pantheon ───
+// Configurer dans Pantheon Dashboard > Site > Settings > Environment Variables :
+//   MAILGUN_SMTP_USERNAME  →  login SMTP Mailgun (ex: postmaster@mg.atelierodesign.fr)
+//   MAILGUN_SMTP_PASSWORD  →  mot de passe SMTP Mailgun
+// Ces overrides ne s'appliquent que si les deux variables sont définies.
+if (!empty($_ENV['MAILGUN_SMTP_USERNAME']) && !empty($_ENV['MAILGUN_SMTP_PASSWORD'])) {
+  $config['smtp.settings']['smtp_username'] = $_ENV['MAILGUN_SMTP_USERNAME'];
+  $config['smtp.settings']['smtp_password'] = $_ENV['MAILGUN_SMTP_PASSWORD'];
+}
+
 // ── Performance (désactivé en sandbox, activer en staging/prod) ──────────────
 // Décommenter pour activer l'agrégation CSS/JS en staging et production.
 // if (in_array($_ENV['PANTHEON_ENVIRONMENT'], ['test', 'live'], TRUE)) {
