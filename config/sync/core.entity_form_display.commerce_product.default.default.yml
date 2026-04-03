@@ -110,14 +110,10 @@ content:
       placeholder: 'Saisir ou créer une catégorie…'
     third_party_settings: {  }
   field_life_occasion:
-    type: entity_reference_autocomplete_tags
-    weight: 20
+    type: options_buttons
+    weight: 5
     region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: 'Associer une ou plusieurs occasions de vie…'
+    settings: {  }
     third_party_settings: {  }
   field_product_images:
     type: media_library_widget

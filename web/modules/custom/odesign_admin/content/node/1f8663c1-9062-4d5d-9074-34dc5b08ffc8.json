@@ -1,0 +1,221 @@
+{
+    "_links": {
+        "self": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/atelier?_format=hal_json"
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/node\/page"
+        },
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json",
+                "lang": "fr"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 8
+        }
+    ],
+    "uuid": [
+        {
+            "value": "1f8663c1-9062-4d5d-9074-34dc5b08ffc8"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr",
+            "lang": "fr"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "page"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2026-04-03T09:53:06+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ]
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ],
+                "lang": "fr"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "title": [
+        {
+            "value": "Atelier Oc\u00e9ane",
+            "lang": "fr"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-04-03T09:53:06+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-04-03T09:53:06+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "metatag": [
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "title",
+                "content": "Atelier Oc\u00e9ane | ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "description",
+                "content": "L'atelier d'Oc\u00e9ane Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois. Adresse : \u00e0 compl\u00e9ter Horaires : \u00e0 compl\u00e9ter Retrait \/ accueil : \u00e0 compl\u00e9ter Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier. Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal."
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "link",
+            "attributes": {
+                "rel": "canonical",
+                "href": "https:\/\/odesign-drupal.ddev.site\/atelier"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:site_name",
+                "content": "ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:type",
+                "content": "article"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:url",
+                "content": "https:\/\/odesign-drupal.ddev.site\/atelier"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:title",
+                "content": "Atelier Oc\u00e9ane"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:description",
+                "content": "L'atelier d'Oc\u00e9ane Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois. Adresse : \u00e0 compl\u00e9ter Horaires : \u00e0 compl\u00e9ter Retrait \/ accueil : \u00e0 compl\u00e9ter Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier. Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal."
+            },
+            "lang": "fr"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/atelier",
+            "pid": 102,
+            "langcode": "fr",
+            "lang": "fr"
+        }
+    ],
+    "body": [
+        {
+            "value": "<h2>L'atelier d'Oc\u00e9ane<\/h2>\n<p>Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois.<\/p>\n<ul>\n  <li><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter<\/li>\n  <li><strong>Horaires :<\/strong> \u00e0 compl\u00e9ter<\/li>\n  <li><strong>Retrait \/ accueil :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<\/ul>\n<p>Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier.<\/p>\n<p><em>Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal.<\/em><\/p>",
+            "format": "full_html",
+            "processed": "<h2>L'atelier d'Oc\u00e9ane<\/h2>\n<p>Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois.<\/p>\n<ul>\n<li><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<li><strong>Horaires :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<li><strong>Retrait \/ accueil :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<\/ul>\n<p>Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier.<\/p>\n<p><em>Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal.<\/em><\/p>\n",
+            "summary": null,
+            "lang": "fr"
+        }
+    ],
+    "_dcd_metadata": {
+        "export_timestamp": 1775251697
+    }
+}

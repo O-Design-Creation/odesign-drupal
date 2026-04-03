@@ -1,0 +1,221 @@
+{
+    "_links": {
+        "self": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/politique-confidentialite?_format=hal_json"
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/node\/page"
+        },
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json",
+                "lang": "fr"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 3
+        }
+    ],
+    "uuid": [
+        {
+            "value": "7e5af345-6b95-4c72-822b-a32224573bb3"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr",
+            "lang": "fr"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "page"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2026-03-31T11:00:55+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ]
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ],
+                "lang": "fr"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "title": [
+        {
+            "value": "Politique de Confidentialit\u00e9",
+            "lang": "fr"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-03-31T11:00:55+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-03-31T11:00:55+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "metatag": [
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "title",
+                "content": "Politique de Confidentialit\u00e9 | ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "description",
+                "content": "Politique de Confidentialit\u00e9 Atelier O Design s'engage \u00e0 prot\u00e9ger votre vie priv\u00e9e et vos donn\u00e9es personnelles conform\u00e9ment au R\u00e8glement G\u00e9n\u00e9ral sur la Protection des Donn\u00e9es (RGPD) et \u00e0 la loi Informatique et Libert\u00e9s. Donn\u00e9es collect\u00e9es Lors d'une commande : nom, pr\u00e9nom, adresse de livraison, adresse email, num\u00e9ro de t\u00e9l\u00e9phone. Ces donn\u00e9es sont n\u00e9cessaires au traitement et \u00e0 la livraison de votre commande."
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "link",
+            "attributes": {
+                "rel": "canonical",
+                "href": "https:\/\/odesign-drupal.ddev.site\/politique-confidentialite"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:site_name",
+                "content": "ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:type",
+                "content": "article"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:url",
+                "content": "https:\/\/odesign-drupal.ddev.site\/politique-confidentialite"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:title",
+                "content": "Politique de Confidentialit\u00e9"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:description",
+                "content": "Politique de Confidentialit\u00e9 Atelier O Design s'engage \u00e0 prot\u00e9ger votre vie priv\u00e9e et vos donn\u00e9es personnelles conform\u00e9ment au R\u00e8glement G\u00e9n\u00e9ral sur la Protection des Donn\u00e9es (RGPD) et \u00e0 la loi Informatique et Libert\u00e9s. Donn\u00e9es collect\u00e9es Lors d'une commande : nom, pr\u00e9nom, adresse de livraison, adresse email, num\u00e9ro de t\u00e9l\u00e9phone. Ces donn\u00e9es sont n\u00e9cessaires au traitement et \u00e0 la livraison de votre commande."
+            },
+            "lang": "fr"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/politique-confidentialite",
+            "pid": 3,
+            "langcode": "fr",
+            "lang": "fr"
+        }
+    ],
+    "body": [
+        {
+            "value": "<h2>Politique de Confidentialit\u00e9<\/h2>\n<p>Atelier O Design s'engage \u00e0 prot\u00e9ger votre vie priv\u00e9e et vos donn\u00e9es personnelles conform\u00e9ment au R\u00e8glement G\u00e9n\u00e9ral sur la Protection des Donn\u00e9es (RGPD) et \u00e0 la loi Informatique et Libert\u00e9s.<\/p>\n\n<h3>Donn\u00e9es collect\u00e9es<\/h3>\n<p>Lors d'une commande : nom, pr\u00e9nom, adresse de livraison, adresse email, num\u00e9ro de t\u00e9l\u00e9phone. Ces donn\u00e9es sont n\u00e9cessaires au traitement et \u00e0 la livraison de votre commande.<\/p>\n\n<h3>Finalit\u00e9s du traitement<\/h3>\n<p>Traitement des commandes, gestion de la relation client, envoi de confirmations et notifications li\u00e9es \u00e0 votre commande, respect des obligations l\u00e9gales.<\/p>\n\n<h3>Conservation des donn\u00e9es<\/h3>\n<p>Vos donn\u00e9es sont conserv\u00e9es pendant la dur\u00e9e n\u00e9cessaire aux finalit\u00e9s pour lesquelles elles ont \u00e9t\u00e9 collect\u00e9es, et au maximum 3 ans apr\u00e8s votre derni\u00e8re interaction.<\/p>\n\n<h3>Vos droits<\/h3>\n<p>Vous disposez d'un droit d'acc\u00e8s, de rectification, d'effacement, de limitation et de portabilit\u00e9 de vos donn\u00e9es. Pour exercer ces droits : odesigncrea@gmail.com<\/p>",
+            "format": "basic_html",
+            "processed": "<h2>Politique de Confidentialit\u00e9<\/h2>\n<p>Atelier O Design s'engage \u00e0 prot\u00e9ger votre vie priv\u00e9e et vos donn\u00e9es personnelles conform\u00e9ment au R\u00e8glement G\u00e9n\u00e9ral sur la Protection des Donn\u00e9es (RGPD) et \u00e0 la loi Informatique et Libert\u00e9s.<\/p>\n<h3>Donn\u00e9es collect\u00e9es<\/h3>\n<p>Lors d'une commande : nom, pr\u00e9nom, adresse de livraison, adresse email, num\u00e9ro de t\u00e9l\u00e9phone. Ces donn\u00e9es sont n\u00e9cessaires au traitement et \u00e0 la livraison de votre commande.<\/p>\n<h3>Finalit\u00e9s du traitement<\/h3>\n<p>Traitement des commandes, gestion de la relation client, envoi de confirmations et notifications li\u00e9es \u00e0 votre commande, respect des obligations l\u00e9gales.<\/p>\n<h3>Conservation des donn\u00e9es<\/h3>\n<p>Vos donn\u00e9es sont conserv\u00e9es pendant la dur\u00e9e n\u00e9cessaire aux finalit\u00e9s pour lesquelles elles ont \u00e9t\u00e9 collect\u00e9es, et au maximum 3 ans apr\u00e8s votre derni\u00e8re interaction.<\/p>\n<h3>Vos droits<\/h3>\n<p>Vous disposez d'un droit d'acc\u00e8s, de rectification, d'effacement, de limitation et de portabilit\u00e9 de vos donn\u00e9es. Pour exercer ces droits : odesigncrea@gmail.com<\/p>\n",
+            "summary": null,
+            "lang": "fr"
+        }
+    ],
+    "_dcd_metadata": {
+        "export_timestamp": 1775251697
+    }
+}
