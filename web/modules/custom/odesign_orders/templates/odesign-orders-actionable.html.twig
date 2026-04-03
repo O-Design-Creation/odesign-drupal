@@ -1,0 +1,86 @@
+{#
+/**
+ * @file
+ * Page "Commandes à traiter" — liste des commandes actionables.
+ *
+ * Variables :
+ * - orders          : array — commandes actionables (id, number, customer, email,
+ *                     state_id, state_label, total, currency, date, detail_url, edit_url)
+ * - all_orders_url  : string — URL vers toutes les commandes
+ */
+#}
+
+<div class="odesign-orders">
+
+  <div class="odesign-orders__header">
+    <div class="odesign-orders__header-left">
+      <h2 class="odesign-orders__title">
+        <i class="ph ph-clock-countdown" aria-hidden="true"></i>
+        Commandes à traiter
+        {% if orders %}
+          <span class="odesign-orders__count">{{ orders|length }}</span>
+        {% endif %}
+      </h2>
+      <p class="odesign-orders__subtitle">Les commandes qui attendent une action de votre part.</p>
+    </div>
+    <a href="{{ all_orders_url }}" class="odesign-orders__link-all">
+      <i class="ph ph-list" aria-hidden="true"></i>
+      Toutes les commandes
+    </a>
+  </div>
+
+  {% if orders is empty %}
+    <div class="odesign-orders__empty">
+      <i class="ph ph-check-circle" aria-hidden="true"></i>
+      <p>Aucune commande en attente de traitement. Tout est à jour !</p>
+    </div>
+  {% else %}
+
+    <div class="odesign-orders__table-wrap">
+      <table class="odesign-orders__table">
+        <thead>
+          <tr>
+            <th scope="col">Commande</th>
+            <th scope="col">Client</th>
+            <th scope="col">Date</th>
+            <th scope="col">État</th>
+            <th scope="col" class="text-right">Total</th>
+            <th scope="col" class="text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr class="odesign-orders__row odesign-orders__row--{{ order.state_id }}">
+              <td class="odesign-orders__col-number">
+                <a href="{{ order.detail_url }}" class="odesign-orders__order-link">
+                  {{ order.number }}
+                </a>
+              </td>
+              <td class="odesign-orders__col-customer">
+                <span class="odesign-orders__customer-name">{{ order.customer }}</span>
+                <span class="odesign-orders__customer-email">{{ order.email }}</span>
+              </td>
+              <td class="odesign-orders__col-date">{{ order.date }}</td>
+              <td class="odesign-orders__col-state">
+                <span class="odesign-orders__state-badge odesign-orders__state-badge--{{ order.state_id }}">
+                  {{ order.state_label }}
+                </span>
+              </td>
+              <td class="odesign-orders__col-total text-right">
+                {{ order.total }} {{ order.currency }}
+              </td>
+              <td class="odesign-orders__col-actions text-right">
+                <a href="{{ order.detail_url }}" class="odesign-orders__btn odesign-orders__btn--primary" title="Voir et traiter">
+                  <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                  Traiter
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  {% endif %}
+
+</div>

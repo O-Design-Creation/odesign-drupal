@@ -1,0 +1,447 @@
+/* ============================================================================
+   ODesign Orders — CSS pages commandes gestionnaire
+   orders.css — Lot 3 pages actionable + détail commande
+   ============================================================================ */
+
+/* ─── Variables locales (héritent de la palette boutique) ─────────────────── */
+:root {
+  --orders-primary: #4E2620;
+  --orders-accent: #D9B7A4;
+  --orders-bg: #f8f4ef;
+  --orders-border: #e4d9cb;
+  --orders-radius: 12px;
+}
+
+/* ─── Wrapper commun ─────────────────────────────────────────────────────── */
+.odesign-orders,
+.odesign-order-detail {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ─── En-tête ─────────────────────────────────────────────────────────────── */
+.odesign-orders__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.odesign-orders__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--orders-primary);
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.odesign-orders__title .ph {
+  font-size: 22px;
+  color: var(--orders-primary);
+}
+
+.odesign-orders__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  background: #e05a3a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 0 6px;
+}
+
+.odesign-orders__subtitle {
+  color: #6b5c52;
+  font-size: 14px;
+  margin: 0;
+}
+
+.odesign-orders__link-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--orders-primary);
+  text-decoration: none;
+  padding: 8px 14px;
+  border: 1px solid var(--orders-border);
+  border-radius: 8px;
+  background: #fff;
+  transition: background .15s, border-color .15s;
+  flex-shrink: 0;
+}
+
+.odesign-orders__link-all:hover {
+  background: var(--orders-bg);
+  border-color: var(--orders-accent);
+}
+
+/* ─── État vide ──────────────────────────────────────────────────────────── */
+.odesign-orders__empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b5c52;
+  background: var(--orders-bg);
+  border-radius: var(--orders-radius);
+  border: 1px dashed var(--orders-border);
+}
+
+.odesign-orders__empty .ph {
+  font-size: 48px;
+  color: #bba89a;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+/* ─── Tableau liste ─────────────────────────────────────────────────────── */
+.odesign-orders__table-wrap {
+  overflow-x: auto;
+  border-radius: var(--orders-radius);
+  border: 1px solid var(--orders-border);
+  background: #fff;
+}
+
+.odesign-orders__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.odesign-orders__table th {
+  background: var(--orders-bg);
+  padding: 11px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  color: #6b5c52;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--orders-border);
+}
+
+.odesign-orders__table td {
+  padding: 12px 14px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f0e8e0;
+}
+
+.odesign-orders__table tr:last-child td {
+  border-bottom: none;
+}
+
+.odesign-orders__table tr:hover td {
+  background: #fdfaf7;
+}
+
+.odesign-orders__order-link {
+  font-weight: 600;
+  color: var(--orders-primary);
+  text-decoration: none;
+}
+
+.odesign-orders__order-link:hover {
+  text-decoration: underline;
+}
+
+.odesign-orders__customer-name {
+  display: block;
+  font-weight: 500;
+  color: #2c1f1b;
+}
+
+.odesign-orders__customer-email {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ─── Badges état ────────────────────────────────────────────────────────── */
+.odesign-orders__state-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.odesign-orders__state-badge--pending_payment { background: #fff3cd; color: #856404; }
+.odesign-orders__state-badge--processing      { background: #cfe2ff; color: #084298; }
+.odesign-orders__state-badge--quality_check   { background: #d1ecf1; color: #0c5460; }
+.odesign-orders__state-badge--packaged        { background: #d4edda; color: #155724; }
+.odesign-orders__state-badge--shipped         { background: #e2d9f3; color: #432874; }
+.odesign-orders__state-badge--completed       { background: #d1e7dd; color: #0a3622; }
+.odesign-orders__state-badge--canceled        { background: #f8d7da; color: #58151c; }
+.odesign-orders__state-badge--refunded        { background: #fce5b8; color: #6d4c0f; }
+
+/* ─── Boutons actions (liste) ────────────────────────────────────────────── */
+.odesign-orders__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s;
+}
+
+.odesign-orders__btn--primary {
+  background: var(--orders-primary);
+  color: #fff;
+}
+
+.odesign-orders__btn--primary:hover {
+  background: #3a1c17;
+  color: #fff;
+}
+
+/* ─── Page détail — en-tête ──────────────────────────────────────────────── */
+.odesign-order-detail__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.odesign-order-detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--orders-primary);
+  text-decoration: none;
+  margin-bottom: 8px;
+}
+
+.odesign-order-detail__back:hover { text-decoration: underline; }
+
+.odesign-order-detail__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--orders-primary);
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.odesign-order-detail__date {
+  font-size: 13px;
+  color: #6b5c52;
+  margin: 0;
+}
+
+.odesign-order-detail__header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.odesign-order-detail__edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b5c52;
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--orders-border);
+  border-radius: 7px;
+  background: #fff;
+}
+
+.odesign-order-detail__edit-link:hover {
+  background: var(--orders-bg);
+  color: var(--orders-primary);
+}
+
+/* ─── Transitions workflow ───────────────────────────────────────────────── */
+.odesign-order-detail__transitions {
+  background: #fff;
+  border: 1px solid var(--orders-border);
+  border-radius: var(--orders-radius);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.odesign-order-detail__transitions--none {
+  background: var(--orders-bg);
+  color: #6b5c52;
+  font-size: 14px;
+}
+
+.odesign-order-detail__transitions-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b5c52;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.odesign-order-detail__transitions-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.odesign-order-detail__transition-form {
+  margin: 0;
+}
+
+.odesign-order-detail__transition-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--orders-primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.odesign-order-detail__transition-btn:hover {
+  background: #3a1c17;
+}
+
+.odesign-order-detail__transition-btn--danger {
+  background: #c0392b;
+}
+
+.odesign-order-detail__transition-btn--danger:hover {
+  background: #a93226;
+}
+
+/* ─── Corps : sidebar + main ────────────────────────────────────────────── */
+.odesign-order-detail__body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .odesign-order-detail__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Cartes (informations) ──────────────────────────────────────────────── */
+.odesign-order-detail__card {
+  background: #fff;
+  border: 1px solid var(--orders-border);
+  border-radius: var(--orders-radius);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+
+.odesign-order-detail__card:last-child {
+  margin-bottom: 0;
+}
+
+.odesign-order-detail__card-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: #6b5c52;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.odesign-order-detail__card-title .ph {
+  font-size: 15px;
+}
+
+.odesign-order-detail__customer-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c1f1b;
+  margin: 0 0 4px;
+}
+
+.odesign-order-detail__customer-email {
+  font-size: 13px;
+  color: var(--orders-primary);
+  text-decoration: none;
+}
+
+.odesign-order-detail__address-name {
+  font-weight: 600;
+  margin: 0 0 3px;
+}
+
+.odesign-order-detail__card p {
+  margin: 0 0 3px;
+  font-size: 14px;
+  color: #3a2a24;
+}
+
+.odesign-order-detail__address-phone {
+  margin-top: 6px !important;
+  color: #6b5c52 !important;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── Tableau articles ───────────────────────────────────────────────────── */
+.odesign-order-detail__items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.odesign-order-detail__items th {
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b5c52;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--orders-border);
+  text-align: left;
+}
+
+.odesign-order-detail__items td {
+  padding: 10px 10px;
+  border-bottom: 1px solid #f0e8e0;
+  vertical-align: middle;
+}
+
+.odesign-order-detail__items tfoot td {
+  border-bottom: none;
+  border-top: 2px solid var(--orders-border);
+  padding-top: 12px;
+}
+
+.odesign-order-detail__total-row td {
+  font-size: 15px;
+}
+
+.text-right { text-align: right; }
+.text-center { text-align: center; }

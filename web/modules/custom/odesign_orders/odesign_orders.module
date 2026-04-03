@@ -281,3 +281,40 @@ function odesign_orders_odesign_boutique_dashboard_cards_alter(array &$cards): v
     'weight'    => 10,
   ];
 }
+
+/**
+ * Implémente hook_theme().
+ *
+ * Déclare les templates des pages commandes gestionnaire.
+ */
+function odesign_orders_theme(): array {
+  return [
+    'odesign_orders_actionable' => [
+      'template'  => 'odesign-orders-actionable',
+      'variables' => [
+        'orders'          => [],
+        'all_orders_url'  => '',
+      ],
+    ],
+    'odesign_orders_order_detail' => [
+      'template'  => 'odesign-orders-order-detail',
+      'variables' => [
+        'order_id'         => NULL,
+        'order_number'     => '',
+        'order_date'       => '',
+        'state_id'         => '',
+        'state_label'      => '',
+        'customer_name'    => '',
+        'customer_email'   => '',
+        'billing_address'  => NULL,
+        'shipping_address' => NULL,
+        'items'            => [],
+        'total'            => '',
+        'currency'         => 'EUR',
+        'transitions'      => [],
+        'edit_url'         => '',
+        'back_url'         => '',
+      ],
+    ],
+  ];
+}
