@@ -986,7 +986,7 @@ textarea {
   gap: var(--space-3);
   margin: var(--space-4) 0 var(--space-2);
   padding: var(--space-3) var(--space-4);
-  border: 1px solid rgba(139, 97, 81, 0.14);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-md);
   background: linear-gradient(180deg, #fff 0%, #fdf9f7 100%);
 }
@@ -1138,7 +1138,7 @@ textarea {
 /* Carte produit */
 .product-card {
   background: var(--color-bg);
-  border: 1px solid rgba(139, 97, 81, 0.12);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition:
@@ -1152,8 +1152,8 @@ textarea {
 }
 
 .product-card:hover {
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.07);
+  transform: translateY(-1px);
   border-color: var(--color-brand-light);
 }
 
@@ -1267,7 +1267,7 @@ textarea {
   align-items: end;
   margin-bottom: var(--space-5);
   padding: var(--space-4);
-  border: 1px solid rgba(139, 97, 81, 0.14);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-lg);
   background: linear-gradient(180deg, #fff 0%, #fdf9f7 100%);
 }
@@ -2716,11 +2716,11 @@ nav ul {
   gap: var(--space-3);
   text-decoration: none;
   color: var(--color-text);
-  border: 1px solid rgba(139, 97, 81, 0.16);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-lg);
   background: #fff;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.06);
 }
 
 .home-universe-quick__media {
@@ -2776,8 +2776,8 @@ nav ul {
   padding: var(--space-5);
   border-radius: var(--radius-xl);
   background: #fff;
-  border: 1px solid rgba(139, 97, 81, 0.16);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(139, 97, 81, 0.08);
+  box-shadow: 0 8px 18px rgba(78, 38, 32, 0.06);
 }
 
 .life-occasion-card__media {
@@ -2849,7 +2849,7 @@ nav ul {
   padding: var(--space-5);
   background: #fff;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(139, 97, 81, 0.14);
+  border: 1px solid rgba(139, 97, 81, 0.08);
 }
 
 .home-method__item h3 {
@@ -2875,9 +2875,9 @@ nav ul {
 
 .home-story-proof__card {
   background: #ffffff;
-  border: 1px solid rgba(139, 97, 81, 0.14);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 10px 20px rgba(78, 38, 32, 0.06);
   overflow: hidden;
 }
 
@@ -2939,10 +2939,10 @@ nav ul {
 
 .home-bridge__card {
   background: #fff;
-  border: 1px solid rgba(139, 97, 81, 0.14);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 10px 20px rgba(78, 38, 32, 0.06);
 }
 
 .home-bridge__intro {
@@ -2984,7 +2984,7 @@ nav ul {
 }
 
 .home-bridge__article {
-  border: 1px solid var(--color-border-light);
+  border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-md);
   padding: var(--space-4);
   background: var(--color-brand-cream);
