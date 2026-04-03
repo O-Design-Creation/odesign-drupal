@@ -397,6 +397,14 @@
         </section>
       {% else %}
         <div class="container">
+          {% if is_catalogue_page %}
+            <section class="catalogue-assist" aria-label="{{ 'Aide choix produit'|t }}">
+              <p class="catalogue-assist__lead">
+                {{ 'Besoin d’aide pour choisir ou personnaliser un produit ?'|t }}
+              </p>
+              <a href="{{ catalogue_contact_url }}" class="catalogue-assist__link">{{ 'Contacter l’atelier'|t }}</a>
+            </section>
+          {% endif %}
           {{ page.content }}
         </div>
       {% endif %}

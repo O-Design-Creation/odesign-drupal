@@ -609,6 +609,12 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['attributes']['class'][] = 'page-admin';
   }
 
+  $current_route = \Drupal::routeMatch()->getRouteName();
+  $variables['is_catalogue_page'] = ($current_route === 'view.catalogue.page_catalogue');
+  if ($variables['is_catalogue_page']) {
+    $variables['catalogue_contact_url'] = Url::fromUri('internal:/contact')->toString();
+  }
+
   $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
   if ($route_term instanceof TermInterface && $route_term->bundle() === 'life_occasion') {
     $variables['attributes']['class'][] = 'page-life-occasion';

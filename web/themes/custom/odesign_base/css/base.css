@@ -979,6 +979,36 @@ textarea {
   font-size: .95em;
 }
 
+.catalogue-assist {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid rgba(139, 97, 81, 0.14);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, #fff 0%, #fdf9f7 100%);
+}
+
+.catalogue-assist__lead {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.catalogue-assist__link {
+  white-space: nowrap;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .catalogue-assist {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
