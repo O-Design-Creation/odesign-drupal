@@ -7,4 +7,3 @@ dependencies:
   - drupal:views
   - drupal:commerce_order
   - drupal:commerce_product
-  - odesign_orders:odesign_orders
