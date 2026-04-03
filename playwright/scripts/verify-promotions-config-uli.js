@@ -8,6 +8,7 @@ if (!uli) {
   console.error('Usage: node verify-promotions-config-uli.js <uli-url>');
   process.exit(1);
 }
+const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || 'https://odesign-drupal.ddev.site';
 
 const outDir = '/var/www/html/playwright/screenshots/promotions-config';
 fs.mkdirSync(outDir, { recursive: true });
@@ -18,7 +19,31 @@ fs.mkdirSync(outDir, { recursive: true });
   const page = await context.newPage();
 
   await page.goto(uli, { waitUntil: 'networkidle', timeout: 30000 });
-  await page.goto('https://odesign-drupal.ddev.site/admin/boutique/configuration', { waitUntil: 'networkidle', timeout: 30000 });
+  if (await page.getByRole('heading', { name: /sandbox environment/i }).count()) {
+    const continueLink = page.getByRole('link', { name: /continue/i });
+    const continueButton = page.getByRole('button', { name: /continue/i });
+    if (await continueLink.count()) {
+      await continueLink.first().click();
+      await page.waitForLoadState('networkidle');
+    } else if (await continueButton.count()) {
+      await continueButton.first().click();
+      await page.waitForLoadState('networkidle');
+    }
+  }
+  await page.goto(`${BASE_URL}/admin/boutique/configuration`, { waitUntil: 'networkidle', timeout: 30000 });
+  if (await page.getByRole('heading', { name: /sandbox environment/i }).count()) {
+    const continueLink = page.getByRole('link', { name: /continue/i });
+    const continueButton = page.getByRole('button', { name: /continue/i });
+    if (await continueLink.count()) {
+      await continueLink.first().click();
+      await page.waitForLoadState('networkidle');
+      await page.goto(`${BASE_URL}/admin/boutique/configuration`, { waitUntil: 'networkidle', timeout: 30000 });
+    } else if (await continueButton.count()) {
+      await continueButton.first().click();
+      await page.waitForLoadState('networkidle');
+      await page.goto(`${BASE_URL}/admin/boutique/configuration`, { waitUntil: 'networkidle', timeout: 30000 });
+    }
+  }
 
   const promotionsSummary = page.locator('summary:has-text("Promotions volume (lots)")');
   const promotionsExpanded = await promotionsSummary.getAttribute('aria-expanded');
