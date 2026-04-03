@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\odesign_admin\Order;
+namespace Drupal\odesign_orders\Order;
 
 /**
  * Centralise les états métier du workflow commandes.
