@@ -1778,6 +1778,11 @@ body.gin--sidebar-toolbar .gin-secondary-toolbar {
   padding-left: 0 !important;
 }
 
+/* Décaler les actions sticky Gin pour éviter le recouvrement par la nav fixe */
+.odesign-gestionnaire .gin-sticky-form-actions {
+  top: 44px !important;
+}
+
 /* ─── Éléments droite de la nav bar ──────────────────────────────────────── */
 .odesign-admin-nav__right {
   display: flex;

@@ -77,6 +77,19 @@ fs.mkdirSync(outDir, { recursive: true });
   const submitDebug = await page.$$eval('input#edit-submit', (els) =>
     els.map((el, idx) => {
       const r = el.getBoundingClientRect();
+      const lineage = [];
+      let current = el.parentElement;
+      let depth = 0;
+      while (current && depth < 5) {
+        lineage.push({
+          tag: current.tagName.toLowerCase(),
+          cls: current.className || '',
+          position: window.getComputedStyle(current).position,
+          top: window.getComputedStyle(current).top,
+        });
+        current = current.parentElement;
+        depth++;
+      }
       return {
         idx,
         top: Math.round(r.top),
@@ -85,6 +98,7 @@ fs.mkdirSync(outDir, { recursive: true });
         height: Math.round(r.height),
         classes: (el.className || '').toString(),
         parent: el.closest('.region-sticky') ? 'region-sticky' : (el.closest('.form-actions') ? 'form-actions' : 'other'),
+        lineage,
       };
     })
   );
