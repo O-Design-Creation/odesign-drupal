@@ -2,6 +2,7 @@
 
 namespace Drupal\odesign_orders\Controller;
 
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Url;
 use Drupal\odesign_orders\Order\OrderWorkflowHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Redirection vers la liste des commandes à traiter.
  */
-class ActionableOrdersController {
+class ActionableOrdersController implements ContainerInjectionInterface {
 
   public function __construct(
     protected OrderWorkflowHelper $orderWorkflowHelper,
