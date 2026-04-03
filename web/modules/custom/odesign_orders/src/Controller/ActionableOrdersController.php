@@ -39,20 +39,7 @@ class ActionableOrdersController extends ControllerBase {
       '#orders'   => $orders,
       '#all_orders_url' => Url::fromRoute('entity.commerce_order.collection')->toString(),
       '#cache'    => ['max-age' => 0],
-      '#attached' => [
-        'html_head' => [[
-          [
-            '#type'       => 'html_tag',
-            '#tag'        => 'link',
-            '#attributes' => [
-              'rel'   => 'stylesheet',
-              'href'  => '/modules/custom/odesign_orders/css/orders.css',
-              'media' => 'all',
-            ],
-          ],
-          'odesign_orders_css',
-        ]],
-      ],
+      '#attached' => ['library' => ['odesign_orders/orders']],
     ];
   }
 

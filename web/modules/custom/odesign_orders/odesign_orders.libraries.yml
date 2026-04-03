@@ -1,0 +1,6 @@
+orders:
+  css:
+    theme:
+      css/orders.css: {}
+  dependencies:
+    - core/drupal

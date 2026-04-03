@@ -19,6 +19,12 @@
  * IMPORT (sur un environnement cible — appliqué automatiquement via hook_deploy_N) :
  *   drush dcdi --folder=web/modules/custom/odesign_admin/content
  *
+ * Comportement d'import (force_override = FALSE) :
+ *   - Nœud absent du site cible → créé
+ *   - Nœud présent avec UUID identique ET fichier plus récent → mis à jour
+ *   - Nœud présent avec UUID identique ET fichier moins récent → ignoré (modifications locales préservées)
+ *   - Pour forcer l'écrasement : drush dcdi --force-override
+ *
  * Bundles versionnés : node/page, node/guide
  * Format : HAL+JSON (default_content_deploy 2.x)
  * Commande d'export : drush dcde (default-content-deploy:export)
