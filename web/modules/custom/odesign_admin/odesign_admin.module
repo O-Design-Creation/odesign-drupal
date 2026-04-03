@@ -184,8 +184,7 @@ function odesign_admin_theme_registry_alter(array &$theme_registry): void {
 /**
  * Implémente hook_mail().
  *
- * Définit le contenu des emails de notification de statut commande
- * et de l'email de test depuis la page de configuration boutique.
+ * Définit l'email de test depuis la page de configuration boutique.
  */
 function odesign_admin_mail(string $key, array &$message, array $params): void {
   $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
@@ -204,12 +203,6 @@ function odesign_admin_mail(string $key, array &$message, array $params): void {
       . 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>'
       . '</table>';
     return;
-  }
-
-  // Compatibilité transitoire :
-  // les notifications commandes sont désormais gérées par odesign_orders.
-  if (function_exists('odesign_orders_mail')) {
-    odesign_orders_mail($key, $message, $params);
   }
 }
 
