@@ -58,7 +58,7 @@ class NewsletterHubController extends ControllerBase {
       'subscribers' => [
         '#type'       => 'link',
         '#title'      => $this->t('Voir tous les abonnés'),
-        '#url'        => Url::fromRoute('view.simplenews_subscribers.page_1'),
+        '#url'        => Url::fromRoute('entity.simplenews_subscriber.collection'),
         '#attributes' => ['class' => ['button', 'button--primary', 'odesign-hub__action-btn']],
       ],
       'export' => [
@@ -70,7 +70,7 @@ class NewsletterHubController extends ControllerBase {
       'settings' => [
         '#type'       => 'link',
         '#title'      => $this->t('Paramètres newsletter'),
-        '#url'        => Url::fromRoute('simplenews.newsletter_overview'),
+        '#url'        => Url::fromRoute('simplenews.newsletter_list'),
         '#attributes' => ['class' => ['button', 'odesign-hub__action-btn']],
       ],
     ];

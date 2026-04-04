@@ -317,7 +317,7 @@
                         {% if article.excerpt %}
                           <p class="home-bridge__article-excerpt">{{ article.excerpt }}</p>
                         {% endif %}
-                        <a href="{{ article.url }}" class="home-bridge__article-link">{{ 'Lire l’article'|t }}</a>
+                        <a href="{{ article.url }}" class="home-bridge__article-link">{{ 'Lire l\'article'|t }}</a>
                       </div>
                     {% endfor %}
                   </div>
@@ -370,9 +370,9 @@
           {% if is_catalogue_page %}
             <section class="catalogue-assist" aria-label="{{ 'Aide choix produit'|t }}">
               <p class="catalogue-assist__lead">
-                {{ 'Besoin d’aide pour choisir ou personnaliser un produit ?'|t }}
+                {{ 'Besoin d\'aide pour choisir ou personnaliser un produit ?'|t }}
               </p>
-              <a href="{{ catalogue_contact_url }}" class="catalogue-assist__link">{{ 'Contacter l’atelier'|t }}</a>
+              <a href="{{ catalogue_contact_url }}" class="catalogue-assist__link">{{ 'Contacter l\'atelier'|t }}</a>
             </section>
           {% endif %}
           {{ page.content }}
@@ -387,7 +387,7 @@
           <div class="newsletter-strip__inner">
             <div class="newsletter-strip__text">
               <h2 class="newsletter-strip__title">{{ 'Restez inspirée'|t }}</h2>
-              <p class="newsletter-strip__desc">{{ 'Recevez nos nouvelles créations, offres exclusives et actualités de l'atelier directement dans votre boîte mail.'|t }}</p>
+              <p class="newsletter-strip__desc">{{ 'Recevez nos nouvelles créations, offres exclusives et actualités de l\'atelier directement dans votre boîte mail.'|t }}</p>
             </div>
             <div class="newsletter-strip__form">
               {{ newsletter_form }}

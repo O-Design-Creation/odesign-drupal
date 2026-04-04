@@ -219,9 +219,10 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'weight'        => 45,
     'active_routes' => [
       'odesign_admin.newsletter',
-      'simplenews.newsletter_overview',
+      'simplenews.newsletter_list',
       'simplenews.newsletter_add',
       'entity.simplenews_newsletter.edit_form',
+      'entity.simplenews_subscriber.collection',
     ],
     'badge'         => NULL,
   ];
