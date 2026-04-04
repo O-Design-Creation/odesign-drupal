@@ -263,4 +263,47 @@
     }
   };
 
+  // Compense la hauteur du bandeau cookie sur mobile pour éviter qu'il
+  // chevauche le contenu bas de page (F-COOKIE-MOBILE).
+  Drupal.behaviors.odesignCookiePadding = {
+    attach: function (context) {
+      once('odesign-cookie-padding', 'body', context).forEach(function (body) {
+        var popup = document.getElementById('sliding-popup');
+        if (!popup) {
+          return;
+        }
+
+        function applyPadding() {
+          var rect = popup.getBoundingClientRect();
+          var visible = rect.height > 0 && getComputedStyle(popup).display !== 'none';
+          body.style.paddingBottom = visible ? rect.height + 'px' : '';
+        }
+
+        applyPadding();
+
+        var observer = new ResizeObserver(applyPadding);
+        observer.observe(popup);
+
+        var mutationObserver = new MutationObserver(applyPadding);
+        mutationObserver.observe(popup, { attributes: true, attributeFilter: ['style', 'class'] });
+      });
+    }
+  };
+
+  // Décode le lien email de contact depuis base64 pour éviter l'exposition
+  // en clair dans le DOM (F-CONTACT-EMAIL-VISIBLE).
+  Drupal.behaviors.odesignContactMailto = {
+    attach: function (context) {
+      once('odesign-contact-mailto', '.js-contact-mailto', context).forEach(function (el) {
+        try {
+          var email = atob(el.dataset.b64 || '');
+          if (email) {
+            el.href = 'mailto:' + email;
+            el.textContent = email;
+          }
+        } catch (e) {}
+      });
+    }
+  };
+
 })(Drupal, once, drupalSettings);

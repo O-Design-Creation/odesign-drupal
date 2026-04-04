@@ -58,10 +58,7 @@
                   role="tab"
                   aria-controls="{{ item.id }}"
                   aria-selected="{{ loop.first ? 'true' : 'false' }}"
-                  aria-label="{{ 'Afficher l’image %position sur %total'|t({
-                    '%position': loop.index,
-                    '%total': product_gallery_count
-                  }) }}"
+                  aria-label="{{ item.alt ?: 'Vue du produit'|t }}"
                 >
                   <img
                     src="{{ item.thumb_src }}"
