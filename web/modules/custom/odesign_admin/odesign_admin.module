@@ -518,8 +518,12 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
     }
   }
 
-  // Checkbox RGPD obligatoire sur le formulaire d'abonnement newsletter.
+  // Formulaire d'abonnement newsletter : une seule liste → champ de sélection superflu.
   if (str_starts_with($form_id, 'simplenews_subscriptions_block_')) {
+    // Masquer le sélecteur de listes (superflu avec une seule newsletter).
+    if (isset($form['subscriptions'])) {
+      $form['subscriptions']['#access'] = FALSE;
+    }
     $form['gdpr_consent'] = [
       '#type'          => 'checkbox',
       '#title'         => t("J'accepte de recevoir la newsletter de l'Atelier O Design et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
