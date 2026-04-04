@@ -730,48 +730,52 @@ strong { font-weight: 600; }
   min-width: 0;
 }
 
-/* Wrapper form Simplenews */
+/* Wrapper form Simplenews — grid email+bouton / RGPD en dessous */
 .newsletter-strip__form .simplenews-subscribe-form,
 .newsletter-strip__form form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "email button"
+    "gdpr  gdpr";
+  gap: var(--space-2) 0;
+  align-items: start;
 }
 
-/* Masquer le label (flottant ou visible) */
+/* Masquer label email (floating ou visible) */
 .newsletter-strip__form label[for*="mail"],
-.newsletter-strip__form .form-item--mail label {
+.newsletter-strip__form .form-item--mail label,
+.newsletter-strip__form .field--name-mail label {
   position: absolute;
   width: 1px; height: 1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
 }
 
-/* Masquer checkboxes de liste (une seule liste exposée) */
+/* Masquer description email + champs inutiles */
+.newsletter-strip__form .form-item--mail .description,
 .newsletter-strip__form .form-item--subscriptions,
 .newsletter-strip__form .form-checkboxes,
-.newsletter-strip__form .simplenews-subscriber-status {
-  display: none;
-}
-
-/* Masquer le bouton Aperçu */
+.newsletter-strip__form .simplenews-subscriber-status,
 .newsletter-strip__form #edit-preview,
 .newsletter-strip__form [data-drupal-selector="edit-preview"] {
   display: none !important;
 }
 
-/* Champ email + bouton flèche : positionnement relatif */
-.newsletter-strip__form .form-actions { display: none; }
-
-.newsletter-strip__form .form-item--mail {
-  position: relative;
+.newsletter-strip__form .form-item--mail,
+.newsletter-strip__form [data-drupal-selector="edit-mail-wrapper"],
+.newsletter-strip__form .field--name-mail {
+  grid-area: email;
   margin: 0;
 }
 
+/* Champ email */
 .newsletter-strip__form input[type="email"] {
   width: 100%;
-  padding: 14px 56px 14px 20px;
+  height: 50px;
+  padding: 0 20px;
   border: 1.5px solid var(--color-brand-beige);
-  border-radius: 2px;
+  border-right: none;
+  border-radius: 2px 0 0 2px;
   background: #fff;
   color: var(--color-text);
   font-family: var(--font-body);
@@ -789,65 +793,54 @@ strong { font-weight: 600; }
   border-color: var(--color-brand-dark);
 }
 
-/* Bouton flèche positionné DANS le champ */
+/* Bouton S'inscrire — zone button du grid */
+.newsletter-strip__form .form-actions {
+  grid-area: button;
+  margin: 0;
+  display: flex;
+  align-self: stretch;
+}
+
+/* Bouton S'inscrire — background SVG direct (input ne supporte pas ::after) */
 .newsletter-strip__form input[type="submit"],
 .newsletter-strip__form button[type="submit"] {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  width: 48px;
-  background: transparent;
-  border: none;
-  border-left: 1.5px solid var(--color-brand-beige);
-  color: var(--color-brand-dark);
+  height: 50px;
+  min-height: 50px;
+  min-width: 52px;
+  padding: 0 16px;
+  background-color: var(--color-brand-dark);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 14px 10px;
+  border: 1.5px solid var(--color-brand-dark);
+  border-radius: 0 2px 2px 0;
+  color: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background .15s, color .15s;
-  font-size: 0; /* masquer le texte "S'inscrire" */
-  padding: 0;
-}
-
-/* Flèche SVG via pseudo-élément */
-.newsletter-strip__form input[type="submit"]::after,
-.newsletter-strip__form button[type="submit"]::after {
-  content: '';
-  display: block;
-  width: 14px;
-  height: 10px;
-  background: currentColor;
-  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z' fill='currentColor'/%3E%3C/svg%3E");
-  mask-repeat: no-repeat;
-  mask-position: center;
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 14 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z' fill='currentColor'/%3E%3C/svg%3E");
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
+  font-size: 0;
+  transition: background-color .15s, border-color .15s;
 }
 
 .newsletter-strip__form input[type="submit"]:hover,
 .newsletter-strip__form button[type="submit"]:hover {
-  background: var(--color-brand-dark);
-  border-left-color: var(--color-brand-dark);
-  color: #fff;
+  background-color: var(--color-brand-warm);
+  border-color: var(--color-brand-warm);
 }
 
-/* Disclaimer anti-spam */
-.newsletter-strip__disclaimer {
-  font-size: 12px;
-  color: var(--color-text-light);
-  margin-top: var(--space-2);
-}
-
-/* Checkbox RGPD */
-.newsletter-strip__form .form-type--checkbox {
+/* Checkbox RGPD — pleine largeur sous le champ */
+.newsletter-strip__form .form-type--checkbox,
+.newsletter-strip__form .form-item-gdpr-consent {
+  grid-area: gdpr;
   display: flex;
   align-items: flex-start;
   gap: var(--space-2);
   font-size: 11px;
   color: var(--color-text-muted);
   line-height: 1.4;
+  margin-top: var(--space-1);
 }
 
 .newsletter-strip__form .form-type--checkbox input[type="checkbox"] {
@@ -868,6 +861,7 @@ strong { font-weight: 600; }
 
 /* Message de confirmation */
 .newsletter-strip__form .messages--status {
+  grid-column: 1 / -1;
   background: #f0f7ed;
   border: 1px solid #b8d4a8;
   border-radius: 2px;

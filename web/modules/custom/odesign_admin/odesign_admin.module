@@ -524,6 +524,36 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
     if (isset($form['subscriptions'])) {
       $form['subscriptions']['#access'] = FALSE;
     }
+    // Masquer le lien "Manage existing subscriptions" (dans actions, pas footer).
+    if (isset($form['actions']['manage'])) {
+      $form['actions']['manage']['#access'] = FALSE;
+    }
+    // Traduire le bouton "Subscribe" en français.
+    if (isset($form['actions']['submit'])) {
+      $form['actions']['submit']['#value'] = t("S'inscrire");
+    }
+    // Masquer le lien "Manage existing subscriptions" (inutile dans le bandeau).
+    if (isset($form['footer'])) {
+      $form['footer']['#access'] = FALSE;
+    }
+    // Masquer le message de description de la newsletter (en anglais, inutile).
+    if (isset($form['message'])) {
+      $form['message']['#access'] = FALSE;
+    }
+    // Masquer la description du champ email ("The subscriber's email address.").
+    if (isset($form['mail'])) {
+      $form['mail']['widget'][0]['value']['#description'] = '';
+      $form['mail']['widget'][0]['value']['#placeholder'] = t('Votre adresse e-mail');
+    }
+    // Placeholder de secours sur tous les champs email du formulaire.
+    array_walk_recursive($form, function (&$item) {
+      if (is_array($item) && ($item['#type'] ?? '') === 'email') {
+        $item['#description'] = '';
+        if (empty($item['#placeholder'])) {
+          $item['#placeholder'] = t('Votre adresse e-mail');
+        }
+      }
+    });
     $form['gdpr_consent'] = [
       '#type'          => 'checkbox',
       '#title'         => t("J'accepte de recevoir la newsletter de l'Atelier O Design et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
