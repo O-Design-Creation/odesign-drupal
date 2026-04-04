@@ -2992,9 +2992,8 @@ nav ul {
 
 .home-bridge__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-6);
-  align-items: start;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
 }
 
 .home-bridge__card {
@@ -3010,25 +3009,27 @@ nav ul {
   color: var(--color-text-muted);
 }
 
+/* Liens univers : rangée horizontale de pills */
 .home-bridge__links {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 .home-bridge__link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2);
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--color-text);
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .home-bridge__link:hover,
@@ -3038,12 +3039,16 @@ nav ul {
   color: var(--color-brand-dark);
 }
 
+/* Articles du blog : 3 colonnes côte à côte */
 .home-bridge__articles {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-4);
 }
 
 .home-bridge__article {
+  display: flex;
+  flex-direction: column;
   border: 1px solid rgba(139, 97, 81, 0.08);
   border-radius: var(--radius-md);
   padding: var(--space-4);
@@ -3066,7 +3071,7 @@ nav ul {
 
 .home-bridge__article-title {
   margin: 0 0 var(--space-2);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
 }
 
 .home-bridge__article-title a {
@@ -3082,12 +3087,15 @@ nav ul {
 .home-bridge__article-excerpt {
   margin: 0 0 var(--space-3);
   color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  flex: 1;
 }
 
 .home-bridge__article-link {
   font-size: var(--font-size-sm);
   font-weight: 600;
   text-decoration: none;
+  margin-top: auto;
 }
 
 .home-bridge__empty {
@@ -3260,7 +3268,7 @@ nav ul {
     grid-template-columns: 1fr;
   }
 
-  .home-bridge__grid {
+  .home-bridge__articles {
     grid-template-columns: 1fr;
   }
 }
