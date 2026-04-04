@@ -685,6 +685,7 @@ function odesign_base_preprocess_page(array &$variables): void {
     $contact_email = $shop_contact_email !== '' ? $shop_contact_email : 'odesigncrea@gmail.com';
     $variables['contact_email'] = $contact_email;
     $variables['contact_mailto'] = 'mailto:' . $contact_email;
+    $variables['contact_email_b64'] = base64_encode($contact_email);
     $variables['contact_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
   }
 
@@ -840,4 +841,22 @@ function odesign_base_preprocess_feed_icon(array &$variables): void {
   }
 
   $variables['title'] = Html::decodeEntities($variables['title']);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user_login_form.
+ *
+ * Ajoute un lien "Mot de passe oublié ?" sous le bouton de connexion (F-LOGIN-UX).
+ */
+function odesign_base_form_user_login_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, string $form_id): void {
+  $form['forgot_password'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => \Drupal\Core\Link::createFromRoute(
+      t('Mot de passe oublié ?'),
+      'user.pass'
+    )->toString(),
+    '#attributes' => ['class' => ['login-forgot-password']],
+    '#weight' => 100,
+  ];
 }
