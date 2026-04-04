@@ -2829,7 +2829,8 @@ nav ul {
 }
 
 .life-occasion-card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5);
   border-radius: var(--radius-xl);
@@ -2892,6 +2893,7 @@ nav ul {
 
 .life-occasion-card__actions {
   display: flex;
+  margin-top: auto;
 }
 
 .home-method {
@@ -3241,7 +3243,7 @@ nav ul {
   }
 
   .life-occasion-cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .home-method__grid {
