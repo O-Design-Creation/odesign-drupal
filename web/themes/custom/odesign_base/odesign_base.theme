@@ -687,6 +687,16 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['contact_mailto'] = 'mailto:' . $contact_email;
     $variables['contact_email_b64'] = base64_encode($contact_email);
     $variables['contact_catalogue_url'] = Url::fromUri('internal:/produits')->toString();
+
+    // Formulaire de contact (stocké en DB via contact_storage).
+    $contact_form_entity = \Drupal\contact\Entity\ContactForm::load('atelier_contact');
+    if ($contact_form_entity) {
+      $message = \Drupal::entityTypeManager()
+        ->getStorage('contact_message')
+        ->create(['contact_form' => $contact_form_entity->id()]);
+      $variables['contact_form'] = \Drupal::service('entity.form_builder')
+        ->getForm($message);
+    }
   }
 
   $route_term = \Drupal::routeMatch()->getParameter('taxonomy_term');
