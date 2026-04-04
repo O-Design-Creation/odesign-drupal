@@ -412,7 +412,7 @@ display:
           plugin_id: text
           empty: true
           content:
-            value: 'No invoices yet.'
+            value: "Aucune facture pour l'instant."
             format: basic_html
           tokenize: false
       sorts:

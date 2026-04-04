@@ -138,7 +138,7 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: field
-          label: 'Content Type'
+          label: 'Type de contenu'
           exclude: false
           alter:
             alter_text: false
@@ -979,7 +979,7 @@ display:
       tags: {  }
   overview:
     id: overview
-    display_title: 'Content Overview'
+    display_title: "Vue d'ensemble du contenu"
     display_plugin: page
     position: 1
     display_options:

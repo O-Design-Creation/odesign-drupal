@@ -9,7 +9,7 @@ dependencies:
 _core:
   default_config_hash: 4vPoEf0sm7UZ8BTWQ_nXtRwKb9YgrGVzVDuAMbFbiE8
 id: order_shipments
-label: 'Order shipments'
+label: 'Expéditions de la commande'
 module: views
 description: ''
 tag: ''
@@ -22,7 +22,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Order shipments'
+      title: 'Expéditions de la commande'
       fields:
         title:
           id: title

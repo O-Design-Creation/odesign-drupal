@@ -155,10 +155,10 @@
                 {{ 'Des créations en bois personnalisées pour les moments qui comptent.'|t }}
               </h1>
               <p class="home-hero__intro">
-                {{ 'Le site guide d’abord vers les grandes occasions de vie, pour aider les clients à trouver plus vite une idée juste, lisible et simple à personnaliser.'|t }}
+                {{ 'Bois gravé, découpé, personnalisé à votre image — pour les mariages, les naissances et tous les moments qui méritent un cadeau unique.'|t }}
               </p>
               <div class="home-hero__actions">
-                <a href="#home-universes-quick" class="btn btn--primary">{{ 'Voir les univers'|t }}</a>
+                <a href="#home-universes" class="btn btn--primary">{{ 'Voir les univers'|t }}</a>
                 <a href="{{ front_catalogue_url }}" class="btn btn--secondary">{{ 'Voir tout le catalogue'|t }}</a>
               </div>
             </div>
@@ -167,56 +167,21 @@
               <ul class="home-hero__highlights">
                 <li>{{ 'Atelier réel, fabrication soignée et personnalisations lisibles.'|t }}</li>
                 <li>{{ 'Univers pensés pour le mariage, la naissance et les cadeaux personnalisés.'|t }}</li>
-                <li>{{ 'Base simple à enrichir ensuite avec campagnes et mises en avant saisonnières.'|t }}</li>
+                <li>{{ 'Chaque création est réalisée avec soin dans notre atelier, en France.'|t }}</li>
               </ul>
             </aside>
           </div>
         </section>
 
-        <section id="home-universes-quick" class="home-universe-quick">
-          <div class="container">
-            <div class="section-heading">
-              <div>
-                <p class="section-heading__eyebrow">{{ 'Univers avec photo'|t }}</p>
-                <h2 class="section-heading__title">{{ 'Choisir rapidement votre univers'|t }}</h2>
-              </div>
-              <p class="section-heading__meta">
-                {{ 'Un accès direct dès le haut de page, puis des blocs détaillés juste après.'|t }}
-              </p>
-            </div>
-
-            <ul class="home-universe-quick__grid">
-              {% for item in front_featured_life_occasions %}
-                <li>
-                  <a href="{{ item.url }}" class="home-universe-quick__card">
-                    {% if item.preview_image_url %}
-                      <span class="home-universe-quick__media">
-                        <img
-                          src="{{ item.preview_image_url }}"
-                          alt="{{ item.title }}"
-                          loading="lazy"
-                          decoding="async"
-                        >
-                      </span>
-                    {% endif %}
-                    <span class="home-universe-quick__title">{{ item.title }}</span>
-                    <span class="home-universe-quick__cta">{{ 'Explorer'|t }} ›</span>
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </section>
 
         <section id="home-universes" class="home-universes">
           <div class="container">
             <div class="section-heading">
               <div>
-                <p class="section-heading__eyebrow">{{ 'Entrées principales'|t }}</p>
                 <h2 class="section-heading__title">{{ 'Choisir par occasion de vie'|t }}</h2>
               </div>
               <p class="section-heading__meta">
-                {{ 'Une structure plus simple pour les clients et plus facile à piloter pour la boutique.'|t }}
+                
               </p>
             </div>
 
@@ -257,12 +222,6 @@
                     </ul>
                   {% endif %}
 
-                  {% if card.product_teasers %}
-                    <div class="product-grid product-grid--compact">
-                      {{ card.product_teasers }}
-                    </div>
-                  {% endif %}
-
                   <div class="life-occasion-card__actions">
                     <a href="{{ card.url }}" class="btn btn--secondary">{{ 'Explorer cet univers'|t }}</a>
                   </div>
@@ -296,7 +255,7 @@
 
               <article class="home-story-proof__card home-story-proof__card--video">
                 <div class="home-story-proof__content">
-                  <p class="section-heading__eyebrow">{{ 'Preuve atelier'|t }}</p>
+                  <p class="section-heading__eyebrow">{{ 'Dans les coulisses'|t }}</p>
                   <h2 class="section-heading__title">{{ front_story_video_title }}</h2>
                   <p>{{ front_story_video_text }}</p>
                 </div>
@@ -370,31 +329,6 @@
           </div>
         </section>
 
-        <section class="home-method">
-          <div class="container">
-            <div class="section-heading">
-              <div>
-                <p class="section-heading__eyebrow">{{ 'Méthode simple'|t }}</p>
-                <h2 class="section-heading__title">{{ 'Un socle facile à faire vivre'|t }}</h2>
-              </div>
-            </div>
-
-            <div class="home-method__grid">
-              <article class="home-method__item">
-                <h3>{{ '1. Faire vivre les univers'|t }}</h3>
-                <p>{{ 'La gestionnaire édite surtout les introductions, les réassurances et les produits mis en avant via les termes “Occasions de vie”.'|t }}</p>
-              </article>
-              <article class="home-method__item">
-                <h3>{{ '2. Enrichir sans refondre'|t }}</h3>
-                <p>{{ 'La homepage s’alimente automatiquement avec les produits déjà rangés dans chaque univers, sans duplication de contenu.'|t }}</p>
-              </article>
-              <article class="home-method__item">
-                <h3>{{ '3. Préparer la saisonnalité'|t }}</h3>
-                <p>{{ 'Cette structure pourra ensuite accueillir des temps forts et des mises en avant saisonnières sans casser la navigation.'|t }}</p>
-              </article>
-            </div>
-          </div>
-        </section>
       {% else %}
         <div class="container">
           {% if is_contact_page %}
