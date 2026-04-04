@@ -341,13 +341,13 @@
                 </p>
               </div>
               <div class="contact-hero__actions">
-                <a href="{{ contact_mailto }}" class="btn btn--primary">{{ 'Envoyer un email'|t }}</a>
+                <a href="#" class="btn btn--primary js-contact-mailto" data-b64="{{ contact_email_b64 }}">{{ 'Envoyer un email'|t }}</a>
                 <a href="{{ contact_catalogue_url }}" class="btn btn--secondary">{{ 'Voir le catalogue'|t }}</a>
               </div>
               <div class="contact-hero__quick">
                 <article class="contact-hero__card">
                   <h2>{{ 'Email'|t }}</h2>
-                  <p><a href="{{ contact_mailto }}">{{ contact_email }}</a></p>
+                  <p><a href="#" class="js-contact-mailto" data-b64="{{ contact_email_b64 }}">{{ 'Envoyer un email'|t }}</a></p>
                 </article>
                 <article class="contact-hero__card">
                   <h2>{{ 'Réponse'|t }}</h2>
