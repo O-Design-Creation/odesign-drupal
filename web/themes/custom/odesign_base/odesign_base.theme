@@ -154,7 +154,7 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
 
   $file_url_generator = \Drupal::service('file_url_generator');
   $full_style = ImageStyle::load('product_full');
-  $thumb_style = ImageStyle::load('thumbnail');
+  $thumb_style = ImageStyle::load('product_thumbnail');
   $gallery_items = [];
 
   foreach ($product->get('field_product_images')->referencedEntities() as $delta => $media) {
