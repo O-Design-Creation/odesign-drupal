@@ -2384,6 +2384,23 @@ textarea {
 }
 
 /* ---------------------------------------------------------------------------
+   25b. Panier vide
+   --------------------------------------------------------------------------- */
+.cart-empty-page {
+  padding: var(--space-12) var(--space-4);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.cart-empty-page__message {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+/* ---------------------------------------------------------------------------
    26. Corrections a11y — éléments Drupal générés automatiquement
    --------------------------------------------------------------------------- */
 
@@ -2614,7 +2631,8 @@ nav ul {
 }
 
 .home-hero__title {
-  max-width: 14ch;
+  max-width: 20ch;
+  font-size: clamp(1.55rem, 5vw, 2.25rem);
 }
 
 .home-hero__intro,
@@ -3242,5 +3260,30 @@ nav ul {
 
   .home-bridge__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile hero — image recadrée + titre allégé (R-03, R-04, R-05)
+   --------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* R-05 — recadrage image hero : top visible, produits ne disparaissent plus */
+  .home-hero--with-image {
+    background-position-y: 20%;
+  }
+
+  /* R-05 bis — image sombre : idem */
+  .home-hero--text-dark {
+    background-position-y: 20%;
+  }
+
+  /* R-03/R-04 — intro plus légère sur mobile */
+  .home-hero__intro {
+    font-size: var(--font-size-base);
+  }
+
+  /* R-07 — panel highlights masqué sur mobile pour alléger le hero */
+  .home-hero__panel {
+    display: none;
   }
 }
