@@ -299,7 +299,6 @@
           var email = atob(el.dataset.b64 || '');
           if (email) {
             el.href = 'mailto:' + email;
-            el.textContent = email;
           }
         } catch (e) {}
       });

@@ -358,6 +358,13 @@
                   <p>{{ 'Indiquez le produit, le texte et la date souhaitée.'|t }}</p>
                 </article>
               </div>
+
+              {% if contact_form is defined %}
+                <div class="contact-hero__form">
+                  <h2 class="contact-hero__form-title">{{ 'Envoyer un message'|t }}</h2>
+                  {{ contact_form }}
+                </div>
+              {% endif %}
             </section>
           {% endif %}
           {% if is_catalogue_page %}

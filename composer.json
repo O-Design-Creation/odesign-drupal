@@ -50,7 +50,8 @@
         "drupal/default_content": "^2.0.0-beta1",
         "drupal/default_content_deploy": "^2.1",
         "drupal/scheduler": "^2.0",
-        "drupal/easy_breadcrumb": "^2.0"
+        "drupal/easy_breadcrumb": "^2.0",
+        "drupal/contact_storage": "^1.5"
     },
     "config": {
         "allow-plugins": {

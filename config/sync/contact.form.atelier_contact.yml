@@ -1,0 +1,12 @@
+uuid: 7855a603-84f0-4d18-b203-330c67c441df
+langcode: fr
+status: true
+dependencies: {  }
+id: atelier_contact
+label: 'Formulaire de contact'
+recipients:
+  - odesigncrea@gmail.com
+reply: ''
+weight: 0
+message: 'Merci pour votre message. Atelier O Design vous répondra dans les plus brefs délais.'
+redirect: null
