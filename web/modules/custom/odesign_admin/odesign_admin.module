@@ -223,6 +223,8 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
       'simplenews.newsletter_add',
       'entity.simplenews_newsletter.edit_form',
       'entity.simplenews_subscriber.collection',
+      'entity.simplenews_subscriber.add_form',
+      'entity.simplenews_subscriber.edit_form',
     ],
     'badge'         => NULL,
   ];

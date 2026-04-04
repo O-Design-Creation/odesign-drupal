@@ -2,6 +2,12 @@ uuid: 01ad01f5-2db4-4c4a-9b2f-95792f949041
 langcode: en
 status: true
 dependencies:
+  config:
+    - filter.format.basic_html
+    - filter.format.full_html
+    - node.type.article
+    - node.type.simplenews_issue
+    - taxonomy.vocabulary.life_occasion
   module:
     - commerce
     - commerce_checkout
@@ -11,11 +17,15 @@ dependencies:
     - commerce_product
     - commerce_promotion
     - commerce_store
+    - content_moderation
     - eu_cookie_compliance
+    - filter
     - media
     - node
     - odesign_admin
+    - simplenews
     - system
+    - taxonomy
     - toolbar
 id: gestionnaire_boutique
 label: 'Gestionnaire boutique'
@@ -39,13 +49,17 @@ permissions:
   - 'add commerce_log commerce_order admin comment'
   - 'administer commerce_invoice'
   - 'administer odesign boutique'
+  - 'administer simplenews subscriptions'
   - 'create article content'
   - 'create default commerce_product'
   - 'create media'
+  - 'create simplenews_issue content'
   - 'create terms in life_occasion'
   - 'delete any article content'
+  - 'delete own simplenews_issue content'
   - 'display eu cookie compliance popup'
   - 'edit any article content'
+  - 'edit any simplenews_issue content'
   - 'edit terms in life_occasion'
   - 'manage default commerce_order_item'
   - 'manage default commerce_product_variation'
@@ -66,4 +80,6 @@ permissions:
   - 'view default commerce_product'
   - 'view media'
   - 'view own unpublished commerce_product'
+  - 'view simplenews subscriptions'
+  - 'view simplenews_issue revisions'
   - 'view the administration theme'

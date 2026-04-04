@@ -667,3 +667,190 @@
 .gin--sticky-table-header {
   display: none !important;
 }
+
+/* ─── Hub Newsletter ────────────────────────────────────────────────────────── */
+.odesign-hub__newsletter-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.odesign-hub__newsletter-stats {
+  display: flex;
+  gap: 16px;
+}
+
+.odesign-hub__newsletter-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 24px;
+  background: #fff;
+  border: 1px solid var(--color-border, #e8e0d5);
+  border-radius: 10px;
+  min-width: 130px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
+}
+
+.odesign-hub__newsletter-stat i {
+  font-size: 1.6rem;
+  color: var(--color-text-muted, #6b4e44);
+  margin-bottom: 2px;
+}
+
+.odesign-hub__newsletter-stat--highlight {
+  border-color: var(--color-brand-medium, #BB7570);
+  background: linear-gradient(135deg, #fff 0%, #fdf6f5 100%);
+}
+
+.odesign-hub__newsletter-stat--highlight i {
+  color: var(--color-brand-medium, #BB7570);
+}
+
+.odesign-hub__newsletter-stat .odesign-hub__stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-brand-dark, #4E2620);
+  line-height: 1;
+}
+
+.odesign-hub__newsletter-stat .odesign-hub__stat-label {
+  font-size: 0.72rem;
+  color: var(--color-text-muted, #6b4e44);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 600;
+}
+
+.odesign-hub__newsletter-actions {
+  align-self: center;
+}
+
+/* Subscriber list */
+.odesign-hub__subscriber-list {
+  border: 1px solid var(--color-border, #e8e0d5);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.odesign-hub__subscriber-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border-light, #ecddd5);
+  background: #fff;
+  transition: background .12s;
+}
+
+.odesign-hub__subscriber-row:last-child {
+  border-bottom: none;
+}
+
+.odesign-hub__subscriber-row:hover {
+  background: #faf7f5;
+}
+
+.odesign-hub__subscriber-email {
+  font-size: .9rem;
+  color: var(--color-text, #1a1210);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.odesign-hub__subscriber-email i {
+  color: var(--color-brand-medium, #BB7570);
+  font-size: 1rem;
+}
+
+.odesign-hub__subscriber-date {
+  font-size: .78rem;
+  color: var(--color-text-muted, #6b4e44);
+  white-space: nowrap;
+}
+
+.odesign-hub__subscriber-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.odesign-hub__section-footer {
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* Empty state newsletter */
+.odesign-hub__empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--color-text-muted, #6b4e44);
+}
+
+.odesign-hub__empty-state i {
+  font-size: 2.5rem;
+  color: var(--color-border, #e8e0d5);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.odesign-hub__empty-state p {
+  margin: 0 0 6px;
+  font-size: .95rem;
+}
+
+.odesign-hub__empty-hint {
+  font-size: .82rem !important;
+  color: var(--color-text-light, #a08070) !important;
+}
+
+/* Encart RGPD */
+.odesign-hub__info-box--rgpd {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 28px;
+  padding: 16px 20px;
+  background: #f6f9f3;
+  border: 1px solid #b8d4a8;
+  border-radius: 8px;
+  font-size: .85rem;
+  color: #3a5a30;
+}
+
+.odesign-hub__info-box--rgpd i {
+  font-size: 1.4rem;
+  color: #5a8a4a;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.odesign-hub__info-box--rgpd strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: .88rem;
+}
+
+.odesign-hub__info-box--rgpd p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .odesign-hub__newsletter-header {
+    flex-direction: column;
+  }
+  .odesign-hub__newsletter-stats {
+    flex-wrap: wrap;
+  }
+  .odesign-hub__subscriber-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
