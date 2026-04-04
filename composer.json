@@ -51,7 +51,8 @@
         "drupal/default_content_deploy": "^2.1",
         "drupal/scheduler": "^2.0",
         "drupal/easy_breadcrumb": "^2.0",
-        "drupal/contact_storage": "^1.5"
+        "drupal/contact_storage": "^1.5",
+        "drupal/simplenews": "^4.1"
     },
     "config": {
         "allow-plugins": {

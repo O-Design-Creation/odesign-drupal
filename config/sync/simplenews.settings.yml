@@ -1,0 +1,45 @@
+_core:
+  default_config_hash: MQ_4kFOzBybKzwsUyT-FJLe20MzZj0tGSPLqXTWQJcg
+langcode: fr
+hash_expiration: 86400
+newsletter:
+  issue_tokens: false
+  format: plain
+  priority: 0
+  receipt: true
+  from_address: admin@example.com
+  from_name: 'ODesign Drupal'
+subscriber:
+  sync_fields: true
+subscription:
+  skip_verification: false
+  tidy_unconfirmed: 7
+  confirm_subject: 'Confirmez votre inscription — Atelier O Design'
+  confirm_body: |-
+    Bonjour,
+
+    Nous avons bien reçu votre demande d'inscription à la newsletter de l'Atelier O Design pour l'adresse [simplenews-subscriber:mail].
+
+    Pour confirmer votre inscription, cliquez sur le lien ci-dessous :
+    [simplenews-subscriber:confirm-url]
+
+    Si vous n'avez pas effectué cette demande, ignorez simplement cet email.
+
+    L'équipe Atelier O Design
+  confirm_subscribe_page: ''
+  confirm_unsubscribe_page: ''
+  validate_subject: 'Gérer vos préférences — Atelier O Design'
+  validate_body: |-
+    Bonjour,
+
+    Pour gérer vos préférences newsletter pour [simplenews-subscriber:mail], cliquez sur le lien ci-dessous :
+    [simplenews-subscriber:manage-url]
+
+    L'équipe Atelier O Design
+mail:
+  use_cron: true
+  textalt: false
+  throttle: 20
+  spool_progress_expiration: 3600
+  spool_expire: 0
+  debug: false

@@ -665,8 +665,29 @@ function odesign_base_build_latest_article_items(int $limit = 3): array {
  * Implements hook_preprocess_page().
  */
 function odesign_base_preprocess_page(array &$variables): void {
-  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+  $is_admin = \Drupal::service('router.admin_context')->isAdminRoute();
+
+  if ($is_admin) {
     $variables['attributes']['class'][] = 'page-admin';
+  }
+
+  // Bandeau newsletter : injecté sur toutes les pages publiques.
+  if (!$is_admin && \Drupal::moduleHandler()->moduleExists('simplenews')) {
+    try {
+      $block_manager = \Drupal::service('plugin.manager.block');
+      $nl_block = $block_manager->createInstance('simplenews_subscription_block', [
+        'newsletters'         => ['nouveautes_atelier' => 'nouveautes_atelier'],
+        'default_newsletters' => ['nouveautes_atelier' => 'nouveautes_atelier'],
+        'unique_id'           => 'newsletter_footer_strip',
+      ]);
+      $variables['newsletter_form'] = $nl_block->build();
+    }
+    catch (\Exception) {
+      $variables['newsletter_form'] = NULL;
+    }
+  }
+  else {
+    $variables['newsletter_form'] = NULL;
   }
 
   $current_route = \Drupal::routeMatch()->getRouteName();

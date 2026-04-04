@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "765456acf1b9f37f874957088de25d6b",
+    "content-hash": "1b3809118e4931d89069a5923602b550",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4385,6 +4385,74 @@
             "support": {
                 "source": "https://cgit.drupalcode.org/simple_sitemap",
                 "issues": "https://drupal.org/project/issues/simple_sitemap"
+            }
+        },
+        {
+            "name": "drupal/simplenews",
+            "version": "4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/simplenews.git",
+                "reference": "4.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/simplenews-4.1.1.zip",
+                "reference": "4.1.1",
+                "shasum": "ac11ab316c60837068de2c658a25343e27b0b503"
+            },
+            "require": {
+                "drupal/core": "^10 || ^11"
+            },
+            "require-dev": {
+                "drupal/monitoring": "^1.10",
+                "drupal/token": "^1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "4.1.1",
+                    "datestamp": "1752745470",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "adamps",
+                    "homepage": "https://www.drupal.org/user/2650563"
+                },
+                {
+                    "name": "AlexisWilke",
+                    "homepage": "https://www.drupal.org/user/356197"
+                },
+                {
+                    "name": "berdir",
+                    "homepage": "https://www.drupal.org/user/214652"
+                },
+                {
+                    "name": "miro_dietiker",
+                    "homepage": "https://www.drupal.org/user/227761"
+                },
+                {
+                    "name": "simon georges",
+                    "homepage": "https://www.drupal.org/user/172312"
+                },
+                {
+                    "name": "sutharsan",
+                    "homepage": "https://www.drupal.org/user/73854"
+                }
+            ],
+            "description": "Simplenews publishes and sends newsletters to lists of subscribers",
+            "homepage": "https://www.drupal.org/project/simplenews",
+            "support": {
+                "source": "https://git.drupalcode.org/project/simplenews"
             }
         },
         {
@@ -10032,5 +10100,5 @@
     "platform-overrides": {
         "php": "8.3"
     },
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }

@@ -7,6 +7,7 @@ dependencies:
     - commerce_product
     - eu_cookie_compliance
     - media
+    - simplenews
     - system
 _core:
   default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
@@ -18,5 +19,6 @@ permissions:
   - 'access checkout'
   - 'access content'
   - 'display eu cookie compliance popup'
+  - 'subscribe to newsletters'
   - 'view commerce_product'
   - 'view media'

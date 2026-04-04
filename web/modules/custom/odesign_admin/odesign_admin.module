@@ -212,6 +212,19 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     ],
     'badge'         => NULL,
   ];
+  $items['newsletter'] = [
+    'label'         => 'Newsletter',
+    'icon'          => 'ph-envelope-simple',
+    'route'         => 'odesign_admin.newsletter',
+    'weight'        => 45,
+    'active_routes' => [
+      'odesign_admin.newsletter',
+      'simplenews.newsletter_overview',
+      'simplenews.newsletter_add',
+      'entity.simplenews_newsletter.edit_form',
+    ],
+    'badge'         => NULL,
+  ];
   $items['configuration'] = [
     'label'         => 'Configuration',
     'icon'          => 'ph-gear',
@@ -270,6 +283,29 @@ function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): vo
     'icon'      => 'ph-article',
     'highlight' => FALSE,
     'weight'    => 30,
+  ];
+
+  // Card newsletter : nombre d'abonnés confirmés.
+  try {
+    $total_subscribers = (int) \Drupal::entityQuery('simplenews_subscriber')
+      ->condition('status', 1)
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $newsletter_url = Url::fromRoute('odesign_admin.newsletter')->toString();
+  }
+  catch (\Exception) {
+    $total_subscribers = 0;
+    $newsletter_url = '/admin/boutique';
+  }
+
+  $cards['newsletter'] = [
+    'title'     => 'Abonnés newsletter',
+    'value'     => $total_subscribers,
+    'url'       => $newsletter_url,
+    'icon'      => 'ph-envelope-simple',
+    'highlight' => FALSE,
+    'weight'    => 35,
   ];
 }
 
@@ -477,6 +513,17 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
         $form[$technical_key]['#access'] = FALSE;
       }
     }
+  }
+
+  // Checkbox RGPD obligatoire sur le formulaire d'abonnement newsletter.
+  if (str_starts_with($form_id, 'simplenews_subscriptions_block_')) {
+    $form['gdpr_consent'] = [
+      '#type'          => 'checkbox',
+      '#title'         => t("J'accepte de recevoir la newsletter de l'Atelier O Design et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
+      '#required'      => TRUE,
+      '#weight'        => 5,
+      '#attributes'    => ['class' => ['newsletter-gdpr-checkbox']],
+    ];
   }
 
   // Ajouter des aides sur le formulaire promotion.

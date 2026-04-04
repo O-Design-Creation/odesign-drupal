@@ -341,13 +341,13 @@
                 </p>
               </div>
               <div class="contact-hero__actions">
-                <a href="#" class="btn btn--primary js-contact-mailto" data-b64="{{ contact_email_b64 }}">{{ 'Envoyer un email'|t }}</a>
+                <a href="#contact-form" class="btn btn--primary">{{ 'Envoyer un message'|t }}</a>
                 <a href="{{ contact_catalogue_url }}" class="btn btn--secondary">{{ 'Voir le catalogue'|t }}</a>
               </div>
               <div class="contact-hero__quick">
                 <article class="contact-hero__card">
-                  <h2>{{ 'Email'|t }}</h2>
-                  <p><a href="#" class="js-contact-mailto" data-b64="{{ contact_email_b64 }}">{{ 'Envoyer un email'|t }}</a></p>
+                  <h2>{{ 'Formulaire'|t }}</h2>
+                  <p>{{ 'Remplissez le formulaire ci-dessous.'|t }}</p>
                 </article>
                 <article class="contact-hero__card">
                   <h2>{{ 'Réponse'|t }}</h2>
@@ -360,7 +360,7 @@
               </div>
 
               {% if contact_form is defined %}
-                <div class="contact-hero__form">
+                <div id="contact-form" class="contact-hero__form">
                   <h2 class="contact-hero__form-title">{{ 'Envoyer un message'|t }}</h2>
                   {{ contact_form }}
                 </div>
@@ -379,6 +379,23 @@
         </div>
       {% endif %}
     </main>
+
+    {# Bandeau newsletter — affiché sur toutes les pages publiques #}
+    {% if newsletter_form %}
+      <section class="newsletter-strip" aria-label="{{ 'Inscription à la newsletter'|t }}">
+        <div class="container">
+          <div class="newsletter-strip__inner">
+            <div class="newsletter-strip__text">
+              <h2 class="newsletter-strip__title">{{ 'Restez inspirée'|t }}</h2>
+              <p class="newsletter-strip__desc">{{ 'Recevez nos nouvelles créations, offres exclusives et actualités de l'atelier directement dans votre boîte mail.'|t }}</p>
+            </div>
+            <div class="newsletter-strip__form">
+              {{ newsletter_form }}
+            </div>
+          </div>
+        </div>
+      </section>
+    {% endif %}
 
     {# Footer #}
     <footer class="site-footer" role="contentinfo">

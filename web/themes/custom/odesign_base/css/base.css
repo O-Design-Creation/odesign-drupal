@@ -684,6 +684,175 @@ strong { font-weight: 600; }
 .messages--warning { background: #fff8f0; border-left: 4px solid var(--color-warning); color: var(--color-warning); }
 .messages--error   { background: #fff0f0; border-left: 4px solid var(--color-error);   color: var(--color-error); }
 
+
+/* ---------------------------------------------------------------------------
+   10b. Newsletter strip
+   --------------------------------------------------------------------------- */
+
+.newsletter-strip {
+  background: var(--color-brand-warm);
+  color: #fff;
+  padding: var(--space-10) 0;
+}
+
+.newsletter-strip__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.newsletter-strip__title {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 var(--space-2);
+  letter-spacing: .02em;
+}
+
+.newsletter-strip__desc {
+  font-size: var(--font-size-sm);
+  color: rgba(255,255,255,.85);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Formulaire Simplenews intégré dans le bandeau */
+.newsletter-strip__form .simplenews-subscribe-form,
+.newsletter-strip__form form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Masquer le label "Adresse e-mail" (rôle évident dans ce contexte) */
+.newsletter-strip__form .form-item--mail label,
+.newsletter-strip__form label[for*="mail"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}
+
+/* Masquer les checkboxes de sélection de liste (une seule liste) */
+.newsletter-strip__form .form-item--subscriptions,
+.newsletter-strip__form .form-checkboxes,
+.newsletter-strip__form .simplenews-subscriber-status {
+  display: none;
+}
+
+/* Champ email */
+.newsletter-strip__form .form-item--mail input[type="email"],
+.newsletter-strip__form input[type="email"] {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid rgba(255,255,255,.4);
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  transition: border-color .2s, background .2s;
+  box-sizing: border-box;
+}
+
+.newsletter-strip__form input[type="email"]::placeholder {
+  color: rgba(255,255,255,.6);
+}
+
+.newsletter-strip__form input[type="email"]:focus {
+  outline: none;
+  border-color: rgba(255,255,255,.8);
+  background: rgba(255,255,255,.2);
+}
+
+/* Checkbox RGPD */
+.newsletter-strip__form .form-item--gdpr-consent,
+.newsletter-strip__form .form-type--checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: 11px;
+  color: rgba(255,255,255,.8);
+  line-height: 1.4;
+}
+
+.newsletter-strip__form .form-type--checkbox input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: #fff;
+}
+
+.newsletter-strip__form .form-type--checkbox label {
+  font-size: 11px;
+  color: rgba(255,255,255,.8);
+}
+
+.newsletter-strip__form .form-type--checkbox a {
+  color: rgba(255,255,255,.9);
+  text-decoration: underline;
+}
+
+/* Bouton S'inscrire */
+.newsletter-strip__form .form-actions,
+.newsletter-strip__form .form-submit-wrapper {
+  margin: 0;
+}
+
+.newsletter-strip__form input[type="submit"],
+.newsletter-strip__form button[type="submit"] {
+  width: 100%;
+  padding: var(--space-3) var(--space-6);
+  background: #fff;
+  color: var(--color-brand-warm);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+
+.newsletter-strip__form input[type="submit"]:hover,
+.newsletter-strip__form button[type="submit"]:hover {
+  background: var(--color-brand-cream);
+  color: var(--color-brand-dark);
+}
+
+/* Message de confirmation après inscription */
+.newsletter-strip__form .messages--status {
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+/* Masquer le bouton Aperçu Simplenews */
+.newsletter-strip__form #edit-preview,
+.newsletter-strip__form [data-drupal-selector="edit-preview"] {
+  display: none !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .newsletter-strip__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .newsletter-strip__title {
+    font-size: var(--font-size-lg);
+  }
+}
+
 /* ---------------------------------------------------------------------------
    11. Footer
    --------------------------------------------------------------------------- */

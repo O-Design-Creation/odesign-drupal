@@ -1,0 +1,19 @@
+uuid: 4a5882d5-2dd9-4b85-a018-49fb9a208f13
+langcode: fr
+status: true
+dependencies: {  }
+name: 'Nouveautés Atelier O Design'
+id: nouveautes_atelier
+description: 'Recevez nos nouveaux produits, créations artisanales et offres exclusives.'
+format: plain
+priority: 0
+receipt: true
+from_name: 'Atelier O Design'
+subject: '{{ simplenews_issue.label }}'
+from_address: noreply@atelierodesign.fr
+hyperlinks: true
+allowed_handlers: {  }
+new_account: none
+access: default
+reason: ''
+weight: 0

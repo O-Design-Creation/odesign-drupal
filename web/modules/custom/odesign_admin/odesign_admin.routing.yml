@@ -38,6 +38,16 @@ odesign_admin.config:
   options:
     _admin_route: TRUE
 
+odesign_admin.newsletter:
+  path: '/admin/boutique/newsletter'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\NewsletterHubController::page'
+    _title: 'Newsletter'
+  requirements:
+    _permission: 'administer odesign boutique'
+  options:
+    _admin_route: TRUE
+
 odesign_admin.marketing_guide:
   path: '/admin/boutique/guide-marketing'
   defaults:
