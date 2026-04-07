@@ -1,0 +1,19 @@
+uuid: acbe7a43-112e-445e-bbc2-4637b59a0d2a
+langcode: fr
+status: true
+dependencies:
+  config:
+    - commerce_order.commerce_order_type.default
+    - field.storage.commerce_order.field_tracking_number
+id: commerce_order.default.field_tracking_number
+field_name: field_tracking_number
+entity_type: commerce_order
+bundle: default
+label: 'Numéro de suivi transporteur'
+description: "Numéro de tracking transmis au client dans l'email d'expédition."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

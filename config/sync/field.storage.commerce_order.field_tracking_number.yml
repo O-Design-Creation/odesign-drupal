@@ -1,0 +1,21 @@
+uuid: 9946f4d7-511b-4d86-90ed-caad7b1f3449
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: commerce_order.field_tracking_number
+field_name: field_tracking_number
+entity_type: commerce_order
+type: string
+settings:
+  max_length: 255
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

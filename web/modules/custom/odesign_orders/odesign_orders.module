@@ -52,6 +52,13 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
   $body .= '<p style="margin:0 0 24px;"><strong>Total</strong> : ' . htmlspecialchars($total) . '</p>';
 
   if (in_array($params['transition_id'] ?? '', ['ship', 'deliver'], TRUE)) {
+    $tracking = $order->hasField('field_tracking_number') ? ($order->get('field_tracking_number')->value ?? '') : '';
+    if ($tracking && ($params['transition_id'] === 'ship')) {
+      $body .= '<div style="background:#f9f0ec;border:1px solid #e4ddd5;border-radius:4px;padding:12px 16px;margin:0 0 20px;">';
+      $body .= '<p style="margin:0 0 4px;font-size:12px;color:#888;text-transform:uppercase;letter-spacing:.05em;">Numéro de suivi</p>';
+      $body .= '<p style="margin:0;font-size:16px;font-weight:bold;color:#3d2b1f;">' . htmlspecialchars($tracking) . '</p>';
+      $body .= '</div>';
+    }
     $order_url = \Drupal\Core\Url::fromRoute('entity.commerce_order.user_view', [
       'user' => $order->getCustomerId(),
       'commerce_order' => $order->id(),
@@ -312,6 +319,8 @@ function odesign_orders_theme(): array {
         'total'            => '',
         'currency'         => 'EUR',
         'transitions'      => [],
+        'tracking_number'  => '',
+        'tracking_url'     => '',
         'edit_url'         => '',
         'back_url'         => '',
       ],

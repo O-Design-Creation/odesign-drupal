@@ -36,10 +36,9 @@ configuration:
       weight: 4
       message:
         value: |-
-          <p>Merci pour votre commande ! Votre numéro de commande est <strong>[commerce_order:order_number]</strong>.</p>
-          <p>Vous recevrez un email de confirmation dans quelques minutes.</p>
-          <p><a href="/user/[commerce_order:uid]/orders">Consulter mes commandes</a> &nbsp;|&nbsp; <a href="/produits">Retour à la boutique</a></p>
-        format: basic_html
+          Votre numéro de commande est [commerce_order:order_number].
+          Vous pouvez consulter votre commande dans votre espace personnel une fois connecté(e).
+        format: plain_text
       display_pane_summaries: true
     order_summary:
       step: _sidebar

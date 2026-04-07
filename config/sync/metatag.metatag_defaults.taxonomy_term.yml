@@ -8,9 +8,5 @@ id: taxonomy_term
 label: 'Terme de taxonomie'
 tags:
   canonical_url: '[term:url]'
-  description: '[term:field_intro]'
+  description: '[term:description]'
   title: '[term:name] | [site:name]'
-  og_title: '[term:name] | [site:name]'
-  og_description: '[term:field_intro]'
-  og_type: website
-  og_url: '[term:url]'

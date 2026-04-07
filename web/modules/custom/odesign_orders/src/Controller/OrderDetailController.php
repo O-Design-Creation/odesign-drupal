@@ -72,6 +72,8 @@ class OrderDetailController extends ControllerBase {
       '#total'      => $total_price ? number_format((float) $total_price->getNumber(), 2, ',', ' ') : '—',
       '#currency'   => $total_price ? $total_price->getCurrencyCode() : 'EUR',
       '#transitions' => $transitions,
+      '#tracking_number' => $order->hasField('field_tracking_number') ? ($order->get('field_tracking_number')->value ?? '') : '',
+      '#tracking_url'    => Url::fromRoute('odesign_orders.order_tracking', ['commerce_order' => $order->id()])->toString(),
       '#edit_url'   => Url::fromRoute('entity.commerce_order.edit_form', ['commerce_order' => $order->id()])->toString(),
       '#back_url'   => Url::fromRoute('odesign_orders.actionable_orders')->toString(),
       '#cache'      => ['max-age' => 0],
@@ -113,6 +115,31 @@ class OrderDetailController extends ControllerBase {
     }
     catch (\Exception $e) {
       $this->messenger()->addError('Erreur lors de la mise à jour : ' . $e->getMessage());
+    }
+
+    return new RedirectResponse(Url::fromRoute('odesign_orders.order_detail', ['commerce_order' => $commerce_order->id()])->toString());
+  }
+
+  /**
+   * Enregistre le numéro de suivi transporteur.
+   *
+   * Route : POST /admin/boutique/commandes/{commerce_order}/tracking
+   */
+  public function saveTracking(Request $request, OrderInterface $commerce_order): RedirectResponse {
+    $token = $request->request->get('token');
+    if (!\Drupal::csrfToken()->validate($token, 'tracking_' . $commerce_order->id())) {
+      $this->messenger()->addError('Action non autorisée.');
+      return new RedirectResponse(Url::fromRoute('odesign_orders.order_detail', ['commerce_order' => $commerce_order->id()])->toString());
+    }
+
+    $tracking = trim($request->request->get('tracking_number', ''));
+    if ($commerce_order->hasField('field_tracking_number')) {
+      $commerce_order->set('field_tracking_number', $tracking ?: NULL);
+      $commerce_order->save();
+      $this->messenger()->addStatus($tracking
+        ? 'Numéro de suivi enregistré : ' . $tracking
+        : 'Numéro de suivi supprimé.'
+      );
     }
 
     return new RedirectResponse(Url::fromRoute('odesign_orders.order_detail', ['commerce_order' => $commerce_order->id()])->toString());
