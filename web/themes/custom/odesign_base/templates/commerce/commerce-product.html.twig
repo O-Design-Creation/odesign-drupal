@@ -32,7 +32,12 @@
                 <img
                   src="{{ item.main_src }}"
                   alt="{{ item.alt }}"
+                  {% if item.width and item.height %}
+                  width="{{ item.width }}"
+                  height="{{ item.height }}"
+                  {% endif %}
                   loading="{{ loop.first ? 'eager' : 'lazy' }}"
+                  fetchpriority="{{ loop.first ? 'high' : 'auto' }}"
                   decoding="async"
                 >
               </figure>
@@ -83,12 +88,12 @@
 
     {# Colonne droite : informations produit #}
     <div class="product-info">
-      <h2 class="product-detail__title">{{ product_entity.label }}</h2>
+      <h1 class="product-detail__title">{{ product_entity.label }}</h1>
 
       {# Prix #}
       {%- set variation = product_entity.getDefaultVariation() -%}
       {%- if variation and variation.getPrice() -%}
-        <div class="product-detail__price" itemprop="price" content="{{ variation.getPrice().getNumber() }}">
+        <div class="product-detail__price">
           {{ variation.getPrice().getNumber()|number_format(2, ',', ' ') }}&nbsp;€
         </div>
         {% if variation.getPrice().getNumber() >= 50 %}

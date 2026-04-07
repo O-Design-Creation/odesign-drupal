@@ -201,16 +201,73 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
     $uri = $image->getFileUri();
 
     $gallery_items[] = [
-      'id' => 'product-gallery-image-' . $delta,
-      'alt' => trim((string) $image_item?->get('alt')->getString()) ?: $media->label(),
-      'main_src' => $full_style ? $full_style->buildUrl($uri) : $file_url_generator->generateString($uri),
+      'id'        => 'product-gallery-image-' . $delta,
+      'alt'       => trim((string) $image_item?->get('alt')->getString()) ?: $media->label(),
+      'main_src'  => $full_style ? $full_style->buildUrl($uri) : $file_url_generator->generateString($uri),
       'thumb_src' => $thumb_style ? $thumb_style->buildUrl($uri) : $file_url_generator->generateString($uri),
+      'width'     => (int) ($image_item?->width ?? 0),
+      'height'    => (int) ($image_item?->height ?? 0),
     ];
   }
 
   $variables['product_gallery_items'] = $gallery_items;
   $variables['product_gallery_count'] = count($gallery_items);
   $variables['product_gallery_has_multiple'] = count($gallery_items) > 1;
+
+  // JSON-LD Product + og:image — injectés en <head> via #attached.
+  $first_image_url = $gallery_items[0]['main_src'] ?? NULL;
+
+  $json_ld = [
+    '@context' => 'https://schema.org',
+    '@type'    => 'Product',
+    'name'     => $product->label(),
+    'brand'    => ['@type' => 'Brand', 'name' => 'Atelier O Design'],
+    'url'      => $product->toUrl('canonical', ['absolute' => TRUE])->toString(),
+  ];
+
+  if ($product->hasField('body') && !$product->get('body')->isEmpty()) {
+    $body_item = $product->get('body')->first();
+    $summary = trim((string) ($body_item->summary ?: strip_tags((string) ($body_item->value ?? ''))));
+    if ($summary !== '') {
+      $json_ld['description'] = $summary;
+    }
+  }
+
+  if ($gallery_items) {
+    $json_ld['image'] = array_column($gallery_items, 'main_src');
+  }
+
+  $variation = $product->getDefaultVariation();
+  if ($variation && $variation->getPrice()) {
+    $json_ld['offers'] = [
+      '@type'         => 'Offer',
+      'price'         => $variation->getPrice()->getNumber(),
+      'priceCurrency' => 'EUR',
+      'availability'  => 'https://schema.org/InStock',
+      'url'           => $product->toUrl('canonical', ['absolute' => TRUE])->toString(),
+    ];
+  }
+
+  $variables['#attached']['html_head'][] = [
+    [
+      '#type'       => 'html_tag',
+      '#tag'        => 'script',
+      '#attributes' => ['type' => 'application/ld+json'],
+      '#value'      => json_encode($json_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+    ],
+    'product_json_ld',
+  ];
+
+  if ($first_image_url) {
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type'       => 'html_tag',
+        '#tag'        => 'meta',
+        '#attributes' => ['property' => 'og:image', 'content' => $first_image_url],
+      ],
+      'og_image_product',
+    ];
+  }
 }
 
 /**
