@@ -56,3 +56,79 @@ function odesign_admin_deploy_001(): void {
   $deploy_manager = \Drupal::service('default_content_deploy.manager');
   $deploy_manager->importContent($content_dir, FALSE);
 }
+
+/**
+ * Implémente hook_deploy_N().
+ *
+ * Corrige les metatag des pages légales encore en DB avec des valeurs DDEV :
+ * - Supprime les canonicals pointant vers odesign-drupal.ddev.site
+ * - Supprime les og:site_name hardcodés (héritage global via [site:name])
+ * - Corrige les titres meta (ODesign Drupal → Atelier O Design)
+ * - Normalise la description de la politique de confidentialité
+ *
+ * Déclencheur : déploiement fix/seo-noindex-canonicals (2026-04-07).
+ */
+function odesign_admin_deploy_002(): void {
+  $aliases = [
+    '/cgv'                      => [
+      'title'       => 'Conditions Générales de Vente | Atelier O Design',
+      'description' => NULL,
+    ],
+    '/mentions-legales'         => [
+      'title'       => 'Mentions Légales | Atelier O Design',
+      'description' => NULL,
+    ],
+    '/politique-confidentialite' => [
+      'title'       => 'Politique de Confidentialité | Atelier O Design',
+      'description' => "Politique de confidentialité d'Atelier O Design : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD.",
+    ],
+  ];
+
+  $alias_manager  = \Drupal::service('path_alias.manager');
+  $entity_manager = \Drupal::entityTypeManager()->getStorage('node');
+
+  foreach ($aliases as $alias => $overrides) {
+    $system_path = $alias_manager->getPathByAlias($alias);
+    if (!preg_match('#^/node/(\d+)$#', $system_path, $m)) {
+      continue;
+    }
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $entity_manager->load((int) $m[1]);
+    if (!$node || !$node->hasField('metatag')) {
+      continue;
+    }
+
+    $metatag_field = $node->get('metatag');
+    $tags = $metatag_field->value ?? [];
+    if (!is_array($tags)) {
+      $tags = [];
+    }
+
+    // Supprimer canonical et og:site_name ; corriger title et description.
+    $cleaned = [];
+    foreach ($tags as $key => $value) {
+      if ($key === 'canonical_url') {
+        continue;
+      }
+      if ($key === 'og_site_name') {
+        continue;
+      }
+      if ($key === 'title') {
+        $value = $overrides['title'];
+      }
+      if ($key === 'og_title') {
+        $value = str_replace('ODesign Drupal', 'Atelier O Design', (string) $value);
+      }
+      if ($key === 'description' && $overrides['description'] !== NULL) {
+        $value = $overrides['description'];
+      }
+      if ($key === 'og_description' && $overrides['description'] !== NULL) {
+        $value = $overrides['description'];
+      }
+      $cleaned[$key] = $value;
+    }
+
+    $metatag_field->value = $cleaned;
+    $node->save();
+  }
+}

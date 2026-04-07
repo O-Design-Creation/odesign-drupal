@@ -1,221 +1,197 @@
 {
-    "_links": {
-        "self": {
-            "href": "https:\/\/odesign-drupal.ddev.site\/mentions-legales?_format=hal_json"
-        },
-        "type": {
-            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/node\/page"
-        },
-        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
-            {
-                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
-            }
-        ],
-        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
-            {
-                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json",
-                "lang": "fr"
-            }
-        ]
+  "_links": {
+    "self": {
+      "href": "https://odesign-drupal.ddev.site/mentions-legales?_format=hal_json"
     },
-    "nid": [
-        {
-            "value": 2
-        }
-    ],
-    "uuid": [
-        {
-            "value": "48b4a093-3269-4630-b44f-d2c8355e2751"
-        }
-    ],
-    "langcode": [
-        {
-            "value": "fr",
-            "lang": "fr"
-        }
-    ],
-    "type": [
-        {
-            "target_id": "page"
-        }
-    ],
-    "revision_timestamp": [
-        {
-            "value": "2026-03-31T11:00:55+00:00",
-            "format": "Y-m-d\\TH:i:sP"
-        }
-    ],
-    "_embedded": {
-        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
-                    }
-                ]
-            }
-        ],
-        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
-            {
-                "_links": {
-                    "self": {
-                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
-                    },
-                    "type": {
-                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
-                    }
-                },
-                "uuid": [
-                    {
-                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
-                    }
-                ],
-                "lang": "fr"
-            }
-        ]
+    "type": {
+      "href": "https://odesign-drupal.ddev.site/rest/type/node/page"
     },
-    "status": [
-        {
-            "value": true,
-            "lang": "fr"
-        }
+    "https://odesign-drupal.ddev.site/rest/relation/node/page/revision_uid": [
+      {
+        "href": "https://odesign-drupal.ddev.site/user/0?_format=hal_json"
+      }
     ],
-    "title": [
-        {
-            "value": "Mentions L\u00e9gales",
-            "lang": "fr"
-        }
-    ],
-    "created": [
-        {
-            "value": "2026-03-31T11:00:55+00:00",
-            "lang": "fr",
-            "format": "Y-m-d\\TH:i:sP"
-        }
-    ],
-    "changed": [
-        {
-            "value": "2026-03-31T13:23:56+00:00",
-            "lang": "fr",
-            "format": "Y-m-d\\TH:i:sP"
-        }
-    ],
-    "promote": [
-        {
-            "value": false,
-            "lang": "fr"
-        }
-    ],
-    "sticky": [
-        {
-            "value": false,
-            "lang": "fr"
-        }
-    ],
-    "default_langcode": [
-        {
-            "value": true,
-            "lang": "fr"
-        }
-    ],
-    "revision_translation_affected": [
-        {
-            "value": true,
-            "lang": "fr"
-        }
-    ],
-    "metatag": [
-        {
-            "tag": "meta",
-            "attributes": {
-                "name": "title",
-                "content": "Mentions L\u00e9gales | ODesign Drupal"
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "meta",
-            "attributes": {
-                "name": "description",
-                "content": "Mentions l\u00e9gales d'Atelier O Design : informations sur l'\u00e9diteur du site, l'h\u00e9bergeur, et les donn\u00e9es personnelles conform\u00e9ment \u00e0 la r\u00e9glementation fran\u00e7aise."
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "link",
-            "attributes": {
-                "rel": "canonical",
-                "href": "https:\/\/odesign-drupal.ddev.site\/mentions-legales"
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "meta",
-            "attributes": {
-                "property": "og:site_name",
-                "content": "ODesign Drupal"
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "meta",
-            "attributes": {
-                "property": "og:type",
-                "content": "article"
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "meta",
-            "attributes": {
-                "property": "og:url",
-                "content": "https:\/\/odesign-drupal.ddev.site\/mentions-legales"
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "meta",
-            "attributes": {
-                "property": "og:title",
-                "content": "Mentions L\u00e9gales"
-            },
-            "lang": "fr"
-        },
-        {
-            "tag": "meta",
-            "attributes": {
-                "property": "og:description",
-                "content": "Mentions l\u00e9gales d'Atelier O Design : informations sur l'\u00e9diteur du site, l'h\u00e9bergeur, et les donn\u00e9es personnelles conform\u00e9ment \u00e0 la r\u00e9glementation fran\u00e7aise."
-            },
-            "lang": "fr"
-        }
-    ],
-    "path": [
-        {
-            "alias": "\/mentions-legales",
-            "pid": 2,
-            "langcode": "fr",
-            "lang": "fr"
-        }
-    ],
-    "body": [
-        {
-            "value": "<h2>Mentions L\u00e9gales<\/h2>\n<p>Conform\u00e9ment aux dispositions des articles 6-III et 19 de la Loi n\u00b0 2004-575 du 21 juin 2004 pour la Confiance dans l'\u00e9conomie num\u00e9rique, dite L.C.E.N., les pr\u00e9sentes mentions l\u00e9gales sont port\u00e9es \u00e0 la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.<\/p>\n\n<h3>\u00c9diteur du site<\/h3>\n<p>Atelier O Design<br>\nEmail : odesigncrea@gmail.com<br>\n<em>(\u00c0 compl\u00e9ter : forme juridique, SIRET, adresse, capital social)<\/em><\/p>\n\n<h3>H\u00e9bergement<\/h3>\n<p>Ce site est h\u00e9berg\u00e9 par Pantheon Systems, Inc.<br>\n717 California Street, San Francisco, CA 94108, \u00c9tats-Unis<\/p>\n\n<h3>Propri\u00e9t\u00e9 intellectuelle<\/h3>\n<p>L'ensemble du contenu de ce site (textes, images, vid\u00e9os, cr\u00e9ations) est la propri\u00e9t\u00e9 exclusive d'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation pr\u00e9alable est interdite.<\/p>\n\n<h3>Donn\u00e9es personnelles<\/h3>\n<p>Conform\u00e9ment au RGPD et \u00e0 la loi Informatique et Libert\u00e9s, vous disposez d'un droit d'acc\u00e8s, de rectification et de suppression des donn\u00e9es vous concernant. Pour exercer ce droit : odesigncrea@gmail.com<\/p>\n\n<h3>Cookies<\/h3>\n<p>Ce site utilise des cookies n\u00e9cessaires \u00e0 son fonctionnement. Votre consentement est demand\u00e9 pour les cookies non essentiels.<\/p>",
-            "format": "basic_html",
-            "processed": "<h2>Mentions L\u00e9gales<\/h2>\n<p>Conform\u00e9ment aux dispositions des articles 6-III et 19 de la Loi n\u00b0 2004-575 du 21 juin 2004 pour la Confiance dans l'\u00e9conomie num\u00e9rique, dite L.C.E.N., les pr\u00e9sentes mentions l\u00e9gales sont port\u00e9es \u00e0 la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.<\/p>\n<h3>\u00c9diteur du site<\/h3>\n<p>Atelier O Design<br><br>\nEmail : odesigncrea@gmail.com<br><br>\n<em>(\u00c0 compl\u00e9ter : forme juridique, SIRET, adresse, capital social)<\/em><\/p>\n<h3>H\u00e9bergement<\/h3>\n<p>Ce site est h\u00e9berg\u00e9 par Pantheon Systems, Inc.<br><br>\n717 California Street, San Francisco, CA 94108, \u00c9tats-Unis<\/p>\n<h3>Propri\u00e9t\u00e9 intellectuelle<\/h3>\n<p>L'ensemble du contenu de ce site (textes, images, vid\u00e9os, cr\u00e9ations) est la propri\u00e9t\u00e9 exclusive d'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation pr\u00e9alable est interdite.<\/p>\n<h3>Donn\u00e9es personnelles<\/h3>\n<p>Conform\u00e9ment au RGPD et \u00e0 la loi Informatique et Libert\u00e9s, vous disposez d'un droit d'acc\u00e8s, de rectification et de suppression des donn\u00e9es vous concernant. Pour exercer ce droit : odesigncrea@gmail.com<\/p>\n<h3>Cookies<\/h3>\n<p>Ce site utilise des cookies n\u00e9cessaires \u00e0 son fonctionnement. Votre consentement est demand\u00e9 pour les cookies non essentiels.<\/p>\n",
-            "summary": "Mentions l\u00e9gales d'Atelier O Design : informations sur l'\u00e9diteur du site, l'h\u00e9bergeur, et les donn\u00e9es personnelles conform\u00e9ment \u00e0 la r\u00e9glementation fran\u00e7aise.",
-            "lang": "fr"
-        }
-    ],
-    "_dcd_metadata": {
-        "export_timestamp": 1775251697
+    "https://odesign-drupal.ddev.site/rest/relation/node/page/uid": [
+      {
+        "href": "https://odesign-drupal.ddev.site/user/0?_format=hal_json",
+        "lang": "fr"
+      }
+    ]
+  },
+  "nid": [
+    {
+      "value": 2
     }
+  ],
+  "uuid": [
+    {
+      "value": "48b4a093-3269-4630-b44f-d2c8355e2751"
+    }
+  ],
+  "langcode": [
+    {
+      "value": "fr",
+      "lang": "fr"
+    }
+  ],
+  "type": [
+    {
+      "target_id": "page"
+    }
+  ],
+  "revision_timestamp": [
+    {
+      "value": "2026-03-31T11:00:55+00:00",
+      "format": "Y-m-d\\TH:i:sP"
+    }
+  ],
+  "_embedded": {
+    "https://odesign-drupal.ddev.site/rest/relation/node/page/revision_uid": [
+      {
+        "_links": {
+          "self": {
+            "href": "https://odesign-drupal.ddev.site/user/0?_format=hal_json"
+          },
+          "type": {
+            "href": "https://odesign-drupal.ddev.site/rest/type/user/user"
+          }
+        },
+        "uuid": [
+          {
+            "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+          }
+        ]
+      }
+    ],
+    "https://odesign-drupal.ddev.site/rest/relation/node/page/uid": [
+      {
+        "_links": {
+          "self": {
+            "href": "https://odesign-drupal.ddev.site/user/0?_format=hal_json"
+          },
+          "type": {
+            "href": "https://odesign-drupal.ddev.site/rest/type/user/user"
+          }
+        },
+        "uuid": [
+          {
+            "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+          }
+        ],
+        "lang": "fr"
+      }
+    ]
+  },
+  "status": [
+    {
+      "value": true,
+      "lang": "fr"
+    }
+  ],
+  "title": [
+    {
+      "value": "Mentions Légales",
+      "lang": "fr"
+    }
+  ],
+  "created": [
+    {
+      "value": "2026-03-31T11:00:55+00:00",
+      "lang": "fr",
+      "format": "Y-m-d\\TH:i:sP"
+    }
+  ],
+  "changed": [
+    {
+      "value": "2026-03-31T13:23:56+00:00",
+      "lang": "fr",
+      "format": "Y-m-d\\TH:i:sP"
+    }
+  ],
+  "promote": [
+    {
+      "value": false,
+      "lang": "fr"
+    }
+  ],
+  "sticky": [
+    {
+      "value": false,
+      "lang": "fr"
+    }
+  ],
+  "default_langcode": [
+    {
+      "value": true,
+      "lang": "fr"
+    }
+  ],
+  "revision_translation_affected": [
+    {
+      "value": true,
+      "lang": "fr"
+    }
+  ],
+  "metatag": [
+    {
+      "tag": "meta",
+      "attributes": {
+        "name": "title",
+        "content": "Mentions Légales | Atelier O Design"
+      },
+      "lang": "fr"
+    },
+    {
+      "tag": "meta",
+      "attributes": {
+        "name": "description",
+        "content": "Mentions légales d'Atelier O Design : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française."
+      },
+      "lang": "fr"
+    },
+    {
+      "tag": "meta",
+      "attributes": {
+        "property": "og:type",
+        "content": "article"
+      },
+      "lang": "fr"
+    },
+    {
+      "tag": "meta",
+      "attributes": {
+        "property": "og:title",
+        "content": "Mentions Légales"
+      },
+      "lang": "fr"
+    },
+    {
+      "tag": "meta",
+      "attributes": {
+        "property": "og:description",
+        "content": "Mentions légales d'Atelier O Design : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française."
+      },
+      "lang": "fr"
+    }
+  ],
+  "path": [
+    {
+      "alias": "/mentions-legales",
+      "pid": 2,
+      "langcode": "fr",
+      "lang": "fr"
+    }
+  ],
+  "body": [
+    {
+      "value": "<h2>Mentions Légales</h2>\n<p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>\n\n<h3>Éditeur du site</h3>\n<p>Atelier O Design<br>\nEmail : odesigncrea@gmail.com<br>\n<em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>\n\n<h3>Hébergement</h3>\n<p>Ce site est hébergé par Pantheon Systems, Inc.<br>\n717 California Street, San Francisco, CA 94108, États-Unis</p>\n\n<h3>Propriété intellectuelle</h3>\n<p>L'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>\n\n<h3>Données personnelles</h3>\n<p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>\n\n<h3>Cookies</h3>\n<p>Ce site utilise des cookies nécessaires à son fonctionnement. Votre consentement est demandé pour les cookies non essentiels.</p>",
+      "format": "basic_html",
+      "processed": "<h2>Mentions Légales</h2>\n<p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>\n<h3>Éditeur du site</h3>\n<p>Atelier O Design<br><br>\nEmail : odesigncrea@gmail.com<br><br>\n<em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>\n<h3>Hébergement</h3>\n<p>Ce site est hébergé par Pantheon Systems, Inc.<br><br>\n717 California Street, San Francisco, CA 94108, États-Unis</p>\n<h3>Propriété intellectuelle</h3>\n<p>L'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>\n<h3>Données personnelles</h3>\n<p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>\n<h3>Cookies</h3>\n<p>Ce site utilise des cookies nécessaires à son fonctionnement. Votre consentement est demandé pour les cookies non essentiels.</p>\n",
+      "summary": "Mentions légales d'Atelier O Design : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française.",
+      "lang": "fr"
+    }
+  ],
+  "_dcd_metadata": {
+    "export_timestamp": 1775251697
+  }
 }
