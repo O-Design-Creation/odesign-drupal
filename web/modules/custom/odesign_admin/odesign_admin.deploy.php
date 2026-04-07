@@ -31,8 +31,6 @@
  * Commande d'import : drush dcdi (default-content-deploy:import)
  */
 
-use Drupal\default_content_deploy\DeployManager;
-
 /**
  * Implémente hook_deploy_N().
  *
@@ -52,9 +50,11 @@ function odesign_admin_deploy_001(): void {
     return;
   }
 
-  /** @var \Drupal\default_content_deploy\DeployManager $deploy_manager */
-  $deploy_manager = \Drupal::service('default_content_deploy.manager');
-  $deploy_manager->importContent($content_dir, FALSE);
+  /** @var \Drupal\default_content_deploy\ImporterInterface $importer */
+  $importer = \Drupal::service('default_content_deploy.importer');
+  $importer->setFolder($content_dir);
+  $importer->setForceOverride(FALSE);
+  $importer->import();
 }
 
 /**
