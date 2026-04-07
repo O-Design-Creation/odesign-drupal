@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Template détail commande — vue client (user view mode).
+ *
+ * Variables disponibles :
+ * - order        : champs rendus de la commande
+ * - order_entity : entité CommercOrderInterface
+ * - attributes   : attributs HTML du wrapper
+ */
+#}
+{% set order_number = order_entity.getOrderNumber() %}
+{% set order_date   = order_entity.getPlacedTime() ? order_entity.getPlacedTime()|date('d/m/Y') : '' %}
+{% set order_label  = order_number ? ('Commande N° ' ~ order_number)|t : ('Commande du ' ~ order_date)|t %}
+
+<article{{ attributes }}>
+  <h1 class="order-detail__title">{{ order_label }}</h1>
+
+  <nav class="order-detail__breadcrumb" aria-label="{{ 'Fil d\'Ariane'|t }}">
+    <a href="{{ path('view.commerce_user_orders.order_page', {'user': order_entity.getCustomerId()}) }}" class="order-detail__back-link">
+      ← {{ 'Retour à mes commandes'|t }}
+    </a>
+  </nav>
+
+  <div class="order-detail__status">
+    <span class="order-detail__status-label">{{ 'Statut'|t }} :</span>
+    <span class="order-detail__status-value order-status--{{ order_entity.getState().getId() }}">
+      {{ order_entity.getState().getLabel() }}
+    </span>
+  </div>
+
+  <div class="order-detail__body">
+    <div class="order-detail__customer">
+      {% if order.billing_information %}
+        <div class="order-detail__section">
+          <h2 class="order-detail__section-title">{{ 'Adresse de facturation'|t }}</h2>
+          {{ order.billing_information }}
+        </div>
+      {% endif %}
+      {% if order.shipping_information %}
+        <div class="order-detail__section">
+          <h2 class="order-detail__section-title">{{ 'Adresse de livraison'|t }}</h2>
+          {{ order.shipping_information }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="order-detail__items">
+      <h2 class="order-detail__section-title">{{ 'Articles commandés'|t }}</h2>
+      {{ order.order_items }}
+      <div class="order-detail__total">
+        {{ order.total_price }}
+      </div>
+    </div>
+  </div>
+</article>

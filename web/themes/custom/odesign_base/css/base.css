@@ -3696,3 +3696,125 @@ nav ul {
     display: none;
   }
 }
+
+/* =====================================================================
+   COMPTE CLIENT — Dashboard + Détail commande
+   ===================================================================== */
+
+/* Dashboard ----------------------------------------------------------- */
+.account-dashboard {
+  max-width: 680px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.account-dashboard__title {
+  font-size: 1.75rem;
+  color: var(--color-terracotta-dark, #4E2620);
+  margin-bottom: 1.5rem;
+}
+
+.account-dashboard__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.account-dashboard__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background: #fff;
+  border: 1px solid #e8d8d0;
+  border-radius: 8px;
+  color: #4E2620;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.account-dashboard__link:hover,
+.account-dashboard__link:focus {
+  background: #f9f0ec;
+  box-shadow: 0 2px 8px rgba(78,38,32,.12);
+  outline: 2px solid #BB7570;
+  outline-offset: 2px;
+}
+
+.account-dashboard__link--logout {
+  color: #666;
+  border-color: #ddd;
+}
+
+.account-dashboard__icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+/* Détail commande ----------------------------------------------------- */
+.order-detail__title {
+  font-size: 1.5rem;
+  color: #4E2620;
+  margin-bottom: 0.5rem;
+}
+
+.order-detail__back-link {
+  display: inline-block;
+  color: #8B4A45;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.order-detail__back-link:hover {
+  text-decoration: underline;
+}
+
+.order-detail__status {
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.order-detail__status-label {
+  font-weight: 600;
+  color: #555;
+  margin-right: 0.25rem;
+}
+
+.order-status--completed  { color: #2d7a2d; font-weight: 600; }
+.order-status--processing { color: #8a5200; font-weight: 600; }
+.order-status--draft      { color: #595959; }
+.order-status--canceled   { color: #c0392b; }
+
+.order-detail__body {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 640px) {
+  .order-detail__body { grid-template-columns: 1fr; }
+}
+
+.order-detail__section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4E2620;
+  border-bottom: 1px solid #e8d8d0;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.order-detail__total {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: right;
+  color: #4E2620;
+}

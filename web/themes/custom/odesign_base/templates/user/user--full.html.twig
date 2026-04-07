@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Tableau de bord client — vue "full" de l'entité user.
+ *
+ * Variables disponibles :
+ * - user_orders_url  : URL liste des commandes
+ * - user_profile_url : URL édition du profil
+ * - user_logout_url  : URL déconnexion
+ * - user             : entité UserInterface
+ */
+#}
+<section class="account-dashboard" aria-label="{{ 'Mon compte'|t }}">
+  <nav class="account-dashboard__nav" aria-label="{{ 'Navigation compte'|t }}">
+    <ul class="account-dashboard__links">
+      <li>
+        <a href="{{ user_orders_url }}" class="account-dashboard__link">
+          <span class="account-dashboard__icon" aria-hidden="true">📦</span>
+          {{ 'Mes commandes'|t }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ user_profile_url }}" class="account-dashboard__link">
+          <span class="account-dashboard__icon" aria-hidden="true">👤</span>
+          {{ 'Mon profil'|t }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ user_logout_url }}" class="account-dashboard__link account-dashboard__link--logout">
+          <span class="account-dashboard__icon" aria-hidden="true">🔓</span>
+          {{ 'Se déconnecter'|t }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</section>

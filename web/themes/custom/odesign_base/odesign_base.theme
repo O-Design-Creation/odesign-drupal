@@ -1141,3 +1141,35 @@ function odesign_base_preprocess_node(array &$variables): void {
     'node_article_json_ld_' . $node->id(),
   ];
 }
+
+/**
+ * Implements hook_preprocess_user().
+ *
+ * Injecte les variables de navigation du tableau de bord client.
+ */
+function odesign_base_preprocess_user(array &$variables): void {
+  $account = $variables['user'];
+  if (!($account instanceof \Drupal\user\UserInterface)) {
+    return;
+  }
+  $uid = $account->id();
+  $variables['user_orders_url']  = \Drupal\Core\Url::fromRoute('view.commerce_user_orders.order_page', ['user' => $uid])->toString();
+  $variables['user_profile_url'] = \Drupal\Core\Url::fromRoute('entity.user.edit_form', ['user' => $uid])->toString();
+  $variables['user_logout_url']  = \Drupal\Core\Url::fromRoute('user.logout')->toString();
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ *
+ * Remplace le titre "username" par "Mon compte" sur la page profil client.
+ */
+function odesign_base_preprocess_page_title(array &$variables): void {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name === 'entity.user.canonical') {
+    $current_user = \Drupal::currentUser();
+    $uid = \Drupal::routeMatch()->getRawParameter('user');
+    if ($current_user->id() == $uid) {
+      $variables['title'] = t('Mon compte');
+    }
+  }
+}
