@@ -771,6 +771,19 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['attributes']['class'][] = 'page-admin';
   }
 
+  // Variables compte client — header connexion / espace personnel.
+  $account = \Drupal::currentUser();
+  $variables['is_gestionnaire'] = $account->hasRole('gestionnaire_boutique') || $account->hasRole('administrator');
+  if ($account->isAuthenticated()) {
+    $uid = $account->id();
+    $variables['user_orders_url']  = Url::fromUri("internal:/user/{$uid}/orders")->toString();
+    $variables['user_profile_url'] = Url::fromUri("internal:/user/{$uid}")->toString();
+    $variables['user_logout_url']  = Url::fromRoute('user.logout')->toString();
+  }
+  else {
+    $variables['user_register_url'] = Url::fromRoute('user.register')->toString();
+  }
+
   // Bandeau newsletter : injecté sur toutes les pages publiques.
   if (!$is_admin && \Drupal::moduleHandler()->moduleExists('simplenews')) {
     try {
@@ -1047,6 +1060,16 @@ function odesign_base_form_user_login_form_alter(array &$form, \Drupal\Core\Form
     )->toString(),
     '#attributes' => ['class' => ['login-forgot-password']],
     '#weight' => 100,
+  ];
+  $form['create_account'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => t('Pas encore de compte ? ') . \Drupal\Core\Link::createFromRoute(
+      t('Créer un compte'),
+      'user.register'
+    )->toString(),
+    '#attributes' => ['class' => ['login-create-account']],
+    '#weight' => 101,
   ];
 }
 

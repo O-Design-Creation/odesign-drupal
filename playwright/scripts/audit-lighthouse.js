@@ -11,8 +11,8 @@
  * Usage : node playwright/scripts/audit-lighthouse.js
  */
 
-const lighthouse = require('lighthouse/api.js');
-const chromium = require('@playwright/test').chromium;
+const lighthouse = require('lighthouse');
+const { chromium } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 
@@ -57,11 +57,6 @@ function scoreBar(score) {
   console.log('🏎️  AUDIT LIGHTHOUSE — Atelier O Design');
   console.log('='.repeat(60) + '\n');
 
-  const browser = await chromium.launch({
-    args: ['--remote-debugging-port=9222', '--font-render-hinting=none', '--no-sandbox'],
-    headless: true,
-  });
-
   const allResults = [];
   const reportDir = path.join(__dirname, '../screenshots/frontend-audit/lighthouse');
   if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
@@ -70,23 +65,31 @@ function scoreBar(score) {
     const url = BASE_URL + pageConfig.path;
     console.log(`[${pageConfig.label}] ${url}`);
 
+    // Ouvrir un browser frais par page — Lighthouse a besoin d'au moins un tab ouvert.
+    const browser = await chromium.launch({
+      args: ['--remote-debugging-port=9222', '--no-sandbox', '--disable-dev-shm-usage'],
+      headless: true,
+    });
+    const ctx  = await browser.newContext();
+    const page = await ctx.newPage();
+    await page.goto('about:blank');
+
     try {
-      const result = await lighthouse(url, {
+      const runnerResult = await lighthouse(url, {
         port: 9222,
-        output: 'json',
+        output: ['json', 'html'],
         logLevel: 'silent',
         onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
         formFactor: 'desktop',
         screenEmulation: { disabled: true },
         throttlingMethod: 'simulate',
-        throttling: {
-          rttMs: 40,
-          throughputKbps: 10240,
-          cpuSlowdownMultiplier: 1,
-        },
+        throttling: { rttMs: 40, throughputKbps: 10240, cpuSlowdownMultiplier: 1 },
+        disableStorageReset: false,
       });
 
-      const categories = result.lhr.categories;
+      const [, htmlReport] = runnerResult.report;
+      const lhr = runnerResult.lhr;
+      const categories = lhr.categories;
       const pageIssues = [];
 
       for (const [key, label] of Object.entries(CATEGORY_LABELS)) {
@@ -101,7 +104,7 @@ function scoreBar(score) {
       }
 
       // Top failing audits
-      const failingAudits = Object.values(result.lhr.audits)
+      const failingAudits = Object.values(lhr.audits)
         .filter(a => a.score !== null && a.score < 0.9 && a.weight > 0)
         .sort((a, b) => (a.score || 0) - (b.score || 0))
         .slice(0, 5);
@@ -113,36 +116,31 @@ function scoreBar(score) {
         }
       }
 
-      // Save HTML report
-      const htmlResult = await lighthouse(url, {
-        port: 9222,
-        output: 'html',
-        logLevel: 'silent',
-        onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'],
-        formFactor: 'desktop',
-        screenEmulation: { disabled: true },
-        throttlingMethod: 'simulate',
-        throttling: { rttMs: 40, throughputKbps: 10240, cpuSlowdownMultiplier: 1 },
-      });
-
       const slug = pageConfig.label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       const htmlPath = path.join(reportDir, `${slug}.html`);
-      fs.writeFileSync(htmlPath, htmlResult.report);
+      fs.writeFileSync(htmlPath, htmlReport);
       console.log(`  💾 Rapport HTML : playwright/screenshots/frontend-audit/lighthouse/${slug}.html`);
 
-      allResults.push({ label: pageConfig.label, url, scores: Object.fromEntries(
-        Object.keys(CATEGORY_LABELS).map(k => [k, categories[k]?.score ?? null])
-      ), issues: pageIssues });
+      allResults.push({
+        label: pageConfig.label,
+        url,
+        scores: Object.fromEntries(
+          Object.keys(CATEGORY_LABELS).map(k => [k, categories[k]?.score ?? null])
+        ),
+        issues: pageIssues,
+      });
 
     } catch (e) {
       console.log(`  ❌ Erreur Lighthouse : ${e.message}`);
       allResults.push({ label: pageConfig.label, url, scores: {}, issues: [], error: e.message });
+    } finally {
+      await browser.close();
+      // Laisser le port se libérer entre les pages
+      await new Promise(r => setTimeout(r, 1000));
     }
 
     console.log('');
   }
-
-  await browser.close();
 
   // Résumé
   console.log('='.repeat(60));
