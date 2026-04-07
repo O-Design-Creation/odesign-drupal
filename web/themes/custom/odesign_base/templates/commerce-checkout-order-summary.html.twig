@@ -10,21 +10,21 @@
               {{ order_item.getPurchasedEntity|commerce_entity_render('summary') }}
               {% if order_item.field_poc_text.value or order_item.field_poc_finish.value or order_item.field_poc_need_upload.value or order_item.field_poc_tree_names.value or order_item.field_poc_tree_wall_mount.value %}
                 <div class="checkout-order-summary__personalization">
-                  <strong>Personnalisation</strong>
+                  <strong>{{ 'Personnalisation'|t }}</strong>
                   <ul>
                     {% if order_item.field_poc_text.value %}
-                      <li>Texte : {{ order_item.field_poc_text.value }}</li>
+                      <li>{{ 'Texte :'|t }} {{ order_item.field_poc_text.value }}</li>
                     {% endif %}
                     {% if order_item.field_poc_finish.value %}
-                      <li>Finition : {{ order_item.field_poc_finish.value|capitalize }}</li>
+                      <li>{{ 'Finition :'|t }} {{ order_item.field_poc_finish.value|capitalize }}</li>
                     {% endif %}
                     {% if order_item.field_poc_need_upload.value %}
-                      <li>Fichier client : oui</li>
+                      <li>{{ 'Fichier client : oui'|t }}</li>
                     {% endif %}
                     {% if order_item.field_poc_tree_names.value %}
                       {% set tree_names = order_item.field_poc_tree_names.value|replace({"\r": "", ",": "\n"})|split('\n') %}
                       <li>
-                        Arbre de vie :
+                        {{ 'Arbre de vie :'|t }}
                         <ul>
                           {% for tree_name in tree_names %}
                             {% set cleaned_name = tree_name|trim %}
@@ -36,7 +36,7 @@
                       </li>
                     {% endif %}
                     {% if order_item.field_poc_tree_wall_mount.value %}
-                      <li>Attache murale : oui</li>
+                      <li>{{ 'Attache murale : oui'|t }}</li>
                     {% endif %}
                   </ul>
                 </div>
@@ -54,7 +54,4 @@
   {% block totals %}
     {{ rendered_totals }}
   {% endblock %}
-  <p class="order-tva-mention" style="font-size: 0.8em; color: #666; margin-top: 0.5em;">
-    {{ 'TVA non applicable, art. 293 B du CGI'|t }}
-  </p>
 </div>
