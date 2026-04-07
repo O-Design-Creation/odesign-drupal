@@ -6,6 +6,7 @@ dependencies:
     - commerce_order.commerce_order_type.default
     - field.field.commerce_order.default.field_atelier_status
     - field.field.commerce_order.default.field_notes_atelier
+    - field.field.commerce_order.default.field_tracking_number
   module:
     - commerce_order
     - commerce_payment
@@ -173,6 +174,7 @@ content:
 hidden:
   entity_print_view_epub: true
   entity_print_view_word_docx: true
+  field_tracking_number: true
   order_number: true
   search_api_excerpt: true
   total_paid: true

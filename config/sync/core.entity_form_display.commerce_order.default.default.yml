@@ -6,6 +6,7 @@ dependencies:
     - commerce_order.commerce_order_type.default
     - field.field.commerce_order.default.field_atelier_status
     - field.field.commerce_order.default.field_notes_atelier
+    - field.field.commerce_order.default.field_tracking_number
   module:
     - commerce_order
     - text
@@ -72,6 +73,7 @@ hidden:
   coupons: true
   created: true
   customer_comments: true
+  field_tracking_number: true
   ip_address: true
   mail: true
   order_number: true

@@ -15,4 +15,4 @@ description: 'Guides marketing éditoriaux de la boutique (D-09).'
 help: null
 new_revision: true
 preview_mode: 1
-display_submitted: false
+display_submitted: true

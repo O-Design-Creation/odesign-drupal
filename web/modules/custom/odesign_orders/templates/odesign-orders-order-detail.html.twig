@@ -16,6 +16,8 @@
  * - items           : array (title, qty, unit_price, subtotal, currency)
  * - total           : string (formatted)
  * - currency        : string
+ * - tracking_number : string (numéro de suivi, peut être vide)
+ * - tracking_url    : string (url POST pour sauvegarder le tracking)
  * - transitions     : array (id, label, url, token)
  * - edit_url        : string
  * - back_url        : string
@@ -112,6 +114,34 @@
           {% endif %}
         </div>
       {% endif %}
+
+      {# Numéro de suivi transporteur #}
+      <div class="odesign-order-detail__card">
+        <h3 class="odesign-order-detail__card-title">
+          <i class="ph ph-truck" aria-hidden="true"></i>
+          Suivi transporteur
+        </h3>
+        {% if tracking_number %}
+          <p class="odesign-order-detail__tracking-current">
+            <strong>{{ tracking_number }}</strong>
+          </p>
+        {% else %}
+          <p class="odesign-order-detail__tracking-empty">Aucun numéro renseigné</p>
+        {% endif %}
+        <form method="post" action="{{ tracking_url }}" class="odesign-order-detail__tracking-form">
+          <input type="hidden" name="token" value="{{ csrf_token('tracking_' ~ order_id) }}">
+          <input type="text"
+                 name="tracking_number"
+                 value="{{ tracking_number }}"
+                 placeholder="Ex : 1Z999AA10123456784"
+                 class="odesign-order-detail__tracking-input"
+                 aria-label="Numéro de suivi transporteur">
+          <button type="submit" class="odesign-order-detail__tracking-btn">
+            <i class="ph ph-floppy-disk" aria-hidden="true"></i>
+            Enregistrer
+          </button>
+        </form>
+      </div>
 
       {% if billing_address %}
         <div class="odesign-order-detail__card">

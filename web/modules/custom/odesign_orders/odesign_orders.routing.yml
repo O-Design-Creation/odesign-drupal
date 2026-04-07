@@ -23,6 +23,22 @@ odesign_orders.order_detail:
     commerce_order:
       type: entity:commerce_order
 
+odesign_orders.order_tracking:
+  path: '/admin/boutique/commandes/{commerce_order}/tracking'
+  defaults:
+    _controller: '\Drupal\odesign_orders\Controller\OrderDetailController::saveTracking'
+    _title: 'Enregistrer le suivi'
+  requirements:
+    _permission: 'access commerce administration pages'
+    _entity_access: 'commerce_order.update'
+    commerce_order: \d+
+    _method: 'POST'
+  options:
+    _admin_route: TRUE
+  parameters:
+    commerce_order:
+      type: entity:commerce_order
+
 odesign_orders.order_transition:
   path: '/admin/boutique/commandes/{commerce_order}/transition/{transition}'
   defaults:

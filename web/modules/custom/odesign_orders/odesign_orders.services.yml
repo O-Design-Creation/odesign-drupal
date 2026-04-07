@@ -30,3 +30,10 @@ services:
       - '@entity_type.manager'
     tags:
       - { name: event_subscriber }
+
+  odesign_orders.payment_confirm_subscriber:
+    class: Drupal\odesign_orders\EventSubscriber\PaymentConfirmSubscriber
+    arguments:
+      - '@logger.factory'
+    tags:
+      - { name: event_subscriber }
