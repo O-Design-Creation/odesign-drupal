@@ -337,3 +337,51 @@ msgstr "« première"
 
 msgid "‹ previous"
 msgstr "‹ précédente"
+
+msgid "Order Confirmation"
+msgstr "Confirmation de commande"
+
+msgid "Order number:"
+msgstr "Numéro de commande :"
+
+msgid "Order date:"
+msgstr "Date de commande :"
+
+msgid "Shipping Information"
+msgstr "Informations de livraison"
+
+msgid "Billing Information"
+msgstr "Informations de facturation"
+
+msgid "Payment Method"
+msgstr "Moyen de paiement"
+
+msgid "Thank you for your order!"
+msgstr "Merci pour votre commande !"
+
+msgid "Subtotal: @subtotal"
+msgstr "Sous-total : @subtotal"
+
+msgid "Order Total: @total"
+msgstr "Total de la commande : @total"
+
+msgid "Customer comments"
+msgstr "Commentaires"
+
+msgid "Personnalisation"
+msgstr "Personnalisation"
+
+msgid "Texte :"
+msgstr "Texte :"
+
+msgid "Finition :"
+msgstr "Finition :"
+
+msgid "Fichier client : oui"
+msgstr "Fichier client : oui"
+
+msgid "Arbre de vie :"
+msgstr "Arbre de vie :"
+
+msgid "Attache murale : oui"
+msgstr "Attache murale : oui"
