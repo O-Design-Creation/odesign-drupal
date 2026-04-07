@@ -340,16 +340,23 @@ function odesign_admin_mail(string $key, array &$message, array $params): void {
 /**
  * Implémente hook_user_login().
  *
- * Redirige le gestionnaire boutique vers le tableau de bord après connexion.
+ * Redirige après connexion selon le rôle :
+ * - gestionnaire_boutique → tableau de bord /admin/boutique
+ * - client (authentifié sans rôle spécial) → /user/{uid}/orders
  */
 function odesign_admin_user_login($account): void {
+  $request = \Drupal::service('request_stack')->getCurrentRequest();
+  if ($request->query->get('destination')) {
+    // Une destination explicite est déjà définie — on ne l'écrase pas.
+    return;
+  }
+
   if ($account->hasRole('gestionnaire_boutique') && !$account->hasRole('administrator')) {
-    $request = \Drupal::service('request_stack')->getCurrentRequest();
-    // Forcer la destination vers le tableau de bord si aucune destination
-    // explicite n'est déjà définie dans l'URL.
-    if (!$request->query->get('destination')) {
-      $request->query->set('destination', '/admin/boutique');
-    }
+    $request->query->set('destination', '/admin/boutique');
+  }
+  elseif (!$account->hasRole('administrator') && !$account->hasRole('gestionnaire_boutique')) {
+    // Client lambda : redirige vers ses commandes.
+    $request->query->set('destination', '/user/' . $account->id() . '/orders');
   }
 }
 
