@@ -16,14 +16,21 @@ use Drupal\taxonomy\TermInterface;
 /**
  * Implements hook_preprocess_html().
  *
- * Injecte <meta name="robots" content="noindex,nofollow"> sur les pages
- * panier et checkout — ces pages transactionnelles ne doivent pas être
- * indexées par les moteurs de recherche.
+ * - Injecte <meta name="robots" content="noindex,nofollow"> sur les pages
+ *   transactionnelles (panier, checkout, compte utilisateur).
+ * - Ajoute une body class pour les pages d'authentification (login/register/password)
+ *   afin de permettre un ciblage CSS dédié.
  */
 function odesign_base_preprocess_html(array &$variables): void {
   $route = \Drupal::routeMatch()->getRouteName();
   $noindex_routes = [
     'commerce_cart.page',
+    'user.login',
+    'user.register',
+    'user.pass',
+    'user.page',
+    'entity.user.canonical',
+    'entity.user.edit_form',
   ];
   $is_noindex = in_array($route, $noindex_routes, TRUE)
     || str_starts_with($route, 'commerce_checkout.');
@@ -40,6 +47,12 @@ function odesign_base_preprocess_html(array &$variables): void {
       ],
       'odesign_noindex_transactional',
     ];
+  }
+
+  $auth_routes = ['user.login', 'user.register', 'user.pass'];
+  if (in_array($route, $auth_routes, TRUE)) {
+    $variables['attributes']['class'][] = 'page--user-auth';
+    $variables['attributes']['class'][] = 'page--user-auth--' . str_replace('.', '-', $route);
   }
 }
 
