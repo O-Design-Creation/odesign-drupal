@@ -193,8 +193,13 @@
                       <img
                         src="{{ card.preview_image_url }}"
                         alt="{{ card.title }}"
-                        loading="lazy"
-                        decoding="async"
+                        {% if loop.first %}
+                          loading="eager"
+                          fetchpriority="high"
+                        {% else %}
+                          loading="lazy"
+                          decoding="async"
+                        {% endif %}
                       >
                     </a>
                   {% endif %}

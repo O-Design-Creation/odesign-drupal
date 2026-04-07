@@ -742,6 +742,24 @@ function odesign_base_preprocess_page(array &$variables): void {
   $variables['front_hero_image_url'] = $hero['url'];
   $variables['front_hero_text_mode'] = $hero['text_mode'];
   $variables['front_hero_has_image'] = $hero['has_image'];
+
+  // Préchargement LCP : si une image hero est configurée, on injecte un
+  // <link rel="preload" as="image"> en <head> pour que le navigateur la
+  // charge en priorité avant de parser le CSS background-image.
+  if (!empty($hero['url'])) {
+    $variables['page']['#attached']['html_head'][] = [
+      [
+        '#type'       => 'html_tag',
+        '#tag'        => 'link',
+        '#attributes' => [
+          'rel'  => 'preload',
+          'as'   => 'image',
+          'href' => $hero['url'],
+        ],
+      ],
+      'homepage_hero_preload',
+    ];
+  }
   $first_term = reset($terms);
   if ($first_term instanceof TermInterface) {
     $variables['front_primary_life_occasion_url'] = $first_term->toUrl()->toString();
