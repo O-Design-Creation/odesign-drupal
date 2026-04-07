@@ -964,8 +964,48 @@ function odesign_base_preprocess_taxonomy_term(array &$variables): void {
   $current_alias = $alias_manager->getAliasByPath('/taxonomy/term/' . $term->id());
   $variables['life_occasion_is_secondary_measured'] = ($current_alias === '/occasions/pancarte-evenementielles');
   $variables['life_occasion_lot_offer_note'] = $variables['life_occasion_is_secondary_measured']
-    ? 'Univers secondaire mesuré : cette page peut porter des offres en lot dédiées aux événements, sans casser la navigation principale.'
+    ? (string) t('Univers secondaire mesuré : cette page peut porter des offres en lot dédiées aux événements, sans casser la navigation principale.')
     : '';
+
+  // Injection head : preload hero, og:image, JSON-LD BreadcrumbList.
+  if (!empty($hero['url'])) {
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type'       => 'html_tag',
+        '#tag'        => 'link',
+        '#attributes' => ['rel' => 'preload', 'as' => 'image', 'href' => $hero['url']],
+      ],
+      'life_occasion_hero_preload_' . $term->id(),
+    ];
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type'       => 'html_tag',
+        '#tag'        => 'meta',
+        '#attributes' => ['property' => 'og:image', 'content' => $hero['url']],
+      ],
+      'og_image_life_occasion_' . $term->id(),
+    ];
+  }
+
+  $base_url  = \Drupal::request()->getSchemeAndHttpHost();
+  $term_url  = $term->toUrl('canonical', ['absolute' => TRUE])->toString();
+  $breadcrumb_json_ld = [
+    '@context'        => 'https://schema.org',
+    '@type'           => 'BreadcrumbList',
+    'itemListElement' => [
+      ['@type' => 'ListItem', 'position' => 1, 'name' => (string) t('Accueil'), 'item' => $base_url . '/'],
+      ['@type' => 'ListItem', 'position' => 2, 'name' => $term->label(), 'item' => $term_url],
+    ],
+  ];
+  $variables['#attached']['html_head'][] = [
+    [
+      '#type'       => 'html_tag',
+      '#tag'        => 'script',
+      '#attributes' => ['type' => 'application/ld+json'],
+      '#value'      => json_encode($breadcrumb_json_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+    ],
+    'life_occasion_breadcrumb_json_ld_' . $term->id(),
+  ];
 }
 
 /**
