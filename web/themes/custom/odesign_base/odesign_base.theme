@@ -1049,3 +1049,62 @@ function odesign_base_form_user_login_form_alter(array &$form, \Drupal\Core\Form
     '#weight' => 100,
   ];
 }
+
+/**
+ * Implements hook_preprocess_node().
+ *
+ * Injecte un JSON-LD Article en <head> pour les guides en mode full.
+ */
+function odesign_base_preprocess_node(array &$variables): void {
+  if (
+    empty($variables['node']) ||
+    !$variables['node'] instanceof \Drupal\node\NodeInterface
+  ) {
+    return;
+  }
+
+  $node = $variables['node'];
+  if ($node->bundle() !== 'guide' || $variables['view_mode'] !== 'full') {
+    return;
+  }
+
+  $node_url = $node->toUrl('canonical', ['absolute' => TRUE])->toString();
+  $base_url  = \Drupal::request()->getSchemeAndHttpHost();
+
+  $json_ld = [
+    '@context'      => 'https://schema.org',
+    '@type'         => 'Article',
+    'headline'      => $node->label(),
+    'url'           => $node_url,
+    'publisher'     => [
+      '@type' => 'Organization',
+      'name'  => 'Atelier O Design',
+      'url'   => $base_url . '/',
+    ],
+  ];
+
+  if ($node->hasField('body') && !$node->get('body')->isEmpty()) {
+    $body_item = $node->get('body')->first();
+    $summary   = trim((string) ($body_item->summary ?: strip_tags((string) ($body_item->value ?? ''))));
+    if ($summary !== '') {
+      $json_ld['description'] = $summary;
+    }
+  }
+
+  if ($node->hasField('created')) {
+    $json_ld['datePublished'] = date('c', (int) $node->getCreatedTime());
+  }
+  if ($node->hasField('changed')) {
+    $json_ld['dateModified'] = date('c', (int) $node->getChangedTime());
+  }
+
+  $variables['#attached']['html_head'][] = [
+    [
+      '#type'       => 'html_tag',
+      '#tag'        => 'script',
+      '#attributes' => ['type' => 'application/ld+json'],
+      '#value'      => json_encode($json_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+    ],
+    'guide_article_json_ld_' . $node->id(),
+  ];
+}
