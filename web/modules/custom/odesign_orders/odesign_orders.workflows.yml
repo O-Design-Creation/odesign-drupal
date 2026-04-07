@@ -38,6 +38,10 @@ odesign_order:
       label: 'Marquer comme emballée / prête à expédier'
       from: [quality_check]
       to: packaged
+    reprocess:
+      label: 'Retour en fabrication (contrôle qualité échoué)'
+      from: [quality_check]
+      to: processing
     ship:
       label: 'Marquer comme expédiée'
       from: [packaged]

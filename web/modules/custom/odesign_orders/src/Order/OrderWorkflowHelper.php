@@ -16,6 +16,7 @@ class OrderWorkflowHelper {
       'processing',
       'quality_check',
       'packaged',
+      'shipped',
     ];
   }
 

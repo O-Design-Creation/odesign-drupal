@@ -52,7 +52,7 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
   $body .= '<p style="margin:0 0 24px;"><strong>Total</strong> : ' . htmlspecialchars($total) . '</p>';
 
   if (in_array($params['transition_id'] ?? '', ['ship', 'deliver'], TRUE)) {
-    $order_url = \Drupal\Core\Url::fromRoute('commerce_order.order_user_view', [
+    $order_url = \Drupal\Core\Url::fromRoute('entity.commerce_order.user_view', [
       'user' => $order->getCustomerId(),
       'commerce_order' => $order->id(),
     ])->setAbsolute()->toString();
@@ -85,7 +85,7 @@ function odesign_orders_theme_registry_alter(array &$theme_registry): void {
  * Envoie une notification interne lors d'une nouvelle commande en attente.
  */
 function odesign_orders_commerce_order_post_save(\Drupal\commerce_order\Entity\OrderInterface $order): void {
-  if ($order->getState()->getId() !== 'pending') {
+  if ($order->getState()->getId() !== 'pending_payment') {
     return;
   }
 
