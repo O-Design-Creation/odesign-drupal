@@ -15,4 +15,4 @@ description: 'Articles de blog pour le journal Atelier O Design (ADR-005).'
 help: null
 new_revision: true
 preview_mode: 1
-display_submitted: true
+display_submitted: false

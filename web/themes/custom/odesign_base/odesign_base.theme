@@ -1053,7 +1053,7 @@ function odesign_base_form_user_login_form_alter(array &$form, \Drupal\Core\Form
 /**
  * Implements hook_preprocess_node().
  *
- * Injecte un JSON-LD Article en <head> pour les guides en mode full.
+ * Injecte un JSON-LD Article en <head> pour les guides et articles en mode full.
  */
 function odesign_base_preprocess_node(array &$variables): void {
   if (
@@ -1064,7 +1064,7 @@ function odesign_base_preprocess_node(array &$variables): void {
   }
 
   $node = $variables['node'];
-  if ($node->bundle() !== 'guide' || $variables['view_mode'] !== 'full') {
+  if (!in_array($node->bundle(), ['guide', 'article'], TRUE) || $variables['view_mode'] !== 'full') {
     return;
   }
 
@@ -1098,6 +1098,16 @@ function odesign_base_preprocess_node(array &$variables): void {
     $json_ld['dateModified'] = date('c', (int) $node->getChangedTime());
   }
 
+  // Inject article image for article bundle (field_image).
+  if ($node->bundle() === 'article' && $node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
+    /** @var \Drupal\file\FileInterface|null $file */
+    $file = $node->get('field_image')->entity?->get('field_media_image')?->entity
+      ?? $node->get('field_image')->entity;
+    if ($file instanceof \Drupal\file\FileInterface) {
+      $json_ld['image'] = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+    }
+  }
+
   $variables['#attached']['html_head'][] = [
     [
       '#type'       => 'html_tag',
@@ -1105,6 +1115,6 @@ function odesign_base_preprocess_node(array &$variables): void {
       '#attributes' => ['type' => 'application/ld+json'],
       '#value'      => json_encode($json_ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
     ],
-    'guide_article_json_ld_' . $node->id(),
+    'node_article_json_ld_' . $node->id(),
   ];
 }

@@ -6,7 +6,7 @@ id: atelier_contact
 label: 'Formulaire de contact'
 recipients:
   - odesigncrea@gmail.com
-reply: ''
+reply: odesigncrea@gmail.com
 weight: 0
 message: 'Merci pour votre message. Atelier O Design vous répondra dans les plus brefs délais.'
-redirect: null
+redirect: /merci
