@@ -1,0 +1,57 @@
+{#
+/**
+ * @file
+ * page--system--404.html.twig
+ *
+ * Page "404 — Page introuvable" branded Atelier O Design.
+ */
+#}
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+    <head-placeholder token="{{ placeholder_token }}">
+    <title>{{ 'Page introuvable | Atelier O Design'|t }}</title>
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+  </head>
+  <body{{ attributes }}>
+    <a href="#main-content" class="visually-hidden focusable skip-link">
+      {{ 'Aller au contenu principal'|t }}
+    </a>
+
+    {{ page.header }}
+
+    <main id="main-content" class="site-main" role="main">
+      <div class="container">
+        <section class="error-page error-page--404" aria-labelledby="error-page-title">
+          <div class="error-page__inner">
+            <p class="error-page__code" aria-hidden="true">404</p>
+            <h1 id="error-page-title" class="error-page__title">
+              {{ 'Cette page est introuvable'|t }}
+            </h1>
+            <p class="error-page__desc">
+              {{ 'L\'adresse que vous cherchez n\'existe pas ou a été déplacée. Découvrez nos créations personnalisées ci-dessous.'|t }}
+            </p>
+            <div class="error-page__actions">
+              <a href="/" class="btn btn--primary">{{ 'Retour à l\'accueil'|t }}</a>
+              <a href="/produits" class="btn btn--secondary">{{ 'Voir le catalogue'|t }}</a>
+              <a href="/contact" class="btn btn--ghost">{{ 'Nous contacter'|t }}</a>
+            </div>
+            <div class="error-page__suggestions">
+              <p>{{ 'Vous cherchez peut-être…'|t }}</p>
+              <ul>
+                <li><a href="/produits">{{ 'Tous nos produits'|t }}</a></li>
+                <li><a href="/contact">{{ 'Le formulaire de contact'|t }}</a></li>
+                <li><a href="/atelier">{{ 'L\'atelier'|t }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    {{ page.footer }}
+
+    <js-bottom-placeholder token="{{ placeholder_token }}">
+  </body>
+</html>

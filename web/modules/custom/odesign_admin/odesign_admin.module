@@ -930,3 +930,33 @@ function _odesign_admin_scheduler_after_build(array $form, \Drupal\Core\Form\For
   }
   return $form;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter() for contact_message_atelier_contact_form.
+ *
+ * Ajoute un champ honeypot anti-spam (hidden via CSS, jamais visible humain).
+ */
+function odesign_admin_form_contact_message_atelier_contact_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  $form['website'] = [
+    '#type'       => 'textfield',
+    '#title'      => t('Site web (ne pas remplir)'),
+    '#attributes' => [
+      'autocomplete' => 'off',
+      'tabindex'     => '-1',
+      'style'        => 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;',
+      'aria-hidden'  => 'true',
+    ],
+    '#weight'     => -1000,
+  ];
+  $form['#validate'][] = 'odesign_admin_contact_honeypot_validate';
+}
+
+/**
+ * Validateur honeypot — rejette silencieusement si le champ est rempli (bot).
+ */
+function odesign_admin_contact_honeypot_validate(array $form, FormStateInterface &$form_state): void {
+  if (!empty($form_state->getValue('website'))) {
+    \Drupal::logger('odesign_admin')->notice('Honeypot déclenché — soumission de formulaire contact bloquée.');
+    $form_state->setErrorByName('', t('Une erreur de validation est survenue. Veuillez réessayer.'));
+  }
+}

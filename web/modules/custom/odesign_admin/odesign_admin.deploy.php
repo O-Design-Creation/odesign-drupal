@@ -132,3 +132,32 @@ function odesign_admin_deploy_002(): void {
     $node->save();
   }
 }
+
+/**
+ * deploy_003 : Crée la page de confirmation /merci si elle n'existe pas encore.
+ */
+function odesign_admin_deploy_003(): void {
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $path = $alias_manager->getPathByAlias('/merci');
+
+  // Si l'alias /merci existe déjà, ne rien faire.
+  if ($path !== '/merci') {
+    return;
+  }
+
+  $node = \Drupal\node\Entity\Node::create([
+    'type'     => 'page',
+    'title'    => 'Merci pour votre message',
+    'body'     => [
+      'value'  => '<p>Votre message a bien été reçu. Atelier O Design vous répondra dans les plus brefs délais.</p>'
+               . '<p><a href="/produits">Découvrir le catalogue</a> ou <a href="/">retourner à l\'accueil</a>.</p>',
+      'format' => 'basic_html',
+    ],
+    'status'   => 1,
+    'langcode' => 'fr',
+    'path'     => [['alias' => '/merci']],
+  ]);
+  $node->save();
+
+  \Drupal::logger('odesign_admin')->info('deploy_003 : page /merci créée (nid @nid).', ['@nid' => $node->id()]);
+}
