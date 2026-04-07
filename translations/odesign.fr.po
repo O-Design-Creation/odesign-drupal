@@ -416,3 +416,6 @@ msgstr "Code pays (2 lettres)"
 
 msgid "The language code"
 msgstr "Code de langue"
+
+msgid "Rechercher dans la liste"
+msgstr "Rechercher dans la liste"
