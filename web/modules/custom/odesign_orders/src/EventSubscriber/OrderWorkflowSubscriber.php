@@ -29,6 +29,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
    * Labels FR des transitions pour les emails.
    */
   private const TRANSITION_LABELS = [
+    'place'           => 'Votre commande a bien été reçue',
     'confirm_payment' => 'Votre commande est en fabrication',
     'quality_check'   => 'Votre commande est en contrôle qualité',
     'pack'            => 'Votre commande est prête à être expédiée',
@@ -41,25 +42,26 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
   /**
    * Transitions qui génèrent un email CLIENT.
    */
-  private const CLIENT_TRANSITIONS = ['confirm_payment', 'ship', 'deliver', 'cancel', 'refund'];
+  private const CLIENT_TRANSITIONS = ['place', 'confirm_payment', 'ship', 'deliver', 'cancel', 'refund'];
 
   /**
    * Transitions qui génèrent un email interne ATELIER.
    */
-  private const ATELIER_TRANSITIONS = ['place', 'confirm_payment', 'quality_check', 'pack', 'cancel', 'refund'];
+  private const ATELIER_TRANSITIONS = ['place', 'confirm_payment', 'quality_check', 'pack', 'ship', 'cancel', 'refund'];
 
   /**
    * Mapping transition -> valeur du champ "Suivi interne atelier".
    */
   private const ATELIER_STATUS_BY_TRANSITION = [
-    'place' => 'a_verifier',
+    'place'           => 'a_verifier',
     'confirm_payment' => 'en_production',
-    'quality_check' => 'controle_qualite',
-    'pack' => 'emballee_prete',
-    'ship' => 'expediee',
-    'deliver' => 'termine',
-    'cancel' => 'annulee',
-    'refund' => 'remboursee',
+    'quality_check'   => 'controle_qualite',
+    'reprocess'       => 'en_production',
+    'pack'            => 'emballee_prete',
+    'ship'            => 'expediee',
+    'deliver'         => 'termine',
+    'cancel'          => 'annulee',
+    'refund'          => 'remboursee',
   ];
 
   /**
@@ -69,6 +71,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
     return [
       'commerce_order.confirm_payment.post_transition' => 'onTransition',
       'commerce_order.quality_check.post_transition'   => 'onTransition',
+      'commerce_order.reprocess.post_transition'       => 'onTransition',
       'commerce_order.pack.post_transition'            => 'onTransition',
       'commerce_order.ship.post_transition'            => 'onTransition',
       'commerce_order.deliver.post_transition'         => 'onTransition',
@@ -112,6 +115,7 @@ class OrderWorkflowSubscriber implements EventSubscriberInterface {
     }
     $this->syncAtelierStatus($order, 'place');
     $this->sendAtelierNotification($order, 'place', 'Nouvelle commande reçue');
+    $this->sendClientNotification($order, 'place', self::TRANSITION_LABELS['place']);
   }
 
   /**
