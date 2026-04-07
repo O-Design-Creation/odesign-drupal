@@ -73,25 +73,53 @@
           </nav>
         {% endif %}
 
-        {# Actions header #}
+        {# Actions header : compte client + panier #}
         <div class="site-header__actions">
-          {# Lien connexion / espace personnel — discret, en haut à droite #}
+          {# Connexion / espace personnel #}
           {% if not logged_in %}
-            <a href="{{ path('user.login') }}" class="header-login-link" aria-label="{{ 'Se connecter à votre espace'|t }}">
-              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-              <span class="header-login-link__label">{{ 'Connexion'|t }}</span>
-            </a>
+            <div class="header-account">
+              <a href="{{ path('user.login') }}" class="header-login-link" aria-label="{{ 'Se connecter à votre espace'|t }}">
+                <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="header-login-link__label">{{ 'Connexion'|t }}</span>
+              </a>
+              {% if user_register_url is defined %}
+                <a href="{{ user_register_url }}" class="header-register-link" aria-label="{{ 'Créer un compte client'|t }}">
+                  {{ 'S\'inscrire'|t }}
+                </a>
+              {% endif %}
+            </div>
           {% else %}
-            <a href="{{ path('odesign_admin.dashboard') }}" class="header-login-link header-login-link--connected" aria-label="{{ 'Accéder à mon espace'|t }}">
-              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-              <span class="header-login-link__label">{{ 'Mon espace'|t }}</span>
-            </a>
+            {# Menu déroulant — différencié client / gestionnaire #}
+            <div class="header-account header-account--connected" data-account-menu>
+              <button class="header-login-link header-login-link--connected"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                      aria-controls="account-menu"
+                      aria-label="{{ is_gestionnaire ? 'Menu espace gestionnaire'|t : 'Menu mon compte'|t }}">
+                <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="header-login-link__label">{{ is_gestionnaire ? 'Mon espace'|t : 'Mon compte'|t }}</span>
+                <svg class="header-account__chevron" aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <ul id="account-menu" class="header-account__dropdown" role="menu" hidden>
+                {% if is_gestionnaire %}
+                  <li role="none"><a href="{{ path('odesign_admin.dashboard') }}" role="menuitem">{{ 'Tableau de bord'|t }}</a></li>
+                {% else %}
+                  <li role="none"><a href="{{ user_orders_url }}" role="menuitem">{{ 'Mes commandes'|t }}</a></li>
+                  <li role="none"><a href="{{ user_profile_url }}" role="menuitem">{{ 'Mon profil'|t }}</a></li>
+                {% endif %}
+                <li role="none" class="header-account__dropdown-separator">
+                  <a href="{{ user_logout_url }}" role="menuitem" class="header-account__logout">{{ 'Se déconnecter'|t }}</a>
+                </li>
+              </ul>
+            </div>
           {% endif %}
 
           {# Panier — lien direct Drupal Commerce #}

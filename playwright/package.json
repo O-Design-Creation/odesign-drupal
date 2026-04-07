@@ -8,6 +8,9 @@
     "diff": "node scripts/diff-screens.js"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.9.1",
+    "@playwright/test": "^1.49.0",
+    "lighthouse": "^9.6.8",
     "playwright": "1.49.0"
   }
 }

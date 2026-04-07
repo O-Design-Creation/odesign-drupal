@@ -994,6 +994,90 @@ strong { font-weight: 600; }
   }
 }
 
+/* Compte client — wrapper non-connecté */
+.header-account {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 0.5rem);
+}
+
+/* Lien S'inscrire */
+.header-register-link {
+  display: none;
+  font-size: 0.78rem;
+  color: var(--color-text-muted, #6b5b4e);
+  text-decoration: underline;
+  white-space: nowrap;
+}
+@media (min-width: 900px) {
+  .header-register-link { display: inline; }
+}
+
+/* Dropdown compte connecté */
+.header-account--connected {
+  position: relative;
+}
+
+.header-account__chevron {
+  transition: transform 0.2s ease;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+.header-login-link[aria-expanded="true"] .header-account__chevron {
+  transform: rotate(180deg);
+}
+
+.header-account__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 190px;
+  background: #fff;
+  border: 1px solid var(--color-border, #e8d5c4);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(61,43,31,0.12);
+  padding: var(--space-2, 0.5rem) 0;
+  z-index: 200;
+  list-style: none;
+  margin: 0;
+}
+
+.header-account__dropdown [role="menuitem"] {
+  display: block;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  color: var(--color-text, #3d2b1f);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.header-account__dropdown [role="menuitem"]:hover,
+.header-account__dropdown [role="menuitem"]:focus {
+  background: var(--color-bg-warm, #f9f5f2);
+  color: var(--color-brand, #8B6151);
+  outline: none;
+}
+
+.header-account__dropdown-separator {
+  border-top: 1px solid var(--color-border, #e8d5c4);
+  margin-top: var(--space-1, 0.25rem);
+  padding-top: var(--space-1, 0.25rem);
+}
+
+.header-account__logout {
+  color: var(--color-text-muted, #6b5b4e) !important;
+}
+.header-account__logout:hover,
+.header-account__logout:focus {
+  color: var(--color-error, #c0392b) !important;
+}
+
+/* Lien "Créer un compte" sous le formulaire de login */
+.login-create-account {
+  margin-top: var(--space-2, 0.5rem);
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #6b5b4e);
+}
+
 @media (max-width: 768px) {
   .site-footer__columns {
     grid-template-columns: 1fr;

@@ -123,6 +123,8 @@
       {# Description produit #}
       {%- if product_entity.body.value -%}
         <div class="product-detail__description">
+          {# h2 visually-hidden pour corriger l'ordre des titres WCAG (h1→h2→h3 dans le body) #}
+          <h2 class="visually-hidden">{{ 'Description du produit'|t }}</h2>
           {{- product.body -}}
         </div>
       {%- endif -%}

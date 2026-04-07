@@ -305,4 +305,62 @@
     }
   };
 
+  // Injecte aria-label sur le champ de recherche Chosen (WCAG label critique).
+  // Chosen remplace les <select> par un input sans label natif.
+  Drupal.behaviors.odesignChosenA11y = {
+    attach: function (context) {
+      once('odesign-chosen-a11y', '.chosen-search-input', context).forEach(function (input) {
+        if (!input.getAttribute('aria-label')) {
+          input.setAttribute('aria-label', Drupal.t('Rechercher dans la liste'));
+        }
+      });
+    }
+  };
+
+  // Dropdown menu compte client — toggle aria-expanded + fermeture clavier/clic externe.
+  Drupal.behaviors.odesignAccountMenu = {
+    attach: function (context) {
+      once('odesign-account-menu', '[data-account-menu]', context).forEach(function (wrapper) {
+        var toggle   = wrapper.querySelector('[aria-controls="account-menu"]');
+        var dropdown = wrapper.querySelector('#account-menu');
+        if (!toggle || !dropdown) return;
+
+        function openMenu() {
+          toggle.setAttribute('aria-expanded', 'true');
+          dropdown.removeAttribute('hidden');
+          var firstItem = dropdown.querySelector('[role="menuitem"]');
+          if (firstItem) firstItem.focus();
+        }
+
+        function closeMenu() {
+          toggle.setAttribute('aria-expanded', 'false');
+          dropdown.setAttribute('hidden', '');
+        }
+
+        toggle.addEventListener('click', function () {
+          var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeMenu() : openMenu();
+        });
+
+        // Fermeture Escape
+        wrapper.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') { closeMenu(); toggle.focus(); }
+        });
+
+        // Fermeture clic hors menu
+        document.addEventListener('click', function (e) {
+          if (!wrapper.contains(e.target)) closeMenu();
+        });
+
+        // Navigation clavier dans le menu (Arrow up/down)
+        dropdown.addEventListener('keydown', function (e) {
+          var items = Array.from(dropdown.querySelectorAll('[role="menuitem"]'));
+          var idx   = items.indexOf(document.activeElement);
+          if (e.key === 'ArrowDown') { e.preventDefault(); items[(idx + 1) % items.length].focus(); }
+          if (e.key === 'ArrowUp')   { e.preventDefault(); items[(idx - 1 + items.length) % items.length].focus(); }
+        });
+      });
+    }
+  };
+
 })(Drupal, once, drupalSettings);
