@@ -1,0 +1,24 @@
+uuid: 0f1b1ea8-9e73-4a3a-81bc-ba827df07bfe
+langcode: fr
+status: true
+dependencies:
+  config:
+    - facets.facet.life_occasion_facet
+  theme:
+    - odesign_base
+id: facets_block_life_occasion_facet
+theme: odesign_base
+region: sidebar_first
+weight: -10
+provider: null
+plugin: 'facets_block:life_occasion_facet'
+settings:
+  id: 'facets_block:life_occasion_facet'
+  label: Occasion
+  label_display: visible
+  provider: facets
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /recherche
