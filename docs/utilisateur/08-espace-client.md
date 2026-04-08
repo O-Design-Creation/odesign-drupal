@@ -17,11 +17,15 @@ Comprendre le parcours de vos clients (connexion, commande, suivi) pour répondr
 
 Les clients peuvent créer un compte depuis le bouton **Mon compte** en haut à droite du site (qui donne accès à la fois à la connexion et à la création de compte), depuis la page `/user/register` directement, ou lors du passage de commande. Ils reçoivent un **email de confirmation** avec un lien d'activation.
 
+![Formulaire de création de compte client](screenshots/espace-client-inscription.png)
+
 > 💡 **Si un client dit qu'il n'a pas reçu l'email** : demandez-lui de vérifier ses spams. Si le problème persiste, vous pouvez vérifier son adresse email dans [Clients](07-clients.md).
 
 ### Se connecter
 
 Les clients se connectent sur `/user/login` avec leur email et mot de passe.
+
+![Page de connexion client](screenshots/espace-client-connexion.png)
 
 **Mot de passe oublié** : un lien "Mot de passe oublié" est disponible sur la page de connexion. Le client reçoit un email avec un lien de réinitialisation valable 24 heures.
 
@@ -30,6 +34,8 @@ Les clients se connectent sur `/user/login` avec leur email et mot de passe.
 ### Modifier son profil
 
 Le client peut modifier ses informations (adresse, mot de passe) depuis son espace personnel sur `/user/{son-identifiant}/edit`.
+
+![Tableau de bord Mon compte](screenshots/espace-client-mon-compte.png)
 
 ---
 
@@ -42,6 +48,8 @@ Le client clique sur **Ajouter au panier** sur une fiche produit. Le compteur du
 ### Étape 2 — Le panier (`/cart`)
 
 Le client voit la liste de ses articles, peut modifier les quantités ou supprimer un article, puis clique sur **Passer la commande**.
+
+![Page panier](screenshots/espace-client-panier.png)
 
 ### Étape 3 — Le tunnel de commande (`/checkout`)
 
@@ -82,6 +90,8 @@ Votre boutique envoie automatiquement ces emails :
 1. Demandez au client s'il est bien **connecté** à son compte (pas en tant qu'invité)
 2. Vérifiez dans [Commandes](02-commandes.md) que la commande existe avec son email
 3. Si la commande existe mais n'est pas visible dans son compte : il a peut-être commandé **sans créer de compte** (mode invité)
+
+![Historique des commandes dans l'espace client](screenshots/espace-client-mes-commandes.png)
 
 ### "Je veux modifier mon adresse de livraison après avoir passé commande"
 
