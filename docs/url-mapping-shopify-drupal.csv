@@ -1,0 +1,23 @@
+source_shopify,destination_drupal,status_code,notes
+/products/{slug},/products/{slug},200,"IDENTIQUE — aucune redirection nécessaire. Drupal utilise le même pattern."
+/collections/mariage,/occasions/mariage,301,
+/collections/naissance-bebe,/occasions/naissance-bebe,301,
+/collections/cadeaux-personnalises-famille,/occasions/cadeaux-personnalises-famille,301,
+/collections/pancarte-evenementielles,/occasions/pancarte-evenementielles,301,
+/collections/pancarte-evenementielles-bois,/occasions/pancarte-evenementielles,301,alias alternatif
+/collections/all,/,301,
+/collections,/,301,
+/blogs/news,/blog,301,
+/blogs/news/comment-personnaliser-une-carte-de-naissance-en-bois,/blog/comment-personnaliser-une-carte-de-naissance-en-bois,301,
+/blogs/news/idees-cadeaux-de-naissance-originaux-en-bois,/blog/idees-cadeaux-de-naissance-originaux-en-bois,301,
+/blogs/news/nos-techniques-de-gravure-laser-sur-bois,/blog/nos-techniques-de-gravure-laser-sur-bois,301,
+/pages/cgv,/cgv,301,
+/pages/mentions-legales,/mentions-legales,301,
+/pages/politique-confidentialite,/politique-confidentialite,301,
+/pages/contact,/contact,301,
+/pages/a-propos,/atelier,301,
+/pages/about,/atelier,301,
+/pages/faq,/contact,301,
+/account,/user/login,301,
+/account/login,/user/login,301,
+/account/register,/user/register,301,
