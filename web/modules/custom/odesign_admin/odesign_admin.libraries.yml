@@ -15,3 +15,10 @@ hub:
   dependencies:
     - core/drupal
 
+documentation:
+  css:
+    theme:
+      css/documentation.css: {}
+  dependencies:
+    - core/drupal
+

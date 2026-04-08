@@ -160,6 +160,14 @@ function odesign_admin_theme(): array {
         'recent_articles' => [],
       ],
     ],
+    'odesign_admin_documentation' => [
+      'template'  => 'odesign-admin-documentation',
+      'variables' => [
+        'chapters' => [],
+        'content'  => NULL,
+        'current'  => NULL,
+      ],
+    ],
   ];
 }
 
@@ -242,6 +250,14 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'route'         => 'odesign_admin.marketing_guide',
     'weight'        => 95,
     'active_routes' => ['odesign_admin.marketing_guide'],
+    'badge'         => NULL,
+  ];
+  $items['documentation'] = [
+    'label'         => 'Documentation',
+    'icon'          => 'ph-question',
+    'route'         => 'odesign_admin.documentation',
+    'weight'        => 100,
+    'active_routes' => ['odesign_admin.documentation', 'odesign_admin.documentation_chapter'],
     'badge'         => NULL,
   ];
 }

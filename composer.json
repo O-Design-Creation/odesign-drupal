@@ -53,7 +53,8 @@
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/contact_storage": "^1.5",
         "drupal/simplenews": "^4.1",
-        "drupal/robotstxt": "^1.6"
+        "drupal/robotstxt": "^1.6",
+        "erusev/parsedown": "^1.8"
     },
     "config": {
         "allow-plugins": {

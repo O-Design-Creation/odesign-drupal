@@ -57,3 +57,24 @@ odesign_admin.marketing_guide:
     _permission: 'administer odesign boutique'
   options:
     _admin_route: TRUE
+
+odesign_admin.documentation:
+  path: '/admin/boutique/documentation'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\DocumentationController::index'
+    _title: 'Documentation gestionnaire'
+  requirements:
+    _permission: 'administer odesign boutique'
+  options:
+    _admin_route: TRUE
+
+odesign_admin.documentation_chapter:
+  path: '/admin/boutique/documentation/{chapter}'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\DocumentationController::chapter'
+    _title: 'Documentation gestionnaire'
+  requirements:
+    _permission: 'administer odesign boutique'
+    chapter: '^[0-9]{2}-[a-z0-9\-]+$'
+  options:
+    _admin_route: TRUE

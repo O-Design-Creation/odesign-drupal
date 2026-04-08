@@ -1,0 +1,95 @@
+{#
+/**
+ * @file
+ * Template pour la documentation utilisateur gestionnaire.
+ *
+ * Variables :
+ *   - chapters : liste des chapitres [{chapter, title, file}]
+ *   - content  : contenu HTML du chapitre courant (NULL sur l'index)
+ *   - current  : identifiant du chapitre courant (NULL sur l'index)
+ */
+#}
+{{ attach_library('odesign_admin/documentation') }}
+<div class="odesign-documentation">
+
+  {# Navigation chapitres #}
+  <nav class="odesign-documentation__nav" aria-label="Chapitres de la documentation">
+    <h2 class="odesign-documentation__nav-title">
+      <i class="ph ph-book-bookmark"></i> Documentation
+    </h2>
+    <ul class="odesign-documentation__nav-list">
+      {% for chap in chapters %}
+        <li class="odesign-documentation__nav-item{% if chap.chapter == current %} is-active{% endif %}">
+          <a href="{{ path('odesign_admin.documentation_chapter', {chapter: chap.chapter}) }}"
+             {% if chap.chapter == current %}aria-current="page"{% endif %}>
+            {{ chap.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  {# Contenu principal #}
+  <div class="odesign-documentation__body">
+    {% if content %}
+      <div class="odesign-documentation__markdown prose">
+        {{ content|raw }}
+      </div>
+
+      {# Navigation précédent / suivant #}
+      {% set prev = null %}
+      {% set next = null %}
+      {% for i, chap in chapters %}
+        {% if chap.chapter == current %}
+          {% if i > 0 %}{% set prev = chapters[i - 1] %}{% endif %}
+          {% if i < (chapters|length - 1) %}{% set next = chapters[i + 1] %}{% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% if prev or next %}
+        <nav class="odesign-documentation__pager" aria-label="Pagination chapitres">
+          <div class="odesign-documentation__pager-prev">
+            {% if prev %}
+              <a href="{{ path('odesign_admin.documentation_chapter', {chapter: prev.chapter}) }}">
+                <i class="ph ph-arrow-left"></i> {{ prev.title }}
+              </a>
+            {% endif %}
+          </div>
+          <div class="odesign-documentation__pager-next">
+            {% if next %}
+              <a href="{{ path('odesign_admin.documentation_chapter', {chapter: next.chapter}) }}">
+                {{ next.title }} <i class="ph ph-arrow-right"></i>
+              </a>
+            {% endif %}
+          </div>
+        </nav>
+      {% endif %}
+
+    {% else %}
+
+      {# Page d'index — grille des chapitres #}
+      <div class="odesign-documentation__index">
+        <h1 class="odesign-documentation__index-title">
+          <i class="ph ph-books"></i> Documentation gestionnaire
+        </h1>
+        <p class="odesign-documentation__index-intro">
+          Retrouvez ici le guide complet pour gérer votre boutique Atelier O Design.
+          Chaque chapitre couvre une fonctionnalité clé du backoffice.
+        </p>
+        <ul class="odesign-documentation__index-grid">
+          {% for chap in chapters %}
+            <li>
+              <a href="{{ path('odesign_admin.documentation_chapter', {chapter: chap.chapter}) }}"
+                 class="odesign-documentation__index-card">
+                <i class="ph ph-file-text odesign-documentation__index-card-icon"></i>
+                <span class="odesign-documentation__index-card-title">{{ chap.title }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    {% endif %}
+  </div>
+
+</div>
