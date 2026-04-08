@@ -3752,8 +3752,11 @@ nav ul {
 }
 
 .account-dashboard__icon {
-  font-size: 2rem;
-  line-height: 1;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  vertical-align: middle;
 }
 
 /* Détail commande ----------------------------------------------------- */
@@ -3817,4 +3820,107 @@ nav ul {
   font-weight: 700;
   text-align: right;
   color: #4E2620;
+}
+
+/* ── Liste commandes client (orders-list + order-card) ───────────────────── */
+.orders-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.orders-list__empty {
+  color: #595959;
+  font-style: italic;
+  margin-top: 1.5rem;
+}
+
+.order-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #e8d8d0;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.order-card:hover,
+.order-card:focus {
+  box-shadow: 0 4px 12px rgba(139, 97, 81, 0.15);
+  border-color: #8B6151;
+  outline: none;
+}
+
+.order-card:focus-visible {
+  outline: 2px solid #8B6151;
+  outline-offset: 2px;
+}
+
+.order-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+
+.order-card__number {
+  font-weight: 600;
+  color: #4E2620;
+  font-size: 1rem;
+}
+
+.order-card__status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 12px;
+  border: 1px solid currentColor;
+}
+
+.order-status--pending_payment { color: #7c5800; background: #fff8e1; }
+.order-status--processing       { color: #7c5800; background: #fff3e0; }
+.order-status--quality_check    { color: #0a5775; background: #e1f5fe; }
+.order-status--packaged         { color: #0a5775; background: #e0f7fa; }
+.order-status--shipped          { color: #2c5f2e; background: #e8f5e9; }
+.order-status--completed        { color: #2c5f2e; background: #e8f5e9; }
+.order-status--canceled         { color: #b71c1c; background: #ffebee; }
+.order-status--draft            { color: #595959; background: #f5f5f5; }
+
+.order-card__meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.88rem;
+  color: #595959;
+  margin-bottom: 0.75rem;
+}
+
+.order-card__cta {
+  font-size: 0.82rem;
+  color: #8B6151;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ── Dashboard compte ────────────────────────────────────────────────────── */
+.account-dashboard__recent-orders {
+  margin-top: 2rem;
+}
+
+.account-dashboard__section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4E2620;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #e8d8d0;
+  padding-bottom: 0.4rem;
+}
+
+@media (max-width: 640px) {
+  .order-card__header { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+  .order-card__meta   { flex-direction: column; gap: 0.25rem; }
 }

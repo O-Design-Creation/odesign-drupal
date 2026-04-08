@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Liste des commandes client — vue carte.
+ *
+ * Override du style table de la vue commerce_user_orders / order_page.
+ * Les variables injectées par odesign_base_preprocess_views_view_table__commerce_user_orders :
+ *   - rows[].order_entity.id
+ *   - rows[].order_entity.number_label
+ *   - rows[].order_entity.state_id
+ *   - rows[].order_entity.state_label
+ *   - rows[].order_entity.url
+ * Les colonnes standards (placed, total_price__number) restent disponibles via rows[].columns.
+ */
+#}
+{% if rows %}
+  <ol class="orders-list" aria-label="{{ 'Liste de vos commandes'|t }}">
+    {% for row in rows %}
+      {% set order = row.order_entity %}
+      <li class="orders-list__item">
+        <a href="{{ order.url }}"
+           class="order-card order-card--state-{{ order.state_id }}"
+           aria-label="{{ 'Voir la commande @number'|t({'@number': order.number_label}) }}">
+
+          <div class="order-card__header">
+            <span class="order-card__number">{{ 'Commande'|t }} {{ order.number_label }}</span>
+            <span class="order-card__status order-status--{{ order.state_id }}">
+              {{ order.state_label }}
+            </span>
+          </div>
+
+          <div class="order-card__meta">
+            {% if row.columns.placed is defined %}
+              <span class="order-card__date">{{ row.columns.placed.content[0].field_output }}</span>
+            {% endif %}
+            {% if row.columns.total_price__number is defined %}
+              <span class="order-card__total">{{ row.columns.total_price__number.content[0].field_output }}</span>
+            {% endif %}
+          </div>
+
+          <span class="order-card__cta" aria-hidden="true">{{ 'Voir le détail'|t }} →</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+{% else %}
+  <p class="orders-list__empty">{{ 'Vous n\'avez pas encore passé de commande.'|t }}</p>
+{% endif %}

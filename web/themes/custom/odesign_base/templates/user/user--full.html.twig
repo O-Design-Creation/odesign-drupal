@@ -3,34 +3,66 @@
  * @file
  * Tableau de bord client — vue "full" de l'entité user.
  *
- * Variables disponibles :
+ * Variables disponibles (injectées par odesign_base_preprocess_user) :
  * - user_orders_url  : URL liste des commandes
  * - user_profile_url : URL édition du profil
  * - user_logout_url  : URL déconnexion
  * - user             : entité UserInterface
+ * - recent_orders    : tableau des commandes récentes (max 3) avec
+ *     id, number_label, state_id, state_label, url, placed_formatted, total
  */
 #}
 <section class="account-dashboard" aria-label="{{ 'Mon compte'|t }}">
+
   <nav class="account-dashboard__nav" aria-label="{{ 'Navigation compte'|t }}">
     <ul class="account-dashboard__links">
       <li>
         <a href="{{ user_orders_url }}" class="account-dashboard__link">
-          <span class="account-dashboard__icon" aria-hidden="true">📦</span>
+          <svg class="account-dashboard__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
           {{ 'Mes commandes'|t }}
         </a>
       </li>
       <li>
         <a href="{{ user_profile_url }}" class="account-dashboard__link">
-          <span class="account-dashboard__icon" aria-hidden="true">👤</span>
+          <svg class="account-dashboard__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           {{ 'Mon profil'|t }}
         </a>
       </li>
       <li>
         <a href="{{ user_logout_url }}" class="account-dashboard__link account-dashboard__link--logout">
-          <span class="account-dashboard__icon" aria-hidden="true">🔓</span>
+          <svg class="account-dashboard__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           {{ 'Se déconnecter'|t }}
         </a>
       </li>
     </ul>
   </nav>
+
+  {% if recent_orders %}
+    <div class="account-dashboard__recent-orders">
+      <h2 class="account-dashboard__section-title">{{ 'Mes commandes récentes'|t }}</h2>
+      <ol class="orders-list" aria-label="{{ 'Commandes récentes'|t }}">
+        {% for order in recent_orders %}
+          <li class="orders-list__item">
+            <a href="{{ order.url }}"
+               class="order-card order-card--state-{{ order.state_id }}"
+               aria-label="{{ 'Voir la commande @n'|t({'@n': order.number_label}) }}">
+              <div class="order-card__header">
+                <span class="order-card__number">{{ 'Commande'|t }} {{ order.number_label }}</span>
+                <span class="order-card__status order-status--{{ order.state_id }}">{{ order.state_label }}</span>
+              </div>
+              <div class="order-card__meta">
+                <span class="order-card__date">{{ order.placed_formatted }}</span>
+                <span class="order-card__total">{{ order.total }}</span>
+              </div>
+              <span class="order-card__cta" aria-hidden="true">{{ 'Voir le détail'|t }} →</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ol>
+      <p class="account-dashboard__all-orders">
+        <a href="{{ user_orders_url }}">{{ 'Voir toutes mes commandes'|t }} →</a>
+      </p>
+    </div>
+  {% endif %}
+
 </section>
