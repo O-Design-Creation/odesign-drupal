@@ -27,37 +27,36 @@ if (!fs.existsSync(OUT_DIR)) fs.mkdirSync(OUT_DIR, { recursive: true });
 /** Pages à capturer pour la documentation utilisateur */
 const PAGES = [
   // Configuration boutique
-  { key: 'config-boutique-onglet-boutique',    path: '/admin/boutique/configuration',                     label: 'Config — Onglet Boutique',          tab: null },
+  { key: 'config-boutique-onglet-boutique',    path: '/admin/boutique/configuration',                     label: 'Config — Onglet Boutique',          tab: 'boutique' },
   { key: 'config-boutique-onglet-emails',      path: '/admin/boutique/configuration#emails',              label: 'Config — Onglet Emails',            tab: 'emails' },
   { key: 'config-boutique-onglet-paiement',    path: '/admin/boutique/configuration#stripe',              label: 'Config — Onglet Paiement',          tab: 'stripe' },
-  { key: 'config-boutique-onglet-hero',        path: '/admin/boutique/configuration#homepage_hero',       label: 'Config — Onglet Hero',              tab: 'homepage_hero' },
-  { key: 'config-boutique-onglet-presentation',path: '/admin/boutique/configuration#homepage_story',      label: 'Config — Onglet Présentation',      tab: 'homepage_story' },
-  { key: 'config-boutique-onglet-methode',     path: '/admin/boutique/configuration#homepage_methode',    label: 'Config — Comment ça marche',        tab: 'homepage_methode' },
-  { key: 'config-boutique-onglet-promotions',  path: '/admin/boutique/configuration#promotions_volume',   label: 'Config — Promotions volume',        tab: 'promotions_volume' },
+  { key: 'config-boutique-onglet-hero',        path: '/admin/boutique/configuration#homepage-hero',       label: 'Config — Onglet Hero',              tab: 'homepage-hero' },
+  { key: 'config-boutique-onglet-presentation',path: '/admin/boutique/configuration#homepage-story',      label: 'Config — Onglet Présentation',      tab: 'homepage-story' },
+  { key: 'config-boutique-onglet-methode',     path: '/admin/boutique/configuration#homepage-methode',    label: 'Config — Comment ça marche',        tab: 'homepage-methode' },
+  { key: 'config-boutique-onglet-promotions',  path: '/admin/boutique/configuration#promotions-volume',   label: 'Config — Promotions volume',        tab: 'promotions-volume' },
 
   // Commandes
   { key: 'commandes-liste',          path: '/admin/commerce/orders',              label: 'Commandes — liste' },
-  { key: 'commandes-filtres',        path: '/admin/commerce/orders',              label: 'Commandes — filtres',    scrollY: 0,   showFilters: true },
 
   // Produits
   { key: 'produits-liste',           path: '/admin/commerce/products',            label: 'Produits — liste' },
-  { key: 'produits-formulaire-nouveau', path: '/product/add/default',             label: 'Produits — nouveau produit' },
+  { key: 'produits-formulaire-nouveau', path: '/product/add/default',             label: 'Produits — nouveau produit', maxHeight: 1200 },
 
   // Promotions
   { key: 'promotions-liste',         path: '/admin/commerce/promotions',          label: 'Promotions — liste' },
 
   // Contenu éditorial
   { key: 'contenu-liste',            path: '/admin/content',                      label: 'Contenu — liste' },
-  { key: 'contenu-article-nouveau',  path: '/node/add/article',                   label: 'Contenu — nouvel article' },
-  { key: 'contenu-guide-nouveau',    path: '/node/add/guide',                     label: 'Contenu — nouveau guide' },
+  { key: 'contenu-article-nouveau',  path: '/node/add/article',                   label: 'Contenu — nouvel article',  maxHeight: 1200 },
+  // Note: /node/add/guide non accessible au rôle gestionnaire_boutique (admin uniquement)
 
   // Newsletter
-  { key: 'newsletter-liste',         path: '/admin/content/simplenews',           label: 'Newsletter — liste' },
+  { key: 'newsletter-liste',         path: '/admin/content?type=simplenews_issue', label: 'Newsletter — liste' },
   { key: 'newsletter-abonnes',       path: '/admin/people/simplenews',            label: 'Newsletter — abonnés' },
   { key: 'newsletter-nouveau',       path: '/node/add/simplenews_issue',          label: 'Newsletter — nouvelle newsletter' },
 
   // Clients
-  { key: 'clients-liste',            path: '/admin/people',                       label: 'Clients — liste' },
+  { key: 'clients-liste',            path: '/admin/commerce/customers',           label: 'Clients — liste' },
 ];
 
 async function bypassSandbox(page) {
@@ -83,11 +82,18 @@ async function loginViaUli(page) {
 
 async function activateTab(page, tabKey) {
   if (!tabKey) return;
-  const tabSelector = `[data-drupal-selector="edit-${tabKey}"], a[href*="${tabKey}"], .vertical-tabs__menu-item a[href*="${tabKey}"]`;
-  const tab = page.locator(tabSelector).first();
-  if (await tab.count()) {
-    await tab.click();
-    await page.waitForTimeout(500);
+  // Drupal vertical tabs: les liens ont href="#edit-{key}"
+  const tabLink = page.locator(`a[href="#edit-${tabKey}"]`).first();
+  if (await tabLink.count()) {
+    await tabLink.click();
+    await page.waitForTimeout(600);
+    return;
+  }
+  // Fallback: data-drupal-selector ou texte partiel
+  const fallback = page.locator(`[data-drupal-selector="edit-${tabKey}"], .vertical-tabs__menu-item a[href*="${tabKey}"]`).first();
+  if (await fallback.count()) {
+    await fallback.click();
+    await page.waitForTimeout(600);
   }
 }
 
@@ -104,9 +110,22 @@ async function capture(page, entry) {
     await page.evaluate(() => document.fonts.ready);
 
     const outPath = path.join(OUT_DIR, `${entry.key}.png`);
+    const MAX_HEIGHT = entry.maxHeight || 800; // hauteur max pour un mode d'emploi (A4 ≈ 800px @96dpi)
+    const VIEWPORT_W = 1024;
+
     const main = page.locator('.layout-region-node-main, main .layout-container, main, .dialog-off-canvas-main-canvas').first();
     if (await main.count()) {
-      await main.screenshot({ path: outPath });
+      const box = await main.boundingBox();
+      if (box) {
+        // Clip à la hauteur max pour éviter les captures infinies sur les listes longues
+        const clipHeight = Math.min(box.height, MAX_HEIGHT);
+        await page.screenshot({
+          path: outPath,
+          clip: { x: box.x, y: box.y, width: Math.min(box.width, VIEWPORT_W - box.x), height: clipHeight },
+        });
+      } else {
+        await page.screenshot({ path: outPath, fullPage: false });
+      }
     } else {
       await page.screenshot({ path: outPath, fullPage: false });
     }

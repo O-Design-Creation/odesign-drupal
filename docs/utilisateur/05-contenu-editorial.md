@@ -54,23 +54,7 @@ L'article disparaît du blog mais reste dans votre liste d'administration.
 
 ## Guides pratiques
 
-Les guides pratiques fonctionnent comme les articles de blog mais sont présentés dans une section dédiée de votre site.
-
-### Créer un nouveau guide
-
-1. Aller sur `/admin/content`
-2. Cliquer sur **Ajouter un contenu**
-3. Choisir **Guide**
-4. Remplir les champs **Titre**, **Corps** et **Image** de la même façon que pour un article
-5. Cliquer sur **Enregistrer**
-
-> 💡 **Astuce** : Des exemples de guides utiles pour vos clients : "Comment choisir la bonne taille pour un bijou prénom", "Guide des occasions pour offrir une pièce personnalisée".
-
-### Modifier un guide existant
-
-1. Sur `/admin/content`, filtrer par **Type de contenu** → Guide
-2. Cliquer sur **Modifier** à côté du guide
-3. Effectuer vos modifications et cliquer sur **Enregistrer**
+> ℹ️ **Accès limité** : La création et la modification des guides pratiques sont réservées à l'administrateur du site. En tant que gestionnaire, vous pouvez **consulter** les guides existants depuis `/admin/content` (filtrer par Type → Guide), mais pas en créer de nouveaux. Contactez votre administrateur pour ajouter ou modifier un guide.
 
 ---
 

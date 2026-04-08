@@ -10,14 +10,11 @@
 | `config-boutique-onglet-methode.png` | Config — Comment ça marche |
 | `config-boutique-onglet-promotions.png` | Config — Promotions volume |
 | `commandes-liste.png` | Commandes — liste |
-| `commandes-filtres.png` | Commandes — filtres |
 | `produits-liste.png` | Produits — liste |
 | `produits-formulaire-nouveau.png` | Produits — nouveau produit |
 | `promotions-liste.png` | Promotions — liste |
 | `contenu-liste.png` | Contenu — liste |
 | `contenu-article-nouveau.png` | Contenu — nouvel article |
-| `contenu-guide-nouveau.png` | Contenu — nouveau guide |
-| `newsletter-liste.png` | Newsletter — liste |
+| `newsletter-liste.png` | Newsletter — liste (filtré par type) |
 | `newsletter-abonnes.png` | Newsletter — abonnés |
 | `newsletter-nouveau.png` | Newsletter — nouvelle newsletter |
-| `clients-liste.png` | Clients — liste |
