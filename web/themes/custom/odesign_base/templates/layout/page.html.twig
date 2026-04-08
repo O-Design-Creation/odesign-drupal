@@ -487,7 +487,19 @@
               <a href="{{ catalogue_contact_url }}" class="catalogue-assist__link">{{ 'Contacter l\'atelier'|t }}</a>
             </section>
           {% endif %}
-          {{ page.content }}
+          {% if page.sidebar_first %}
+            {# Mise en page avec sidebar (ex: page de recherche avec facettes) #}
+            <div class="layout-with-sidebar">
+              <aside class="layout-sidebar" aria-label="{{ 'Filtres de recherche'|t }}">
+                {{ page.sidebar_first }}
+              </aside>
+              <div class="layout-main-content">
+                {{ page.content }}
+              </div>
+            </div>
+          {% else %}
+            {{ page.content }}
+          {% endif %}
         </div>
       {% endif %}
     </main>

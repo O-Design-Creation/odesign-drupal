@@ -1,4 +1,3 @@
-uuid: f788635c-ee39-4ff5-b443-9393d7713876
 langcode: en
 status: true
 dependencies:
@@ -31,18 +30,34 @@ field_settings:
       module:
         - commerce_product
   field_category:
-    label: Catégorie
+    label: 'Categorie (ID)'
     datasource_id: 'entity:commerce_product'
     property_path: field_category
     type: integer
     dependencies:
       config:
         - field.storage.commerce_product.field_category
+  field_category_label:
+    label: Categorie
+    datasource_id: 'entity:commerce_product'
+    property_path: 'field_category:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.commerce_product.field_category
   field_life_occasion:
-    label: 'Occasions de vie'
+    label: 'Occasions de vie (ID)'
     datasource_id: 'entity:commerce_product'
     property_path: field_life_occasion
     type: integer
+    dependencies:
+      config:
+        - field.storage.commerce_product.field_life_occasion
+  field_life_occasion_label:
+    label: 'Occasions de vie'
+    datasource_id: 'entity:commerce_product'
+    property_path: 'field_life_occasion:entity:name'
+    type: string
     dependencies:
       config:
         - field.storage.commerce_product.field_life_occasion

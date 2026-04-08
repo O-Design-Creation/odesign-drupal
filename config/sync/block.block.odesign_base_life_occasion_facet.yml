@@ -1,20 +1,19 @@
-uuid: e1b458e5-b41c-4eb2-8186-aad53ae5dbdb
 langcode: fr
 status: true
 dependencies:
   config:
-    - facets.facet.category_recherche_facet
+    - facets.facet.life_occasion_facet
   theme:
     - odesign_base
-id: facets_block_category_recherche_facet
+id: odesign_base_life_occasion_facet
 theme: odesign_base
 region: sidebar_first
-weight: -9
+weight: -10
 provider: null
-plugin: 'facets_block:category_recherche_facet'
+plugin: 'facet_block:life_occasion_facet'
 settings:
-  id: 'facets_block:category_recherche_facet'
-  label: "Categorie"
+  id: 'facet_block:life_occasion_facet'
+  label: Occasion
   label_display: visible
   provider: facets
 visibility:

@@ -394,3 +394,33 @@
   border-color: #BB7570;
   color: #BB7570;
 }
+
+/* ===========================
+   Layout sidebar + content (page recherche)
+   =========================== */
+
+.layout-with-sidebar {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-8, 2rem);
+  align-items: start;
+  padding-top: var(--space-6, 1.5rem);
+}
+
+.layout-sidebar {
+  position: sticky;
+  top: calc(var(--header-height, 80px) + var(--space-4, 1rem));
+}
+
+.layout-main-content {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .layout-with-sidebar {
+    grid-template-columns: 1fr;
+  }
+  .layout-sidebar {
+    position: static;
+  }
+}
