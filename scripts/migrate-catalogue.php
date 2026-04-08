@@ -12,13 +12,13 @@
  *   Utilisé si catalogue.json est absent. Pas de données SEO ni de personnalisation.
  *
  * Ce script est idempotent : il skipe les produits déjà présents (par handle/alias).
+ * Les modèles de personnalisation sont créés automatiquement si absents, ignorés si présents.
  *
  * Périmètre v1 :
  *  - 1 variation par produit (première variante)
  *  - Images téléchargées depuis CDN Shopify et créées en Media Drupal
  *  - Chemin alias /products/{handle}
- *  - Personnalisation (options Easify) : stockée dans field_personalization_options
- *    si le champ existe, sinon loguée uniquement
+ *  - Personnalisation : modèles créés + assignés automatiquement depuis options Easify
  *  - Multi-variantes (10 produits) → Phase 2 (attributs Commerce)
  *
  * Usage :
@@ -27,18 +27,20 @@
  *   terminus drush atelierodesign.dev -- php-script scripts/migrate-catalogue.php
  *
  * Variables d'environnement optionnelles :
- *   CATALOGUE_PATH : chemin vers catalogue.json (défaut : auto-détecté)
- *   CSV_PATH       : chemin vers le CSV (fallback si catalogue.json absent)
- *   DRY_RUN        : si "1", analyse sans créer d'entités
- *   LIMIT          : nombre de produits à migrer (0 = tous)
+ *   CATALOGUE_PATH  : chemin vers catalogue.json (défaut : auto-détecté)
+ *   CSV_PATH        : chemin vers le CSV (fallback si catalogue.json absent)
+ *   DRY_RUN         : si "1", analyse sans créer d'entités
+ *   LIMIT           : nombre de produits à migrer (0 = tous)
+ *   SKIP_PERSO      : si "1", ne crée pas les modèles de personnalisation
  */
 
 // ---------------------------------------------------------------------------
 // Configuration
 // ---------------------------------------------------------------------------
 
-$dry_run = (getenv('DRY_RUN') === '1');
-$limit   = (int) (getenv('LIMIT') ?? 0);
+$dry_run   = (getenv('DRY_RUN') === '1');
+$limit     = (int) (getenv('LIMIT') ?? 0);
+$skip_perso = (getenv('SKIP_PERSO') === '1');
 
 // ---------------------------------------------------------------------------
 // Source 1 (prioritaire) : catalogue.json généré par fetch-shopify-catalogue.js
@@ -146,6 +148,139 @@ function create_media(object $file, string $name, string $alt = ''): object {
   ]);
   $media->save();
   return $media;
+}
+
+// ---------------------------------------------------------------------------
+// Helpers — personnalisation (TCK-040)
+// ---------------------------------------------------------------------------
+
+/** Champs internes Easify à ne pas exposer au client. */
+$PERSO_INTERNAL = ['_tpo_add_by', '_tpo_price', '_tpo_custom_options'];
+
+/**
+ * Filtre les options Easify pour ne garder que les champs visibles par le client.
+ */
+function perso_user_options(array $options, array $internal): array {
+  return array_values(array_filter($options, fn($o) => !in_array($o['property'] ?? '', $internal)));
+}
+
+/**
+ * Normalise un nom de propriété Easify générique en libellé français lisible.
+ * Les labels déjà configurés côté Shopify sont conservés tels quels.
+ */
+function normalize_perso_label(string $property): string {
+  $map = [
+    'text-box-1'      => 'Personnalisation',
+    'text-box-2'      => 'Personnalisation (2)',
+    'text-box-3'      => 'Personnalisation (3)',
+    'file-upload-1'   => 'Photo à joindre',
+    'file-upload-1-1' => 'Photo à joindre',
+    'quantity-1'      => 'Quantité',
+    'checkbox-1'      => 'Option',
+    'checkbox-2'      => 'Option (2)',
+  ];
+  return $map[$property] ?? $property;
+}
+
+/**
+ * Détecte le type de champ Drupal d'après le nom de la propriété.
+ * Heuristique sur les mots-clés du label.
+ */
+function detect_perso_field_type(string $property): string {
+  $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', mb_strtolower($property)) ?: mb_strtolower($property);
+  if (str_contains($ascii, 'date'))                          return 'date';
+  if (preg_match('/photo|image|file|upload/', $ascii))       return 'file';
+  if (preg_match('/quantit|quantity|nombre|number/', $ascii)) return 'number';
+  if (preg_match('/checkbox|case/', $ascii))                 return 'checkboxes';
+  return 'text';
+}
+
+/**
+ * Retourne une signature canonique d'un jeu d'options (pour déduplication).
+ * Deux produits avec les mêmes champs (mêmes noms, ordre ignoré) partagent la même signature.
+ */
+function perso_signature(array $user_options): string {
+  $keys = array_map(fn($o) => mb_strtolower(trim($o['property'])), $user_options);
+  sort($keys);
+  return implode('|', $keys);
+}
+
+/**
+ * Génère un identifiant système court et stable pour un modèle.
+ * Reproductible : même signature → même id à chaque exécution.
+ */
+function perso_template_id(string $signature): string {
+  return 'import_' . substr(md5($signature), 0, 8);
+}
+
+/**
+ * Génère un libellé lisible pour l'interface à partir des champs du modèle.
+ */
+function perso_template_label(array $user_options): string {
+  $labels = array_map(fn($o) => normalize_perso_label($o['property']), $user_options);
+  $label  = implode(' + ', $labels);
+  return mb_strlen($label) > 60 ? mb_substr($label, 0, 57) . '…' : $label;
+}
+
+/**
+ * Crée ou charge un PersonalizationTemplate à partir d'un jeu d'options Easify.
+ * Idempotent : si un modèle avec cet id existe déjà, le retourne tel quel.
+ *
+ * @return object|null  L'entité PersonalizationTemplate, ou null en cas d'erreur.
+ */
+function ensure_perso_template(string $template_id, string $template_label, array $user_options, bool $dry_run): ?object {
+  $storage = \Drupal::entityTypeManager()->getStorage('personalization_template');
+
+  $existing = $storage->load($template_id);
+  if ($existing) {
+    echo "  ↻ Modèle existant réutilisé : [{$template_id}] {$template_label}\n";
+    return $existing;
+  }
+
+  if ($dry_run) {
+    echo "  DRY-RUN modèle : [{$template_id}] {$template_label} (" . count($user_options) . " champs)\n";
+    return NULL;
+  }
+
+  $fields = [];
+  foreach ($user_options as $i => $opt) {
+    $label  = normalize_perso_label($opt['property']);
+    $type   = detect_perso_field_type($opt['property']);
+    $fields[] = [
+      'id'          => 'field_' . ($i + 1),
+      'label'       => $label,
+      'type'        => $type,
+      'required'    => FALSE,
+      'placeholder' => '',
+      'help'        => '',
+      'maxlength'   => ($type === 'text') ? 80 : 0,
+      'options'     => [],
+      'group_max'   => 5,
+      'price_modifier' => [
+        'type'   => 'none',
+        'amount' => '0',
+        'label'  => '',
+      ],
+      'weight' => $i,
+    ];
+  }
+
+  try {
+    $template = \Drupal\odesign_personalization\Entity\PersonalizationTemplate::create([
+      'id'          => $template_id,
+      'label'       => $template_label,
+      'description' => 'Créé automatiquement lors de l\'import catalogue Shopify. À affiner dans le backoffice.',
+      'fields'      => $fields,
+      'status'      => TRUE,
+    ]);
+    $template->save();
+    echo "  ✦ Modèle créé : [{$template_id}] {$template_label} (" . count($fields) . " champs)\n";
+    return $template;
+  }
+  catch (\Exception $e) {
+    echo "  WARN modèle '{$template_id}' non créé : " . $e->getMessage() . "\n";
+    return NULL;
+  }
 }
 
 /**
@@ -288,8 +423,56 @@ $store_id = $store->id();
 echo "Store : " . $store->getName() . " (id={$store_id})\n";
 
 // ---------------------------------------------------------------------------
-// Migration
+// Pré-pass : création des modèles de personnalisation
+// Parcourt tout le catalogue, déduplique les profils et crée les modèles.
+// Résultat : $perso_map[handle] = template_id (ou NULL si pas de perso)
 // ---------------------------------------------------------------------------
+
+$perso_map         = [];  // handle → template_id
+$perso_templates   = [];  // signature → template_entity (cache session)
+$count_perso_new   = 0;
+$count_perso_reuse = 0;
+
+if (!$skip_perso && $catalogue_path) {
+  echo "\n--- Pré-pass personnalisation ---\n";
+
+  foreach ($products as $handle => $data) {
+    $user_opts = perso_user_options($data['personalization'] ?? [], $PERSO_INTERNAL);
+    if (empty($user_opts)) {
+      $perso_map[$handle] = NULL;
+      continue;
+    }
+
+    $sig         = perso_signature($user_opts);
+    $template_id = perso_template_id($sig);
+
+    if (!array_key_exists($sig, $perso_templates)) {
+      $label    = perso_template_label($user_opts);
+      $entity   = ensure_perso_template($template_id, $label, $user_opts, $dry_run);
+      $perso_templates[$sig] = $entity;
+
+      if ($entity && !$dry_run) {
+        $count_perso_new++;
+      }
+    }
+    else {
+      // Modèle déjà traité dans ce run (même signature, produit différent).
+      if ($perso_templates[$sig] !== NULL && !$dry_run) {
+        $count_perso_reuse++;
+      }
+    }
+
+    $perso_map[$handle] = $template_id;
+  }
+
+  $perso_products = count(array_filter($perso_map));
+  echo "Produits avec personnalisation : {$perso_products} / " . count($products) . "\n";
+  echo "Modèles créés : {$count_perso_new} — Modèles réutilisés : {$count_perso_reuse}\n";
+  echo "---\n\n";
+}
+elseif ($skip_perso) {
+  echo "SKIP_PERSO=1 : modèles de personnalisation ignorés.\n";
+}
 
 $product_storage   = \Drupal::entityTypeManager()->getStorage('commerce_product');
 $variation_storage = \Drupal::entityTypeManager()->getStorage('commerce_product_variation');
@@ -407,14 +590,16 @@ foreach ($products as $handle => $data) {
     $product->save();
     echo "  ✓ Produit id={$product->id()} variante id={$variation->id()}\n";
 
-    // Log des options de personnalisation (utilisé par TCK-040 quand implémenté).
-    $user_perso = array_filter(
-      $data['personalization'] ?? [],
-      fn($o) => !in_array($o['property'] ?? '', ['_tpo_add_by', '_tpo_price', '_tpo_custom_options'])
-    );
-    if (!empty($user_perso)) {
-      $perso_summary = implode(', ', array_column($user_perso, 'property'));
-      echo "  ℹ Personnalisation (TCK-040) : {$perso_summary}\n";
+    // Assignation du modèle de personnalisation si présent.
+    $template_id = $perso_map[$handle] ?? NULL;
+    if ($template_id && !$skip_perso) {
+      $sig    = perso_signature(perso_user_options($data['personalization'], $PERSO_INTERNAL));
+      $entity = $perso_templates[$sig] ?? NULL;
+      if ($entity) {
+        $product->set('field_personalization_template', ['target_id' => $entity->id()]);
+        $product->save();
+        echo "  ✦ Modèle perso assigné : [{$entity->id()}] {$entity->label()}\n";
+      }
     }
 
     $count_created++;
@@ -432,12 +617,17 @@ foreach ($products as $handle => $data) {
 // ---------------------------------------------------------------------------
 
 echo "\n=== RÉSULTAT MIGRATION ===\n";
-echo "Source   : " . ($catalogue_path ? 'catalogue.json' : 'CSV (fallback)') . "\n";
-echo "Créés    : {$count_created}\n";
-echo "Skippés  : {$count_skipped}\n";
-echo "Erreurs  : {$count_error}\n";
-echo "Total    : " . ($count_created + $count_skipped + $count_error) . "\n";
+echo "Source          : " . ($catalogue_path ? 'catalogue.json' : 'CSV (fallback)') . "\n";
+echo "Créés           : {$count_created}\n";
+echo "Skippés         : {$count_skipped}\n";
+echo "Erreurs         : {$count_error}\n";
+echo "Total           : " . ($count_created + $count_skipped + $count_error) . "\n";
+if (!$skip_perso && $catalogue_path) {
+  echo "Modèles perso   : {$count_perso_new} créés, {$count_perso_reuse} réutilisés\n";
+  $assigned = count(array_filter($perso_map, fn($id) => $id !== NULL));
+  echo "Produits avec modèle perso : {$assigned}\n";
+}
 echo "\nNote : les produits multi-variantes sont migrés avec leur première variante uniquement.\n";
 echo "Phase 2  : création des attributs Commerce pour les variantes restantes.\n";
-echo "TCK-040  : les options de personnalisation sont disponibles dans catalogue.json,\n";
-echo "           prêtes à être importées quand l'architecture sera validée.\n";
+echo "Perso    : les modèles créés automatiquement sont à affiner dans le backoffice\n";
+echo "           (/admin/boutique/personnalisation/templates) pour ajuster labels et types.\n";
