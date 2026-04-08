@@ -18,15 +18,6 @@ targetEntityType: node
 bundle: guide
 mode: default
 content:
-  field_image:
-    type: image_image
-    weight: -4
-    region: content
-    label: above
-    settings:
-      progress_indicator: throbber
-      preview_image_style: thumbnail
-    third_party_settings: {  }
   body:
     type: text_textarea_with_summary
     weight: 121
@@ -43,6 +34,15 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_image:
+    type: image_image
+    weight: -4
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    label: above
   langcode:
     type: language_select
     weight: 2

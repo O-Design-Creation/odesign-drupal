@@ -5,7 +5,7 @@ dependencies:
   config:
     - node.type.guide
 id: node__guide
-label: 'Guide'
+label: Guide
 tags:
   title: '[node:title] — Guide | [site:name]'
   description: '[node:summary]'
