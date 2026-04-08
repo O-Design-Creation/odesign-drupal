@@ -925,6 +925,25 @@ function odesign_base_preprocess_page(array &$variables): void {
 
   $variables['front_featured_life_occasions'] = array_slice($variables['front_life_occasion_cards'], 0, 4);
   $variables['front_latest_articles'] = odesign_base_build_latest_article_items(3);
+
+  // Section "Comment ça marche" — 3 étapes administrables.
+  $methode_steps = [];
+  for ($i = 1; $i <= 3; $i++) {
+    $defaults = [
+      1 => ['title' => 'Je personnalise', 'desc' => 'Choisissez votre création et indiquez-nous le texte, le prénom ou le motif souhaité.', 'icon' => 'ph-pencil-simple'],
+      2 => ['title' => "L'atelier crée", 'desc' => 'Océane grave et découpe à la main votre pièce dans son atelier. Chaque création est unique.', 'icon' => 'ph-scissors'],
+      3 => ['title' => 'Je reçois ma création', 'desc' => 'Votre commande est soigneusement emballée et expédiée ou disponible en retrait atelier.', 'icon' => 'ph-gift'],
+    ];
+    $methode_steps[] = [
+      'num'   => $i,
+      'title' => (string) ($settings->get("homepage_methode_step{$i}_title") ?: $defaults[$i]['title']),
+      'desc'  => (string) ($settings->get("homepage_methode_step{$i}_desc")  ?: $defaults[$i]['desc']),
+      'icon'  => (string) ($settings->get("homepage_methode_step{$i}_icon")  ?: $defaults[$i]['icon']),
+    ];
+  }
+  $variables['front_methode_title']    = (string) ($settings->get('homepage_methode_title')    ?: 'Comment ça marche ?');
+  $variables['front_methode_subtitle'] = (string) ($settings->get('homepage_methode_subtitle') ?: "Recevoir une création personnalisée, c'est simple et rapide.");
+  $variables['front_methode_steps']    = $methode_steps;
 }
 
 /**

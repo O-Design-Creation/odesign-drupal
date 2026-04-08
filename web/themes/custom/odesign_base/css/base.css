@@ -4202,3 +4202,104 @@ nav ul {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Homepage — Section "Comment ça marche" (home-methode)
+   --------------------------------------------------------------------------- */
+
+.home-methode {
+  padding: var(--space-12) 0;
+  background: var(--color-surface);
+}
+
+.home-methode__steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+  list-style: none;
+  padding: 0;
+  margin: var(--space-8) 0 var(--space-6);
+  counter-reset: none;
+}
+
+.home-methode__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  position: relative;
+}
+
+/* Connecteur entre étapes */
+.home-methode__step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 28px;
+  right: calc(-1 * var(--space-4));
+  width: var(--space-8);
+  height: 2px;
+  background: linear-gradient(to right, var(--color-brand-dark), var(--color-primary));
+  opacity: 0.3;
+}
+
+.home-methode__step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-brand-dark);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-methode__step-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-brand-cream) 0%, #eeddd6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-1);
+}
+
+.home-methode__step-icon .ph {
+  font-size: 1.75rem;
+  color: var(--color-brand-dark);
+}
+
+.home-methode__step-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-brand-dark);
+  margin: 0;
+}
+
+.home-methode__step-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.home-methode__cta {
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 768px) {
+  .home-methode__steps {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .home-methode__step::after { display: none; }
+}

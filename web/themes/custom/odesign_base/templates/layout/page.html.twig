@@ -365,6 +365,35 @@
           </div>
         </section>
 
+        {# Section "Comment ça marche" — 3 étapes du processus de commande #}
+        {% if front_methode_steps %}
+          <section class="home-methode" aria-labelledby="home-methode-title">
+            <div class="container">
+              <div class="section-heading section-heading--center">
+                <h2 class="section-heading__title" id="home-methode-title">{{ front_methode_title }}</h2>
+                {% if front_methode_subtitle %}
+                  <p class="section-heading__meta">{{ front_methode_subtitle }}</p>
+                {% endif %}
+              </div>
+              <ol class="home-methode__steps" role="list">
+                {% for step in front_methode_steps %}
+                  <li class="home-methode__step">
+                    <div class="home-methode__step-num" aria-hidden="true">{{ step.num }}</div>
+                    <div class="home-methode__step-icon" aria-hidden="true">
+                      <i class="ph {{ step.icon }}"></i>
+                    </div>
+                    <h3 class="home-methode__step-title">{{ step.title }}</h3>
+                    <p class="home-methode__step-desc">{{ step.desc }}</p>
+                  </li>
+                {% endfor %}
+              </ol>
+              <div class="home-methode__cta">
+                <a href="/produits" class="btn btn--primary">{{ 'Voir nos créations'|t }}</a>
+              </div>
+            </div>
+          </section>
+        {% endif %}
+
       {% else %}
         <div class="container">
           {% if is_contact_page %}
