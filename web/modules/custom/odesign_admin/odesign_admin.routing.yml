@@ -48,6 +48,16 @@ odesign_admin.newsletter:
   options:
     _admin_route: TRUE
 
+odesign_admin.clients:
+  path: '/admin/boutique/clients'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\ClientsController::page'
+    _title: 'Clients'
+  requirements:
+    _permission: 'administer odesign boutique'
+  options:
+    _admin_route: TRUE
+
 odesign_admin.marketing_guide:
   path: '/admin/boutique/guide-marketing'
   defaults:

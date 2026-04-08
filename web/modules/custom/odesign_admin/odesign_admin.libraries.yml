@@ -22,3 +22,10 @@ documentation:
   dependencies:
     - core/drupal
 
+clients:
+  css:
+    theme:
+      css/clients.css: {}
+  dependencies:
+    - core/drupal
+

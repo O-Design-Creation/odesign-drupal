@@ -160,6 +160,12 @@ function odesign_admin_theme(): array {
         'recent_articles' => [],
       ],
     ],
+    'odesign_admin_clients' => [
+      'template'  => 'odesign-admin-clients',
+      'variables' => [
+        'clients' => [],
+      ],
+    ],
     'odesign_admin_documentation' => [
       'template'  => 'odesign-admin-documentation',
       'variables' => [
@@ -236,6 +242,22 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     ],
     'badge'         => NULL,
   ];
+  $items['clients'] = [
+    'label'         => 'Clients',
+    'icon'          => 'ph-users',
+    'route'         => 'odesign_admin.clients',
+    'weight'        => 50,
+    'active_routes' => ['odesign_admin.clients'],
+    'badge'         => NULL,
+  ];
+  $items['mediatheque'] = [
+    'label'         => 'Médias',
+    'icon'          => 'ph-images',
+    'route'         => 'view.media.media_page_list',
+    'weight'        => 55,
+    'active_routes' => ['view.media.media_page_list', 'entity.media.add_page', 'entity.media.edit_form'],
+    'badge'         => NULL,
+  ];
   $items['configuration'] = [
     'label'         => 'Configuration',
     'icon'          => 'ph-gear',
@@ -265,9 +287,11 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
 /**
  * Implémente hook_odesign_boutique_dashboard_cards_alter().
  *
- * Déclare les tuiles de statistiques : produits en ligne + articles publiés.
+ * Déclare les tuiles de statistiques : produits, articles, newsletter, CA, commandes.
  */
 function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): void {
+  $db = \Drupal::database();
+
   try {
     $total_products = (int) \Drupal::entityQuery('commerce_product')
       ->condition('status', 1)
@@ -287,6 +311,30 @@ function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): vo
     'highlight' => FALSE,
     'weight'    => 20,
   ];
+
+  // CA du mois courant (commandes complétées).
+  try {
+    $month_start = mktime(0, 0, 0, (int) date('n'), 1);
+    $ca_raw = (float) $db->query(
+      'SELECT COALESCE(SUM(total_price__number), 0) FROM {commerce_order}
+       WHERE state = :state AND placed >= :start',
+      [':state' => 'completed', ':start' => $month_start]
+    )->fetchField();
+    $ca_display = number_format($ca_raw, 0, ',', ' ') . ' €';
+  }
+  catch (\Exception) {
+    $ca_display = '— €';
+  }
+
+  $cards['ca_mois'] = [
+    'title'     => 'CA ce mois',
+    'value'     => $ca_display,
+    'url'       => Url::fromRoute('entity.commerce_order.collection')->toString(),
+    'icon'      => 'ph-currency-eur',
+    'highlight' => $ca_raw > 0,
+    'weight'    => 25,
+  ];
+
 
   try {
     $total_articles = (int) \Drupal::entityQuery('node')
@@ -331,6 +379,34 @@ function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): vo
     'highlight' => FALSE,
     'weight'    => 35,
   ];
+
+  // Top 3 produits vendus (commandes complétées).
+  try {
+    $top = $db->query(
+      'SELECT oi.title, COUNT(*) as cnt
+       FROM {commerce_order_item} oi
+       JOIN {commerce_order} co ON co.order_id = oi.order_id
+       WHERE co.state = :state
+       GROUP BY oi.purchased_entity, oi.title
+       ORDER BY cnt DESC LIMIT 3',
+      [':state' => 'completed']
+    )->fetchAll();
+  }
+  catch (\Exception) {
+    $top = [];
+  }
+
+  if (!empty($top)) {
+    $top_labels = array_map(fn($r) => $r->title . ' ×' . $r->cnt, $top);
+    $cards['top_produits'] = [
+      'title'     => 'Top produits vendus',
+      'value'     => implode(' · ', $top_labels),
+      'url'       => Url::fromRoute('entity.commerce_order.collection')->toString(),
+      'icon'      => 'ph-trophy',
+      'highlight' => FALSE,
+      'weight'    => 40,
+    ];
+  }
 }
 
 /**

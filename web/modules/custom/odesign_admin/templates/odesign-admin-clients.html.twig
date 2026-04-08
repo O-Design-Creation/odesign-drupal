@@ -1,0 +1,70 @@
+{#
+/**
+ * @file
+ * Template liste clients gestionnaire.
+ * Variables : clients — [{mail, uid, total_orders, total_spent, last_order_date, orders_url, profile_url}]
+ */
+#}
+{{ attach_library('odesign_admin/clients') }}
+<div class="odesign-clients">
+
+  <div class="odesign-clients__header">
+    <h1 class="odesign-clients__title">
+      <i class="ph ph-users"></i> Clients
+    </h1>
+    <p class="odesign-clients__subtitle">
+      {{ clients|length }} client{% if clients|length != 1 %}s{% endif %} ayant passé commande
+    </p>
+  </div>
+
+  {% if clients %}
+    <div class="odesign-clients__table-wrap">
+      <table class="odesign-clients__table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th class="text-center">Commandes</th>
+            <th class="text-right">Total dépensé</th>
+            <th>Dernière commande</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for client in clients %}
+            <tr>
+              <td class="odesign-clients__mail">
+                {% if client.profile_url %}
+                  <a href="{{ client.profile_url }}" title="Voir le profil">{{ client.mail }}</a>
+                {% else %}
+                  <span title="Commande invité">{{ client.mail }}</span>
+                  <span class="odesign-clients__guest-badge">Invité</span>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                <strong>{{ client.total_orders }}</strong>
+              </td>
+              <td class="text-right">
+                {{ client.total_spent }}
+              </td>
+              <td class="odesign-clients__date">
+                {{ client.last_order_date }}
+              </td>
+              <td class="text-center">
+                <a href="{{ client.orders_url }}" class="odesign-clients__action-btn">
+                  <i class="ph ph-list-bullets"></i> Commandes
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  {% else %}
+    <div class="odesign-clients__empty">
+      <i class="ph ph-users ph-3x"></i>
+      <p>Aucun client n'a encore passé commande.</p>
+    </div>
+  {% endif %}
+
+</div>
