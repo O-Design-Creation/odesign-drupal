@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Module ODesign AI — assistant IA éditorial pour la boutique Atelier O Design.
+ *
+ * Fournit :
+ * - Un plugin AiProvider OpenAI (GPT-4o-mini) pour drupal/ai + ai_ckeditor.
+ * - Une section "Intelligence artificielle" dans BoutiqueConfigForm.
+ * - Un bouton ✨ "Générer avec l'IA" dans le formulaire de rédaction newsletter.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implémente hook_odesign_boutique_config_sections_alter().
+ *
+ * Ajoute la section "Intelligence artificielle" dans BoutiqueConfigForm.
+ */
+function odesign_ai_odesign_boutique_config_sections_alter(array &$sections): void {
+  $sections['ia'] = new \Drupal\odesign_ai\Config\AiConfigSection();
+}
+
+/**
+ * Implémente hook_form_node_simplenews_issue_form_alter().
+ *
+ * Ajoute un bouton "✨ Générer avec l'IA" dans le formulaire de rédaction
+ * d'une newsletter simplenews.
+ */
+function odesign_ai_form_node_simplenews_issue_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_ai_attach_newsletter_button($form);
+}
+
+/**
+ * Implémente hook_form_node_simplenews_issue_edit_form_alter().
+ *
+ * Même bouton IA sur le formulaire d'édition d'une newsletter.
+ */
+function odesign_ai_form_node_simplenews_issue_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+  _odesign_ai_attach_newsletter_button($form);
+}
+
+/**
+ * Injecte le bouton IA et charge la librairie dans un formulaire newsletter.
+ *
+ * @param array $form
+ *   Le formulaire à modifier.
+ */
+function _odesign_ai_attach_newsletter_button(array &$form): void {
+  // Vérifier que l'utilisateur courant a la permission de générer.
+  if (!\Drupal::currentUser()->hasPermission('access boutique ai generate')) {
+    return;
+  }
+
+  $form['odesign_ai_generate'] = [
+    '#type'   => 'container',
+    '#weight' => -10,
+    '#attributes' => ['class' => ['odesign-ai-newsletter-bar']],
+  ];
+
+  $form['odesign_ai_generate']['button'] = [
+    '#type'       => 'html_tag',
+    '#tag'        => 'button',
+    '#value'      => '✨ Générer avec l\'IA',
+    '#attributes' => [
+      'type'               => 'button',
+      'class'              => ['odesign-ai-btn', 'button', 'button--small'],
+      'data-context'       => 'newsletter',
+      'data-target-title'  => 'edit-title-0-value',
+      'data-target-body'   => 'edit-body-0-value',
+    ],
+  ];
+
+  $form['odesign_ai_generate']['status'] = [
+    '#type'       => 'html_tag',
+    '#tag'        => 'span',
+    '#value'      => '',
+    '#attributes' => [
+      'class' => ['odesign-ai-status'],
+      'style' => 'margin-left:8px;font-style:italic;color:#666',
+    ],
+  ];
+
+  $form['#attached']['library'][] = 'odesign_ai/generator';
+}

@@ -1,0 +1,4 @@
+_core:
+  default_config_hash: H_wBpxhasYS6qfRFA9Lvg5v3zs_e9xHbeHlAlLrnklU
+provider: openai
+model: gpt-4o-mini

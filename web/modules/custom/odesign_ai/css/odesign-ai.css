@@ -1,0 +1,58 @@
+/**
+ * @file
+ * Styles pour l'assistant IA éditorial — Atelier O Design.
+ * Palette : terracotta #BB7570, brun sombre #4E2620.
+ */
+
+/* Barre contenant le bouton IA dans les formulaires newsletter. */
+.odesign-ai-newsletter-bar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #fdf6f0;
+  border: 1px solid #D9B7A4;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+/* Bouton "✨ Générer avec l'IA". */
+.odesign-ai-btn {
+  background: #BB7570 !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 6px 14px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  transition: background 0.2s ease !important;
+  white-space: nowrap;
+}
+
+.odesign-ai-btn:hover:not(:disabled) {
+  background: #a05f5a !important;
+}
+
+.odesign-ai-btn:disabled {
+  background: #c9a19e !important;
+  cursor: not-allowed !important;
+  opacity: 0.75;
+}
+
+/* Message de statut (génération en cours, succès, erreur). */
+.odesign-ai-status {
+  font-size: 0.875rem;
+  font-style: italic;
+  flex: 1;
+}
+
+/* Section IA dans BoutiqueConfigForm — config-mode-ok. */
+.config-mode-ok {
+  color: #2e7d32;
+}
+
+/* config-mode-inactive reprend le style warning existant. */
+.config-mode-inactive {
+  color: #b45309;
+}

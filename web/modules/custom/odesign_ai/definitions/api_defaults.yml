@@ -1,0 +1,24 @@
+{
+  "chat": {
+    "gpt-4o-mini": {
+      "label": "GPT-4o mini",
+      "max_tokens": {
+        "default": 1024,
+        "constraints": {
+          "min": 1,
+          "max": 16384
+        }
+      }
+    },
+    "gpt-4o": {
+      "label": "GPT-4o",
+      "max_tokens": {
+        "default": 2048,
+        "constraints": {
+          "min": 1,
+          "max": 16384
+        }
+      }
+    }
+  }
+}

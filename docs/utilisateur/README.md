@@ -26,6 +26,7 @@ Une fois connectée, vous retrouvez votre tableau de bord avec les raccourcis ve
 | 06 | [Newsletter](06-newsletter.md) | Créer, envoyer, planifier une newsletter, gérer les abonnées | `/admin/content/simplenews` |
 | 07 | [Clients](07-clients.md) | Rechercher un client, consulter ses commandes | `/admin/people` |
 | 08 | [Espace client](08-espace-client.md) | Ce que voient vos clients, parcours commande, FAQ support | — |
+| 15 | [Assistant IA](15-assistant-ia.md) | Générer des textes pour vos produits, articles et newsletters | `/admin/boutique/configuration` |
 | — | [Glossaire](glossaire.md) | Définitions des termes utilisés dans cette documentation | — |
 
 ---
@@ -49,6 +50,12 @@ Une fois connectée, vous retrouvez votre tableau de bord avec les raccourcis ve
 
 **Je veux écrire un article de blog**
 → Aller sur [Contenu éditorial](05-contenu-editorial.md) — section "Créer un nouvel article"
+
+**Je veux générer un texte avec l'IA**
+→ Aller sur [Assistant IA](15-assistant-ia.md) — section "Utiliser l'IA dans une fiche produit"
+
+**Je veux générer une newsletter avec l'IA**
+→ Aller sur [Assistant IA](15-assistant-ia.md) — section "Générer une newsletter avec l'IA"
 
 **Je cherche les coordonnées d'un client**
 → Aller sur [Clients](07-clients.md) — section "Rechercher un client"
