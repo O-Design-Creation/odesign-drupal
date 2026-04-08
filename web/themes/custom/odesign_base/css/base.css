@@ -500,7 +500,10 @@ strong { font-weight: 600; }
   }
 
   .header-login-link {
-    display: none !important;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+    justify-content: center;
   }
 
   .header-cart {

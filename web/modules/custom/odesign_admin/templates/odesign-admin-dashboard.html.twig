@@ -49,6 +49,31 @@
     </div>
   {% endif %}
 
+  {# Top produits vendus — section dédiée #}
+  {% if top_products is not empty %}
+    <div class="odesign-dashboard__top-products">
+      <div class="odesign-dashboard__section-header">
+        <h3>
+          <i class="ph ph-trophy" aria-hidden="true"></i>
+          Top produits vendus
+        </h3>
+        <a href="/admin/commerce/products" class="odesign-dashboard__see-all">Voir tous les produits →</a>
+      </div>
+      <ol class="odesign-top-products__list" aria-label="Classement des produits les plus vendus">
+        {% for product in top_products %}
+          <li class="odesign-top-products__item">
+            <span class="odesign-top-products__rank" aria-hidden="true">{{ loop.index }}</span>
+            <span class="odesign-top-products__title">{{ product.title }}</span>
+            <span class="odesign-top-products__count">
+              <strong>{{ product.cnt }}</strong>
+              <span class="odesign-top-products__count-label">{{ product.cnt > 1 ? 'ventes' : 'vente' }}</span>
+            </span>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  {% endif %}
+
   {# Commandes récentes — pleine largeur, section principale #}
   {% if orders_view %}
     <div class="odesign-dashboard__orders odesign-dashboard__orders--full">
