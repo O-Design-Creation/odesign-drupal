@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * node--guide--teaser.html.twig
+ *
+ * Carte guide dans la liste /guides.
+ */
+#}
+{%
+  set classes = [
+    'guide-card',
+    not node.isPublished() ? 'guide-card--unpublished',
+  ]|filter(v => v)
+%}
+<article{{ attributes.addClass(classes) }}>
+  <a href="{{ url }}" class="guide-card__link" tabindex="-1" aria-hidden="true">
+    <div class="guide-card__image">
+      {%- if content.field_image|render|striptags|trim is not empty -%}
+        {{- content.field_image -}}
+      {%- else -%}
+        <div class="guide-card__image--placeholder" aria-hidden="true">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="220" fill="#f9f5f2"/>
+            <path d="M160 155 L200 75 L240 155Z" fill="#BB7570" opacity=".5"/>
+            <circle cx="200" cy="90" r="18" fill="#4E2620" opacity=".15"/>
+          </svg>
+        </div>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="guide-card__body">
+    <h2 class="guide-card__title">
+      <a href="{{ url }}">{{ label }}</a>
+    </h2>
+
+    {%- if content.body|render|striptags|trim is not empty -%}
+      <div class="guide-card__summary">
+        {{- content.body -}}
+      </div>
+    {%- endif -%}
+
+    <a href="{{ url }}" class="guide-card__read-more btn btn--secondary">
+      <i class="ph ph-book-open" aria-hidden="true"></i>
+      {{ 'Lire le guide'|t }}
+    </a>
+  </div>
+</article>

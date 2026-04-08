@@ -4,10 +4,12 @@ status: true
 dependencies:
   config:
     - field.field.node.guide.body
+    - field.field.node.guide.field_image
     - node.type.guide
     - workflows.workflow.editorial
   module:
     - content_moderation
+    - image
     - path
     - scheduler
     - text
@@ -16,6 +18,15 @@ targetEntityType: node
 bundle: guide
 mode: default
 content:
+  field_image:
+    type: image_image
+    weight: -4
+    region: content
+    label: above
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
   body:
     type: text_textarea_with_summary
     weight: 121

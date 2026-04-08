@@ -429,3 +429,12 @@ msgstr "Ceci est un envoi de test de la newsletter."
 
 msgid "This email is a one-off message sent by an administrator."
 msgstr "Cet email est un message ponctuel envoyé par un administrateur."
+
+msgid "Retour aux guides"
+msgstr "Retour aux guides"
+
+msgid "Voir nos créations"
+msgstr "Voir nos créations"
+
+msgid "Lire le guide"
+msgstr "Lire le guide"

@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * node--guide--full.html.twig
+ *
+ * Template guide en vue complète.
+ * Le titre est rendu par le bloc "Page title" de Drupal — ne pas le dupliquer ici.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-guide',
+    'node--view-mode-full',
+    'guide-full',
+  ]
+%}
+<article{{ attributes.addClass(classes) }}>
+
+  {# Lien retour vers la liste des guides #}
+  <a href="/guides" class="article-back-link">
+    <i class="ph ph-arrow-left" aria-hidden="true"></i>
+    {{ 'Retour aux guides'|t }}
+  </a>
+
+  {# Image de couverture #}
+  {%- if content.field_image|render|striptags|trim is not empty -%}
+    <div class="guide-cover-image">
+      {{- content.field_image -}}
+    </div>
+  {%- endif -%}
+
+  {# Corps du guide #}
+  <div class="field--name-body guide-body">
+    {{- content.body -}}
+  </div>
+
+  {# CTA produits liés #}
+  <div class="guide-cta">
+    <a href="/produits" class="btn btn--primary">
+      <i class="ph ph-shopping-bag" aria-hidden="true"></i>
+      {{ 'Voir nos créations'|t }}
+    </a>
+  </div>
+
+</article>
