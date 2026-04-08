@@ -1,81 +1,144 @@
 <?php
 /**
  * @file
- * Seed des redirections 301 Shopify → Drupal.
+ * Seed des redirections 301 Shopify → Drupal (TCK-019).
  *
- * Analyse : le module Redirect est déjà activé (8.x-1.12).
+ * Idempotent : vérifie l'existence avant création. Peut être rejoué sans doublon.
+ * Usage : ddev exec drush scr scripts/seed-redirections.php
+ *         terminus drush atelierodesign.dev -- scr scripts/seed-redirections.php
  *
- * Situation redirections produits (url-matrix-handles.csv, 84 produits) :
- *   Shopify : /products/{handle}
- *   Drupal  : /products/{handle}
- *   → URLs IDENTIQUES → aucune redirection 301 nécessaire pour les produits.
+ * ---------------------------------------------------------------------------
+ * Redirections implémentées (vérifié 2026-04-08) :
  *
- * Redirections à créer (patterns Shopify non-exportés) :
- *   /collections/* → à définir selon la future taxonomie Drupal
- *   /blogs/news/*  → /blog/* (une fois le blog actif)
- *   /pages/about   → /a-propos (si page créée)
+ * Produits (/products/*) :
+ *   Shopify /products/{handle} = Drupal /products/{handle} → aucune redirection nécessaire.
  *
- * Usage une fois les données disponibles :
- *   ddev drush php-script scripts/seed-redirections.php
- *   terminus drush atelierodesign.dev -- php-script scripts/seed-redirections.php
+ * Collections → Occasions (taxonomie life_occasion) :
+ *   /collections/mariage                         → /occasions/mariage
+ *   /collections/naissance-bebe                  → /occasions/naissance-bebe
+ *   /collections/cadeaux-personnalises-famille   → /occasions/cadeaux-personnalises-famille
+ *   /collections/all                             → / (fallback : /catalogue non implémenté)
+ *   /collections                                 → / (fallback : /occasions non implémenté)
+ *
+ * Blog :
+ *   /blogs/news   → /blog
+ *   /blogs/news/  → /blog
+ *
+ * Pages légales et institutionnelles :
+ *   /pages/cgv                      → /cgv
+ *   /pages/mentions-legales         → /mentions-legales
+ *   /pages/politique-confidentialite → /politique-confidentialite
+ *   /pages/contact                  → /contact
+ *   /pages/a-propos                 → /atelier
+ *   /pages/about                    → /atelier
+ *   /pages/faq                      → /contact (fallback : /faq non implémenté)
+ *
+ * Compte client :
+ *   /account          → /user/login
+ *   /account/login    → /user/login
+ *   /account/register → /user/register
+ *
+ * Non créées (cible non existante) :
+ *   /search → /recherche  (AVERTISSEMENT : /recherche non implémenté à cette date)
+ * ---------------------------------------------------------------------------
  */
 
 use Drupal\redirect\Entity\Redirect;
 
-$lang = \Drupal::languageManager()->getDefaultLanguage()->getId();
-$storage = \Drupal::entityTypeManager()->getStorage('redirect');
-
-// ---------------------------------------------------------------------------
-// Redirections connues (patterns Shopify spécifiques)
-// À compléter au fur et à mesure de l'avancement du projet
-// ---------------------------------------------------------------------------
-$redirections = [
-  // Format : [source_path, destination_path, status_code]
-  // Blog Shopify → Drupal (si contenu blog migré)
-  // ['/blogs/news', '/blog', 301],
-
-  // Collections Shopify → Drupal produits (à définir)
-  // ['/collections/all', '/produits', 301],
-  // ['/collections/personnalisation', '/produits', 301],
-
-  // Panier Shopify (si visité depuis liens externes)
-  // ['/cart', '/panier', 301],
-
-  // Pages Shopify spécifiques (à confirmer avec client)
-  // ['/pages/about', '/a-propos', 301],
-
-  // Placeholder vide — décommenter et compléter selon les données Shopify
-];
-
-if (empty($redirections)) {
-  echo "INFO : Aucune redirection configurée dans ce script.\n";
-  echo "Les redirections produits /products/* sont inutiles (URLs identiques Shopify/Drupal).\n";
-  echo "Compléter la liste \$redirections quand les URLs Shopify non-produits seront connues.\n";
-  return;
-}
-
+$pathValidator = \Drupal::service('path.validator');
+$redirectRepository = \Drupal::service('redirect.repository');
 $count_created = 0;
 $count_skipped = 0;
+$count_warned = 0;
 
-foreach ($redirections as [$source, $destination, $code]) {
-  // Vérifier si la redirection existe déjà.
-  $existing = $storage->loadByProperties(['redirect_source__path' => ltrim($source, '/')]);
-  if (!empty($existing)) {
-    echo "SKIP : {$source} existe déjà\n";
+/**
+ * Closure : crée une redirection 301 si elle n'existe pas encore.
+ * Vérifie que la destination est valide avant création.
+ * Si $skip_validation = TRUE, la validation de la cible est bypassée
+ * (utile pour les routes système Drupal comme /user/login).
+ *
+ * Note : closure utilisée (vs function) pour capturer les services depuis le
+ * contexte du script drush (include() depuis une méthode — global n'y fonctionne pas).
+ * Note : utilise redirect.repository->findMatchingRedirect() (lookup par hash)
+ * pour une idempotence correcte, y compris pour les variantes avec slash final.
+ */
+$ensure_redirect = function (string $source, string $destination, bool $skip_validation = FALSE)
+  use ($pathValidator, $redirectRepository, &$count_created, &$count_skipped, &$count_warned): string {
+
+  // Vérifier si la cible existe (sauf routes système bypassées).
+  if (!$skip_validation && !$pathValidator->isValid($destination)) {
+    echo "AVERTISSEMENT : destination introuvable, redirection non créée : $source → $destination\n";
+    $count_warned++;
+    return 'warned';
+  }
+
+  // Idempotence : lookup par hash (gère les variantes trailing-slash).
+  $existing = $redirectRepository->findMatchingRedirect(ltrim($source, '/'));
+  if ($existing) {
+    echo "SKIP (existe déjà) : $source\n";
     $count_skipped++;
-    continue;
+    return 'skipped';
   }
 
   $redirect = Redirect::create([
-    'redirect_source' => ['path' => ltrim($source, '/'), 'query' => []],
+    'redirect_source' => ['path' => ltrim($source, '/'), 'query' => NULL],
     'redirect_redirect' => ['uri' => 'internal:' . $destination],
-    'language'  => $lang,
-    'status_code' => $code,
+    'status_code' => 301,
+    'langcode' => 'fr',
     'uid' => 1,
   ]);
   $redirect->save();
-  echo "CRÉÉ : {$source} → {$destination} ({$code})\n";
+  echo "CRÉÉ : $source → $destination\n";
   $count_created++;
-}
+  return 'created';
+};
 
-echo "Créées: {$count_created}, Skippées: {$count_skipped}\n";
+// ---------------------------------------------------------------------------
+// Collections Shopify → pages Occasions (taxonomie life_occasion vérifiée)
+// ---------------------------------------------------------------------------
+$ensure_redirect('/collections/mariage', '/occasions/mariage');
+$ensure_redirect('/collections/naissance-bebe', '/occasions/naissance-bebe');
+$ensure_redirect('/collections/cadeaux-personnalises-famille', '/occasions/cadeaux-personnalises-famille');
+// /catalogue non implémenté → fallback homepage.
+$ensure_redirect('/collections/all', '/');
+// /occasions (page liste) non implémenté → fallback homepage.
+$ensure_redirect('/collections', '/');
+
+// ---------------------------------------------------------------------------
+// Blog Shopify → Blog Drupal
+// ---------------------------------------------------------------------------
+$ensure_redirect('/blogs/news', '/blog');
+$ensure_redirect('/blogs/news/', '/blog');
+
+// ---------------------------------------------------------------------------
+// Pages légales et institutionnelles
+// ---------------------------------------------------------------------------
+$ensure_redirect('/pages/cgv', '/cgv');
+$ensure_redirect('/pages/mentions-legales', '/mentions-legales');
+$ensure_redirect('/pages/politique-confidentialite', '/politique-confidentialite');
+$ensure_redirect('/pages/contact', '/contact');
+$ensure_redirect('/pages/a-propos', '/atelier');
+$ensure_redirect('/pages/about', '/atelier');
+// /faq non implémenté → fallback /contact.
+$ensure_redirect('/pages/faq', '/contact');
+
+// ---------------------------------------------------------------------------
+// Compte client (/user/login et /user/register sont des routes système Drupal)
+// ---------------------------------------------------------------------------
+$ensure_redirect('/account', '/user/login', TRUE);
+$ensure_redirect('/account/login', '/user/login', TRUE);
+$ensure_redirect('/account/register', '/user/register', TRUE);
+
+// ---------------------------------------------------------------------------
+// Recherche : /recherche non implémenté → avertissement, pas de redirection.
+// ---------------------------------------------------------------------------
+$ensure_redirect('/search', '/recherche');
+
+// ---------------------------------------------------------------------------
+// Résumé
+// ---------------------------------------------------------------------------
+echo PHP_EOL;
+echo "=== Résumé TCK-019 ===" . PHP_EOL;
+echo "Créées   : $count_created" . PHP_EOL;
+echo "Skippées : $count_skipped" . PHP_EOL;
+echo "Avertissements (cible manquante) : $count_warned" . PHP_EOL;
