@@ -5,12 +5,12 @@ dependencies: {  }
 name: 'Nouveautés Atelier O Design'
 id: nouveautes_atelier
 description: 'Recevez nos nouveaux produits, créations artisanales et offres exclusives.'
-format: plain
+format: html
 priority: 0
 receipt: true
 from_name: 'Atelier O Design'
-subject: '{{ simplenews_issue.label }}'
-from_address: noreply@atelierodesign.fr
+subject: '[node:title]'
+from_address: boutique@atelierodesign.fr
 hyperlinks: true
 allowed_handlers: {  }
 new_account: none

@@ -1,0 +1,128 @@
+{#
+/**
+ * @file
+ * Template branded Atelier O Design pour la newsletter Simplenews.
+ *
+ * Override de simplenews-newsletter-body.html.twig pour l'id "nouveautes_atelier".
+ *
+ * Variables disponibles :
+ * - title: Titre du numéro de newsletter
+ * - build: Le contenu rendu de l'issue (node)
+ * - reason: Texte optionnel expliquant pourquoi l'abonné reçoit cet email
+ * - unsubscribe_text: Libellé du lien de désabonnement
+ * - test_message: Si présent, indique que c'est un envoi de test
+ * - format: 'html' ou 'plain'
+ * - newsletter: objet Newsletter (from_name, subject, etc.)
+ */
+#}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ title }}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f9f5f2;font-family:Georgia,serif;color:#3d2b1f;">
+
+  {# Wrapper principal #}
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f9f5f2;">
+    <tr>
+      <td align="center" style="padding:24px 16px;">
+
+        {# Container 600px #}
+        <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:4px;overflow:hidden;">
+
+          {# ── HEADER ────────────────────────────────────────────────────── #}
+          <tr>
+            <td style="background-color:#4E2620;padding:28px 40px;text-align:center;">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center">
+                    <span style="font-family:Georgia,serif;font-size:22px;font-weight:normal;color:#f9f5f2;letter-spacing:0.12em;text-transform:uppercase;">Atelier O Design</span>
+                    <br>
+                    <span style="font-family:Georgia,serif;font-size:11px;color:#D9B7A4;letter-spacing:0.18em;text-transform:uppercase;">Création artisanale</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {# ── BANDEAU TITRE ─────────────────────────────────────────────── #}
+          <tr>
+            <td style="background-color:#BB7570;padding:16px 40px;text-align:center;">
+              <p style="margin:0;font-family:Georgia,serif;font-size:13px;color:#f9f5f2;letter-spacing:0.1em;text-transform:uppercase;">
+                Nouveautés &amp; inspirations
+              </p>
+            </td>
+          </tr>
+
+          {# ── TITRE DU NUMÉRO ───────────────────────────────────────────── #}
+          <tr>
+            <td style="padding:32px 40px 16px 40px;text-align:center;border-bottom:1px solid #e8d5c4;">
+              <h1 style="margin:0;font-family:Georgia,serif;font-size:24px;font-weight:normal;color:#4E2620;line-height:1.4;">
+                {{ title }}
+              </h1>
+              {% if test_message %}
+                <p style="margin:12px 0 0;font-size:12px;color:#BB7570;font-style:italic;">
+                  ⚠ {{ test_message }}
+                </p>
+              {% endif %}
+            </td>
+          </tr>
+
+          {# ── CONTENU ───────────────────────────────────────────────────── #}
+          <tr>
+            <td style="padding:32px 40px;font-family:Georgia,serif;font-size:16px;line-height:1.7;color:#3d2b1f;">
+              {{ build }}
+            </td>
+          </tr>
+
+          {# ── CTA BOUTIQUE ──────────────────────────────────────────────── #}
+          <tr>
+            <td style="padding:0 40px 32px 40px;text-align:center;">
+              <a href="https://dev-atelierodesign.pantheonsite.io/produits"
+                 style="display:inline-block;background-color:#4E2620;color:#f9f5f2;font-family:Georgia,serif;font-size:14px;letter-spacing:0.08em;text-decoration:none;padding:14px 32px;border-radius:2px;">
+                Découvrir nos créations →
+              </a>
+            </td>
+          </tr>
+
+          {# ── SÉPARATEUR ────────────────────────────────────────────────── #}
+          <tr>
+            <td style="padding:0 40px;">
+              <hr style="border:none;border-top:1px solid #e8d5c4;margin:0;">
+            </td>
+          </tr>
+
+          {# ── FOOTER ────────────────────────────────────────────────────── #}
+          <tr>
+            <td style="padding:24px 40px;background-color:#f9f5f2;text-align:center;">
+              <p style="margin:0 0 8px;font-family:Georgia,serif;font-size:12px;color:#8B6151;">
+                Atelier O Design — Création artisanale française
+              </p>
+              {% if reason %}
+                <p style="margin:0 0 8px;font-family:Georgia,serif;font-size:11px;color:#8B6151;">
+                  {{ reason }}
+                </p>
+              {% endif %}
+              {% if unsubscribe_text %}
+                <p style="margin:0;font-family:Georgia,serif;font-size:11px;color:#8B6151;">
+                  <a href="[simplenews-subscriber:unsubscribe-url]"
+                     style="color:#BB7570;text-decoration:underline;">
+                    {{ unsubscribe_text }}
+                  </a>
+                </p>
+              {% endif %}
+            </td>
+          </tr>
+
+        </table>
+        {# /Container 600px #}
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

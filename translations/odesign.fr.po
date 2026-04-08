@@ -419,3 +419,13 @@ msgstr "Code de langue"
 
 msgid "Rechercher dans la liste"
 msgstr "Rechercher dans la liste"
+
+# Simplenews — TCK-057
+msgid "Unsubscribe from this newsletter"
+msgstr "Se désabonner de cette newsletter"
+
+msgid "This is a test version of the newsletter."
+msgstr "Ceci est un envoi de test de la newsletter."
+
+msgid "This email is a one-off message sent by an administrator."
+msgstr "Cet email est un message ponctuel envoyé par un administrateur."
