@@ -1,389 +1,37 @@
-# ODesign — Traductions FR personnalisées
-# Contexte : interface back-office gestionnaire boutique
-# Import : ddev drush locale:import fr translations/odesign.fr.po --type=customized
+# French translation of ODesign Drupal
+#
 msgid ""
 msgstr ""
-"Content-Type: text/plain; charset=UTF-8\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2026-04-08 17:31+0200\n"
+"PO-Revision-Date: 2026-04-08 17:31+0200\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-# ─── États de commande ───────────────────────────────────────────────────────
-
-msgid "Draft"
-msgstr "Brouillon"
-
-msgid "Pending"
-msgstr "En attente"
-
-msgid "Processing"
-msgstr "En cours de traitement"
+msgid "Coupons"
+msgstr "Codes promo"
 
 msgid "Completed"
 msgstr "Terminée"
 
-msgid "Canceled"
-msgstr "Annulée"
-
-msgid "Refunded:"
-msgstr "Remboursée :"
-
-msgid "Successful"
-msgstr "Réussie"
-
-# ─── Messages vides (visibles gestionnaire) ──────────────────────────────────
-
-msgid "No orders available."
-msgstr "Aucune commande pour le moment."
-
-msgid "No products available."
-msgstr "Aucun produit pour le moment."
-
-msgid "No stores available."
-msgstr "Aucune boutique configurée."
-
-msgid "No payments yet."
-msgstr "Aucun paiement enregistré."
-
-msgid "There are no order items yet."
-msgstr "Aucun article dans cette commande."
-
-msgid "There are no profiles yet."
-msgstr "Aucun profil client enregistré."
-
-msgid "You have not placed any orders with us yet."
-msgstr "Vous n'avez pas encore passé de commande."
-
-msgid "There is no redirect yet."
-msgstr "Aucune redirection configurée."
-
-# ─── Actions ─────────────────────────────────────────────────────────────────
-
-msgid "Unlock order"
-msgstr "Déverrouiller la commande"
-
-msgid "Unlock orders"
-msgstr "Déverrouiller les commandes"
-
-msgid "Reassign orders"
-msgstr "Réassigner les commandes"
-
-msgid "Edit user account"
-msgstr "Modifier mon compte"
-
-msgid "With selection"
-msgstr "Sur la sélection"
-
-msgid "Make content sticky"
-msgstr "Épingler le contenu"
-
-msgid "Translate product attribute"
-msgstr "Traduire l'attribut produit"
-
-# ─── Labels interface commande ────────────────────────────────────────────────
-
-msgid "Order details"
-msgstr "Détails de la commande"
-
-msgid "Order items table (admin)"
-msgstr "Articles commandés"
-
-msgid "Customer comments"
-msgstr "Commentaire du client"
-
-msgid "Current product variation"
-msgstr "Variante de produit actuelle"
-
-msgid "Default product variation"
-msgstr "Variante par défaut"
+msgid "[term:description]"
+msgstr "[term:description]"
 
 msgid "Cart form"
 msgstr "Panier"
 
-msgid "Checkout order summary"
-msgstr "Récapitulatif de la commande"
-
-msgid "Save and add variations"
-msgstr "Enregistrer puis ajouter des variantes"
-
-msgid "Commerce Activity"
-msgstr "Activité boutique"
-
-msgid "User orders"
-msgstr "Commandes du client"
-
-msgid "Display a list of placed orders for a user."
-msgstr "Affiche la liste des commandes d'un client."
-
-msgid "Display a set of order items in a table."
-msgstr "Affiche les articles d'une commande."
-
-msgid "Add admin comments to @label"
-msgstr "Ajouter un commentaire interne à @label"
-
-# ─── Labels produit ───────────────────────────────────────────────────────────
-
-msgid "Manage fields, form and display settings for your products."
-msgstr "Gérer les champs et l'affichage de vos produits."
-
-msgid "Manage fields, form and display settings for your product variations."
-msgstr "Gérer les champs et l'affichage des variantes produit."
-
-msgid "Manage fields, form and display settings for your stores."
-msgstr "Gérer les champs et l'affichage de votre boutique."
-
-msgid "[Order items] Manage %bundle"
-msgstr "Gérer les articles de commande : %bundle"
-
-msgid "[Product variations] Manage %bundle"
-msgstr "Gérer les variantes produit : %bundle"
-
-# ─── Labels utilisateurs/clients ─────────────────────────────────────────────
-
-msgid "Find and manage people interacting with your site."
-msgstr "Trouver et gérer les clients et utilisateurs de votre site."
-
-msgid "Manage user profiles."
-msgstr "Gérer les profils utilisateurs."
-
-msgid "Manage own @type"
-msgstr "Gérer mon profil @type"
-
-msgid "@type profile"
-msgstr "Profil @type"
-
-msgid "Name or email contains"
-msgstr "Nom ou email contient"
-
-msgid "A list of new users"
-msgstr "Nouveaux inscrits"
-
-# ─── Labels généraux navigation ───────────────────────────────────────────────
-
-msgid "Welcome!"
-msgstr "Bienvenue !"
-
-msgid "Recent content"
-msgstr "Contenu récent"
-
-msgid "Recent content."
-msgstr "Derniers contenus publiés."
-
-msgid "Find and manage content"
-msgstr "Gérer le contenu du site"
-
-msgid "Find and manage files."
-msgstr "Gérer les fichiers et médias."
-
-msgid "List of redirects"
-msgstr "Liste des redirections"
-
-msgid "Number patterns"
-msgstr "Format des numéros"
-
-msgid "Manage number patterns."
-msgstr "Gérer le format de numérotation des commandes."
-
-msgid "Log settings"
-msgstr "Paramètres des journaux"
-
-msgid "Configure log settings."
-msgstr "Configurer les journaux système."
-
-msgid "Configure order settings."
-msgstr "Configurer les paramètres des commandes."
-
-msgid "Rebuild content access permissions"
-msgstr "Reconstruire les permissions d'accès au contenu"
-
-msgid "Registering module"
-msgstr "Enregistrement du module"
-
-# ─── Paiement Stripe (labels techniques — laisser en FR pour le gestionnaire) ─
-
-msgid "Configure your Stripe settings."
-msgstr "Configurer votre intégration Stripe."
-
-msgid "Administer Commerce Stripe"
-msgstr "Administrer Stripe Commerce"
-
-msgid "Stripe settings"
-msgstr "Paramètres Stripe"
-
-msgid "View Stripe dashboard links"
-msgstr "Voir les liens du tableau de bord Stripe"
-
-# ─── Messages erreur/chargement ──────────────────────────────────────────────
-
-msgid "Processing..."
-msgstr "Traitement en cours..."
-
-msgid "An AJAX HTTP request terminated abnormally."
-msgstr "La connexion au serveur a été interrompue. Veuillez réessayer."
-
-msgid "Oops, something went wrong. Check your browser's developer console for more details."
-msgstr "Une erreur est survenue. Veuillez recharger la page ou contacter votre prestataire."
-
-# ─── Message de confirmation commande ────────────────────────────────────────
-
-msgid "Your order number is [commerce_order:order_number].\nYou can view your order on your account page when logged in."
-msgstr "Votre numéro de commande est [commerce_order:order_number].\nVous pouvez consulter votre commande dans votre espace personnel une fois connecté(e)."
-
-# ─── Accessibilité / navigation ──────────────────────────────────────────────
-
-msgid "Show table cells that were hidden to make the table fit within a small screen."
-msgstr "Afficher les colonnes masquées sur petit écran"
-
-msgid "Bulk actions are now available. These actions will be applied to all selected items. This can be accessed via the \"Skip to bulk actions\" link that appears after every enabled checkbox. "
-msgstr "Les actions groupées sont disponibles. Elles s'appliqueront à tous les éléments sélectionnés."
-
-msgid "1 item selected@count items selected"
-msgstr "1 élément sélectionné@count éléments sélectionnés"
-
-msgid "@count items added to @container"
-msgstr "@count élément(s) ajouté(s) à @container"
-
-msgid "(Default)"
-msgstr "(Défaut)"
-
 msgid "Item"
 msgstr "Élément"
-
-msgid "Teaser"
-msgstr "Extrait"
-
-msgid "Archive"
-msgstr "Archives"
-
-msgid "Glossary"
-msgstr "Glossaire"
-
-msgid "Slogan"
-msgstr "Slogan"
-
-msgid "French"
-msgstr "Français"
-
-msgid "Last update"
-msgstr "Dernière mise à jour"
-
-msgid "Upload date"
-msgstr "Date d'ajout"
-
-msgid "noindex"
-msgstr "Ne pas indexer"
-
-# ─── États de commande avec contexte workflow state ──────────────────────────
-
-msgctxt "workflow state"
-msgid "Draft"
-msgstr "Brouillon"
-
-msgctxt "workflow state"
-msgid "Pending"
-msgstr "En attente"
-
-msgctxt "workflow state"
-msgid "Completed"
-msgstr "Terminée"
-
-msgctxt "workflow state"
-msgid "Canceled"
-msgstr "Annulée"
-
-# ─── Chaînes manquantes sans contexte ────────────────────────────────────────
 
 msgid "Carts"
 msgstr "Paniers"
 
-msgid "Commerce inbox (@count)"
-msgstr "Boîte de réception (@count)"
-
-msgid "Commerce inbox <span>@count</span>"
-msgstr "Boîte de réception <span>@count</span>"
-
-msgid "No content available."
-msgstr "Aucun contenu disponible."
-
-msgid "No log entries."
-msgstr "Aucune entrée dans les journaux."
-
-msgid "No files available."
-msgstr "Aucun fichier disponible."
-
-msgid "Files overview"
-msgstr "Aperçu des fichiers"
-
-msgid "Who's new"
-msgstr "Nouveaux inscrits"
-
-msgid "Who's online"
-msgstr "Utilisateurs en ligne"
-
-msgid "Who's online block"
-msgstr "Bloc : utilisateurs en ligne"
-
-msgid "A list of users that are currently logged in."
-msgstr "Liste des utilisateurs actuellement connectés."
-
-msgid "A user is considered online for this long after they have last viewed a page."
-msgstr "Durée après laquelle un utilisateur est considéré hors ligne."
-
-msgid "Manage profile types, including fields."
-msgstr "Gérer les types de profils et leurs champs."
-
-msgid "Administer number patterns"
-msgstr "Gérer les formats de numérotation"
-
-msgid "Administer node published status"
-msgstr "Gérer le statut de publication des contenus"
-
-msgid "Access log settings page"
-msgstr "Accéder aux paramètres des journaux"
-
-msgid "Review project updates and news related to your Drupal Commerce site."
-msgstr "Consulter les mises à jour et actualités de Drupal Commerce."
-
-msgid "Shows a list of the newest user accounts on the site."
-msgstr "Affiche les derniers comptes créés sur le site."
-
-msgid "Shows the user names of the most recently active users, and the total number of active users."
-msgstr "Affiche les utilisateurs récemment actifs."
-
-msgid "All content, by letter."
-msgstr "Tout le contenu, par lettre."
-
-msgid "All content, by month."
-msgstr "Tout le contenu, par mois."
-
-msgid "Monthly archive"
-msgstr "Archives mensuelles"
-
-msgid "Recent log messages"
-msgstr "Derniers messages du journal"
-
-msgid "View @entity_label"
-msgstr "Voir @entity_label"
-
-msgid "Inline Operations"
-msgstr "Actions rapides"
-
-msgid "1@count"
-msgstr "1@count"
-
-msgid "#"
-msgstr "N°"
-
-msgid "(Default)"
-msgstr "(Défaut)"
-
-msgid "@interval ago"
-msgstr "il y a @interval"
-
-msgid "@interval hence"
-msgstr "dans @interval"
-
-msgid "last »"
-msgstr "dernière »"
+msgid "‹ previous"
+msgstr "‹ précédente"
 
 msgid "next ›"
 msgstr "suivante ›"
@@ -391,57 +39,310 @@ msgstr "suivante ›"
 msgid "« first"
 msgstr "« première"
 
-msgid "‹ previous"
-msgstr "‹ précédente"
+msgid "last »"
+msgstr "dernière »"
 
-# ─── Champs adresse (address module) ─────────────────────────────────────────
+msgid "With selection"
+msgstr "Sur la sélection"
 
-msgid "The given name"
-msgstr "Prénom"
+msgid "No orders available."
+msgstr "Aucune commande pour le moment."
 
-msgid "The dependent locality (i.e. neighbourhood)"
-msgstr "Quartier / localité"
+msgid ""
+"Your order number is [commerce_order:order_number].\r\n"
+"You can view "
+"your order on your account page when logged in."
+msgstr ""
+"Votre numéro de commande est [commerce_order:order_number].\n"
+"Vous "
+"pouvez consulter votre commande dans votre espace personnel une fois "
+"connecté(e)."
 
-msgid "The sorting code"
-msgstr "Code de tri"
+msgid "Checkout order summary"
+msgstr "Récapitulatif de la commande"
 
-msgid "The third line of the address block"
-msgstr "Ligne d'adresse 3"
+msgid "Credit memo"
+msgstr "Avoir"
 
-msgid "The top-level administrative subdivision of the country"
-msgstr "Région / département"
+msgid "There are no invoices yet."
+msgstr "Aucune facture pour le moment."
 
-msgid "The two-letter country code"
-msgstr "Code pays (2 lettres)"
+msgid "No invoices yet."
+msgstr "Aucune facture pour l'instant."
 
-msgid "The language code"
-msgstr "Code de langue"
+msgid "Credit memos"
+msgstr "Avoirs"
 
-msgid "Rechercher dans la liste"
-msgstr "Rechercher dans la liste"
+msgid "Commerce Activity"
+msgstr "Activité boutique"
 
-# Simplenews — TCK-057
-msgid "Unsubscribe from this newsletter"
-msgstr "Se désabonner de cette newsletter"
+msgid "No log entries."
+msgstr "Aucune entrée dans les journaux."
 
-msgid "This is a test version of the newsletter."
-msgstr "Ceci est un envoi de test de la newsletter."
+msgid "Order details"
+msgstr "Détails de la commande"
 
-msgid "This email is a one-off message sent by an administrator."
-msgstr "Cet email est un message ponctuel envoyé par un administrateur."
+msgid "Unlock order"
+msgstr "Déverrouiller la commande"
 
-msgid "Retour aux guides"
-msgstr "Retour aux guides"
+msgid "Display a set of order items in a table."
+msgstr "Affiche les articles d'une commande."
 
-msgid "Voir nos créations"
-msgstr "Voir nos créations"
+msgid "There are no order items yet."
+msgstr "Aucun article dans cette commande."
 
-msgid "Lire le guide"
-msgstr "Lire le guide"
+msgid "Order items table (admin)"
+msgstr "Articles commandés"
 
-# TCK-043 — SSO Google
-msgid "Continuer avec Google"
-msgstr "Continuer avec Google"
+msgid "Inline Operations"
+msgstr "Actions rapides"
 
-msgid "ou"
-msgstr "ou"
+msgid "#"
+msgstr "N°"
+
+msgid "User orders"
+msgstr "Commandes du client"
+
+msgid "Display a list of placed orders for a user."
+msgstr "Affiche la liste des commandes d'un client."
+
+msgid "You have not placed any orders with us yet."
+msgstr "Vous n'avez pas encore passé de commande."
+
+msgid "Refunded:"
+msgstr "Remboursée :"
+
+msgid "No payments yet."
+msgstr "Aucun paiement enregistré."
+
+msgid "No products available."
+msgstr "Aucun produit pour le moment."
+
+msgid "Per customer limit"
+msgstr "Limite par client"
+
+msgid "Order shipments"
+msgstr "Expéditions de la commande"
+
+msgid "No stores available."
+msgstr "Aucune boutique configurée."
+
+msgid "noindex"
+msgstr "Ne pas indexer"
+
+msgid "Teaser"
+msgstr "Extrait"
+
+msgid "Make content sticky"
+msgstr "Épingler le contenu"
+
+msgid "There are no profiles yet."
+msgstr "Aucun profil client enregistré."
+
+msgid "List of redirects"
+msgstr "Liste des redirections"
+
+msgid "There is no redirect yet."
+msgstr "Aucune redirection configurée."
+
+msgid "Recent log messages"
+msgstr "Derniers messages du journal"
+
+msgid "Find and manage files."
+msgstr "Gérer les fichiers et médias."
+
+msgid "Upload date"
+msgstr "Date d'ajout"
+
+msgid "No files available."
+msgstr "Aucun fichier disponible."
+
+msgid "Files overview"
+msgstr "Aperçu des fichiers"
+
+msgid "Registering module"
+msgstr "Enregistrement du module"
+
+msgid "Archive"
+msgstr "Archives"
+
+msgid "All content, by month."
+msgstr "Tout le contenu, par mois."
+
+msgid "Monthly archive"
+msgstr "Archives mensuelles"
+
+msgid "No content available."
+msgstr "Aucun contenu disponible."
+
+msgid "Find and manage content"
+msgstr "Gérer le contenu du site"
+
+msgid "Recent content"
+msgstr "Contenu récent"
+
+msgid "Recent content."
+msgstr "Derniers contenus publiés."
+
+msgid "Welcome!"
+msgstr "Bienvenue !"
+
+msgid "Glossary"
+msgstr "Glossaire"
+
+msgid "All content, by letter."
+msgstr "Tout le contenu, par lettre."
+
+msgid "Last update"
+msgstr "Dernière mise à jour"
+
+msgid "Find and manage people interacting with your site."
+msgstr "Trouver et gérer les clients et utilisateurs de votre site."
+
+msgid "@interval hence"
+msgstr "dans @interval"
+
+msgid "@interval ago"
+msgstr "il y a @interval"
+
+msgid "Name or email contains"
+msgstr "Nom ou email contient"
+
+msgid "Who's new"
+msgstr "Nouveaux inscrits"
+
+msgid "Shows a list of the newest user accounts on the site."
+msgstr "Affiche les derniers comptes créés sur le site."
+
+msgid "A list of new users"
+msgstr "Nouveaux inscrits"
+
+msgid "Who's online block"
+msgstr "Bloc : utilisateurs en ligne"
+
+msgid ""
+"Shows the user names of the most recently active users, and the total "
+"number of active users."
+msgstr "Affiche les utilisateurs récemment actifs."
+
+msgid "Who's online"
+msgstr "Utilisateurs en ligne"
+
+msgid "There are currently 0 users online."
+msgstr "Il y a actuellement 0 utilisateur en ligne."
+
+msgid ""
+"A user is considered online for this long after they have last viewed "
+"a page."
+msgstr "Durée après laquelle un utilisateur est considéré hors ligne."
+
+msgid "There are currently @total users online."
+msgstr "Il y a actuellement @total utilisateur(s) en ligne."
+
+msgid "A list of users that are currently logged in."
+msgstr "Liste des utilisateurs actuellement connectés."
+
+msgid "Update URL alias"
+msgstr "Mettre à jour l'alias d'URL"
+
+msgid "Default hreflang"
+msgstr "hreflang par défaut"
+
+msgid "of"
+msgstr "sur"
+
+msgid "a"
+msgstr "un"
+
+msgid "Choose some options"
+msgstr "Sélectionner…"
+
+msgid "Choose an option"
+msgstr "Sélectionner…"
+
+msgid "No results match"
+msgstr "Aucun résultat"
+
+msgid "Publish on"
+msgstr "Publier le"
+
+msgid "Unpublish on"
+msgstr "Dépublier le"
+
+msgid "Content Type"
+msgstr "Type de contenu"
+
+msgid "Content Overview"
+msgstr "Vue d'ensemble du contenu"
+
+msgid "Confirmation for [site:name]"
+msgstr "Confirmez votre inscription — Atelier O Design"
+
+msgid ""
+"We have received a request to subscribe [simplenews-subscriber:mail] "
+"at [site:url]. To confirm please use the link "
+"below.\r\n"
+"\r\n"
+"[simplenews-subscriber:confirm-url]"
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Nous avons bien reçu votre demande d'inscription à la "
+"newsletter de l'Atelier O Design pour l'adresse "
+"[simplenews-subscriber:mail].\n"
+"\n"
+"Pour confirmer votre inscription, "
+"cliquez sur le lien ci-dessous "
+":\n"
+"[simplenews-subscriber:confirm-url]\n"
+"\n"
+"Si vous n'avez pas "
+"effectué cette demande, ignorez simplement cet email.\n"
+"\n"
+"L'équipe "
+"Atelier O Design"
+
+msgid "Manage your subscriptions at [site:name]"
+msgstr "Gérer vos préférences — Atelier O Design"
+
+msgid ""
+"We have received a request to manage your subscriptions for "
+"[simplenews-subscriber:mail] at [site:url]. To proceed please use the "
+"link below.\r\n"
+"\r\n"
+"[simplenews-subscriber:manage-url]"
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Pour gérer vos préférences newsletter pour "
+"[simplenews-subscriber:mail], cliquez sur le lien ci-dessous "
+":\n"
+"[simplenews-subscriber:manage-url]\n"
+"\n"
+"L'équipe Atelier O Design"
+
+msgid "Email: Plain"
+msgstr "Courriel : texte brut"
+
+msgid "Email: HTML"
+msgstr "Courriel : HTML"
+
+msgid "Account"
+msgstr "Compte"
+
+msgid "Stop sending"
+msgstr "Arrêter les envois"
+
+msgid "Issue"
+msgstr "Ticket"
+
+msgid "Subscribers"
+msgstr "Abonnés"
+
+msgid "Subscriptions"
+msgstr "Abonnements"
+
+msgid "Newsletters"
+msgstr "Lettres d’information"
+
+

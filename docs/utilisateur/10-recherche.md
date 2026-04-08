@@ -105,9 +105,13 @@ Pour modifier ou ajouter une facette :
 
 ## Captures d'écran
 
-![TODO screenshot — page /recherche avec résultats et facettes](../web/modules/custom/odesign_admin/images/doc-screenshots/recherche-resultats.png)
+![Panneau de recherche header — icône loupe ouverte](screenshots/recherche-header-loupe.png)
 
-![TODO screenshot — panneau de recherche header ouvert](../web/modules/custom/odesign_admin/images/doc-screenshots/recherche-header-panel.png)
+*Cliquer sur l'icône loupe dans le header ouvre le panneau de saisie.*
+
+![Page /recherche — résultats avec facettes Occasion et Catégorie](screenshots/recherche-resultats.png)
+
+*La page `/recherche` affiche les résultats en grille avec les facettes de filtrage à gauche.*
 
 ---
 

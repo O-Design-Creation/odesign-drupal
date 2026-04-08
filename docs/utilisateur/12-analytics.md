@@ -54,12 +54,15 @@ L'événement `purchase` inclut : identifiant de commande, montant total, liste 
 Si vous devez utiliser un autre ID de propriété GA4 :
 
 1. Connectez-vous avec un compte **administrateur**
-2. Allez sur `/admin/config/services/google-tag`
-3. Cliquez sur **"Atelier O Design — GA4"** → **Modifier**
-4. Dans le champ **"Tag IDs"**, remplacez `G-4J4LCNHJ4N` par le nouvel ID
-5. Cliquez **Enregistrer**
+2. Allez sur `/admin/config/services/google-tag/manage/default`
+3. Dans le champ **"Tag IDs"**, remplacez `G-4J4LCNHJ4N` par le nouvel ID
+4. Cliquez **Enregistrer**
 
 > ⚠️ Après modification, exportez la config : `ddev exec drush config:export -y`
+
+![Interface de configuration du container Google Tag (administrateur)](screenshots/analytics-admin-google-tag.png)
+
+*Formulaire de configuration du container GA4, accessible via `/admin/config/services/google-tag/manage/default`.*
 
 ---
 

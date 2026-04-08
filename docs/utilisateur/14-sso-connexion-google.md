@@ -94,6 +94,18 @@ Si un client possède déjà un compte Drupal avec le même email que son compte
 
 ---
 
+## Captures d'écran
+
+![Page de connexion — formulaire standard (bouton Google absent sans configuration OAuth)](screenshots/sso-login-page.png)
+
+*La page `/user/login` sans OAuth configuré. Le bouton "Continuer avec Google" apparaîtra ici une fois le Client ID renseigné dans `/admin/config/social-api/social-auth/google`.*
+
+![Liste des utilisateurs — onglet "Social auth profiles" visible](screenshots/sso-admin-people.png)
+
+*Vue administrateur de `/admin/people`. L'onglet "Social auth profiles" permet de vérifier les comptes créés via Google SSO et leurs rôles attribués.*
+
+---
+
 ## Références
 
 - Runbook configuration : `notes/RUNBOOK-TCK-043-sso-google-setup.md`

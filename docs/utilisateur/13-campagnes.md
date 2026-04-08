@@ -20,7 +20,9 @@ Les campagnes saisonnières vous permettent de créer des pages promotionnelles 
 | **URL du bouton CTA** | Lien vers lequel redirige le bouton (peut être interne ou externe) |
 | **Couleur d'accent** | Code hexadécimal (ex : `#BB7570`) — personnalise le titre et le CTA |
 
-![TODO screenshot — formulaire de création d'une campagne]
+![Formulaire de création d'une campagne — champs Titre et Description](screenshots/campagnes-formulaire-nouveau.png)
+
+*Le formulaire de création. La section "Options de planification" est visible dans la barre latérale droite.*
 
 ---
 
@@ -34,7 +36,9 @@ Le module **Scheduler** vous permet de définir des dates automatiques :
 
 > **Exemple** : Pour une campagne Noël 2026, publiez le 1er novembre 2026 à 09h00 et dépubliez le 2 janvier 2027 à 00h00.
 
-![TODO screenshot — section Scheduler avec dates de publication]
+![Section "Options de planification" — champs Publier le / Dépublier le](screenshots/campagnes-formulaire-scheduler.png)
+
+*La section "Options de planification" dans la barre latérale droite du formulaire. Cliquez sur l'accordéon pour déplier les champs de date.*
 
 ---
 
@@ -47,7 +51,9 @@ Pour qu'une campagne apparaisse dans le widget **"Campagne en cours"** sur la pa
 
 > Le widget affiche uniquement la campagne mise en avant la plus récente. Si plusieurs campagnes sont cochées "Mettre en avant", seule la plus récente est affichée.
 
-![TODO screenshot — case "Mettre en avant" dans le formulaire]
+![Champs Produits mis en avant, CTA et Couleur d'accent dans le formulaire](screenshots/campagnes-formulaire-champs.png)
+
+*Les champs de personnalisation visuelle de la campagne : produits sélectionnés, texte et URL du bouton CTA, couleur d'accent.*
 
 ---
 
@@ -57,7 +63,9 @@ La page `/campagnes` est générée automatiquement. Elle affiche toutes les cam
 
 Vous n'avez rien à configurer : dès qu'une campagne est publiée, elle apparaît dans le listing.
 
-![TODO screenshot — listing /campagnes avec cartes campagne]
+![Listing /campagnes — page publique avec les campagnes publiées](screenshots/campagnes-listing-frontend.png)
+
+*La page `/campagnes` telle que vue par un visiteur. Chaque campagne publiée y apparaît automatiquement.*
 
 ---
 
