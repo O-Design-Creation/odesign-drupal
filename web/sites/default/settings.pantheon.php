@@ -60,14 +60,15 @@ $settings['file_temp_path']    = $_ENV['HOME'] . '/tmp';
 // settings.local.php ne doit pas exister sur Pantheon.
 // Ce flag est informatif — la vérification d'existence dans settings.php suffit.
 
-// ── SMTP Mailgun — secrets injectés par variables d'environnement Pantheon ───
+// ── SMTP Brevo — secrets injectés par variables d'environnement Pantheon ─────
 // Configurer dans Pantheon Dashboard > Site > Settings > Environment Variables :
-//   MAILGUN_SMTP_USERNAME  →  login SMTP Mailgun (ex: postmaster@mg.atelierodesign.fr)
-//   MAILGUN_SMTP_PASSWORD  →  mot de passe SMTP Mailgun
+//   BREVO_SMTP_USERNAME  →  login SMTP Brevo (votre adresse email de compte Brevo)
+//   BREVO_SMTP_PASSWORD  →  clé SMTP Brevo (SMTP & API > SMTP Keys)
 // Ces overrides ne s'appliquent que si les deux variables sont définies.
-if (!empty($_ENV['MAILGUN_SMTP_USERNAME']) && !empty($_ENV['MAILGUN_SMTP_PASSWORD'])) {
-  $config['smtp.settings']['smtp_username'] = $_ENV['MAILGUN_SMTP_USERNAME'];
-  $config['smtp.settings']['smtp_password'] = $_ENV['MAILGUN_SMTP_PASSWORD'];
+if (!empty($_ENV['BREVO_SMTP_USERNAME']) && !empty($_ENV['BREVO_SMTP_PASSWORD'])) {
+  $config['smtp.settings']['smtp_host'] = 'smtp-relay.brevo.com';
+  $config['smtp.settings']['smtp_username'] = $_ENV['BREVO_SMTP_USERNAME'];
+  $config['smtp.settings']['smtp_password'] = $_ENV['BREVO_SMTP_PASSWORD'];
 }
 
 // ── Performance (désactivé en sandbox, activer en staging/prod) ──────────────
