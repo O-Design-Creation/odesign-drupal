@@ -2,10 +2,11 @@
 
 /**
  * @file
- * Seed des méthodes d'expédition Atelier O Design.
+ * Seed des méthodes d'expédition Atelier O Design — TCK-067.
  *
- * ShippingMethod est un ContentEntityType (non versionnable en config/sync).
- * Ce script doit être exécuté sur chaque environnement fresh.
+ * 5 méthodes : Colissimo, DPD, Chronopost, Mondial Relay, Mondial Relay gratuit.
+ * Script idempotent : supprime les anciennes méthodes génériques avant recréation.
+ * ShippingMethod est un ContentEntityType (non exportable en config/sync).
  *
  * Usage :
  *   ddev drush php-script scripts/seed-shipping-methods.php
@@ -15,7 +16,8 @@
 use Drupal\commerce_shipping\Entity\ShippingMethod;
 use Drupal\commerce_store\Entity\Store;
 
-// Récupérer ou créer le store Atelier O Design.
+// ─── Store ─────────────────────────────────────────────────────────────────
+
 $store_storage = \Drupal::entityTypeManager()->getStorage('commerce_store');
 $stores = $store_storage->loadMultiple();
 
@@ -40,60 +42,110 @@ else {
 $store_id = $store->id();
 echo "Store trouvé : " . $store->getName() . " (id={$store_id})\n";
 
-$methods_config = [
-  [
-    'name' => 'Livraison standard',
-    'weight' => 0,
-    'plugin_id' => 'flat_rate',
-    'plugin_config' => [
-      'label' => 'Livraison standard',
-      'description' => 'Livraison en France métropolitaine sous 3 à 5 jours ouvrés.',
-      'rate_label' => 'Livraison standard',
-      'rate_description' => 'Expédition sous 24h, livraison 3-5 jours ouvrés.',
-      'rate_amount' => ['number' => '4.90', 'currency_code' => 'EUR'],
-    ],
-    'conditions' => [
-      [
-        'target_plugin_id' => 'shipment_address',
-        'target_plugin_configuration' => [
-          'zone' => ['territories' => [['country_code' => 'FR']]],
-        ],
-      ],
-    ],
-  ],
-  [
-    'name' => 'Livraison gratuite',
-    'weight' => 1,
-    'plugin_id' => 'flat_rate',
-    'plugin_config' => [
-      'label' => 'Livraison gratuite',
-      'description' => 'Offerte à partir de 50 € d\'achat.',
-      'rate_label' => 'Livraison gratuite',
-      'rate_description' => 'Frais de port offerts pour toute commande ≥ 50 €.',
-      'rate_amount' => ['number' => '0.00', 'currency_code' => 'EUR'],
-    ],
-    'conditions' => [
-      [
-        'target_plugin_id' => 'shipment_address',
-        'target_plugin_configuration' => [
-          'zone' => ['territories' => [['country_code' => 'FR']]],
-        ],
-      ],
-      [
-        'target_plugin_id' => 'order_total_price',
-        'target_plugin_configuration' => [
-          'operator' => '>=',
-          'amount' => ['number' => '50.00', 'currency_code' => 'EUR'],
-        ],
-      ],
-    ],
+// ─── Suppression des anciennes méthodes génériques ─────────────────────────
+
+$storage = \Drupal::entityTypeManager()->getStorage('commerce_shipping_method');
+$obsolete_names = ['Livraison standard', 'Livraison gratuite'];
+
+foreach ($obsolete_names as $obsolete_name) {
+  $existing = $storage->loadByProperties(['name' => $obsolete_name]);
+  foreach ($existing as $old_method) {
+    $old_id = $old_method->id();
+    $old_method->delete();
+    echo "SUPPRIMÉ : '" . $obsolete_name . "' (id={$old_id})\n";
+  }
+}
+
+// ─── Condition commune : France métropolitaine ─────────────────────────────
+
+$condition_fr = [
+  'target_plugin_id' => 'shipment_address',
+  'target_plugin_configuration' => [
+    'zone' => ['territories' => [['country_code' => 'FR']]],
   ],
 ];
 
-$storage = \Drupal::entityTypeManager()->getStorage('commerce_shipping_method');
+$condition_min50 = [
+  'target_plugin_id' => 'order_total_price',
+  'target_plugin_configuration' => [
+    'operator' => '>=',
+    'amount' => ['number' => '50.00', 'currency_code' => 'EUR'],
+  ],
+];
+
+// ─── Définition des 5 méthodes d'expédition ────────────────────────────────
+
+$methods_config = [
+  [
+    'name' => 'Colissimo — Livraison à domicile',
+    'weight' => 0,
+    'plugin_id' => 'flat_rate',
+    'plugin_config' => [
+      'label' => 'Colissimo — Livraison à domicile',
+      'description' => 'Livraison à domicile par Colissimo (La Poste), 3 à 5 jours ouvrés.',
+      'rate_label' => 'Colissimo — Livraison à domicile',
+      'rate_description' => 'Livraison en France métropolitaine sous 3 à 5 jours ouvrés.',
+      'rate_amount' => ['number' => '5.90', 'currency_code' => 'EUR'],
+    ],
+    'conditions' => [$condition_fr],
+  ],
+  [
+    'name' => 'DPD — Livraison à domicile',
+    'weight' => 1,
+    'plugin_id' => 'flat_rate',
+    'plugin_config' => [
+      'label' => 'DPD — Livraison à domicile',
+      'description' => 'Livraison à domicile par DPD, 2 à 4 jours ouvrés.',
+      'rate_label' => 'DPD — Livraison à domicile',
+      'rate_description' => 'Livraison en France métropolitaine sous 2 à 4 jours ouvrés.',
+      'rate_amount' => ['number' => '5.90', 'currency_code' => 'EUR'],
+    ],
+    'conditions' => [$condition_fr],
+  ],
+  [
+    'name' => 'Chronopost — Livraison express',
+    'weight' => 2,
+    'plugin_id' => 'flat_rate',
+    'plugin_config' => [
+      'label' => 'Chronopost — Livraison express',
+      'description' => 'Livraison express par Chronopost, le lendemain avant 13h.',
+      'rate_label' => 'Chronopost — Livraison express',
+      'rate_description' => 'Livraison express en France métropolitaine J+1 avant 13h.',
+      'rate_amount' => ['number' => '7.90', 'currency_code' => 'EUR'],
+    ],
+    'conditions' => [$condition_fr],
+  ],
+  [
+    'name' => 'Mondial Relay — Point relais',
+    'weight' => 3,
+    'plugin_id' => 'flat_rate',
+    'plugin_config' => [
+      'label' => 'Mondial Relay — Point relais',
+      'description' => 'Livraison en point relais Mondial Relay, 3 à 5 jours ouvrés.',
+      'rate_label' => 'Mondial Relay — Point relais',
+      'rate_description' => 'Livraison en point relais en France métropolitaine.',
+      'rate_amount' => ['number' => '3.90', 'currency_code' => 'EUR'],
+    ],
+    'conditions' => [$condition_fr],
+  ],
+  [
+    'name' => 'Mondial Relay gratuit (commande ≥ 50€)',
+    'weight' => 4,
+    'plugin_id' => 'flat_rate',
+    'plugin_config' => [
+      'label' => 'Mondial Relay gratuit (commande ≥ 50€)',
+      'description' => 'Livraison en point relais Mondial Relay offerte dès 50€ d\'achat.',
+      'rate_label' => 'Mondial Relay — Point relais GRATUIT',
+      'rate_description' => 'Frais de port offerts via Mondial Relay pour toute commande ≥ 50 €.',
+      'rate_amount' => ['number' => '0.00', 'currency_code' => 'EUR'],
+    ],
+    'conditions' => [$condition_fr, $condition_min50],
+  ],
+];
+
+// ─── Création idempotente ──────────────────────────────────────────────────
 
 foreach ($methods_config as $cfg) {
-  // Vérifier si une méthode avec ce nom existe déjà.
   $existing = $storage->loadByProperties(['name' => $cfg['name']]);
   if (!empty($existing)) {
     echo "SKIP : '" . $cfg['name'] . "' existe déjà (id=" . key($existing) . ")\n";
@@ -117,4 +169,20 @@ foreach ($methods_config as $cfg) {
   echo "CRÉÉ : '" . $cfg['name'] . "' (id=" . $method->id() . ")\n";
 }
 
-echo "Seed terminé.\n";
+// ─── Désactivation de la promotion générique livraison gratuite ────────────
+// (Option A TCK-067 Phase 2 : la méthode "Mondial Relay gratuit" remplace la promotion)
+
+$promo_storage = \Drupal::entityTypeManager()->getStorage('commerce_promotion');
+$promos = $promo_storage->loadByProperties(['name' => 'Livraison gratuite dès 50€']);
+foreach ($promos as $promo) {
+  if ($promo->isEnabled()) {
+    $promo->setEnabled(FALSE);
+    $promo->save();
+    echo "DÉSACTIVÉE : promotion '" . $promo->getName() . "' (id=" . $promo->id() . ") — remplacée par méthode Mondial Relay gratuit.\n";
+  }
+  else {
+    echo "SKIP promotion '" . $promo->getName() . "' (déjà désactivée)\n";
+  }
+}
+
+echo "\nSeed transporteurs terminé.\n";

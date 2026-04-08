@@ -75,6 +75,11 @@ class OrderDetailController extends ControllerBase {
       '#tracking_number' => $order->hasField('field_tracking_number') ? ($order->get('field_tracking_number')->value ?? '') : '',
       '#tracking_url'    => Url::fromRoute('odesign_orders.order_tracking', ['commerce_order' => $order->id()])->toString(),
       '#tracking_token'  => \Drupal::csrfToken()->get('tracking_' . $order->id()),
+      '#shipping_method_label' => $this->getShippingMethodLabel($order),
+      '#tracking_link'   => odesign_orders_build_tracking_link(
+        $this->getShippingMethodLabel($order),
+        $order->hasField('field_tracking_number') ? ($order->get('field_tracking_number')->value ?? '') : ''
+      ),
       '#edit_url'   => Url::fromRoute('entity.commerce_order.edit_form', ['commerce_order' => $order->id()])->toString(),
       '#back_url'   => Url::fromRoute('odesign_orders.actionable_orders')->toString(),
       '#cache'      => ['max-age' => 0],
@@ -186,6 +191,23 @@ class OrderDetailController extends ControllerBase {
       'refunded'        => 'Remboursée',
     ];
     return $labels[$state_id] ?? $state_id;
+  }
+
+  private function getShippingMethodLabel(OrderInterface $order): string {
+    try {
+      if ($order->hasField('shipments')) {
+        foreach ($order->get('shipments')->referencedEntities() as $shipment) {
+          if (method_exists($shipment, 'getShippingMethod')) {
+            $method = $shipment->getShippingMethod();
+            if ($method) {
+              return $method->getName();
+            }
+          }
+        }
+      }
+    }
+    catch (\Exception) {}
+    return '';
   }
 
   private function getShippingProfile(OrderInterface $order): mixed {

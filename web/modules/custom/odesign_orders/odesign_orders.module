@@ -1,6 +1,37 @@
 <?php
 
 /**
+ * Construit l'URL de suivi pour un numéro de colis selon le transporteur.
+ *
+ * @param string $shipping_method_label
+ *   Label de la méthode d'expédition (ex : "Colissimo — Livraison à domicile").
+ * @param string $tracking_number
+ *   Numéro de colis saisi par le gestionnaire.
+ *
+ * @return string
+ *   URL de tracking ou chaîne vide si non applicable.
+ */
+function odesign_orders_build_tracking_link(string $shipping_method_label, string $tracking_number): string {
+  if (empty($tracking_number)) {
+    return '';
+  }
+  $encoded = urlencode($tracking_number);
+  if (stripos($shipping_method_label, 'Colissimo') !== FALSE) {
+    return 'https://www.laposte.fr/outils/suivre-vos-envois?code=' . $encoded;
+  }
+  if (stripos($shipping_method_label, 'DPD') !== FALSE) {
+    return 'https://www.dpd.fr/trace/' . $encoded;
+  }
+  if (stripos($shipping_method_label, 'Chronopost') !== FALSE) {
+    return 'https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumerosLt=' . $encoded;
+  }
+  if (stripos($shipping_method_label, 'Mondial Relay') !== FALSE) {
+    return 'https://www.mondialrelay.fr/suivi-de-colis/?numColis=' . $encoded;
+  }
+  return '';
+}
+
+/**
  * Implémente hook_mail() pour les notifications commandes.
  */
 function odesign_orders_mail(string $key, array &$message, array $params): void {
@@ -306,24 +337,26 @@ function odesign_orders_theme(): array {
     'odesign_orders_order_detail' => [
       'template'  => 'odesign-orders-order-detail',
       'variables' => [
-        'order_id'         => NULL,
-        'order_number'     => '',
-        'order_date'       => '',
-        'state_id'         => '',
-        'state_label'      => '',
-        'customer_name'    => '',
-        'customer_email'   => '',
-        'billing_address'  => NULL,
-        'shipping_address' => NULL,
-        'items'            => [],
-        'total'            => '',
-        'currency'         => 'EUR',
-        'transitions'      => [],
-        'tracking_number'  => '',
-        'tracking_url'     => '',
-        'tracking_token'   => '',
-        'edit_url'         => '',
-        'back_url'         => '',
+        'order_id'              => NULL,
+        'order_number'          => '',
+        'order_date'            => '',
+        'state_id'              => '',
+        'state_label'           => '',
+        'customer_name'         => '',
+        'customer_email'        => '',
+        'billing_address'       => NULL,
+        'shipping_address'      => NULL,
+        'items'                 => [],
+        'total'                 => '',
+        'currency'              => 'EUR',
+        'transitions'           => [],
+        'tracking_number'       => '',
+        'tracking_url'          => '',
+        'tracking_token'        => '',
+        'shipping_method_label' => '',
+        'tracking_link'         => '',
+        'edit_url'              => '',
+        'back_url'              => '',
       ],
     ],
   ];

@@ -4,23 +4,25 @@
  * Page de détail d'une commande — vue gestionnaire boutique.
  *
  * Variables :
- * - order_id        : int
- * - order_number    : string
- * - order_date      : string
- * - state_id        : string (machine name)
- * - state_label     : string
- * - customer_name   : string
- * - customer_email  : string
- * - billing_address : array|null (name, address_line1, city, postal_code, country, phone)
- * - shipping_address: array|null
- * - items           : array (title, qty, unit_price, subtotal, currency)
- * - total           : string (formatted)
- * - currency        : string
- * - tracking_number : string (numéro de suivi, peut être vide)
- * - tracking_url    : string (url POST pour sauvegarder le tracking)
- * - transitions     : array (id, label, url, token)
- * - edit_url        : string
- * - back_url        : string
+ * - order_id              : int
+ * - order_number          : string
+ * - order_date            : string
+ * - state_id              : string (machine name)
+ * - state_label           : string
+ * - customer_name         : string
+ * - customer_email        : string
+ * - billing_address       : array|null (name, address_line1, city, postal_code, country, phone)
+ * - shipping_address      : array|null
+ * - items                 : array (title, qty, unit_price, subtotal, currency)
+ * - total                 : string (formatted)
+ * - currency              : string
+ * - tracking_number       : string (numéro de suivi, peut être vide)
+ * - tracking_url          : string (url POST pour sauvegarder le tracking)
+ * - shipping_method_label : string (ex : "Colissimo — Livraison à domicile")
+ * - tracking_link         : string (url cliquable vers le site du transporteur, vide si non applicable)
+ * - transitions           : array (id, label, url, token)
+ * - edit_url              : string
+ * - back_url              : string
  */
 #}
 
@@ -119,11 +121,23 @@
       <div class="odesign-order-detail__card">
         <h3 class="odesign-order-detail__card-title">
           <i class="ph ph-truck" aria-hidden="true"></i>
-          Suivi transporteur
+          Transporteur &amp; suivi
         </h3>
+        {% if shipping_method_label %}
+          <p class="odesign-order-detail__carrier-label">
+            <strong>{{ shipping_method_label }}</strong>
+          </p>
+        {% endif %}
         {% if tracking_number %}
           <p class="odesign-order-detail__tracking-current">
-            <strong>{{ tracking_number }}</strong>
+            {% if tracking_link %}
+              <a href="{{ tracking_link }}" target="_blank" rel="noopener" class="odesign-order-detail__tracking-link">
+                <i class="ph ph-arrow-square-out" aria-hidden="true"></i>
+                {{ tracking_number }}
+              </a>
+            {% else %}
+              <strong>{{ tracking_number }}</strong>
+            {% endif %}
           </p>
         {% else %}
           <p class="odesign-order-detail__tracking-empty">Aucun numéro renseigné</p>
@@ -133,7 +147,7 @@
           <input type="text"
                  name="tracking_number"
                  value="{{ tracking_number }}"
-                 placeholder="Ex : 1Z999AA10123456784"
+                 placeholder="Ex : 6X12345678901"
                  class="odesign-order-detail__tracking-input"
                  aria-label="Numéro de suivi transporteur">
           <button type="submit" class="odesign-order-detail__tracking-btn">
