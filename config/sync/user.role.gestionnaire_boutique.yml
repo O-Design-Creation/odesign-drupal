@@ -10,7 +10,9 @@ dependencies:
     - node.type.page
     - node.type.simplenews_issue
     - taxonomy.vocabulary.life_occasion
+    - workflows.workflow.editorial
   module:
+    - ai_ckeditor
     - commerce
     - commerce_checkout
     - commerce_invoice
@@ -90,6 +92,12 @@ permissions:
   - 'update commerce_shipping_method'
   - 'update default commerce_order'
   - 'update own default commerce_product'
+  - 'use ai ckeditor'
+  - 'use editorial transition archive_from_review'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
+  - 'use editorial transition send_for_review'
+  - 'use editorial transition unpublish'
   - 'use text format basic_html'
   - 'use text format full_html'
   - 'view any commerce_payment_method'

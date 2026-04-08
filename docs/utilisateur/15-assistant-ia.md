@@ -41,10 +41,11 @@ Une fois la clé enregistrée, l'onglet affiche ✅ *Clé API configurée — l'
 
 L'assistant IA est intégré directement dans l'éditeur CKEditor 5 qui sert à rédiger vos fiches produit.
 
-1. Ouvrir ou créer une fiche produit (`/admin/content` → bouton **Ajouter un produit**).
-2. Dans le champ **Description**, repérer le bouton **AI** dans la barre d'outils CKEditor 5.
-3. Cliquer sur **AI** → un panneau s'ouvre. Choisir le type de génération et validez.
-4. Le texte généré s'insère dans l'éditeur. Relisez et adaptez avant de sauvegarder.
+1. Ouvrir ou créer une fiche produit (**Catalogue** dans le menu → bouton **Ajouter un produit**, ou `/admin/boutique/catalogue`).
+2. Cliquer sur l'onglet **Description**.
+3. Dans la barre d'outils CKEditor 5, repérer le bouton **✦ AI Assistant**.
+4. Cliquer sur **AI Assistant** → un panneau s'ouvre. Choisissez le type de génération, puis cliquez sur **Générer**.
+5. Le texte généré s'insère dans l'éditeur. Relisez et adaptez avant de sauvegarder.
 
 ![Bouton IA dans CKEditor 5 — fiche produit](screenshots/ia-ckeditor-produit.png)
 
@@ -54,12 +55,12 @@ L'assistant IA est intégré directement dans l'éditeur CKEditor 5 qui sert à 
 
 ## Utiliser l'IA pour un article de blog
 
-La procédure est identique à celle des fiches produit. Le bouton **AI** est disponible dans CKEditor 5 sur tous les types de contenu ayant un champ texte enrichi.
+La procédure est identique à celle des fiches produit. Le bouton **✦ AI Assistant** est disponible dans CKEditor 5 sur tous les types de contenu ayant un champ texte enrichi.
 
-1. Aller dans **Articles** (`/admin/content/articles`) → **Créer un article**.
-2. Dans le corps de l'article, cliquer sur le bouton **AI** dans la barre CKEditor 5.
-3. Choisir la génération d'une introduction de blog et renseigner le thème.
-4. Relire et compléter le contenu généré.
+1. Aller dans **Éditorial** (`/admin/boutique/editorial`) → **Créer un article**.
+2. Dans le corps de l'article, repérer le bouton **✦ AI Assistant** dans la barre CKEditor 5.
+3. Choisissez la génération d'une introduction de blog et renseignez le thème.
+4. Relisez et complétez le contenu généré.
 
 ![Bouton IA dans CKEditor 5 — article de blog](screenshots/ia-ckeditor-article.png)
 
@@ -70,8 +71,8 @@ La procédure est identique à celle des fiches produit. Le bouton **AI** est di
 Le formulaire de rédaction de newsletter dispose d'un bouton **✨ Générer avec l'IA** dédié.
 
 1. Aller dans **Newsletters** → **Créer une newsletter** (`/node/add/simplenews_issue`).
-2. En haut du formulaire, cliquer sur **✨ Générer avec l'IA**.
-3. Avant de cliquer, assurez-vous d'avoir saisi un **titre/thème** dans le champ *Titre* (ex : *Nouveautés printemps — cadeaux pour les mamans*).
+2. Saisissez d'abord un **titre/thème** dans le champ *Titre* (ex : *Nouveautés printemps — cadeaux pour les mamans*).
+3. Cliquez sur le bouton **✨ Générer avec l'IA** en haut du formulaire.
 4. L'assistant génère :
    - L'**objet email** (remplace le titre actuel).
    - Le **corps** de la newsletter (intro + contenu + appel à l'action).
