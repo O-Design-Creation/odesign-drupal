@@ -814,6 +814,7 @@ function odesign_admin_odesign_boutique_config_sections_alter(array &$sections):
   $sections['boutique']         = new \Drupal\odesign_admin\Config\BoutiqueInfoConfigSection();
   $sections['homepage_hero']    = new \Drupal\odesign_admin\Config\HeroConfigSection();
   $sections['homepage_story']   = new \Drupal\odesign_admin\Config\StoryConfigSection();
+  $sections['homepage_methode'] = new \Drupal\odesign_admin\Config\MethodeConfigSection();
   $sections['promotions_volume'] = new \Drupal\odesign_admin\Config\PromotionsVolumeConfigSection();
 }
 
