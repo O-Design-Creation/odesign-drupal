@@ -784,6 +784,28 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['user_register_url'] = Url::fromRoute('user.register')->toString();
   }
 
+  // Badge panier — nombre total d'articles dans le panier actif.
+  $cart_count = 0;
+  if (\Drupal::moduleHandler()->moduleExists('commerce_cart')) {
+    try {
+      $store = \Drupal::entityTypeManager()->getStorage('commerce_store')->loadDefault();
+      $carts = \Drupal::service('commerce_cart.cart_provider')->getCarts(NULL, $store);
+      foreach ($carts as $cart) {
+        foreach ($cart->getItems() as $item) {
+          $cart_count += (int) $item->getQuantity();
+        }
+      }
+      // Cache par user + session — invalidé par le tag commerce_order.
+      $variables['#cache']['contexts'][] = 'user';
+      $variables['#cache']['contexts'][] = 'session';
+      $variables['#cache']['tags'][] = 'commerce_order';
+    }
+    catch (\Exception $e) {
+      \Drupal::logger('odesign')->warning('Cart badge error: @msg', ['@msg' => $e->getMessage()]);
+    }
+  }
+  $variables['cart_count'] = $cart_count;
+
   // Bandeau newsletter : injecté sur toutes les pages publiques.
   if (!$is_admin && \Drupal::moduleHandler()->moduleExists('simplenews')) {
     try {
