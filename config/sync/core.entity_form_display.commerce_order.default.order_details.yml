@@ -7,6 +7,7 @@ dependencies:
     - core.entity_form_mode.commerce_order.order_details
     - field.field.commerce_order.default.field_atelier_status
     - field.field.commerce_order.default.field_notes_atelier
+    - field.field.commerce_order.default.field_shopify_order_id
     - field.field.commerce_order.default.field_tracking_number
   enforced:
     module:
@@ -40,6 +41,7 @@ hidden:
   customer_comments: true
   field_atelier_status: true
   field_notes_atelier: true
+  field_shopify_order_id: true
   field_tracking_number: true
   ip_address: true
   order_items: true

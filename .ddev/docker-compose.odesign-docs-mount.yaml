@@ -1,0 +1,9 @@
+# Monte le répertoire odesign-docs dans le container web
+# pour permettre aux scripts de migration d'accéder aux exports Shopify.
+# Chemin dans le container : /var/www/odesign-docs
+services:
+  web:
+    volumes:
+      - type: bind
+        source: ../../odesign-docs
+        target: /var/www/odesign-docs

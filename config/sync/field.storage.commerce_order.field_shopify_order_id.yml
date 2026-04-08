@@ -1,0 +1,21 @@
+uuid: 8a73580a-53fc-4496-af95-b27e38845537
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: commerce_order.field_shopify_order_id
+field_name: field_shopify_order_id
+entity_type: commerce_order
+type: string
+settings:
+  max_length: 64
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
