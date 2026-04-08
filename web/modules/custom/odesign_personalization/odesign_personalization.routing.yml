@@ -6,6 +6,6 @@ odesign_personalization.templates:
   path: '/admin/boutique/personnalisation/templates'
   defaults:
     _entity_list: 'personalization_template'
-    _title: 'Templates de personnalisation'
+    _title: 'Modèles de personnalisation'
   requirements:
     _permission: 'administer odesign personalization'

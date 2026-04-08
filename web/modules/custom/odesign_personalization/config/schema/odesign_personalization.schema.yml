@@ -2,7 +2,7 @@
 
 odesign_personalization.personalization_template.*:
   type: config_entity
-  label: 'Personalization template'
+  label: 'Modèle de personnalisation'
   mapping:
     id:
       type: string

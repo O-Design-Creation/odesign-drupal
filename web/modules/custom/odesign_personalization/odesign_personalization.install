@@ -32,7 +32,7 @@ function odesign_personalization_install(): void {
       'field_name'   => 'field_personalization_template',
       'entity_type'  => 'commerce_product',
       'bundle'       => 'default',
-      'label'        => 'Template de personnalisation',
+      'label'        => 'Modèle de personnalisation',
       'required'     => FALSE,
       'settings'     => [
         'handler'          => 'default:personalization_template',

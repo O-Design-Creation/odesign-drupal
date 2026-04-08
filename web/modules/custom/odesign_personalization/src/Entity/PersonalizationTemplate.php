@@ -12,13 +12,13 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *
  * @ConfigEntityType(
  *   id = "personalization_template",
- *   label = @Translation("Personalization template"),
- *   label_collection = @Translation("Personalization templates"),
- *   label_singular = @Translation("personalization template"),
- *   label_plural = @Translation("personalization templates"),
+ *   label = @Translation("Modèle de personnalisation"),
+ *   label_collection = @Translation("Modèles de personnalisation"),
+ *   label_singular = @Translation("modèle de personnalisation"),
+ *   label_plural = @Translation("modèles de personnalisation"),
  *   label_count = @PluralTranslation(
- *     singular = "@count personalization template",
- *     plural = "@count personalization templates",
+ *     singular = "@count modèle de personnalisation",
+ *     plural = "@count modèles de personnalisation",
  *   ),
  *   handlers = {
  *     "list_builder" = "Drupal\odesign_personalization\PersonalizationTemplateListBuilder",

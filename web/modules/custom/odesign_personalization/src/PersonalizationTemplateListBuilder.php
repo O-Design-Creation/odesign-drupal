@@ -22,7 +22,7 @@ class PersonalizationTemplateListBuilder extends ConfigEntityListBuilder {
    */
   public function buildHeader(): array {
     return [
-      'label'       => $this->t('Nom du template'),
+      'label'       => $this->t('Nom du modèle'),
       'id'          => $this->t('Identifiant'),
       'fields'      => $this->t('Champs'),
       'price'       => $this->t('Modificateurs prix'),
@@ -52,10 +52,7 @@ class PersonalizationTemplateListBuilder extends ConfigEntityListBuilder {
    */
   public function render(): array {
     $build = parent::render();
-    $build['table']['#empty'] = $this->t(
-      'Aucun template de personnalisation. <a href=":add">Créer un premier template</a>.',
-      [':add' => '/admin/boutique/personnalisation/templates/ajouter']
-    );
+    $build['table']['#empty'] = $this->t('Aucun modèle de personnalisation pour l\'instant. Utilisez le bouton ci-dessus pour en créer un.');
     return $build;
   }
 

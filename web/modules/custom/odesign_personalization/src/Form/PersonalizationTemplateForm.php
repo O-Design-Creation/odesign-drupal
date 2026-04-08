@@ -30,7 +30,7 @@ class PersonalizationTemplateForm extends EntityForm {
     // --- Infos générales ---------------------------------------------------
     $form['label'] = [
       '#type'          => 'textfield',
-      '#title'         => $this->t('Nom du template'),
+      '#title'         => $this->t('Nom du modèle'),
       '#default_value' => $template->label(),
       '#required'      => TRUE,
       '#maxlength'     => 128,
@@ -425,7 +425,7 @@ class PersonalizationTemplateForm extends EntityForm {
     parent::validateForm($form, $form_state);
     $fields = $form_state->get('fields') ?? [];
     if (empty($fields)) {
-      $form_state->setErrorByName('fields_wrapper', $this->t('Le template doit contenir au moins un champ.'));
+      $form_state->setErrorByName('fields_wrapper', $this->t('Le modèle doit contenir au moins un champ.'));
     }
   }
 
