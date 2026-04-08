@@ -346,3 +346,34 @@ msgid "Newsletters"
 msgstr "Lettres d’information"
 
 
+
+# odesign_ai — Assistant IA éditorial (TCK-038/051)
+msgid "Intelligence artificielle"
+msgstr "Intelligence artificielle"
+
+msgid "Fournisseur IA"
+msgstr "Fournisseur IA"
+
+msgid "Clé API OpenAI"
+msgstr "Clé API OpenAI"
+
+msgid "Modèle"
+msgstr "Modèle"
+
+msgid "Tester la connexion"
+msgstr "Tester la connexion"
+
+msgid "Utiliser l'assistant IA de la boutique"
+msgstr "Utiliser l'assistant IA de la boutique"
+
+msgid "✨ Générer avec l'IA"
+msgstr "✨ Générer avec l'IA"
+
+msgid "OpenAI"
+msgstr "OpenAI"
+
+msgid "GPT-4o mini (économique)"
+msgstr "GPT-4o mini (économique)"
+
+msgid "GPT-4o (haute qualité)"
+msgstr "GPT-4o (haute qualité)"

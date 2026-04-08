@@ -18,6 +18,7 @@ dependencies:
     - commerce_payment
     - commerce_product
     - commerce_promotion
+    - commerce_shipping
     - commerce_store
     - content_moderation
     - eu_cookie_compliance
@@ -25,6 +26,7 @@ dependencies:
     - media
     - node
     - odesign_admin
+    - odesign_ai
     - odesign_personalization
     - scheduler
     - simplenews
@@ -37,6 +39,7 @@ weight: 3
 is_admin: false
 permissions:
   - 'access administration pages'
+  - 'access boutique ai generate'
   - 'access checkout'
   - 'access commerce administration pages'
   - 'access commerce_invoice overview'

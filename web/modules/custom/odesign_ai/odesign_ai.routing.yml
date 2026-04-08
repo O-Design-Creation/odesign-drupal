@@ -1,0 +1,9 @@
+odesign_ai.generate:
+  path: '/admin/boutique/ai/generate'
+  defaults:
+    _controller: '\Drupal\odesign_ai\Controller\AiGenerateController::generate'
+    _title: "Générer avec l'IA"
+  requirements:
+    _permission: 'access boutique ai generate'
+  methods:
+    - POST

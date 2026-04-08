@@ -1,0 +1,4 @@
+access boutique ai generate:
+  title: "Utiliser l'assistant IA de la boutique"
+  description: "Permet d'appeler l'endpoint AJAX de génération de texte par l'IA."
+  restrict access: true

@@ -1,0 +1,11 @@
+generator:
+  version: VERSION
+  js:
+    js/odesign-ai-newsletter.js: {}
+  css:
+    component:
+      css/odesign-ai.css: {}
+  dependencies:
+    - core/once
+    - core/drupal
+    - core/jquery

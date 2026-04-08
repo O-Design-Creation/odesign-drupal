@@ -1,0 +1,8 @@
+name: 'Odesign AI'
+type: module
+description: 'Assistant IA éditorial pour Atelier O Design — fiches produit, articles, newsletter.'
+package: 'ODesign'
+core_version_requirement: ^11
+dependencies:
+  - drupal:key
+  - ai:ai
