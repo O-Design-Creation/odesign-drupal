@@ -1,0 +1,19 @@
+uuid: c13b0b1a-371e-4ba8-be53-77cf7d85a767
+langcode: fr
+status: true
+dependencies:
+  module:
+    - commerce_order
+id: commerce_order_item.field_personalization_values
+field_name: field_personalization_values
+entity_type: commerce_order_item
+type: string_long
+settings:
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

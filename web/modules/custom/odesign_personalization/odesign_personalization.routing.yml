@@ -1,0 +1,11 @@
+# Seule la route "collection" est déclarée manuellement (elle utilise _entity_list).
+# Les routes add/edit/delete sont auto-générées par DefaultHtmlRouteProvider
+# via les link templates de l'entité PersonalizationTemplate.
+
+odesign_personalization.templates:
+  path: '/admin/boutique/personnalisation/templates'
+  defaults:
+    _entity_list: 'personalization_template'
+    _title: 'Templates de personnalisation'
+  requirements:
+    _permission: 'administer odesign personalization'

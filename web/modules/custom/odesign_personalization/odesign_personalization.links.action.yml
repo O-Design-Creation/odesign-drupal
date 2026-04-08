@@ -1,0 +1,5 @@
+odesign_personalization.template_add:
+  route_name: entity.personalization_template.add_form
+  title: 'Créer un template'
+  appears_on:
+    - odesign_personalization.templates

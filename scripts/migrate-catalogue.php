@@ -4,25 +4,33 @@
  * @file
  * Migration du catalogue Shopify → Drupal Commerce.
  *
- * Source : collecte/shopify/exports/produits/products_export_1.csv
- *          (84 produits, 120 images, 82 actifs)
+ * Source principale : scripts/catalogue.json
+ *   Généré par : node scripts/fetch-shopify-catalogue.js
+ *   Contient : titre, body, tags, SEO, variantes, images, options Easify (personnalisation)
+ *
+ * Fallback (rétrocompatibilité) : fichier CSV Shopify products_export_1.csv
+ *   Utilisé si catalogue.json est absent. Pas de données SEO ni de personnalisation.
  *
  * Ce script est idempotent : il skipe les produits déjà présents (par handle/alias).
  *
  * Périmètre v1 :
- *  - 1 variation par produit (première variante du CSV)
+ *  - 1 variation par produit (première variante)
  *  - Images téléchargées depuis CDN Shopify et créées en Media Drupal
  *  - Chemin alias /products/{handle}
+ *  - Personnalisation (options Easify) : stockée dans field_personalization_options
+ *    si le champ existe, sinon loguée uniquement
  *  - Multi-variantes (10 produits) → Phase 2 (attributs Commerce)
  *
  * Usage :
+ *   node scripts/fetch-shopify-catalogue.js   # d'abord générer catalogue.json
  *   ddev drush php-script scripts/migrate-catalogue.php
  *   terminus drush atelierodesign.dev -- php-script scripts/migrate-catalogue.php
  *
  * Variables d'environnement optionnelles :
- *   CSV_PATH  : chemin vers le CSV (défaut : auto-détecté)
- *   DRY_RUN   : si "1", analyse sans créer d'entités
- *   LIMIT     : nombre de produits à migrer (0 = tous)
+ *   CATALOGUE_PATH : chemin vers catalogue.json (défaut : auto-détecté)
+ *   CSV_PATH       : chemin vers le CSV (fallback si catalogue.json absent)
+ *   DRY_RUN        : si "1", analyse sans créer d'entités
+ *   LIMIT          : nombre de produits à migrer (0 = tous)
  */
 
 // ---------------------------------------------------------------------------
@@ -32,44 +40,62 @@
 $dry_run = (getenv('DRY_RUN') === '1');
 $limit   = (int) (getenv('LIMIT') ?? 0);
 
-// Détection du CSV selon l'environnement.
-$csv_candidates = [
-  // Même répertoire que ce script
-  __DIR__ . '/products_export_1.csv',
+// ---------------------------------------------------------------------------
+// Source 1 (prioritaire) : catalogue.json généré par fetch-shopify-catalogue.js
+// ---------------------------------------------------------------------------
+
+$catalogue_candidates = [
+  __DIR__ . '/catalogue.json',
   // Pantheon
-  '/code/../odesign-docs/collecte/shopify/exports/produits/products_export_1.csv',
-  // DDEV local (depuis /var/www/html)
-  '/var/www/html/../../../odesign-docs/collecte/shopify/exports/produits/products_export_1.csv',
-  // Chemin absolu projet local
-  getenv('CSV_PATH') ?: '',
+  '/code/scripts/catalogue.json',
+  // Chemin explicite
+  getenv('CATALOGUE_PATH') ?: '',
 ];
 
-$csv_path = '';
-foreach ($csv_candidates as $c) {
+$catalogue_path = '';
+foreach ($catalogue_candidates as $c) {
   if ($c && file_exists(realpath($c) ?: $c)) {
-    $csv_path = realpath($c) ?: $c;
+    $catalogue_path = realpath($c) ?: $c;
     break;
   }
 }
 
-// Si non trouvé dans les chemins prédéfinis, chercher dans le filesystem Pantheon.
-if (!$csv_path) {
-  $possible = glob('/code/*/collecte/shopify/exports/produits/products_export_1.csv');
-  if (!empty($possible)) {
-    $csv_path = $possible[0];
+// ---------------------------------------------------------------------------
+// Source 2 (fallback) : CSV Shopify d'export
+// ---------------------------------------------------------------------------
+
+$csv_candidates = [
+  __DIR__ . '/products_export_1.csv',
+  '/code/../odesign-docs/collecte/shopify/exports/produits/products_export_1.csv',
+  '/var/www/html/../../../odesign-docs/collecte/shopify/exports/produits/products_export_1.csv',
+  getenv('CSV_PATH') ?: '',
+];
+
+$csv_path = '';
+if (!$catalogue_path) {
+  foreach ($csv_candidates as $c) {
+    if ($c && file_exists(realpath($c) ?: $c)) {
+      $csv_path = realpath($c) ?: $c;
+      break;
+    }
+  }
+  if (!$csv_path) {
+    $possible = glob('/code/*/collecte/shopify/exports/produits/products_export_1.csv');
+    if (!empty($possible)) {
+      $csv_path = $possible[0];
+    }
   }
 }
 
-if (!$csv_path || !file_exists($csv_path)) {
-  echo "ERREUR : CSV introuvable. Définir CSV_PATH ou placer odesign-docs à côté d'odesign-drupal.\n";
-  echo "Recherché dans :\n";
-  foreach ($csv_candidates as $c) {
-    echo "  - {$c}\n";
-  }
+if (!$catalogue_path && !$csv_path) {
+  echo "ERREUR : aucune source de données trouvée.\n";
+  echo "Solution recommandée : node scripts/fetch-shopify-catalogue.js\n";
+  echo "Fallback CSV        : définir CSV_PATH ou placer odesign-docs à côté d'odesign-drupal.\n";
   return;
 }
 
-echo "CSV source : {$csv_path}\n";
+$source_label = $catalogue_path ? "catalogue.json : {$catalogue_path}" : "CSV (fallback) : {$csv_path}";
+echo "Source : {$source_label}\n";
 echo ($dry_run ? "MODE DRY-RUN activé — aucune entité créée\n" : "");
 
 // ---------------------------------------------------------------------------
@@ -148,58 +174,105 @@ function find_product_ids_by_alias(string $alias): array {
 
 $products = [];
 
-if (($fh = fopen($csv_path, 'r')) === FALSE) {
-  echo "ERREUR : impossible d'ouvrir le CSV.\n";
-  return;
-}
+// ---------------------------------------------------------------------------
+// Lecture depuis catalogue.json (source principale)
+// ---------------------------------------------------------------------------
 
-$headers = fgetcsv($fh);
-$col     = array_flip($headers);
-
-while (($row = fgetcsv($fh)) !== FALSE) {
-  $r = array_combine($headers, array_pad($row, count($headers), ''));
-  $h = trim($r['Handle']);
-  if (empty($h)) {
-    continue;
+if ($catalogue_path) {
+  $raw = json_decode(file_get_contents($catalogue_path), TRUE);
+  if (!is_array($raw)) {
+    echo "ERREUR : catalogue.json invalide ou vide.\n";
+    return;
   }
-
-  if (!isset($products[$h])) {
+  foreach ($raw as $item) {
+    $h = trim($item['handle'] ?? '');
+    if (empty($h) || empty($item['title'])) {
+      continue;
+    }
+    $variants = [];
+    foreach (($item['variants'] ?? []) as $v) {
+      if (!empty($v['price'])) {
+        $variants[] = [
+          'sku'   => $v['sku'] ?: ($h . '-001'),
+          'price' => $v['price'],
+          'opt1n' => $v['opt1_name'] ?? '',
+          'opt1v' => $v['opt1_value'] ?? '',
+        ];
+      }
+    }
     $products[$h] = [
-      'handle'    => $h,
-      'title'     => trim($r['Title']),
-      'body'      => trim($r['Body (HTML)']),
-      'tags'      => trim($r['Tags']),
-      'seo_title' => trim($r['SEO Title']),
-      'seo_desc'  => trim($r['SEO Description']),
-      'status'    => trim($r['Status']),
-      'variants'  => [],
-      'images'    => [],
+      'handle'          => $h,
+      'title'           => trim($item['title']),
+      'body'            => trim($item['body'] ?? ''),
+      'tags'            => trim($item['tags'] ?? ''),
+      'seo_title'       => trim($item['seo_title'] ?? ''),
+      'seo_desc'        => trim($item['seo_desc'] ?? ''),
+      'status'          => $item['status'] ?? 'active',
+      'variants'        => $variants,
+      'images'          => $item['images'] ?? [],
+      'personalization' => $item['personalization'] ?? [],
     ];
-  }
-
-  // Ajouter la première variante utile (avec prix).
-  $price = trim($r['Variant Price']);
-  if ($price) {
-    $products[$h]['variants'][] = [
-      'sku'  => trim($r['Variant SKU']) ?: ($h . '-001'),
-      'price' => $price,
-      'opt1n' => trim($r['Option1 Name']),
-      'opt1v' => trim($r['Option1 Value']),
-    ];
-  }
-
-  // Ajouter les images (dédup).
-  $img = trim($r['Image Src']);
-  if ($img && !in_array($img, $products[$h]['images'])) {
-    $products[$h]['images'][] = $img;
   }
 }
-fclose($fh);
+// ---------------------------------------------------------------------------
+// Fallback : lecture depuis le CSV Shopify
+// ---------------------------------------------------------------------------
+elseif ($csv_path) {
+  echo "AVERTISSEMENT : catalogue.json absent — fallback CSV. Données SEO et personnalisation non disponibles.\n";
+  echo "              Générer catalogue.json : node scripts/fetch-shopify-catalogue.js\n\n";
+
+  if (($fh = fopen($csv_path, 'r')) === FALSE) {
+    echo "ERREUR : impossible d'ouvrir le CSV.\n";
+    return;
+  }
+
+  $headers = fgetcsv($fh);
+
+  while (($row = fgetcsv($fh)) !== FALSE) {
+    $r = array_combine($headers, array_pad($row, count($headers), ''));
+    $h = trim($r['Handle']);
+    if (empty($h)) {
+      continue;
+    }
+
+    if (!isset($products[$h])) {
+      $products[$h] = [
+        'handle'          => $h,
+        'title'           => trim($r['Title']),
+        'body'            => trim($r['Body (HTML)']),
+        'tags'            => trim($r['Tags']),
+        'seo_title'       => trim($r['SEO Title']),
+        'seo_desc'        => trim($r['SEO Description']),
+        'status'          => trim($r['Status']),
+        'variants'        => [],
+        'images'          => [],
+        'personalization' => [],
+      ];
+    }
+
+    $price = trim($r['Variant Price']);
+    if ($price) {
+      $products[$h]['variants'][] = [
+        'sku'   => trim($r['Variant SKU']) ?: ($h . '-001'),
+        'price' => $price,
+        'opt1n' => trim($r['Option1 Name']),
+        'opt1v' => trim($r['Option1 Value']),
+      ];
+    }
+
+    $img = trim($r['Image Src']);
+    if ($img && !in_array($img, $products[$h]['images'])) {
+      $products[$h]['images'][] = $img;
+    }
+  }
+  fclose($fh);
+}
 
 // Retirer les produits sans titre ni variante.
 $products = array_filter($products, fn($p) => !empty($p['title']) && !empty($p['variants']));
 
-echo "Produits lus dans le CSV : " . count($products) . "\n";
+$source_count = count($products);
+echo "Produits lus depuis la source : {$source_count}\n";
 
 // ---------------------------------------------------------------------------
 // Vérifier le store
@@ -253,9 +326,9 @@ foreach ($products as $handle => $data) {
     continue;
   }
 
-  // Filtrer les produits inactifs (draft) sauf si souhaité.
-  if ($data['status'] === 'draft') {
-    echo "[{$n}] SKIP (draft) : '{$data['title']}'\n";
+  // Filtrer les produits inactifs (draft/archived).
+  if (in_array($data['status'], ['draft', 'archived'])) {
+    echo "[{$n}] SKIP ({$data['status']}) : '{$data['title']}'\n";
     $count_skipped++;
     continue;
   }
@@ -333,6 +406,17 @@ foreach ($products as $handle => $data) {
     $product = \Drupal\commerce_product\Entity\Product::create($product_data);
     $product->save();
     echo "  ✓ Produit id={$product->id()} variante id={$variation->id()}\n";
+
+    // Log des options de personnalisation (utilisé par TCK-040 quand implémenté).
+    $user_perso = array_filter(
+      $data['personalization'] ?? [],
+      fn($o) => !in_array($o['property'] ?? '', ['_tpo_add_by', '_tpo_price', '_tpo_custom_options'])
+    );
+    if (!empty($user_perso)) {
+      $perso_summary = implode(', ', array_column($user_perso, 'property'));
+      echo "  ℹ Personnalisation (TCK-040) : {$perso_summary}\n";
+    }
+
     $count_created++;
   }
   catch (\Exception $e) {
@@ -348,9 +432,12 @@ foreach ($products as $handle => $data) {
 // ---------------------------------------------------------------------------
 
 echo "\n=== RÉSULTAT MIGRATION ===\n";
+echo "Source   : " . ($catalogue_path ? 'catalogue.json' : 'CSV (fallback)') . "\n";
 echo "Créés    : {$count_created}\n";
 echo "Skippés  : {$count_skipped}\n";
 echo "Erreurs  : {$count_error}\n";
 echo "Total    : " . ($count_created + $count_skipped + $count_error) . "\n";
-echo "\nNote : les 10 produits multi-variantes sont migrés avec leur première variante uniquement.\n";
-echo "Phase 2 : création des attributs Commerce pour les variantes restantes.\n";
+echo "\nNote : les produits multi-variantes sont migrés avec leur première variante uniquement.\n";
+echo "Phase 2  : création des attributs Commerce pour les variantes restantes.\n";
+echo "TCK-040  : les options de personnalisation sont disponibles dans catalogue.json,\n";
+echo "           prêtes à être importées quand l'architecture sera validée.\n";

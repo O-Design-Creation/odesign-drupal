@@ -1,0 +1,313 @@
+<?php
+
+/**
+ * @file
+ * ODesign Personalization — système natif de personnalisation produit.
+ *
+ * Architecture :
+ *   - PersonalizationTemplate : config entity géré par le gestionnaire boutique.
+ *   - field_personalization_template : référence au template sur commerce_product.
+ *   - field_personalization_values : JSON des valeurs soumises sur commerce_order_item.
+ *   - PersonalizationPriceResolver : calcule les modificateurs de prix Commerce.
+ *   - hook_form_alter : injecte le formulaire de perso dans add_to_cart.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\commerce_product\Entity\ProductInterface;
+use Drupal\commerce_order\Entity\OrderItemInterface;
+use Drupal\odesign_personalization\Entity\PersonalizationTemplate;
+
+/**
+ * Implements hook_form_FORM_ID_alter() for add_to_cart forms.
+ *
+ * Injecte les champs de personnalisation définis dans le template du produit.
+ */
+function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter(
+  array &$form,
+  FormStateInterface $form_state,
+  string $form_id
+): void {
+  // Récupérer le produit depuis le form object.
+  $formObject = $form_state->getFormObject();
+  if (!method_exists($formObject, 'getEntity')) {
+    return;
+  }
+  $orderItem = $formObject->getEntity();
+  if (!$orderItem instanceof OrderItemInterface) {
+    return;
+  }
+
+  $purchasedEntity = $orderItem->getPurchasedEntity();
+  if (!$purchasedEntity) {
+    return;
+  }
+
+  // Remonter au produit parent.
+  $product = NULL;
+  if (method_exists($purchasedEntity, 'getProduct')) {
+    $product = $purchasedEntity->getProduct();
+  }
+  if (!$product instanceof ProductInterface) {
+    return;
+  }
+
+  if (!$product->hasField('field_personalization_template') || $product->get('field_personalization_template')->isEmpty()) {
+    return;
+  }
+
+  /** @var \Drupal\odesign_personalization\Entity\PersonalizationTemplate $template */
+  $template = $product->get('field_personalization_template')->entity;
+  if (!$template) {
+    return;
+  }
+
+  $fields = $template->getFields();
+  if (empty($fields)) {
+    return;
+  }
+
+  // Attacher la librairie JS (live price update)
+  $form['#attached']['library'][] = 'odesign_personalization/frontend';
+  $form['#attached']['drupalSettings']['odesign_personalization'] = [
+    'templateId'   => $template->id(),
+    'basePrice'    => (float) $orderItem->getUnitPrice()?->getNumber(),
+    'hasPriceModifiers' => $template->hasPriceModifiers(),
+  ];
+
+  // Conteneur personnalisation
+  $form['personalization'] = [
+    '#type'       => 'fieldset',
+    '#title'      => t('Personnalisation'),
+    '#attributes' => ['class' => ['personalization-fields'], 'data-template' => $template->id()],
+    '#weight'     => 50,
+  ];
+
+  foreach ($fields as $field) {
+    $fieldId  = $field['id'];
+    $fieldKey = 'perso_' . preg_replace('/[^a-z0-9_]/i', '_', strtolower($field['label'] ?: $fieldId));
+
+    $baseProps = [
+      '#title'       => $field['label'],
+      '#required'    => !empty($field['required']),
+      '#description' => $field['help'] ?? '',
+      '#attributes'  => [
+        'data-perso-field' => $fieldId,
+        'data-price-mod-type'   => $field['price_modifier']['type'] ?? 'none',
+        'data-price-mod-amount' => $field['price_modifier']['amount'] ?? '0',
+      ],
+    ];
+
+    if (!empty($field['placeholder'])) {
+      $baseProps['#placeholder'] = $field['placeholder'];
+    }
+    if (!empty($field['maxlength'])) {
+      $baseProps['#maxlength'] = (int) $field['maxlength'];
+    }
+
+    switch ($field['type']) {
+      case 'textarea':
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type' => 'textarea',
+          '#rows' => 3,
+        ];
+        break;
+
+      case 'select':
+        $options = ['_none' => t('-- Choisir --')];
+        foreach ($field['options'] ?? [] as $opt) {
+          $options[$opt['value']] = $opt['label'];
+        }
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type'    => 'select',
+          '#options' => $options,
+        ];
+        break;
+
+      case 'radio':
+        $options = [];
+        foreach ($field['options'] ?? [] as $opt) {
+          $options[$opt['value']] = $opt['label'];
+        }
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type'    => 'radios',
+          '#options' => $options,
+        ];
+        break;
+
+      case 'checkboxes':
+        $options = [];
+        foreach ($field['options'] ?? [] as $opt) {
+          $options[$opt['value']] = $opt['label'];
+        }
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type'    => 'checkboxes',
+          '#options' => $options,
+        ];
+        break;
+
+      case 'file':
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type'              => 'managed_file',
+          '#upload_location'   => 'private://personalization/',
+          '#upload_validators' => [
+            'file_validate_extensions' => ['jpg jpeg png pdf'],
+            'file_validate_size'       => [10 * 1024 * 1024],
+          ],
+        ];
+        break;
+
+      case 'number':
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type' => 'number',
+          '#min'  => 0,
+        ];
+        break;
+
+      case 'date':
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type' => 'date',
+        ];
+        break;
+
+      case 'repeatable_group':
+        // Groupe répétable : injecté comme conteneur avec sous-champs.
+        $groupMax = (int) ($field['group_max'] ?? 5);
+        $currentCount = (int) ($form_state->get('group_count_' . $fieldKey) ?? 1);
+        $form['personalization'][$fieldKey . '_group'] = [
+          '#type'       => 'fieldset',
+          '#title'      => $field['label'],
+          '#attributes' => ['id' => 'group-' . $fieldKey],
+          '#description' => $field['help'] ?? '',
+        ];
+        for ($i = 0; $i < $currentCount; $i++) {
+          foreach ($field['group_fields'] ?? [] as $subField) {
+            $subKey = $fieldKey . '_' . $i . '_' . preg_replace('/[^a-z0-9_]/i', '_', strtolower($subField['id']));
+            $form['personalization'][$fieldKey . '_group'][$subKey] = [
+              '#type'        => 'textfield',
+              '#title'       => $subField['label'] . ' ' . ($i + 1),
+              '#required'    => !empty($subField['required']),
+              '#placeholder' => $subField['placeholder'] ?? '',
+              '#attributes'  => ['data-perso-group' => $fieldKey, 'data-group-index' => $i],
+            ];
+          }
+        }
+        if ($currentCount < $groupMax) {
+          $form['personalization'][$fieldKey . '_add'] = [
+            '#type'   => 'submit',
+            '#value'  => t('+ Ajouter'),
+            '#name'   => 'add_group_' . $fieldKey,
+            '#submit' => ['odesign_personalization_add_group_item'],
+            '#ajax'   => [
+              'callback' => 'odesign_personalization_group_ajax',
+              'wrapper'  => 'group-' . $fieldKey,
+            ],
+            '#limit_validation_errors' => [],
+          ];
+        }
+        break;
+
+      default: // text
+        $form['personalization'][$fieldKey] = $baseProps + [
+          '#type' => 'textfield',
+        ];
+        break;
+    }
+
+    // Libellé modificateur de prix sous le champ
+    $mod = $field['price_modifier'] ?? [];
+    if (!empty($mod['type']) && $mod['type'] !== 'none' && !empty($mod['amount'])) {
+      $modLabel = !empty($mod['label']) ? $mod['label'] : '+ ' . $mod['amount'] . ' €';
+      $form['personalization'][$fieldKey . '_price_hint'] = [
+        '#markup' => '<div class="perso-price-hint" data-perso-field="' . htmlspecialchars($fieldId) . '">'
+          . t('Supplément si renseigné : <strong>@label</strong>', ['@label' => $modLabel])
+          . '</div>',
+        '#weight' => $form['personalization'][$fieldKey]['#weight'] ?? 0 + 0.1,
+      ];
+    }
+  }
+
+  // Prix dynamique
+  if ($template->hasPriceModifiers()) {
+    $form['personalization']['price_summary'] = [
+      '#markup' => '<div class="perso-price-summary" aria-live="polite"></div>',
+      '#weight' => 100,
+    ];
+  }
+
+  // Submit handler pour sauvegarder les valeurs perso dans l'order_item.
+  $form['#submit'][] = 'odesign_personalization_add_to_cart_submit';
+}
+
+/**
+ * Custom submit handler — persiste les valeurs perso dans field_personalization_values.
+ */
+function odesign_personalization_add_to_cart_submit(array $form, FormStateInterface $form_state): void {
+  $formObject = $form_state->getFormObject();
+  if (!method_exists($formObject, 'getEntity')) {
+    return;
+  }
+  $orderItem = $formObject->getEntity();
+  if (!$orderItem instanceof OrderItemInterface) {
+    return;
+  }
+
+  if (!$orderItem->hasField('field_personalization_values')) {
+    return;
+  }
+
+  // Collecter toutes les valeurs des champs perso_*
+  $values = [];
+  foreach ($form_state->getValues() as $key => $val) {
+    if (strpos($key, 'perso_') === 0) {
+      // Nettoyer la clé → libellé lisible
+      $label = substr($key, 6); // strip 'perso_'
+      $label = ucfirst(str_replace('_', ' ', $label));
+      $cleanVal = is_array($val) ? implode(', ', array_filter($val)) : trim((string) $val);
+      if ($cleanVal !== '' && $cleanVal !== '_none') {
+        $values[$label] = $cleanVal;
+      }
+    }
+  }
+
+  $orderItem->set('field_personalization_values', json_encode($values, JSON_UNESCAPED_UNICODE));
+}
+
+/**
+ * AJAX callback pour les groupes répétables.
+ */
+function odesign_personalization_group_ajax(array &$form, FormStateInterface $form_state): array {
+  $trigger = $form_state->getTriggeringElement();
+  $fieldKey = str_replace('add_group_', '', $trigger['#name'] ?? '');
+  return $form['personalization'][$fieldKey . '_group'] ?? [];
+}
+
+/**
+ * Submit handler pour "Ajouter" dans un groupe répétable.
+ */
+function odesign_personalization_add_group_item(array &$form, FormStateInterface $form_state): void {
+  $trigger = $form_state->getTriggeringElement();
+  $fieldKey = str_replace('add_group_', '', $trigger['#name'] ?? '');
+  $count = (int) $form_state->get('group_count_' . $fieldKey) ?: 1;
+  $form_state->set('group_count_' . $fieldKey, $count + 1);
+  $form_state->setRebuild();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for commerce_order_item.
+ *
+ * S'assure que field_personalization_values est bien un JSON valide.
+ */
+function odesign_personalization_commerce_order_item_presave(EntityInterface $entity): void {
+  if (!$entity instanceof OrderItemInterface) {
+    return;
+  }
+  if (!$entity->hasField('field_personalization_values') || $entity->get('field_personalization_values')->isEmpty()) {
+    return;
+  }
+  $raw = $entity->get('field_personalization_values')->value;
+  if ($raw && json_decode($raw) === NULL) {
+    // JSON invalide — nettoyer
+    $entity->set('field_personalization_values', NULL);
+  }
+}

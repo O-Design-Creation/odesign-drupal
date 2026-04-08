@@ -25,6 +25,7 @@ module:
   commerce_store: 0
   commerce_stripe: 0
   commerce_tax: 0
+  config: 0
   config_ignore: 0
   contact: 0
   contact_storage: 0
@@ -62,6 +63,7 @@ module:
   node: 0
   odesign_admin: 0
   odesign_orders: 0
+  odesign_personalization: 0
   odesign_personalization_poc: 0
   odesign_promotions: 0
   options: 0

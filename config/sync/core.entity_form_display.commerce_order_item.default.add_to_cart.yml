@@ -5,6 +5,7 @@ dependencies:
   config:
     - commerce_order.commerce_order_item_type.default
     - core.entity_form_mode.commerce_order_item.add_to_cart
+    - field.field.commerce_order_item.default.field_personalization_values
     - field.field.commerce_order_item.default.field_poc_finish
     - field.field.commerce_order_item.default.field_poc_need_upload
     - field.field.commerce_order_item.default.field_poc_text
@@ -86,6 +87,7 @@ content:
 hidden:
   adjustments: true
   created: true
+  field_personalization_values: true
   quantity: true
   status: true
   total_price: true

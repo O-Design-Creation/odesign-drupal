@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - commerce_order.commerce_order_item_type.default
+    - field.field.commerce_order_item.default.field_personalization_values
     - field.field.commerce_order_item.default.field_poc_finish
     - field.field.commerce_order_item.default.field_poc_need_upload
     - field.field.commerce_order_item.default.field_poc_text
@@ -137,4 +138,5 @@ hidden:
   entity_print_view_epub: true
   entity_print_view_pdf: true
   entity_print_view_word_docx: true
+  field_personalization_values: true
   search_api_excerpt: true

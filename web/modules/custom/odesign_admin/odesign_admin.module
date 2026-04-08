@@ -265,12 +265,34 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'active_routes' => ['view.media.media_page_list', 'entity.media.add_page', 'entity.media.edit_form'],
     'badge'         => NULL,
   ];
+  // "Configuration" devient un groupe déroulant pour accueillir les futurs
+  // paramètres boutique sans surcharger la barre principale.
   $items['configuration'] = [
-    'label'         => 'Configuration',
-    'icon'          => 'ph-gear',
+    'label'    => 'Configuration',
+    'icon'     => 'ph-gear',
+    'type'     => 'group',
+    'weight'   => 90,
+    'children' => ['config_boutique', 'personnalisation'],
+  ];
+  $items['config_boutique'] = [
+    'label'         => 'Paramètres boutique',
+    'icon'          => 'ph-sliders',
     'route'         => 'odesign_admin.config',
-    'weight'        => 90,
+    'weight'        => 91,
     'active_routes' => ['odesign_admin.config'],
+    'badge'         => NULL,
+  ];
+  $items['personnalisation'] = [
+    'label'         => 'Personnalisation produits',
+    'icon'          => 'ph-magic-wand',
+    'route'         => 'odesign_personalization.templates',
+    'weight'        => 92,
+    'active_routes' => [
+      'odesign_personalization.templates',
+      'entity.personalization_template.add_form',
+      'entity.personalization_template.edit_form',
+      'entity.personalization_template.delete_form',
+    ],
     'badge'         => NULL,
   ];
   $items['guide_marketing'] = [

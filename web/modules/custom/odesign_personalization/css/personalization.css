@@ -1,0 +1,74 @@
+/* ODesign Personalization — styles frontend */
+
+.personalization-fields {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #d9b7a4;
+  border-radius: 6px;
+  background: #fdf9f7;
+}
+
+.personalization-fields legend,
+.personalization-fields .fieldset-legend {
+  font-weight: 600;
+  color: #4e2620;
+  font-size: 1rem;
+  padding: 0 0.5rem;
+}
+
+.personalization-fields .form-item {
+  margin-bottom: 1rem;
+}
+
+.personalization-fields label {
+  font-weight: 500;
+  color: #3a1e1a;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.personalization-fields input[type="text"],
+.personalization-fields input[type="number"],
+.personalization-fields input[type="date"],
+.personalization-fields textarea,
+.personalization-fields select {
+  width: 100%;
+  border: 1px solid #c0a090;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.personalization-fields input:focus,
+.personalization-fields textarea:focus,
+.personalization-fields select:focus {
+  border-color: #bb7570;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(187, 117, 112, 0.2);
+}
+
+.perso-price-hint {
+  font-size: 0.82rem;
+  color: #8b6151;
+  margin-top: 0.2rem;
+  padding: 0.2rem 0.4rem;
+  background: #f5ede9;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+.perso-price-summary {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #4e2620;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: none;
+}
+
+.perso-price-summary.has-modifier {
+  display: block;
+}

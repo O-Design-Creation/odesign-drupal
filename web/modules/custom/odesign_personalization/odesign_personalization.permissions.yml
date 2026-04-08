@@ -1,0 +1,4 @@
+'administer odesign personalization':
+  title: 'Gérer les templates de personnalisation'
+  description: 'Créer, modifier et supprimer les templates de personnalisation produit.'
+  restrict access: true

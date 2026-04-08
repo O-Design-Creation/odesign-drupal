@@ -1,0 +1,5 @@
+odesign_personalization.templates:
+  title: 'Templates de personnalisation'
+  route_name: odesign_personalization.templates
+  parent: odesign_admin.boutique
+  weight: 60

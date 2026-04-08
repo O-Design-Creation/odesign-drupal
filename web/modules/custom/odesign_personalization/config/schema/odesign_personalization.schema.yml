@@ -1,0 +1,103 @@
+# Schema for odesign_personalization module config entities.
+
+odesign_personalization.personalization_template.*:
+  type: config_entity
+  label: 'Personalization template'
+  mapping:
+    id:
+      type: string
+      label: 'Machine name'
+    label:
+      type: label
+      label: 'Label'
+    description:
+      type: text
+      label: 'Description (usage notes for the gestionnaire)'
+    fields:
+      type: sequence
+      label: 'Field definitions'
+      sequence:
+        type: mapping
+        label: 'Field definition'
+        mapping:
+          id:
+            type: string
+            label: 'Field machine id'
+          label:
+            type: label
+            label: 'Field label (shown to customer)'
+          type:
+            type: string
+            label: 'Field type'
+          required:
+            type: boolean
+            label: 'Required'
+          placeholder:
+            type: text
+            label: 'Placeholder text'
+          help:
+            type: text
+            label: 'Help text (shown below the field)'
+          maxlength:
+            type: integer
+            label: 'Max length (text/textarea)'
+          weight:
+            type: integer
+            label: 'Display weight'
+          options:
+            type: sequence
+            label: 'Options (for select/radio/checkbox types)'
+            sequence:
+              type: mapping
+              label: 'Option'
+              mapping:
+                value:
+                  type: string
+                  label: 'Option value'
+                label:
+                  type: label
+                  label: 'Option label'
+          group_fields:
+            type: sequence
+            label: 'Sub-fields (for repeatable_group type)'
+            sequence:
+              type: mapping
+              label: 'Sub-field'
+              mapping:
+                id:
+                  type: string
+                  label: 'Sub-field id'
+                label:
+                  type: label
+                  label: 'Sub-field label'
+                type:
+                  type: string
+                  label: 'Sub-field type'
+                required:
+                  type: boolean
+                  label: 'Required'
+                placeholder:
+                  type: text
+                  label: 'Placeholder'
+          group_min:
+            type: integer
+            label: 'Repeatable group minimum occurrences'
+          group_max:
+            type: integer
+            label: 'Repeatable group maximum occurrences'
+          price_modifier:
+            type: mapping
+            label: 'Price modifier'
+            mapping:
+              type:
+                type: string
+                label: 'Modifier type: none | fixed | per_unit'
+              amount:
+                type: string
+                label: 'Amount (decimal string, e.g. "5.00")'
+              currency:
+                type: string
+                label: 'Currency code'
+              label:
+                type: label
+                label: 'Label shown to customer (e.g. "+ 5 € (gravure photo)")'

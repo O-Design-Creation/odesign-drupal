@@ -24,6 +24,7 @@ dependencies:
     - media
     - node
     - odesign_admin
+    - odesign_personalization
     - simplenews
     - system
     - taxonomy
@@ -50,6 +51,7 @@ permissions:
   - 'add commerce_log commerce_order admin comment'
   - 'administer commerce_invoice'
   - 'administer odesign boutique'
+  - 'administer odesign personalization'
   - 'administer simplenews subscriptions'
   - 'create article content'
   - 'create default commerce_product'

@@ -1,0 +1,21 @@
+uuid: 9d9aa35b-75f6-489b-880c-34554a1ac074
+langcode: fr
+status: true
+dependencies:
+  config:
+    - commerce_product.commerce_product_type.default
+    - field.storage.commerce_product.field_personalization_template
+id: commerce_product.default.field_personalization_template
+field_name: field_personalization_template
+entity_type: commerce_product
+bundle: default
+label: 'Template de personnalisation'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:personalization_template'
+  handler_settings: {  }
+field_type: entity_reference

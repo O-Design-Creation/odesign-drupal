@@ -1,0 +1,17 @@
+odesign_personalization.builder:
+  version: VERSION
+  css:
+    component:
+      css/builder.css: {}
+
+odesign_personalization.frontend:
+  version: VERSION
+  js:
+    js/personalization-frontend.js: { minified: false }
+  css:
+    component:
+      css/personalization.css: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery

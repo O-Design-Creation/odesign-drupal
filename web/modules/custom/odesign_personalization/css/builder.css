@@ -1,0 +1,23 @@
+/* ODesign Personalization — styles builder admin */
+
+.perso-template-form .field-multiple-table th {
+  background: #f5ede9;
+}
+
+.perso-template-form .button--danger {
+  background: #c0392b;
+  color: #fff;
+  border: none;
+}
+
+.perso-template-form #fields-wrapper fieldset {
+  border: 1px solid #d9b7a4;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: #fdf9f7;
+}
+
+.perso-template-form table td small {
+  color: #8b6151;
+}

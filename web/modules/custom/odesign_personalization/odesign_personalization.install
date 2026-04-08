@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @file
+ * Install/update hooks for odesign_personalization.
+ *
+ * Creates the two fields needed:
+ *   - field_personalization_template on commerce_product.default
+ *   - field_personalization_values   on commerce_order_item.default
+ */
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Implements hook_install().
+ */
+function odesign_personalization_install(): void {
+  // 1. Champ template sur commerce_product.default
+  if (!FieldStorageConfig::loadByName('commerce_product', 'field_personalization_template')) {
+    FieldStorageConfig::create([
+      'field_name'   => 'field_personalization_template',
+      'entity_type'  => 'commerce_product',
+      'type'         => 'entity_reference',
+      'cardinality'  => 1,
+      'settings'     => ['target_type' => 'personalization_template'],
+    ])->save();
+  }
+
+  if (!FieldConfig::loadByName('commerce_product', 'default', 'field_personalization_template')) {
+    FieldConfig::create([
+      'field_name'   => 'field_personalization_template',
+      'entity_type'  => 'commerce_product',
+      'bundle'       => 'default',
+      'label'        => 'Template de personnalisation',
+      'required'     => FALSE,
+      'settings'     => [
+        'handler'          => 'default:personalization_template',
+        'handler_settings' => [],
+      ],
+    ])->save();
+
+    // Ajouter au form display produit
+    /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $formDisplay */
+    $formDisplay = \Drupal::service('entity_display.repository')
+      ->getFormDisplay('commerce_product', 'default', 'default');
+    $formDisplay->setComponent('field_personalization_template', [
+      'type'     => 'entity_reference_autocomplete',
+      'weight'   => 20,
+      'settings' => ['match_operator' => 'CONTAINS', 'size' => 60, 'placeholder' => ''],
+    ])->save();
+  }
+
+  // 2. Champ valeurs JSON sur commerce_order_item.default
+  if (!FieldStorageConfig::loadByName('commerce_order_item', 'field_personalization_values')) {
+    FieldStorageConfig::create([
+      'field_name'  => 'field_personalization_values',
+      'entity_type' => 'commerce_order_item',
+      'type'        => 'string_long',
+      'cardinality' => 1,
+    ])->save();
+  }
+
+  if (!FieldConfig::loadByName('commerce_order_item', 'default', 'field_personalization_values')) {
+    FieldConfig::create([
+      'field_name'  => 'field_personalization_values',
+      'entity_type' => 'commerce_order_item',
+      'bundle'      => 'default',
+      'label'       => 'Valeurs de personnalisation (JSON)',
+      'required'    => FALSE,
+    ])->save();
+  }
+
+  \Drupal::messenger()->addStatus(t('ODesign Personalization installé. Les champs produit et ligne de commande sont prêts.'));
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function odesign_personalization_uninstall(): void {
+  // Ne pas supprimer field_personalization_values en cas de désinstallation —
+  // les commandes existantes pourraient contenir des données.
+  // Suppression manuelle si nécessaire.
+}

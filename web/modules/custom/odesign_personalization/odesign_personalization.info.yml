@@ -1,0 +1,12 @@
+name: ODesign Personalization
+type: module
+description: 'Système de personnalisation produit natif Drupal Commerce. Remplace le PoC. Templates configurables par le gestionnaire boutique, modificateurs de prix intégrés.'
+core_version_requirement: ^11
+package: ODesign
+dependencies:
+  - drupal:field
+  - drupal:user
+  - drupal:config
+  - commerce:commerce_product
+  - commerce:commerce_order
+  - commerce:commerce_price
