@@ -977,9 +977,9 @@ function odesign_admin_contact_honeypot_validate(array $form, FormStateInterface
 function odesign_admin_node_access(\Drupal\node\NodeInterface $node, string $op, \Drupal\Core\Session\AccountInterface $account): \Drupal\Core\Access\AccessResultInterface {
   if ($node->bundle() === 'guide' && $op === 'view') {
     if ($account->hasRole('administrator') || $account->hasRole('gestionnaire_boutique')) {
-      return \Drupal\Core\Access\AccessResult::neutral()->cachePerRoles();
+      return \Drupal\Core\Access\AccessResult::neutral()->addCacheContexts(['user.roles']);
     }
-    return \Drupal\Core\Access\AccessResult::forbidden()->cachePerRoles();
+    return \Drupal\Core\Access\AccessResult::forbidden()->addCacheContexts(['user.roles']);
   }
   return \Drupal\Core\Access\AccessResult::neutral();
 }
