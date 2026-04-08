@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * campagne-en-cours-widget.html.twig
+ *
+ * Widget "Campagne en cours" affiché en homepage.
+ */
+#}
+<div class="campagne-widget">
+  {%- if hero -%}
+    <div class="campagne-widget__image">
+      {{- hero -}}
+    </div>
+  {%- endif -%}
+
+  <div class="campagne-widget__content">
+    <span class="campagne-widget__badge">
+      <i class="ph ph-sparkle" aria-hidden="true"></i>
+      {{ 'Campagne en cours'|t }}
+    </span>
+
+    <h2 class="campagne-widget__title">{{ title }}</h2>
+
+    <a href="{{ cta_url }}" class="campagne-widget__cta">
+      {{ cta_label }}
+      <i class="ph ph-arrow-right" aria-hidden="true"></i>
+    </a>
+  </div>
+</div>

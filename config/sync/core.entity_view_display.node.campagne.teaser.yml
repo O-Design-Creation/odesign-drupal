@@ -1,0 +1,53 @@
+uuid: c5d6e7f8-a9b0-1234-cdef-345678901234
+langcode: fr
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.campagne.body
+    - field.field.node.campagne.field_campagne_image_hero
+    - image.style.large
+    - node.type.campagne
+  module:
+    - image
+    - text
+    - user
+id: node.campagne.teaser
+targetEntityType: node
+bundle: campagne
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 220
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_campagne_image_hero:
+    type: image
+    label: hidden
+    settings:
+      image_link: content
+      image_style: large
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  field_campagne_couleur: true
+  field_campagne_cta_label: true
+  field_campagne_cta_url: true
+  field_campagne_produits: true
+  langcode: true
+  search_api_excerpt: true

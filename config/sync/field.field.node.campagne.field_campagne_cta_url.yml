@@ -1,0 +1,23 @@
+uuid: e1f2a3b4-c5d6-7890-efab-901234567890
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_campagne_cta_url
+    - node.type.campagne
+  module:
+    - link
+id: node.campagne.field_campagne_cta_url
+field_name: field_campagne_cta_url
+entity_type: node
+bundle: campagne
+label: 'URL du bouton CTA'
+description: 'Lien vers lequel redirige le bouton CTA.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  title: 0
+  link_type: 17
+field_type: link

@@ -177,6 +177,16 @@ function odesign_admin_theme(): array {
         'current'  => NULL,
       ],
     ],
+    'campagne_en_cours_widget' => [
+      'template'  => 'campagne-en-cours-widget',
+      'variables' => [
+        'node'      => NULL,
+        'title'     => '',
+        'hero'      => [],
+        'cta_label' => '',
+        'cta_url'   => '',
+      ],
+    ],
   ];
 }
 
@@ -212,7 +222,7 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'icon'     => 'ph-layout',
     'type'     => 'group',
     'weight'   => 35,
-    'children' => ['editorial', 'newsletter', 'mediatheque', 'guide_marketing', 'documentation'],
+    'children' => ['editorial', 'campagnes', 'newsletter', 'mediatheque', 'guide_marketing', 'documentation'],
   ];
 
   $items['editorial'] = [
@@ -231,6 +241,15 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
       'entity.taxonomy_term.edit_form',
       'entity.taxonomy_term.delete_form',
     ],
+    'badge'         => NULL,
+  ];
+  $items['campagnes'] = [
+    'label'         => 'Campagnes',
+    'icon'          => 'ph-confetti',
+    'route'         => 'system.admin_content',
+    'route_options' => ['query' => ['type' => 'campagne']],
+    'weight'        => 42,
+    'active_routes' => ['system.admin_content'],
     'badge'         => NULL,
   ];
   $items['newsletter'] = [

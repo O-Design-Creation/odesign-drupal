@@ -6,6 +6,7 @@ dependencies:
     - filter.format.basic_html
     - filter.format.full_html
     - node.type.article
+    - node.type.campagne
     - node.type.page
     - node.type.simplenews_issue
     - taxonomy.vocabulary.life_occasion
@@ -25,6 +26,7 @@ dependencies:
     - node
     - odesign_admin
     - odesign_personalization
+    - scheduler
     - simplenews
     - system
     - taxonomy
@@ -55,6 +57,7 @@ permissions:
   - 'administer odesign personalization'
   - 'administer simplenews subscriptions'
   - 'create article content'
+  - 'create campagne content'
   - 'create commerce_shipping_method'
   - 'create default commerce_product'
   - 'create media'
@@ -62,17 +65,22 @@ permissions:
   - 'create simplenews_issue content'
   - 'create terms in life_occasion'
   - 'delete any article content'
+  - 'delete any campagne content'
   - 'delete any page content'
   - 'delete commerce_shipping_method'
+  - 'delete own campagne content'
   - 'delete own simplenews_issue content'
   - 'display eu cookie compliance popup'
   - 'edit any article content'
+  - 'edit any campagne content'
   - 'edit any page content'
   - 'edit any simplenews_issue content'
+  - 'edit own campagne content'
   - 'edit terms in life_occasion'
   - 'manage default commerce_order_item'
   - 'manage default commerce_product_variation'
   - 'manage default commerce_shipment'
+  - 'schedule publishing of nodes'
   - 'unlock orders'
   - 'update any default commerce_product'
   - 'update any media'

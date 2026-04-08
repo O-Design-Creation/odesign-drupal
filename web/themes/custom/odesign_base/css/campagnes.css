@@ -1,0 +1,286 @@
+/* ==========================================================================
+   Campagnes saisonnières — Atelier O Design
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   Vue complète (full)
+   --------------------------------------------------------------------------- */
+
+.campagne-hero {
+  position: relative;
+  width: 100%;
+  max-height: 480px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.campagne-hero img {
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  display: block;
+}
+
+.campagne-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    color-mix(in srgb, var(--campagne-couleur, #BB7570) 60%, transparent) 100%
+  );
+  pointer-events: none;
+}
+
+.campagne-full__inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.campagne-full__title {
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  margin-bottom: 1.5rem;
+}
+
+.campagne-full__body {
+  margin-bottom: 2rem;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--color-text, #1a1210);
+}
+
+.campagne-full__section-title {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.campagne-produits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.campagne-full__cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.campagne-cta-btn {
+  display: inline-block;
+  padding: 0.875rem 2.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.campagne-cta-btn:hover,
+.campagne-cta-btn:focus {
+  opacity: 0.88;
+  color: #fff;
+}
+
+/* ---------------------------------------------------------------------------
+   Carte teaser (liste /campagnes)
+   --------------------------------------------------------------------------- */
+
+.campagne-card {
+  background: var(--color-bg, #fff);
+  border: 1px solid var(--color-border-light, #ecddd5);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.campagne-card:hover {
+  box-shadow: 0 4px 16px rgba(78, 38, 32, 0.12);
+  transform: translateY(-2px);
+}
+
+.campagne-card--unpublished {
+  opacity: 0.6;
+}
+
+.campagne-card__image-link {
+  display: block;
+}
+
+.campagne-card__image {
+  position: relative;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: var(--color-bg-alt, #faf4f0);
+}
+
+.campagne-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.campagne-card:hover .campagne-card__image img {
+  transform: scale(1.04);
+}
+
+.campagne-card__image--placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.campagne-card__image--placeholder svg {
+  width: 100%;
+  height: 100%;
+}
+
+.campagne-card__badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--color-brand-medium, #BB7570);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.625rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.campagne-card__body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.campagne-card__title {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 1.1875rem;
+  margin-bottom: 0.5rem;
+}
+
+.campagne-card__title a {
+  color: var(--color-text, #1a1210);
+  text-decoration: none;
+}
+
+.campagne-card__title a:hover {
+  color: var(--color-brand-warm, #8B6151);
+}
+
+.campagne-card__summary {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted, #6b4e44);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.campagne-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------------
+   Listing /campagnes
+   --------------------------------------------------------------------------- */
+
+.view-campagnes-listing .view-content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .view-campagnes-listing .view-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .view-campagnes-listing .view-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Widget homepage "Campagne en cours"
+   --------------------------------------------------------------------------- */
+
+.campagne-widget {
+  background: var(--color-bg-alt, #faf4f0);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 320px;
+}
+
+@media (max-width: 700px) {
+  .campagne-widget {
+    grid-template-columns: 1fr;
+  }
+}
+
+.campagne-widget__image {
+  overflow: hidden;
+}
+
+.campagne-widget__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.campagne-widget__content {
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.campagne-widget__badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-brand-medium, #BB7570);
+  margin-bottom: 0.25rem;
+}
+
+.campagne-widget__title {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  color: var(--color-text, #1a1210);
+  margin: 0;
+}
+
+.campagne-widget__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--color-brand-warm, #8B6151);
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+}
+
+.campagne-widget__cta:hover,
+.campagne-widget__cta:focus {
+  background: var(--color-brand-dark, #4E2620);
+  color: #fff;
+}

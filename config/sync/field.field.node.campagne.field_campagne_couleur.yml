@@ -1,0 +1,19 @@
+uuid: f2a3b4c5-d6e7-8901-fabc-012345678901
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_campagne_couleur
+    - node.type.campagne
+id: node.campagne.field_campagne_couleur
+field_name: field_campagne_couleur
+entity_type: node
+bundle: campagne
+label: "Couleur d'accent"
+description: "Code couleur hexadécimal pour personnaliser l'apparence (ex : #BB7570). Laissez vide pour utiliser la couleur par défaut."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

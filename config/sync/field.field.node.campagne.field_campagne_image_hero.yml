@@ -1,0 +1,38 @@
+uuid: b8c9d0e1-f2a3-4567-bcde-678901234567
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_campagne_image_hero
+    - node.type.campagne
+  module:
+    - image
+id: node.campagne.field_campagne_image_hero
+field_name: field_campagne_image_hero
+entity_type: node
+bundle: campagne
+label: 'Image hero'
+description: 'Image principale de la campagne (1200×630 px minimum recommandé).'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: campagnes
+  file_extensions: 'png gif jpg jpeg webp'
+  max_filesize: '4 MB'
+  max_resolution: ''
+  min_resolution: 1200x630
+  alt_field: true
+  alt_field_required: false
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image

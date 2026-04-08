@@ -1,0 +1,22 @@
+uuid: d6e7f8a9-b0c1-2345-defa-456789012345
+langcode: fr
+status: true
+dependencies:
+  module:
+    - node
+id: campagne
+label: Campagne
+type: 'canonical_entities:node'
+pattern: 'campagnes/[node:title]'
+selection_criteria:
+  e7f8a9b0-c1d2-3456-efab-567890123456:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: e7f8a9b0-c1d2-3456-efab-567890123456
+    context_mapping:
+      node: node
+    bundles:
+      campagne: campagne
+selection_logic: and
+weight: 0
+relationships: {  }

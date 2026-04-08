@@ -1,0 +1,21 @@
+uuid: f6a7b8c9-d0e1-2345-fabc-456789012345
+langcode: fr
+status: true
+dependencies:
+  module:
+    - node
+id: node.field_campagne_couleur
+field_name: field_campagne_couleur
+entity_type: node
+type: string
+settings:
+  max_length: 7
+  case_sensitive: false
+  is_ascii: true
+module: core
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

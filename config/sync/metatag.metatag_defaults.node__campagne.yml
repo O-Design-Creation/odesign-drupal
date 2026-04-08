@@ -1,0 +1,17 @@
+uuid: f8a9b0c1-d2e3-4567-fabc-678901234567
+langcode: fr
+status: true
+dependencies:
+  config:
+    - node.type.campagne
+  module:
+    - metatag
+    - node
+id: node__campagne
+label: 'Contenu : Campagne'
+tags:
+  title: '[node:title] | [site:name]'
+  description: '[node:summary]'
+  og_title: '[node:title]'
+  og_description: '[node:summary]'
+  og_image: '[node:field_campagne_image_hero:entity:url]'

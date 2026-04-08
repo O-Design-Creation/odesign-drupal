@@ -50,7 +50,8 @@ class BoutiqueNavRegistry {
 
       if ($item['type'] === 'link') {
         try {
-          $item['url'] = Url::fromRoute($item['route'])->toString();
+          $route_options = $item['route_options'] ?? [];
+          $item['url'] = Url::fromRoute($item['route'], [], $route_options)->toString();
         }
         catch (\Exception) {
           $item['url'] = '/admin';

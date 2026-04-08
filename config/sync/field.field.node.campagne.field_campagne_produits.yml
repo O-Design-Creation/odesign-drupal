@@ -1,0 +1,29 @@
+uuid: c9d0e1f2-a3b4-5678-cdef-789012345678
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_campagne_produits
+    - node.type.campagne
+  module:
+    - commerce_product
+id: node.campagne.field_campagne_produits
+field_name: field_campagne_produits
+entity_type: node
+bundle: campagne
+label: 'Produits mis en avant'
+description: 'Sélectionnez les produits à mettre en avant dans cette campagne.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:commerce_product'
+  handler_settings:
+    target_bundles:
+      default: default
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

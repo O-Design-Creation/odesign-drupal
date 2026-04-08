@@ -1,0 +1,64 @@
+{#
+/**
+ * @file
+ * node--campagne--teaser.html.twig
+ *
+ * Carte campagne pour la liste /campagnes et le widget homepage.
+ */
+#}
+{%
+  set classes = [
+    'campagne-card',
+    not node.isPublished() ? 'campagne-card--unpublished',
+  ]|filter(v => v)
+%}
+
+{# Calcul du badge "En cours" via les dates scheduler #}
+{%- set now = "now"|date('U') -%}
+{%- set publish_on = node.publish_on.value ? node.publish_on.value : node.getCreatedTime() -%}
+{%- set unpublish_on = node.unpublish_on.value -%}
+{%- set is_active = node.isPublished() and (not unpublish_on or unpublish_on > now) -%}
+
+<article{{ attributes.addClass(classes) }}>
+
+  {# Image hero #}
+  <a href="{{ url }}" class="campagne-card__image-link" tabindex="-1" aria-hidden="true">
+    <div class="campagne-card__image">
+      {%- if content.field_campagne_image_hero|render|striptags|trim is not empty -%}
+        {{- content.field_campagne_image_hero -}}
+      {%- else -%}
+        <div class="campagne-card__image--placeholder" aria-hidden="true">
+          <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="220" fill="#faf4f0"/>
+            <path d="M160 155 L200 75 L240 155Z" fill="#BB7570" opacity=".5"/>
+            <circle cx="200" cy="90" r="18" fill="#4E2620" opacity=".15"/>
+          </svg>
+        </div>
+      {%- endif -%}
+
+      {%- if is_active -%}
+        <span class="campagne-card__badge" aria-label="{{ 'Campagne en cours'|t }}">
+          {{ 'En cours'|t }}
+        </span>
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="campagne-card__body">
+    <h2 class="campagne-card__title">
+      <a href="{{ url }}">{{ label }}</a>
+    </h2>
+
+    {%- if content.body|render|striptags|trim is not empty -%}
+      <div class="campagne-card__summary">
+        {{- content.body -}}
+      </div>
+    {%- endif -%}
+
+    <a href="{{ url }}" class="campagne-card__link btn btn--secondary">
+      <i class="ph ph-arrow-right" aria-hidden="true"></i>
+      {{ 'Voir la campagne'|t }}
+    </a>
+  </div>
+
+</article>

@@ -1,0 +1,24 @@
+uuid: a7b8c9d0-e1f2-3456-abcd-567890123456
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - node.type.campagne
+  module:
+    - text
+id: node.campagne.body
+field_name: body
+entity_type: node
+bundle: campagne
+label: 'Description / texte principal'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  display_summary: true
+  required_summary: false
+  allowed_formats: {  }
+field_type: text_with_summary

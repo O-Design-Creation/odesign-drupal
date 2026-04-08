@@ -1,0 +1,88 @@
+uuid: b4c5d6e7-f8a9-0123-bcde-234567890123
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.field.node.campagne.body
+    - field.field.node.campagne.field_campagne_cta_label
+    - field.field.node.campagne.field_campagne_cta_url
+    - field.field.node.campagne.field_campagne_couleur
+    - field.field.node.campagne.field_campagne_image_hero
+    - field.field.node.campagne.field_campagne_produits
+    - image.style.large
+    - node.type.campagne
+  module:
+    - commerce_product
+    - image
+    - link
+    - text
+    - user
+id: node.campagne.default
+targetEntityType: node
+bundle: campagne
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_campagne_couleur:
+    type: string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_campagne_cta_label:
+    type: string
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_campagne_cta_url:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_campagne_image_hero:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: large
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_campagne_produits:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  langcode: true
+  search_api_excerpt: true
