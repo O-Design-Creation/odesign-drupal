@@ -30,6 +30,9 @@ configuration:
       step: order_information
       weight: 2
       require_shipping_profile: true
+    commerce_shipping_mondial_relay:
+      step: order_information
+      weight: 3
     review:
       step: review
       weight: 3

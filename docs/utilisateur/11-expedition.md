@@ -4,9 +4,20 @@
 
 ---
 
-## Les 4 transporteurs disponibles
+## État des fonctionnalités par transporteur
 
-Au moment du checkout, la cliente choisit parmi les options suivantes :
+| Transporteur | Sélection au checkout | Widget point relais | Génération d'étiquette |
+|---|---|---|---|
+| **Colissimo** | ✅ Disponible | — | ⏳ Phase future (API Okapi) |
+| **DPD** | ✅ Disponible | — | ⏳ Phase future |
+| **Chronopost** | ✅ Disponible | — | ⏳ Phase future |
+| **Mondial Relay** | ✅ Disponible | ✅ Widget actif (BDTEST → prod) | ⏳ Phase future |
+
+> **Phases :** La sélection du transporteur et la saisie du numéro de suivi sont disponibles dès maintenant. La génération automatique d'étiquettes d'expédition nécessite une intégration API par transporteur — prévu en V2.
+
+---
+
+## Les transporteurs disponibles au checkout
 
 | Transporteur | Tarif | Réseau |
 |---|---|---|
@@ -16,7 +27,7 @@ Au moment du checkout, la cliente choisit parmi les options suivantes :
 | **Mondial Relay** — Point relais | 3,90 € | Réseau Mondial Relay |
 | **Mondial Relay gratuit** *(≥ 50€)* | 0,00 € | Réseau Mondial Relay |
 
-> **Note :** Le Mondial Relay gratuit n'apparaît dans la liste du checkout que si le montant du panier est supérieur ou égal à 50 €. C'est la méthode qui remplace la promotion automatique — le client la sélectionne lui-même.
+> **Note :** Le Mondial Relay gratuit n'apparaît dans la liste du checkout que si le montant du panier est supérieur ou égal à 50 €.
 
 ---
 
@@ -50,6 +61,49 @@ Le numéro est immédiatement enregistré. Si le transporteur est reconnu (Colis
 | Mondial Relay | `https://www.mondialrelay.fr/suivi-de-colis/?numColis={numéro}` |
 
 > Le lien s'ouvre dans un nouvel onglet. Il suffit de cliquer sur le numéro de suivi affiché dans la fiche commande.
+
+---
+
+## Configurer le widget point relais Mondial Relay
+
+> **Backoffice** : Configuration → Transporteurs & tarifs → "Mondial Relay — Point relais" → Modifier
+
+Le widget de sélection de point relais est actif avec un **Brand ID de test** (`BDTEST`). Pour la mise en production, il faut le remplacer par votre Brand ID réel.
+
+### Obtenir votre Brand ID de production
+
+1. Connectez-vous à votre espace pro Mondial Relay : [connect.mondialrelay.com](https://connect.mondialrelay.com/)
+2. Allez dans **Mes Paramètres de Connexion** → **Api settings**
+3. Cliquez sur **Générer api credentials**
+4. Notez votre **Brand ID** (format numérique, ex : `12345`)
+
+### Saisir le Brand ID dans le backoffice
+
+1. Ouvrez **Transporteurs & tarifs** dans la navigation boutique
+2. Cliquez sur **Modifier** à côté de "Mondial Relay — Point relais"
+3. Dans le champ **Marque**, remplacez `BDTEST` par votre Brand ID réel
+4. Répétez pour "Mondial Relay gratuit (commande ≥ 50€)"
+5. Cliquez sur **Enregistrer**
+
+![Formulaire Mondial Relay — champ Marque avec BDTEST](screenshots/transporteurs-mondial-relay-brand.png)
+
+> ⚠️ Tant que le champ **Marque** contient `BDTEST`, le widget est en mode sandbox : les points relais affichés sont fictifs. Ne pas laisser `BDTEST` en production.
+
+---
+
+## Configurer les tarifs d'un transporteur
+
+> **Backoffice** : Configuration → Transporteurs & tarifs
+
+Tous les transporteurs sont modifiables depuis le backoffice sans intervention technique.
+
+![Liste des modes d'expédition](screenshots/transporteurs-liste.png)
+
+1. Cliquez sur **Modifier** à côté du transporteur
+2. Modifiez le montant dans le champ **Montant du tarif**
+3. Cliquez sur **Enregistrer**
+
+![Formulaire de modification — exemple Colissimo](screenshots/transporteurs-colissimo-edit.png)
 
 ---
 

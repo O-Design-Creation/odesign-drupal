@@ -1,0 +1,37 @@
+uuid: afdee21c-528c-436b-a89c-feed0179770c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.profile.mondial_relay.field_pickup_address
+    - field.field.profile.mondial_relay.field_pickup_id
+    - profile.type.mondial_relay
+  module:
+    - address
+_core:
+  default_config_hash: sHHnt4pgOgdHbi4BvAlsd3azZkWOhJ1w2rUmO-zKZQ0
+id: profile.mondial_relay.default
+targetEntityType: profile
+bundle: mondial_relay
+mode: default
+content:
+  field_pickup_address:
+    type: address_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_pickup_id:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  entity_print_view_epub: true
+  entity_print_view_pdf: true
+  entity_print_view_word_docx: true
+  search_api_excerpt: true

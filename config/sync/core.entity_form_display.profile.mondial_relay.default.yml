@@ -1,0 +1,33 @@
+uuid: 9d039138-8d1c-4715-904f-6d6aee1d522b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.profile.mondial_relay.field_pickup_address
+    - field.field.profile.mondial_relay.field_pickup_id
+    - profile.type.mondial_relay
+  module:
+    - address
+_core:
+  default_config_hash: W6WRvMEQV7lxfBMFO3E8P_bDsFbhwwent8zaNwxV0dk
+id: profile.mondial_relay.default
+targetEntityType: profile
+bundle: mondial_relay
+mode: default
+content:
+  field_pickup_address:
+    type: address_default
+    weight: 27
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_pickup_id:
+    type: string_textfield
+    weight: 26
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  is_default: true

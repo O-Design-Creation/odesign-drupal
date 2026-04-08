@@ -884,3 +884,6 @@ if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
 if (!empty($_ENV['PANTHEON_ENVIRONMENT'])) {
   require __DIR__ . '/settings.pantheon.php';
 }
+
+// Désactiver les bannières partenaires Commerce (ShipStation etc.)
+$settings['commerce_show_partner_banners'] = FALSE;

@@ -1,0 +1,14 @@
+uuid: c4fa009b-326f-46e6-ab3d-187838e2b817
+langcode: fr
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: BWR1jWD7_mUk40Vo3i0zYGTjb-TLb-f3d0uBQKz8uUs
+id: mondial_relay
+label: 'Mondial relay'
+display_label: 'Mondial Relay'
+multiple: true
+registration: false
+roles: {  }
+allow_revisions: false
+new_revision: false

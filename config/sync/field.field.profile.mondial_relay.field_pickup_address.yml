@@ -1,0 +1,27 @@
+uuid: 214a1307-6249-471e-b632-4842f3e1a1c2
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.profile.field_pickup_address
+    - profile.type.mondial_relay
+  module:
+    - address
+_core:
+  default_config_hash: kRcszfgQ4SENyC0k-NMcX59q3ymhVuwtu9HgrChmlhs
+id: profile.mondial_relay.field_pickup_address
+field_name: field_pickup_address
+entity_type: profile
+bundle: mondial_relay
+label: 'Pickup address'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  available_countries: {  }
+  langcode_override: null
+  field_overrides: {  }
+  fields: {  }
+field_type: address

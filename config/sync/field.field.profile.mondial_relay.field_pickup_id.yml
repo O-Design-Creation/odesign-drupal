@@ -1,0 +1,21 @@
+uuid: 5d091bdd-39f0-4d9d-9a8f-e9b92c4f1a08
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.profile.field_pickup_id
+    - profile.type.mondial_relay
+_core:
+  default_config_hash: 1iTkl5Kx3rTaTH3W2PXdRQdZQGc9ggNBXkLkdmXkJlU
+id: profile.mondial_relay.field_pickup_id
+field_name: field_pickup_id
+entity_type: profile
+bundle: mondial_relay
+label: 'Pickup id'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
