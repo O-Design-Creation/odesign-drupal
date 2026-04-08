@@ -1,0 +1,221 @@
+{
+    "_links": {
+        "self": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/merci?_format=hal_json"
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/node\/page"
+        },
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json",
+                "lang": "fr"
+            }
+        ]
+    },
+    "nid": [
+        {
+            "value": 9
+        }
+    ],
+    "uuid": [
+        {
+            "value": "73c85fd0-bc56-4361-becf-1a7b258073ad"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr",
+            "lang": "fr"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "page"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2026-04-07T19:19:31+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "_embedded": {
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/revision_uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ]
+            }
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/node\/page\/uid": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/user\/0?_format=hal_json"
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/user\/user"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "189fc657-6de7-429b-a871-3b4fe0bc6ce8"
+                    }
+                ],
+                "lang": "fr"
+            }
+        ]
+    },
+    "status": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "title": [
+        {
+            "value": "Merci pour votre message",
+            "lang": "fr"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-04-07T19:19:31+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-04-07T19:19:31+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "sticky": [
+        {
+            "value": false,
+            "lang": "fr"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "metatag": [
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "title",
+                "content": "Merci pour votre message | ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "description",
+                "content": "Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais. D\u00e9couvrir le catalogue ou retourner \u00e0 l'accueil."
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "link",
+            "attributes": {
+                "rel": "canonical",
+                "href": "https:\/\/odesign-drupal.ddev.site\/merci"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:site_name",
+                "content": "ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:type",
+                "content": "article"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:url",
+                "content": "https:\/\/odesign-drupal.ddev.site\/merci"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:title",
+                "content": "Merci pour votre message"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:description",
+                "content": "Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais. D\u00e9couvrir le catalogue ou retourner \u00e0 l'accueil."
+            },
+            "lang": "fr"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/merci",
+            "pid": 103,
+            "langcode": "fr",
+            "lang": "fr"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais.<\/p><p><a href=\"\/produits\">D\u00e9couvrir le catalogue<\/a> ou <a href=\"\/\">retourner \u00e0 l'accueil<\/a>.<\/p>",
+            "format": "basic_html",
+            "processed": "<p>Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais.<\/p>\n<p><a href=\"\/produits\">D\u00e9couvrir le catalogue<\/a> ou <a href=\"\/\">retourner \u00e0 l'accueil<\/a>.<\/p>\n",
+            "summary": null,
+            "lang": "fr"
+        }
+    ],
+    "_dcd_metadata": {
+        "export_timestamp": 1775628977
+    }
+}

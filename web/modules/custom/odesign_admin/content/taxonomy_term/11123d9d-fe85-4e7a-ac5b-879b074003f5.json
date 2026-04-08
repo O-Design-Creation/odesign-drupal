@@ -1,0 +1,216 @@
+{
+    "_links": {
+        "self": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/occasions\/naissance-bebe?_format=hal_json"
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/taxonomy_term\/life_occasion"
+        },
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/taxonomy_term\/life_occasion\/parent": [
+            null
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/taxonomy_term\/life_occasion\/field_hero_image": [
+            {
+                "href": "",
+                "lang": "fr"
+            }
+        ]
+    },
+    "tid": [
+        {
+            "value": 3
+        }
+    ],
+    "uuid": [
+        {
+            "value": "11123d9d-fe85-4e7a-ac5b-879b074003f5"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr",
+            "lang": "fr"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "life_occasion"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-04-02T13:34:37+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "status": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "name": [
+        {
+            "value": "Naissance & b\u00e9b\u00e9",
+            "lang": "fr"
+        }
+    ],
+    "description": [
+        {
+            "value": "Univers pour les cr\u00e9ations personnalis\u00e9es autour de la naissance, du b\u00e9b\u00e9 et des premiers souvenirs.",
+            "format": null,
+            "processed": "<p>Univers pour les cr\u00e9ations personnalis\u00e9es autour de la naissance, du b\u00e9b\u00e9 et des premiers souvenirs.<\/p>\n",
+            "lang": "fr"
+        }
+    ],
+    "weight": [
+        {
+            "value": 5
+        }
+    ],
+    "_embedded": {
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/taxonomy_term\/life_occasion\/parent": [
+            null
+        ],
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/taxonomy_term\/life_occasion\/field_hero_image": [
+            {
+                "_links": {
+                    "self": {
+                        "href": ""
+                    },
+                    "type": {
+                        "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/file\/file"
+                    }
+                },
+                "uuid": [
+                    {
+                        "value": "d2f176a2-e620-485b-931f-5d890d9fcad3"
+                    }
+                ],
+                "lang": "fr",
+                "alt": "Naissance & b\u00e9b\u00e9 - hero",
+                "title": "Naissance & b\u00e9b\u00e9 - hero",
+                "width": "1024",
+                "height": "1024"
+            }
+        ]
+    },
+    "changed": [
+        {
+            "value": "2026-04-02T15:31:21+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "metatag": [
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "title",
+                "content": "Naissance & b\u00e9b\u00e9 | ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "description",
+                "content": "Univers pour les cr\u00e9ations personnalis\u00e9es autour de la naissance, du b\u00e9b\u00e9 et des premiers souvenirs."
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "link",
+            "attributes": {
+                "rel": "canonical",
+                "href": "https:\/\/odesign-drupal.ddev.site\/occasions\/naissance-bebe"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:site_name",
+                "content": "ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:type",
+                "content": "website"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:url",
+                "content": "https:\/\/odesign-drupal.ddev.site\/node"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:title",
+                "content": "| ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:description",
+                "content": "Atelier O Design \u2014 cadeaux personnalis\u00e9s en bois grav\u00e9s au laser, faits main en France."
+            },
+            "lang": "fr"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/occasions\/naissance-bebe",
+            "pid": 98,
+            "langcode": "fr",
+            "lang": "fr"
+        }
+    ],
+    "field_hero_text_mode": [
+        {
+            "value": "light",
+            "lang": "fr"
+        }
+    ],
+    "field_intro": [
+        {
+            "value": "Une page pens\u00e9e pour les cadeaux de naissance, les souvenirs de b\u00e9b\u00e9 et les cr\u00e9ations personnalis\u00e9es \u00e0 offrir ou \u00e0 garder.",
+            "format": "plain_text",
+            "processed": "<p>Une page pens\u00e9e pour les cadeaux de naissance, les souvenirs de b\u00e9b\u00e9 et les cr\u00e9ations personnalis\u00e9es \u00e0 offrir ou \u00e0 garder.<\/p>\n",
+            "lang": "fr"
+        }
+    ],
+    "field_reassurance": [
+        {
+            "value": "Id\u00e9es cadeaux faciles \u00e0 comprendre\nPersonnalisations douces et affectives\nProduits adapt\u00e9s \u00e0 une communication rassurante",
+            "format": "plain_text",
+            "processed": "<p>Id\u00e9es cadeaux faciles \u00e0 comprendre<br \/>\nPersonnalisations douces et affectives<br \/>\nProduits adapt\u00e9s \u00e0 une communication rassurante<\/p>\n",
+            "lang": "fr"
+        }
+    ],
+    "_dcd_metadata": {
+        "export_timestamp": 1775628978
+    }
+}

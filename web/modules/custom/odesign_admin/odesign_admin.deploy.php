@@ -9,25 +9,28 @@
  *
  * Workflow de versionnement du contenu éditorial :
  *
- * EXPORT (après modification d'un guide ou d'une page dans l'admin) :
- *   drush dcde node --bundle=guide --folder=web/modules/custom/odesign_admin/content
- *   drush dcde node --bundle=page  --folder=web/modules/custom/odesign_admin/content
+ * EXPORT (après modification d'un contenu de référence dans l'admin) :
+ *   drush dcde node --bundle=guide --folder=/var/www/html/web/modules/custom/odesign_admin/content
+ *   drush dcde node --bundle=page  --folder=/var/www/html/web/modules/custom/odesign_admin/content
+ *   drush dcde taxonomy_term --bundle=life_occasion --folder=/var/www/html/web/modules/custom/odesign_admin/content
  *   git add web/modules/custom/odesign_admin/content/
- *   git commit -m "content(guide): mise à jour guide marketing"
+ *   git commit -m "content(page): mise à jour contenu de référence"
  *   git push
  *
  * IMPORT (sur un environnement cible — appliqué automatiquement via hook_deploy_N) :
  *   drush dcdi --folder=web/modules/custom/odesign_admin/content
  *
  * Comportement d'import (force_override = FALSE) :
- *   - Nœud absent du site cible → créé
- *   - Nœud présent avec UUID identique ET fichier plus récent → mis à jour
- *   - Nœud présent avec UUID identique ET fichier moins récent → ignoré (modifications locales préservées)
+ *   - Entité absente du site cible → créée
+ *   - Entité présente avec UUID identique ET fichier plus récent → mise à jour
+ *   - Entité présente avec UUID identique ET fichier moins récent → ignorée (modifications locales préservées)
  *   - Pour forcer l'écrasement : drush dcdi --force-override
  *
- * Bundles versionnés : node/page, node/guide
+ * Contenus versionnés (2026-04-08) :
+ *   node/page : /merci, /contact, /atelier, /cgv, /mentions-legales, /politique-confidentialite
+ *   taxonomy_term/life_occasion : Mariage, Naissance & bébé, Cadeaux pers./famille, Pancarte événementielles
  * Format : HAL+JSON (default_content_deploy 2.x)
- * Commande d'export : drush dcde (default-content-deploy:export)
+ * Commande d'export : drush dcde (default-content-deploy:export) — utiliser chemin absolu /var/www/html/...
  * Commande d'import : drush dcdi (default-content-deploy:import)
  */
 

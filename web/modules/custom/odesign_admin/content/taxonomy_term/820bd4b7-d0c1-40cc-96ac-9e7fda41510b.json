@@ -1,0 +1,188 @@
+{
+    "_links": {
+        "self": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/occasions\/pancarte-evenementielles?_format=hal_json"
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/taxonomy_term\/life_occasion"
+        },
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/taxonomy_term\/life_occasion\/parent": [
+            null
+        ]
+    },
+    "tid": [
+        {
+            "value": 27
+        }
+    ],
+    "uuid": [
+        {
+            "value": "820bd4b7-d0c1-40cc-96ac-9e7fda41510b"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr",
+            "lang": "fr"
+        }
+    ],
+    "vid": [
+        {
+            "target_id": "life_occasion"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-04-02T15:53:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "status": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "name": [
+        {
+            "value": "Pancarte \u00e9v\u00e9nementielles",
+            "lang": "fr"
+        }
+    ],
+    "description": [
+        {
+            "value": "Univers secondaire pour les pancartes \u00e9v\u00e9nementielles en bois, avec logique de lots et prix d\u00e9gressifs.",
+            "format": null,
+            "processed": "<p>Univers secondaire pour les pancartes \u00e9v\u00e9nementielles en bois, avec logique de lots et prix d\u00e9gressifs.<\/p>\n",
+            "lang": "fr"
+        }
+    ],
+    "weight": [
+        {
+            "value": 20
+        }
+    ],
+    "_embedded": {
+        "https:\/\/odesign-drupal.ddev.site\/rest\/relation\/taxonomy_term\/life_occasion\/parent": [
+            null
+        ]
+    },
+    "changed": [
+        {
+            "value": "2026-04-02T15:53:00+00:00",
+            "lang": "fr",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true,
+            "lang": "fr"
+        }
+    ],
+    "metatag": [
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "title",
+                "content": "Pancarte \u00e9v\u00e9nementielles | ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "name": "description",
+                "content": "Univers secondaire pour les pancartes \u00e9v\u00e9nementielles en bois, avec logique de lots et prix d\u00e9gressifs."
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "link",
+            "attributes": {
+                "rel": "canonical",
+                "href": "https:\/\/odesign-drupal.ddev.site\/occasions\/pancarte-evenementielles"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:site_name",
+                "content": "ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:type",
+                "content": "website"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:url",
+                "content": "https:\/\/odesign-drupal.ddev.site\/node"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:title",
+                "content": "| ODesign Drupal"
+            },
+            "lang": "fr"
+        },
+        {
+            "tag": "meta",
+            "attributes": {
+                "property": "og:description",
+                "content": "Atelier O Design \u2014 cadeaux personnalis\u00e9s en bois grav\u00e9s au laser, faits main en France."
+            },
+            "lang": "fr"
+        }
+    ],
+    "path": [
+        {
+            "alias": "\/occasions\/pancarte-evenementielles",
+            "pid": 100,
+            "langcode": "fr",
+            "lang": "fr"
+        }
+    ],
+    "field_hero_text_mode": [
+        {
+            "value": "auto",
+            "lang": "fr"
+        }
+    ],
+    "field_intro": [
+        {
+            "value": "Une page d\u00e9di\u00e9e aux pancartes \u00e9v\u00e9nementielles en bois personnalis\u00e9es, avec une lecture simple des options et des offres en lot.",
+            "format": "plain_text",
+            "processed": "<p>Une page d\u00e9di\u00e9e aux pancartes \u00e9v\u00e9nementielles en bois personnalis\u00e9es, avec une lecture simple des options et des offres en lot.<\/p>\n",
+            "lang": "fr"
+        }
+    ],
+    "field_reassurance": [
+        {
+            "value": "Univers secondaire mesur\u00e9 pour ne pas diluer la navigation principale\nFabrication atelier soign\u00e9e et personnalisations lisibles\nOffres en lot pens\u00e9es pour les \u00e9v\u00e9nements",
+            "format": "plain_text",
+            "processed": "<p>Univers secondaire mesur\u00e9 pour ne pas diluer la navigation principale<br \/>\nFabrication atelier soign\u00e9e et personnalisations lisibles<br \/>\nOffres en lot pens\u00e9es pour les \u00e9v\u00e9nements<\/p>\n",
+            "lang": "fr"
+        }
+    ],
+    "_dcd_metadata": {
+        "export_timestamp": 1775628978
+    }
+}
