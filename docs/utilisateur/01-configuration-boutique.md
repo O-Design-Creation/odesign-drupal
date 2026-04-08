@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Configuration boutique**
 > **URL directe** : `/admin/boutique/configuration`
 
+![Configuration boutique — onglet Boutique](screenshots/config-boutique-onglet-boutique.png)
+
 ## Ce que vous pouvez faire ici
 
 Cette page regroupe tous les réglages essentiels de votre boutique : les informations générales, les emails, le paiement, l'apparence de la page d'accueil et les promotions groupées. C'est votre panneau de contrôle central.

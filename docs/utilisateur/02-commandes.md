@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Commandes**
 > **URL directe** : `/admin/commerce/orders`
 
+![Liste des commandes](screenshots/commandes-liste.png)
+
 ## Ce que vous pouvez faire ici
 
 Vous pouvez consulter toutes les commandes reçues, suivre leur avancement dans le processus de fabrication, changer leur statut, ajouter des notes internes et accéder aux factures. C'est votre espace de travail quotidien pour traiter les commandes.

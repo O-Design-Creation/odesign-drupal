@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Contenu** → **Newsletters**
 > **URL directe** : `/admin/content/simplenews`
 
+![Liste des newsletters](screenshots/newsletter-liste.png)
+
 ## Ce que vous pouvez faire ici
 
 Vous pouvez créer et envoyer des newsletters à vos abonnés, planifier des envois à l'avance et consulter la liste de vos abonnées.

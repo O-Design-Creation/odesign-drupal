@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Promotions**
 > **URL directe** : `/admin/commerce/promotions`
 
+![Liste des promotions](screenshots/promotions-liste.png)
+
 ## Ce que vous pouvez faire ici
 
 Vous pouvez créer des codes promo à partager avec vos clients, définir des réductions en montant fixe ou en pourcentage, et activer ou désactiver vos promotions à tout moment.

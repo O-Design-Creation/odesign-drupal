@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Articles**
 > **URL directe** : `/admin/content`
 
+![Liste du contenu éditorial](screenshots/contenu-liste.png)
+
 ## Ce que vous pouvez faire ici
 
 Vous pouvez écrire et publier des articles de blog, créer des guides pratiques pour vos clients et modifier le contenu des pages fixes de votre site (CGV, mentions légales, etc.).

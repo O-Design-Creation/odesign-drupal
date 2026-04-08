@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Clients**
 > **URL directe** : `/admin/people`
 
+![Liste des clients](screenshots/clients-liste.png)
+
 ## Ce que vous pouvez faire ici
 
 Vous pouvez rechercher un client par son nom ou son adresse email, consulter son profil et voir l'historique de ses commandes. Vous ne pouvez pas modifier les rôles ou les accès des utilisateurs — ces actions sont réservées à l'administrateur technique.

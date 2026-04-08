@@ -25,6 +25,7 @@ Une fois connectée, vous retrouvez votre tableau de bord avec les raccourcis ve
 | 05 | [Contenu éditorial](05-contenu-editorial.md) | Articles de blog, guides pratiques, pages fixes | `/admin/content` |
 | 06 | [Newsletter](06-newsletter.md) | Créer, envoyer, planifier une newsletter, gérer les abonnées | `/admin/content/simplenews` |
 | 07 | [Clients](07-clients.md) | Rechercher un client, consulter ses commandes | `/admin/people` |
+| 08 | [Espace client](08-espace-client.md) | Ce que voient vos clients, parcours commande, FAQ support | — |
 | — | [Glossaire](glossaire.md) | Définitions des termes utilisés dans cette documentation | — |
 
 ---
@@ -51,6 +52,9 @@ Une fois connectée, vous retrouvez votre tableau de bord avec les raccourcis ve
 
 **Je cherche les coordonnées d'un client**
 → Aller sur [Clients](07-clients.md) — section "Rechercher un client"
+
+**Un client me pose une question sur sa commande ou son compte**
+→ Aller sur [Espace client](08-espace-client.md) — section "Questions fréquentes de vos clients"
 
 ---
 

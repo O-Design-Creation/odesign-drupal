@@ -3,6 +3,8 @@
 > 📍 **Accès** : Tableau de bord → **Produits**
 > **URL directe** : `/admin/commerce/products`
 
+![Liste des produits](screenshots/produits-liste.png)
+
 ## Ce que vous pouvez faire ici
 
 Vous pouvez consulter, modifier et créer les fiches produit de votre boutique. Vous pouvez également masquer temporairement un produit sans le supprimer, gérer ses photos et ses variantes (tailles, couleurs, options).
