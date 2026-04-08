@@ -3924,3 +3924,77 @@ nav ul {
   .order-card__header { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
   .order-card__meta   { flex-direction: column; gap: 0.25rem; }
 }
+
+/* ── Page de confirmation (/merci, post-formulaire) ──────────────────────── */
+.confirmation-page {
+  max-width: 560px;
+  margin: 3rem auto;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  background: #fff;
+  border: 1px solid #e8d8d0;
+  border-radius: 12px;
+}
+
+.confirmation-page__icon {
+  margin-bottom: 1.5rem;
+}
+
+.confirmation-page__icon svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.confirmation-page__lead {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #4E2620;
+  margin-bottom: 0.75rem;
+}
+
+.confirmation-page__body {
+  color: #595959;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.confirmation-page__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn--primary {
+  background: #8B6151;
+  color: #fff;
+  border: 2px solid #8B6151;
+}
+
+.btn--primary:hover,
+.btn--primary:focus {
+  background: #4E2620;
+  border-color: #4E2620;
+}
+
+.btn--secondary {
+  background: transparent;
+  color: #8B6151;
+  border: 2px solid #8B6151;
+}
+
+.btn--secondary:hover,
+.btn--secondary:focus {
+  background: #8B6151;
+  color: #fff;
+}

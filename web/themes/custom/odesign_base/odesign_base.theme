@@ -35,6 +35,14 @@ function odesign_base_preprocess_html(array &$variables): void {
   $is_noindex = in_array($route, $noindex_routes, TRUE)
     || str_starts_with($route, 'commerce_checkout.');
 
+  // Noindex également pour les aliases de confirmation (ex: /merci).
+  if (!$is_noindex) {
+    $current_path = \Drupal::service('path.current')->getPath();
+    $alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
+    $noindex_aliases = ['/merci'];
+    $is_noindex = in_array($alias, $noindex_aliases, TRUE);
+  }
+
   if ($is_noindex) {
     $variables['page']['#attached']['html_head'][] = [
       [
