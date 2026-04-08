@@ -74,6 +74,7 @@ class OrderDetailController extends ControllerBase {
       '#transitions' => $transitions,
       '#tracking_number' => $order->hasField('field_tracking_number') ? ($order->get('field_tracking_number')->value ?? '') : '',
       '#tracking_url'    => Url::fromRoute('odesign_orders.order_tracking', ['commerce_order' => $order->id()])->toString(),
+      '#tracking_token'  => \Drupal::csrfToken()->get('tracking_' . $order->id()),
       '#edit_url'   => Url::fromRoute('entity.commerce_order.edit_form', ['commerce_order' => $order->id()])->toString(),
       '#back_url'   => Url::fromRoute('odesign_orders.actionable_orders')->toString(),
       '#cache'      => ['max-age' => 0],

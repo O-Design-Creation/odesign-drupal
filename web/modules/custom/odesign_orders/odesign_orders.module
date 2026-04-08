@@ -321,6 +321,7 @@ function odesign_orders_theme(): array {
         'transitions'      => [],
         'tracking_number'  => '',
         'tracking_url'     => '',
+        'tracking_token'   => '',
         'edit_url'         => '',
         'back_url'         => '',
       ],
