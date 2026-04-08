@@ -161,6 +161,7 @@ function odesign_admin_theme(): array {
         'orders_url'      => '',
         'orders_view'     => NULL,
         'recent_articles' => [],
+        'top_products'    => [],
       ],
     ],
     'odesign_admin_clients' => [
@@ -441,33 +442,6 @@ function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): vo
     'weight'    => 35,
   ];
 
-  // Top 3 produits vendus (commandes complétées).
-  try {
-    $top = $db->query(
-      'SELECT oi.title, COUNT(*) as cnt
-       FROM {commerce_order_item} oi
-       JOIN {commerce_order} co ON co.order_id = oi.order_id
-       WHERE co.state = :state
-       GROUP BY oi.purchased_entity, oi.title
-       ORDER BY cnt DESC LIMIT 3',
-      [':state' => 'completed']
-    )->fetchAll();
-  }
-  catch (\Exception) {
-    $top = [];
-  }
-
-  if (!empty($top)) {
-    $top_labels = array_map(fn($r) => $r->title . ' ×' . $r->cnt, $top);
-    $cards['top_produits'] = [
-      'title'     => 'Top produits vendus',
-      'value'     => implode(' · ', $top_labels),
-      'url'       => Url::fromRoute('entity.commerce_order.collection')->toString(),
-      'icon'      => 'ph-trophy',
-      'highlight' => FALSE,
-      'weight'    => 40,
-    ];
-  }
 }
 
 /**

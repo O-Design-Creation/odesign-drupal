@@ -59,6 +59,7 @@ class DashboardController extends ControllerBase {
         '#orders_url'      => Url::fromRoute('entity.commerce_order.collection')->toString(),
         '#orders_view'     => $orders_view,
         '#recent_articles' => $this->getRecentArticles(),
+        '#top_products'    => $this->getTopProducts(),
         '#cache'           => ['max-age' => 0],
         '#attached'        => [
           'html_head' => [[
@@ -406,6 +407,43 @@ class DashboardController extends ControllerBase {
     }
 
     return $messages;
+  }
+
+  /**
+   * Récupère le top 5 des produits les plus vendus (commandes complétées).
+   *
+   * Retourne un tableau de ['title' => string, 'cnt' => int, 'product_url' => string].
+   * GROUP BY purchased_entity uniquement pour éviter la fragmentation en cas de
+   * changement de titre.
+   */
+  protected function getTopProducts(): array {
+    try {
+      $rows = $this->database->query(
+        'SELECT oi.purchased_entity, oi.title, SUM(oi.quantity) as cnt
+         FROM {commerce_order_item} oi
+         JOIN {commerce_order} co ON co.order_id = oi.order_id
+         WHERE co.state = :state
+         GROUP BY oi.purchased_entity
+         ORDER BY cnt DESC
+         LIMIT 5',
+        [':state' => 'completed']
+      )->fetchAll();
+    }
+    catch (\Exception) {
+      return [];
+    }
+
+    $products = [];
+    foreach ($rows as $row) {
+      $products[] = [
+        'title'       => $row->title,
+        'cnt'         => (int) $row->cnt,
+        'product_url' => $row->purchased_entity
+          ? '/admin/commerce/products?title=&status=All'
+          : '',
+      ];
+    }
+    return $products;
   }
 
   /**
