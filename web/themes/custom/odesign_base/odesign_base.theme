@@ -937,6 +937,51 @@ function odesign_base_preprocess_page(array &$variables): void {
   $variables['front_featured_life_occasions'] = array_slice($variables['front_life_occasion_cards'], 0, 4);
   $variables['front_latest_articles'] = odesign_base_build_latest_article_items(3);
 
+  // Campagne saisonnière "en cours" — widget homepage.
+  // Affiche la campagne la plus récente avec promote=1 et status=1.
+  $variables['front_campagne'] = NULL;
+  $campagne_storage = \Drupal::entityTypeManager()->getStorage('node');
+  $campagne_nids = $campagne_storage->getQuery()
+    ->condition('type', 'campagne')
+    ->condition('status', 1)
+    ->condition('promote', 1)
+    ->sort('created', 'DESC')
+    ->range(0, 1)
+    ->accessCheck(FALSE)
+    ->execute();
+  if (!empty($campagne_nids)) {
+    /** @var \Drupal\node\NodeInterface $campagne_node */
+    $campagne_node = $campagne_storage->load(reset($campagne_nids));
+    if ($campagne_node) {
+      $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+      $campagne_hero_render = [];
+      if (!$campagne_node->get('field_campagne_image_hero')->isEmpty()) {
+        $campagne_hero_render = $view_builder->viewField(
+          $campagne_node->get('field_campagne_image_hero'), [
+            'label'    => 'hidden',
+            'type'     => 'image',
+            'settings' => ['image_style' => 'large', 'image_link' => ''],
+          ]
+        );
+      }
+      $campagne_cta_label = $campagne_node->get('field_campagne_cta_label')->value ?: t('Découvrir la campagne');
+      $campagne_cta_url   = $campagne_node->get('field_campagne_cta_url')->uri ?: $campagne_node->toUrl()->toString();
+      $variables['front_campagne'] = [
+        '#theme'     => 'campagne_en_cours_widget',
+        '#node'      => $campagne_node,
+        '#title'     => $campagne_node->label(),
+        '#hero'      => $campagne_hero_render,
+        '#cta_label' => $campagne_cta_label,
+        '#cta_url'   => $campagne_cta_url,
+        '#cache'     => [
+          'tags'     => \Drupal\Core\Cache\Cache::mergeTags(['node_list:campagne'], $campagne_node->getCacheTags()),
+          'contexts' => ['url.path'],
+        ],
+        '#attached'  => ['library' => ['odesign_base/campagnes']],
+      ];
+    }
+  }
+
   // Section "Comment ça marche" — 3 étapes administrables.
   $methode_steps = [];
   for ($i = 1; $i <= 3; $i++) {

@@ -51,6 +51,10 @@ Pour qu'une campagne apparaisse dans le widget **"Campagne en cours"** sur la pa
 
 > Le widget affiche uniquement la campagne mise en avant la plus récente. Si plusieurs campagnes sont cochées "Mettre en avant", seule la plus récente est affichée.
 
+![Widget "Campagne en cours" sur la homepage](screenshots/campagnes-widget-homepage.png)
+
+*Le widget s'affiche automatiquement sur la page d'accueil, entre le hero et les univers par occasion. Il disparaît dès qu'aucune campagne n'est mise en avant.*
+
 ![Champs Produits mis en avant, CTA et Couleur d'accent dans le formulaire](screenshots/campagnes-formulaire-champs.png)
 
 *Les champs de personnalisation visuelle de la campagne : produits sélectionnés, texte et URL du bouton CTA, couleur d'accent.*

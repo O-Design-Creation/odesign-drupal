@@ -251,6 +251,12 @@
           </div>
         </section>
 
+        {# Campagne saisonnière en cours — visible uniquement si promote=1 sur un nœud campagne actif #}
+        {% if front_campagne is defined and front_campagne %}
+          <div class="container campagne-homepage-wrapper">
+            {{ front_campagne }}
+          </div>
+        {% endif %}
 
         <section id="home-universes" class="home-universes">
           <div class="container">
