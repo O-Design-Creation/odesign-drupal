@@ -88,6 +88,10 @@ class MethodeConfigSection implements ConfigSectionInterface {
     }
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state): void {
+    // Pas de validation spécifique — les champs sont tous optionnels.
+  }
+
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $config = \Drupal::configFactory()->getEditable('odesign_admin.settings');
     $config->set('homepage_methode_title',    $form_state->getValue('homepage_methode_title'));
