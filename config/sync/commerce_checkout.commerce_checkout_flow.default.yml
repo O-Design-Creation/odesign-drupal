@@ -13,8 +13,8 @@ id: default
 plugin: multistep_default
 configuration:
   display_checkout_progress: true
-  display_checkout_progress_breadcrumb_links: false
-  display_sidebar_checkout_complete: true
+  display_checkout_progress_breadcrumb_links: true
+  display_sidebar_checkout_complete: false
   guest_order_assign: true
   guest_new_account: true
   guest_new_account_notify: true
@@ -27,7 +27,7 @@ configuration:
     contact_information:
       step: order_information
       weight: 1
-      double_entry: true
+      double_entry: false
     billing_information:
       step: order_information
       weight: 2
