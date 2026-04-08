@@ -6,6 +6,7 @@ dependencies:
     - filter.format.basic_html
     - filter.format.full_html
     - node.type.article
+    - node.type.page
     - node.type.simplenews_issue
     - taxonomy.vocabulary.life_occasion
   module:
@@ -53,12 +54,15 @@ permissions:
   - 'create article content'
   - 'create default commerce_product'
   - 'create media'
+  - 'create page content'
   - 'create simplenews_issue content'
   - 'create terms in life_occasion'
   - 'delete any article content'
+  - 'delete any page content'
   - 'delete own simplenews_issue content'
   - 'display eu cookie compliance popup'
   - 'edit any article content'
+  - 'edit any page content'
   - 'edit any simplenews_issue content'
   - 'edit terms in life_occasion'
   - 'manage default commerce_order_item'
