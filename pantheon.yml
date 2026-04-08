@@ -1,15 +1,6 @@
 api_version: 1
-
-# PHP 8.3 — aligné avec l'environnement DDEV local
 php_version: 8.3
-
-# drush_version 10 = valeur max acceptée par Pantheon
 drush_version: 10
-
-# Le webroot est web/ (pas la racine du repo)
 web_docroot: true
-
-# MariaDB 10.6 requis par Drupal 11 (minimum 10.6)
 database:
   version: 10.6
-# last-sync: 2026-04-08
