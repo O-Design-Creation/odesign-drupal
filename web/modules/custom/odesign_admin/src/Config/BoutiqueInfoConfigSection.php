@@ -73,7 +73,7 @@ class BoutiqueInfoConfigSection implements ConfigSectionInterface {
       $store->save();
     }
 
-    // smtp_from est également sauvegardé par MailgunConfigSection::submitForm().
+    // smtp_from est également sauvegardé par EmailConfigSection::submitForm().
     // On le sauvegarde ici aussi pour que la section Boutique puisse fonctionner indépendamment.
     if ($from = $form_state->getValue('smtp_from')) {
       $smtp = \Drupal::configFactory()->getEditable('smtp.settings');

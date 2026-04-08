@@ -328,7 +328,7 @@ function odesign_admin_mail(string $key, array &$message, array $params): void {
       . '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>'
       . '<tr><td style="padding:28px 24px;">'
       . '<p style="font-size:18px;margin:0 0 12px;">✅ Configuration email fonctionnelle</p>'
-      . '<p style="color:#6b5744;margin:0;">Si vous recevez cet email, votre configuration Mailgun fonctionne correctement. Vos clients recevront bien leurs confirmations de commande.</p>'
+      . '<p style="color:#6b5744;margin:0;">Si vous recevez cet email, votre configuration Brevo fonctionne correctement. Vos clients recevront bien leurs confirmations de commande.</p>'
       . '</td></tr>'
       . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">'
       . 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>'
@@ -809,7 +809,7 @@ function odesign_admin_form_taxonomy_term_life_occasion_form_alter(array &$form,
  * D'autres modules peuvent ajouter leurs propres sections via ce hook.
  */
 function odesign_admin_odesign_boutique_config_sections_alter(array &$sections): void {
-  $sections['emails']           = new \Drupal\odesign_admin\Config\MailgunConfigSection();
+  $sections['emails']           = new \Drupal\odesign_admin\Config\EmailConfigSection();
   $sections['stripe']           = new \Drupal\odesign_admin\Config\StripeConfigSection();
   $sections['boutique']         = new \Drupal\odesign_admin\Config\BoutiqueInfoConfigSection();
   $sections['homepage_hero']    = new \Drupal\odesign_admin\Config\HeroConfigSection();

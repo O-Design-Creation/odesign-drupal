@@ -105,10 +105,10 @@ class BoutiqueConfigForm extends FormBase {
   }
 
   /**
-   * Callback pour l'envoi d'un email de test (utilisé par MailgunConfigSection).
+   * Callback pour l'envoi d'un email de test (utilisé par EmailConfigSection).
    *
    * Drupal résout '::sendTestEmail' sur la classe du formulaire, donc cette méthode
-   * doit rester ici même si la logique appartient à la section Mailgun.
+   * doit rester ici même si la logique appartient à la section Emails.
    */
   public function sendTestEmail(array &$form, FormStateInterface $form_state): void {
     $email = $form_state->getValue('test_email');
@@ -124,7 +124,7 @@ class BoutiqueConfigForm extends FormBase {
       \Drupal::languageManager()->getDefaultLanguage()->getId(),
       [
         'subject' => 'Test email — Atelier O Design',
-        'body'    => 'Si vous recevez cet email, votre configuration Mailgun fonctionne correctement.',
+        'body'    => 'Si vous recevez cet email, votre configuration Brevo fonctionne correctement.',
       ],
     );
 
@@ -132,7 +132,7 @@ class BoutiqueConfigForm extends FormBase {
       $this->messenger()->addStatus("Email de test envoyé à $email. Vérifiez votre boîte.");
     }
     else {
-      $this->messenger()->addError("Échec de l'envoi. Vérifiez vos identifiants Mailgun ci-dessus.");
+      $this->messenger()->addError("Échec de l'envoi. Vérifiez vos identifiants Brevo ci-dessus.");
     }
   }
 

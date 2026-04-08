@@ -386,10 +386,10 @@ class DashboardController extends ControllerBase {
     $messages = [];
     $config = $this->config('odesign_admin.settings');
 
-    if (!$config->get('mailgun_api_key')) {
+    if (!\Drupal::config('smtp.settings')->get('smtp_username')) {
       $messages[] = [
         'type'    => 'warning',
-        'message' => "L'envoi d'e-mails n'est pas configuré. Ajoutez votre clé Mailgun dans la <a href=\"/admin/boutique/configuration#mailgun\">configuration boutique</a>.",
+        'message' => "L'envoi d'e-mails n'est pas configuré. Ajoutez vos identifiants Brevo dans la <a href=\"/admin/boutique/configuration#emails\">configuration boutique</a>.",
       ];
     }
 
