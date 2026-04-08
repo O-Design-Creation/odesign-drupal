@@ -1,9 +1,122 @@
 # Gestion des commandes
 
-> 📍 **Accès** : Tableau de bord → **Commandes**
-> **URL directe** : `/admin/commerce/orders`
+> 📍 **Accès** : Menu de navigation → **Commandes**
+> **URL directe** : `/admin/boutique/commandes-a-traiter`
 
-![Liste des commandes](screenshots/commandes-liste.png)
+![Liste des commandes à traiter](screenshots/commandes-liste.png)
+
+## Ce que vous pouvez faire ici
+
+Consulter toutes les commandes qui nécessitent votre attention, suivre leur avancement dans le processus de fabrication, changer leur statut, ajouter un numéro de suivi transporteur et accéder aux factures. C'est votre espace de travail quotidien.
+
+---
+
+## Voir la liste des commandes
+
+### Commandes à traiter (vue principale)
+
+La page **Commandes** affiche directement les commandes qui attendent une action de votre part — nouvelles commandes payées, commandes en cours de fabrication, prêtes à expédier, etc.
+
+- Chaque ligne indique : numéro de commande, email client, date, état, montant total
+- Cliquer sur **→ Traiter** pour ouvrir la fiche détaillée d'une commande
+- Le bouton **≡ Toutes les commandes** en haut à droite donne accès à l'ensemble des commandes (y compris les livrées et annulées)
+
+> 💡 **Astuce** : Le badge rouge sur "Commandes" dans la navigation indique en temps réel combien de commandes attendent votre attention.
+
+### Toutes les commandes
+
+1. Cliquer sur **≡ Toutes les commandes** depuis la page des commandes à traiter
+2. La liste affiche toutes les commandes avec possibilité de filtrer par statut, date ou client
+3. Cliquer sur **Voir** pour ouvrir la fiche d'une commande
+
+---
+
+## Consulter le détail d'une commande
+
+1. Cliquer sur **→ Traiter** depuis la liste des commandes à traiter
+2. La fiche de commande affiche :
+   - Les articles commandés (nom, quantité, prix unitaire, sous-total)
+   - Les informations client et l'adresse de facturation
+   - Les boutons d'action pour faire avancer la commande dans le workflow
+   - La section **Suivi transporteur** pour saisir le numéro de colis
+
+---
+
+## Changer le statut d'une commande
+
+Les commandes suivent un parcours depuis la réception jusqu'à la livraison. Voici les statuts disponibles et leur signification :
+
+| Statut | Signification |
+|--------|--------------|
+| **Brouillon** | Commande non finalisée par le client |
+| **En attente de paiement** | Commande passée, paiement non encore confirmé |
+| **En fabrication (atelier laser)** | Vous avez commencé à fabriquer la commande |
+| **Contrôle qualité** | La pièce est fabriquée, vous vérifiez la qualité |
+| **Emballée / prête à expédier** | La commande est prête, en attente d'envoi |
+| **Expédiée** | Le colis est parti |
+| **Livrée** | Le client a reçu sa commande |
+| **Annulée** | La commande a été annulée |
+| **Remboursée** | Un remboursement a été effectué |
+
+### Passer une commande à l'étape suivante
+
+1. Ouvrir la fiche de commande (cliquer sur **→ Traiter**)
+2. Dans la section **Actions disponibles**, cliquer sur le bouton correspondant à la prochaine étape (ex. : **Paiement reçu — mettre en fabrication**, **Expédiée**…)
+3. La page se recharge avec le nouveau statut
+
+> ⚠️ **Attention** : Le passage au statut **Annulée** ou **Remboursée** est difficile à annuler. Assurez-vous d'être certaine avant de changer vers ces statuts.
+
+> 💡 **Astuce** : Mettez à jour le statut dès que vous commencez à travailler sur une commande. Cela permet de garder une vue d'ensemble claire et d'envoyer les bons emails automatiques à vos clients.
+
+---
+
+## Ajouter un numéro de suivi transporteur
+
+1. Ouvrir la fiche de commande (cliquer sur **→ Traiter**)
+2. Dans la section **Suivi transporteur**, saisir le numéro de colis (ex. : `1Z999AA10123456784`)
+3. Cliquer sur **Enregistrer**
+
+> 💡 **Astuce** : Saisissez le numéro de suivi dès que vous avez déposé le colis. Vous pourrez ainsi le retrouver rapidement si un client vous demande où est sa commande.
+
+---
+
+## Ajouter un commentaire sur une commande
+
+Vous pouvez laisser une note interne sur une commande (visible uniquement par vous dans l'administration, pas par le client).
+
+1. Ouvrir la fiche de commande
+2. Descendre jusqu'à la section **Commentaires administrateur**
+3. Saisir votre note dans le champ de texte (ex. : "Prénom à graver : Emma — police italique")
+4. Cliquer sur **Ajouter un commentaire**
+
+> 💡 **Astuce** : Utilisez les commentaires pour noter les personnalisations spécifiques, les échanges avec le client ou les informations de suivi colis.
+
+---
+
+## Voir la facture d'une commande
+
+1. Ouvrir la fiche de commande
+2. Cliquer sur l'onglet **Factures** ou sur le lien **Voir la facture**
+3. La facture s'affiche ou se télécharge au format PDF
+
+> 💡 **Astuce** : Les factures sont générées automatiquement à la confirmation du paiement. Vous pouvez les télécharger pour vos archives ou les transmettre à votre comptable.
+
+---
+
+## Débloquer une commande verrouillée
+
+Dans certains cas rares, une commande peut être verrouillée (par exemple suite à un problème technique pendant le paiement).
+
+1. Ouvrir la fiche de commande via **Vue avancée** (bouton en haut à droite de la fiche)
+2. Si un message indique que la commande est verrouillée, cliquer sur **Déverrouiller**
+3. La commande redevient modifiable
+
+> ⚠️ **Attention** : Ne déverrouillez une commande que si vous êtes certaine qu'elle n'est plus en cours de traitement par le système de paiement.
+
+---
+
+*Documentation Atelier O Design — Commandes — v1.1*
+
 
 ## Ce que vous pouvez faire ici
 

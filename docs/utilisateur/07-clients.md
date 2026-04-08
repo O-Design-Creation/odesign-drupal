@@ -1,22 +1,27 @@
 # Gestion des clients
 
-> ℹ️ **Accès limité** : Il n'existe pas de page "liste des clients" accessible au gestionnaire. La gestion de la relation client se fait principalement **via les commandes** (`/admin/commerce/orders`), qui contiennent le nom et l'email de chaque client.
+> 📍 **Accès** : Menu de navigation → **Clients**
+> **URL directe** : `/admin/boutique/clients`
 
-![Commandes avec info client](screenshots/commandes-liste.png)
+![Liste des clients](screenshots/clients-liste.png)
 
-## Ce que vous pouvez faire
+## Ce que vous pouvez faire ici
 
-Depuis la liste des commandes, vous pouvez retrouver un client, consulter ses coordonnées et voir l'historique de ses achats. Vous ne pouvez pas modifier les comptes utilisateurs — ces actions sont réservées à l'administrateur technique.
+Consulter la liste de tous vos clients ayant passé au moins une commande : leur email, le nombre de commandes, le total dépensé, la date de dernière commande, et accéder directement à leurs commandes.
 
 ---
 
-## Retrouver un client via ses commandes
+## Voir la liste des clients
 
-1. Aller sur `/admin/commerce/orders`
-2. Les colonnes **CLIENT** et **EMAIL** permettent d'identifier l'acheteur
-3. Cliquer sur **Voir** à droite d'une commande pour accéder à sa fiche complète
+1. Cliquer sur **Clients** dans la barre de navigation en haut
+2. La liste affiche pour chaque client :
+   - Son **adresse email**
+   - Son **nombre de commandes**
+   - Son **total dépensé**
+   - La **date de sa dernière commande**
+3. Cliquer sur **Commandes** pour voir toutes les commandes de ce client
 
-> 💡 **Astuce** : La fiche de commande affiche l'adresse de livraison, l'email de contact et le détail des articles commandés.
+> 💡 **Astuce** : La liste est triée par date de dernière commande. Vos clients les plus récents apparaissent en premier.
 
 ---
 
@@ -43,18 +48,19 @@ Dirigez le client vers la page de connexion de votre boutique, où il peut cliqu
 
 ### Un client dit ne pas avoir reçu son email de confirmation de commande
 
-1. Vérifier dans `/admin/commerce/orders` que la commande existe bien et que son statut est correct
-2. Vérifier que l'adresse email du client dans la commande est correcte
-3. Conseiller au client de vérifier ses spams
-4. Si le problème persiste, contactez votre prestataire technique (le système d'envoi d'emails peut nécessiter une vérification)
+1. Retrouver le client dans la liste et cliquer sur **Commandes**
+2. Vérifier que la commande existe bien et que son statut est correct
+3. Vérifier que l'adresse email du client dans la commande est correcte
+4. Conseiller au client de vérifier ses spams
+5. Si le problème persiste, contactez votre prestataire technique
 
 ### Un client souhaite modifier ou annuler sa commande
 
-1. Retrouver la commande dans `/admin/commerce/orders`
-2. Consulter la fiche de commande pour voir son statut actuel
+1. Retrouver le client dans la liste et cliquer sur **Commandes**
+2. Ouvrir la commande concernée
 3. Si la commande n'est pas encore en fabrication, vous pouvez changer son statut vers **Annulée** (voir la documentation sur les commandes)
 4. Contactez le client par email pour confirmer l'annulation
 
 ---
 
-*Documentation Atelier O Design — Clients — v1.0*
+*Documentation Atelier O Design — Clients — v1.1*

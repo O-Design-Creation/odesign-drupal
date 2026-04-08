@@ -9,7 +9,8 @@
 | `config-boutique-onglet-presentation.png` | Config — Onglet Présentation |
 | `config-boutique-onglet-methode.png` | Config — Comment ça marche |
 | `config-boutique-onglet-promotions.png` | Config — Promotions volume |
-| `commandes-liste.png` | Commandes — liste |
+| `commandes-liste.png` | Commandes — liste des commandes à traiter |
+| `clients-liste.png` | Clients — liste des acheteurs |
 | `produits-liste.png` | Produits — liste |
 | `produits-formulaire-nouveau.png` | Produits — nouveau produit |
 | `promotions-liste.png` | Promotions — liste |
