@@ -233,10 +233,15 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'icon'          => 'ph-gear',
     'route'         => 'odesign_admin.config',
     'weight'        => 90,
-    'active_routes' => [
-      'odesign_admin.config',
-      'odesign_admin.marketing_guide',
-    ],
+    'active_routes' => ['odesign_admin.config'],
+    'badge'         => NULL,
+  ];
+  $items['guide_marketing'] = [
+    'label'         => 'Guide marketing',
+    'icon'          => 'ph-book-open',
+    'route'         => 'odesign_admin.marketing_guide',
+    'weight'        => 95,
+    'active_routes' => ['odesign_admin.marketing_guide'],
     'badge'         => NULL,
   ];
 }
@@ -960,4 +965,21 @@ function odesign_admin_contact_honeypot_validate(array $form, FormStateInterface
     \Drupal::logger('odesign_admin')->notice('Honeypot déclenché — soumission de formulaire contact bloquée.');
     $form_state->setErrorByName('', t('Une erreur de validation est survenue. Veuillez réessayer.'));
   }
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Restreint la consultation des nodes de type `guide` aux seuls rôles
+ * `administrator` et `gestionnaire_boutique`. Les visiteurs anonymes et
+ * les clients connectés n'ont pas accès à ces contenus stratégiques.
+ */
+function odesign_admin_node_access(\Drupal\node\NodeInterface $node, string $op, \Drupal\Core\Session\AccountInterface $account): \Drupal\Core\Access\AccessResultInterface {
+  if ($node->bundle() === 'guide' && $op === 'view') {
+    if ($account->hasRole('administrator') || $account->hasRole('gestionnaire_boutique')) {
+      return \Drupal\Core\Access\AccessResult::neutral()->cachePerRoles();
+    }
+    return \Drupal\Core\Access\AccessResult::forbidden()->cachePerRoles();
+  }
+  return \Drupal\Core\Access\AccessResult::neutral();
 }

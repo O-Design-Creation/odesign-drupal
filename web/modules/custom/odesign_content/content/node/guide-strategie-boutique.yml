@@ -1,0 +1,132 @@
+_meta:
+  version: '1.0'
+  entity_type: node
+  uuid: 7a0ce0f7-efdb-4fa3-91d9-5b152e74da9c
+  bundle: guide
+  default_langcode: fr
+default:
+  revision_uid:
+    -
+      target_id: 0
+  status:
+    -
+      value: true
+  uid:
+    -
+      target_id: 1
+  title:
+    -
+      value: 'Stratégie boutique — votre feuille de route'
+  created:
+    -
+      value: 1775642565
+  promote:
+    -
+      value: false
+  sticky:
+    -
+      value: false
+  moderation_state:
+    -
+      value: published
+  path:
+    -
+      alias: ''
+      langcode: fr
+      pathauto: 1
+  body:
+    -
+      value: |-
+        <h2>L'idée générale</h2>
+        <p>Le futur site O'Design ne doit pas être seulement une boutique. Il doit devenir :</p>
+        <ul>
+          <li>une vitrine de marque ;</li>
+          <li>un outil pour rassurer ;</li>
+          <li>un support pour être trouvé sur Google ;</li>
+          <li>un moyen de transformer les visiteurs en commandes ;</li>
+          <li>et une base solide pour faire grandir l'atelier.</li>
+        </ul>
+        <p>L'objectif n'est pas d'être partout. L'objectif est d'être clair, crédible et efficace.</p>
+
+        <h2>Le positionnement recommandé</h2>
+        <blockquote><p>Des objets personnalisés en bois, fabriqués avec soin pour les moments qui comptent.</p></blockquote>
+        <p>O'Design ne gagne pas par une guerre de prix ni par une publicité trop large. La différence vient de l'atelier réel, de la qualité visible, de la personnalisation simple à comprendre, de la confiance et des avis.</p>
+
+        <h2>Les 3 familles prioritaires</h2>
+        <h3>1. Mariage</h3>
+        <p>C'est la famille la plus forte pour la visibilité, les packs, l'émotion, les achats groupés et les belles mises en avant.</p>
+        <h3>2. Naissance &amp; bébé</h3>
+        <p>Cette famille est forte pour le cadeau émotionnel, le souvenir, le bouche-à-oreille et les contenus simples à publier.</p>
+        <h3>3. Cadeaux personnalisés / famille</h3>
+        <p>Permet d'élargir le public, de parler aux achats de proximité, de proposer des idées cadeaux plus simples et d'installer la marque dans le quotidien.</p>
+
+        <h2>Ce qu'il faut absolument rendre visible</h2>
+        <ul>
+          <li>que l'atelier existe ;</li>
+          <li>que le travail est soigné ;</li>
+          <li>que la personnalisation est simple ;</li>
+          <li>que les délais sont compréhensibles ;</li>
+          <li>que la livraison est rassurante ;</li>
+          <li>que les clients sont satisfaits.</li>
+        </ul>
+
+        <h2>Les actions concrètes à lancer en priorité</h2>
+        <h3>Sur le site</h3>
+        <ul>
+          <li>Mettre 3 grandes entrées sur la page d'accueil : Mariage, Naissance &amp; bébé, Cadeaux personnalisés.</li>
+          <li>Ajouter une vraie preuve atelier (photo, texte, vidéo).</li>
+          <li>Ajouter des avis visibles.</li>
+          <li>Mieux expliquer comment personnaliser.</li>
+          <li>Mieux montrer les délais et la livraison.</li>
+        </ul>
+        <h3>Sur l'offre</h3>
+        <ul>
+          <li>Choisir 5 produits forts à vraiment mettre en avant.</li>
+          <li>Choisir 3 produits faciles à offrir.</li>
+          <li>Créer 1 pack mariage et 1 coffret naissance.</li>
+          <li>Identifier 1 produit signature.</li>
+        </ul>
+        <h3>Sur les avis</h3>
+        <ul>
+          <li>Demander des avis après les commandes réussies.</li>
+          <li>Garder les meilleurs dans un tableau simple.</li>
+          <li>Réutiliser les meilleurs avis sur le site et sur Google.</li>
+        </ul>
+
+        <h2>Ce que vous pouvez faire chaque semaine</h2>
+        <ul>
+          <li>Choisir 1 produit à mettre en avant sur la page d'accueil et dans vos publications.</li>
+          <li>Ajouter ou améliorer 3 photos sur un produit important.</li>
+          <li>Demander 1 ou 2 avis à des clients satisfaits.</li>
+          <li>Vérifier qu'une catégorie importante a une introduction claire et rassurante.</li>
+          <li>Publier un contenu lié à un temps fort : mariage, naissance, fête des mères, Noël.</li>
+        </ul>
+
+        <h2>Les temps forts à préparer en avance</h2>
+        <ul>
+          <li><strong>Mariage</strong> : cadeaux témoins, décoration, pancartes, petits détails personnalisés.</li>
+          <li><strong>Naissance et bébé</strong> : cadeaux de naissance, décoration de chambre, souvenirs.</li>
+          <li><strong>Fête des mères, fête des pères, maîtresse ou nounou, Noël</strong> : préparer une petite sélection dédiée chaque année.</li>
+        </ul>
+
+        <h2>Les bons réflexes visuels</h2>
+        <ul>
+          <li>Photographier les produits sur fond propre, à la lumière du jour, avec un plan large et un détail rapproché.</li>
+          <li>Montrer aussi l'atelier, la machine, la préparation ou l'emballage pour prouver le travail réel.</li>
+          <li>Réutiliser les mêmes bons visuels sur le site, Google et les réseaux sociaux.</li>
+        </ul>
+
+        <h2>Après achat — ne pas perdre le lien</h2>
+        <ul>
+          <li>Envoyer un message simple pour remercier et demander un avis.</li>
+          <li>Réutiliser les commandes réussies pour montrer votre savoir-faire (avec accord du client).</li>
+          <li>Proposer plus tard une autre idée cadeau liée à un moment de vie proche.</li>
+        </ul>
+
+        <h2>La logique de croissance</h2>
+        <p>La trajectoire la plus réaliste : d'abord le local, ensuite le régional, puis le national si le site, l'offre et la logistique suivent. Un levier complémentaire possible : partenaires mariage, boutiques locales, commandes groupées, petits cadeaux d'entreprise — à garder secondaire et simple.</p>
+
+        <h2>Ce qu'il faut retenir</h2>
+        <p>Un site clair, une offre mieux choisie, des catégories fortes, des campagnes peu nombreuses mais bien menées, de vraies preuves de qualité, et une croissance progressive, crédible et maîtrisée.</p>
+      format: basic_html
+      summary: 'Votre guide stratégique complet : positionnement, 3 familles prioritaires, actions concrètes hebdomadaires et temps forts à préparer.'

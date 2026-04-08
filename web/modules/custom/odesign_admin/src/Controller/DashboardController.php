@@ -101,13 +101,18 @@ class DashboardController extends ControllerBase {
       if ($node) {
         $view_builder = $this->entityTypeManager()->getViewBuilder('node');
         $rendered = $view_builder->view($node, 'full');
+        $is_admin = $this->currentUser()->hasRole('administrator');
 
-        return [
+        $build = [
           '#type' => 'container',
           '#attributes' => ['class' => ['odesign-dashboard', 'odesign-marketing-guide']],
-          'actions' => [
+          'guide_content' => $rendered,
+        ];
+        if ($is_admin) {
+          $build['actions'] = [
             '#type' => 'container',
             '#attributes' => ['class' => ['odesign-marketing-guide__actions']],
+            '#weight' => -10,
             'edit' => [
               '#type'       => 'link',
               '#title'      => $this->t('Modifier ce guide'),
@@ -122,24 +127,24 @@ class DashboardController extends ControllerBase {
               '#attributes' => ['class' => ['button']],
               '#prefix'     => '<i class="ph ph-plus" aria-hidden="true"></i> ',
             ],
-          ],
-          'guide_content' => $rendered,
-          '#cache' => ['max-age' => 0],
-          '#attached' => [
-            'html_head' => [[
-              [
-                '#type' => 'html_tag',
-                '#tag' => 'link',
-                '#attributes' => [
-                  'rel' => 'stylesheet',
-                  'href' => '/modules/custom/odesign_admin/css/dashboard.css',
-                  'media' => 'all',
-                ],
+          ];
+        }
+        $build['#cache'] = ['max-age' => 0];
+        $build['#attached'] = [
+          'html_head' => [[
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'link',
+              '#attributes' => [
+                'rel' => 'stylesheet',
+                'href' => '/modules/custom/odesign_admin/css/dashboard.css',
+                'media' => 'all',
               ],
-              'odesign_admin_dashboard_css',
-            ]],
-          ],
+            ],
+            'odesign_admin_dashboard_css',
+          ]],
         ];
+        return $build;
       }
     }
 

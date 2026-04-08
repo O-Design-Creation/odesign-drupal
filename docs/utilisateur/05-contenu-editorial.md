@@ -54,7 +54,9 @@ L'article disparaît du blog mais reste dans votre liste d'administration.
 
 ## Guides pratiques
 
-> ℹ️ **Accès limité** : La création et la modification des guides pratiques sont réservées à l'administrateur du site. En tant que gestionnaire, vous pouvez **consulter** les guides existants depuis `/admin/content` (filtrer par Type → Guide), mais pas en créer de nouveaux. Contactez votre administrateur pour ajouter ou modifier un guide.
+> ℹ️ **Accès en lecture** : Les guides pratiques sont des ressources rédigées par l'administrateur du site à destination du gestionnaire. Vous ne pouvez pas les créer ni les modifier. Ils sont accessibles en lecture depuis le site public (`/guides`) ou depuis la section **Ressources** du backoffice (si disponible).
+
+> 💡 Ces guides contiennent des conseils stratégiques, des bonnes pratiques commerciales et des réponses aux questions fréquentes de vos clients. Consultez-les régulièrement.
 
 ---
 
