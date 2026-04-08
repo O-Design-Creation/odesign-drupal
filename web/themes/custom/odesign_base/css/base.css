@@ -1816,23 +1816,12 @@ textarea {
 .product-gallery__toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-3);
-  flex-wrap: wrap;
 }
 
-.product-gallery__count,
 .product-gallery__hint {
   margin: 0;
   font-size: var(--font-size-sm);
-}
-
-.product-gallery__count {
-  font-weight: 600;
-  color: var(--color-brand-dark);
-}
-
-.product-gallery__hint {
   color: var(--color-text-muted);
 }
 
