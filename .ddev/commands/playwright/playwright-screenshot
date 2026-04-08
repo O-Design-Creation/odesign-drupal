@@ -1,0 +1,18 @@
+#!/bin/bash
+## Description: Prend des captures d'écran du back-office Drupal via Playwright
+## Usage: playwright-screenshot [page]
+## Example: "ddev playwright-screenshot" ou "ddev playwright-screenshot /admin/boutique"
+
+set -e
+
+cd /playwright
+
+# Vérifier que les dépendances sont installées
+if [ ! -d node_modules ]; then
+  echo "⏳ Installation des dépendances Node.js…"
+  npm install --silent
+fi
+
+PAGE="${1:-all}"
+echo "📸 Capture : ${PAGE}"
+node scripts/screenshot-admin.js "${PAGE}"

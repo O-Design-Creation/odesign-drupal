@@ -1,0 +1,17 @@
+#!/bin/bash
+## Description: Audit UX du back-office Drupal - détecte labels anglais, champs sans aide, champs techniques
+## Usage: playwright-audit [page]
+## Example: "ddev playwright-audit" ou "ddev playwright-audit /admin/commerce/products/add/default"
+
+set -e
+
+cd /playwright
+
+if [ ! -d node_modules ]; then
+  echo "⏳ Installation des dépendances Node.js…"
+  npm install --silent
+fi
+
+PAGE="${1:-all}"
+echo "🔍 Audit UX : ${PAGE}"
+node scripts/audit-ux.js "${PAGE}"

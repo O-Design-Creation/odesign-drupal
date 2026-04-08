@@ -1,0 +1,3 @@
+hooks:
+  post-start:
+    - exec-host: "ddev exec -s playwright sh -c 'cd /playwright && [ -d node_modules ] || npm install --silent'"
