@@ -2,14 +2,34 @@
  * @file
  * GA4 e-commerce events pour Drupal Commerce — Atelier O Design.
  *
- * Déclenché uniquement si gtag est disponible (consentement cookies accepté
- * et librairie google_tag chargée par le serveur).
+ * Deux niveaux de gating RGPD :
+ *  1. Serveur (hook_page_attachments_alter) : supprime drupalSettings.gtag si
+ *     cookie-agreed ≠ 2 lors du rendu de la page.
+ *  2. Client (ce bloc) : supprime drupalSettings.gtag avant que google_tag/gtag.js
+ *     ne soit évalué (weight: -20), en lisant le cookie eu_cookie_compliance.
+ *     Couvre les cas où la page est servie depuis le cache interne Drupal.
  *
  * Événements implémentés :
  *  - view_item      : fiche produit
  *  - add_to_cart    : formulaire ajout panier
  *  - purchase       : page /merci (données injectées via drupalSettings.ga4Order)
  */
+
+// --- Gating RGPD client-side (doit tourner avant google_tag/gtag.js) --------
+(function () {
+  'use strict';
+  function _readCookie(name) {
+    var match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return match ? match.pop() : null;
+  }
+  if (_readCookie('cookie-agreed') !== '2') {
+    if (window.drupalSettings) {
+      delete window.drupalSettings.gtag;
+      delete window.drupalSettings.gtm;
+    }
+  }
+})();
+
 (function (Drupal, drupalSettings, once) {
   'use strict';
 

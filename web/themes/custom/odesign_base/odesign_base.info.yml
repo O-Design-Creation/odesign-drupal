@@ -8,6 +8,7 @@ logo: logo.svg
 favicon: images/favicon.ico
 libraries:
   - odesign_base/global
+  - odesign_base/ga4-ecommerce
 regions:
   header: Header
   header_top: Header top (promo banner)

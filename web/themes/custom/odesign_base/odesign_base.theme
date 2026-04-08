@@ -65,20 +65,6 @@ function odesign_base_preprocess_html(array &$variables): void {
 }
 
 /**
- * Implements hook_page_attachments().
- *
- * Attache la librairie GA4 e-commerce sur les pages frontend pertinentes
- * (fiches produit, panier, checkout, /merci).
- * La librairie ne s'exécute que si gtag est disponible (consentement OK).
- */
-function odesign_base_page_attachments(array &$attachments): void {
-  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    return;
-  }
-  $attachments['#attached']['library'][] = 'odesign_base/ga4-ecommerce';
-}
-
-/**
  * Implements hook_page_attachments_alter().
  *
  * Supprime la favicon Drupal core et injecte le jeu complet de favicons

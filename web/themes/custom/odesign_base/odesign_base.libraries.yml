@@ -11,8 +11,9 @@ global:
     - core/once
 
 ga4-ecommerce:
+  header: true
   js:
-    js/ga4-ecommerce.js: { minified: false }
+    js/ga4-ecommerce.js: { weight: -20, preprocess: false }
   dependencies:
     - core/drupal
     - core/drupalSettings
@@ -23,8 +24,8 @@ social-auth:
     component:
       css/social-auth.css: {}
 
-# Audit a11y uniquement (non chargé en prod)
-a11y-dev:
+campagnes:
   css:
     component:
-      css/a11y-dev.css: {}
+      css/campagnes.css: {}
+
