@@ -1,0 +1,203 @@
+uuid: d01cf2b4-5fe7-4b83-a799-18f11c6d6645
+langcode: fr
+status: true
+dependencies: {  }
+id: import_1e18748e
+label: 'Contact + numéro + Contact (1) + numéro (1) (1) + Contact…'
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: Contact
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: numéro
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_3
+    label: 'Contact (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 2
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_4
+    label: 'numéro (1) (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 3
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_5
+    label: 'Contact (1) (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 4
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_6
+    label: 'numéro (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 5
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_7
+    label: 'Contact (1) (1) (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 6
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_8
+    label: 'numéro (1) (2)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 7
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_9
+    label: 'Contact (1) (1) (1) (2)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 8
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_10
+    label: 'numéro (1) (2) (1) (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 9
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_11
+    label: 'Contact (1) (1) (1) (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 10
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_12
+    label: 'numéro (1) (2) (1)'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 11
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_13
+    label: adresse
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 12
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

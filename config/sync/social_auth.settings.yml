@@ -1,0 +1,7 @@
+auth: {  }
+post_login: /user
+redirect_user_form: false
+disable_admin_login: true
+disabled_roles:
+  - gestionnaire_boutique
+user_allowed: register

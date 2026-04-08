@@ -1,0 +1,23 @@
+uuid: e3399671-e7d5-4c65-815e-fd1c8f7157dc
+langcode: fr
+status: true
+dependencies: {  }
+id: import_1bdf599c
+label: 'Catégories '
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: 'Catégories '
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

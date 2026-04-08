@@ -1,0 +1,23 @@
+uuid: 2073e154-6157-4117-93ee-460d2af76d0b
+langcode: fr
+status: true
+dependencies: {  }
+id: import_d82d2bec
+label: Prénom
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: Prénom
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

@@ -1,0 +1,35 @@
+langcode: fr
+status: true
+dependencies:
+  config:
+    - search_api.index.products
+    - views.view.recherche_produits
+  module:
+    - search_api
+    - search_api_autocomplete
+id: products
+label: 'Autocompletion produits'
+index_id: products
+suggester_settings:
+  server:
+    fields:
+      title: title
+      body: body
+  live_results:
+    fields:
+      title: title
+    display_plugin: page_1
+    limit: 6
+search_settings:
+  limit: 6
+  min_length: 2
+  show_count: false
+  delay: 200
+  submit_button_selector: ':submit'
+  auto_redirect: false
+  auto_redirect_url: ''
+  page_id: page_1
+  displays:
+    default: false
+    selected:
+      - page_1

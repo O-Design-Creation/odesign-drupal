@@ -3,11 +3,25 @@ global:
     theme:
       css/phosphor.css: { weight: -200 }
       css/base.css: { weight: -100 }
+      css/search.css: { weight: 10 }
   js:
     js/odesign.js: {}
   dependencies:
     - core/drupal
     - core/once
+
+ga4-ecommerce:
+  js:
+    js/ga4-ecommerce.js: { minified: false }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+
+social-auth:
+  css:
+    component:
+      css/social-auth.css: {}
 
 # Audit a11y uniquement (non chargé en prod)
 a11y-dev:

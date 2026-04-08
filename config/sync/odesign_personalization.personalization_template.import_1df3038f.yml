@@ -1,0 +1,38 @@
+uuid: 14b8eeba-a811-4289-a6cc-dc30e26650ca
+langcode: fr
+status: true
+dependencies: {  }
+id: import_1df3038f
+label: 'texte + texte 2'
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: texte
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'texte 2'
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

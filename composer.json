@@ -54,7 +54,11 @@
         "drupal/contact_storage": "^1.5",
         "drupal/simplenews": "^4.1",
         "drupal/robotstxt": "^1.6",
-        "erusev/parsedown": "^1.8"
+        "erusev/parsedown": "^1.8",
+        "drupal/search_api_autocomplete": "^1.11",
+        "drupal/google_tag": "^2.0",
+        "drupal/social_auth": "^4.1",
+        "drupal/social_auth_google": "^4.0"
     },
     "config": {
         "allow-plugins": {

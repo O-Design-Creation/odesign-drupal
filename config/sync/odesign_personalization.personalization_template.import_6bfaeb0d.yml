@@ -1,0 +1,38 @@
+uuid: 3ff9b2e7-8dcb-4022-8530-53e2260e1cb8
+langcode: fr
+status: true
+dependencies: {  }
+id: import_6bfaeb0d
+label: 'Quantité + Prénoms'
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: Quantité
+    type: number
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 0
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Prénoms
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

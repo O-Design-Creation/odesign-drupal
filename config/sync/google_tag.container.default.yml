@@ -1,0 +1,21 @@
+uuid: c70a0ca5-9670-4b50-b06c-e2d97bbffd10
+langcode: fr
+status: true
+dependencies:
+  module:
+    - system
+id: default
+label: 'Atelier O Design — GA4'
+weight: 0
+tag_container_ids:
+  - G-4J4LCNHJ4N
+advanced_settings:
+  consent_mode: true
+dimensions_metrics: {  }
+conditions:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/admin\r\n/admin/*\r\n/user/*\r\n/batch\r\n/system/*"
+events: {  }

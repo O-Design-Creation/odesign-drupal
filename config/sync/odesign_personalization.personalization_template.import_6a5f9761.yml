@@ -1,0 +1,38 @@
+uuid: ee4f9188-3bec-455c-9543-b6862a0fc2c9
+langcode: fr
+status: true
+dependencies: {  }
+id: import_6a5f9761
+label: 'Personnalisation + Photo à joindre'
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Photo à joindre'
+    type: file
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 0
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

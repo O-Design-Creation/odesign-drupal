@@ -1,0 +1,50 @@
+langcode: fr
+status: true
+dependencies:
+  config:
+    - search_api.index.products
+    - views.view.recherche_produits
+  module:
+    - facets
+    - search_api
+id: category_recherche_facet
+name: Categorie
+weight: 1
+min_count: 1
+missing: false
+missing_label: ''
+url_alias: categorie
+facet_source_id: 'search_api:views_page__recherche_produits__page_1'
+field_identifier: field_category
+query_operator: OR
+hard_limit: 20
+exclude: false
+use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+widget:
+  type: checkbox
+  config:
+    show_numbers: true
+    soft_limit: 0
+empty_behavior: null
+only_visible_when_facet_source_is_visible: true
+show_only_one_result: false
+show_title: null
+processor_configs:
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: -10
+      build: -10
+    settings: {  }
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 50
+    settings:
+      sort: ASC

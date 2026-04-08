@@ -438,3 +438,10 @@ msgstr "Voir nos créations"
 
 msgid "Lire le guide"
 msgstr "Lire le guide"
+
+# TCK-043 — SSO Google
+msgid "Continuer avec Google"
+msgstr "Continuer avec Google"
+
+msgid "ou"
+msgstr "ou"

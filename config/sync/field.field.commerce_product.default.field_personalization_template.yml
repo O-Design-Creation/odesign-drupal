@@ -9,7 +9,7 @@ id: commerce_product.default.field_personalization_template
 field_name: field_personalization_template
 entity_type: commerce_product
 bundle: default
-label: 'Template de personnalisation'
+label: 'Modèle de personnalisation'
 description: ''
 required: false
 translatable: true

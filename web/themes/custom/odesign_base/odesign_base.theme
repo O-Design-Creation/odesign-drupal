@@ -65,6 +65,20 @@ function odesign_base_preprocess_html(array &$variables): void {
 }
 
 /**
+ * Implements hook_page_attachments().
+ *
+ * Attache la librairie GA4 e-commerce sur les pages frontend pertinentes
+ * (fiches produit, panier, checkout, /merci).
+ * La librairie ne s'exécute que si gtag est disponible (consentement OK).
+ */
+function odesign_base_page_attachments(array &$attachments): void {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+  $attachments['#attached']['library'][] = 'odesign_base/ga4-ecommerce';
+}
+
+/**
  * Implements hook_page_attachments_alter().
  *
  * Supprime la favicon Drupal core et injecte le jeu complet de favicons
@@ -268,6 +282,17 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
       'url'           => $product->toUrl('canonical', ['absolute' => TRUE])->toString(),
     ];
   }
+
+  // Injecter data-ga4-product sur l'élément racine du produit pour l'event
+  // GA4 view_item déclenché par ga4-ecommerce.js.
+  $ga4_price = $variation && $variation->getPrice()
+    ? (float) $variation->getPrice()->getNumber()
+    : 0.0;
+  $variables['attributes']['data-ga4-product'] = json_encode([
+    'id'    => $product->id(),
+    'name'  => $product->label(),
+    'price' => $ga4_price,
+  ], JSON_UNESCAPED_UNICODE);
 
   $variables['#attached']['html_head'][] = [
     [

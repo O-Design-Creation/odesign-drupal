@@ -1,0 +1,396 @@
+/**
+ * search.css — Styles moteur de recherche produits (TCK-018)
+ * Palette : #4E2620 (foncé) / #BB7570 (terracotta) / #8B6151 (moyen) / #D9B7A4 (clair)
+ */
+
+/* ===========================
+   Bouton toggle recherche header
+   =========================== */
+
+.header-search {
+  display: flex;
+  align-items: center;
+}
+
+.header-search__toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  color: var(--color-text, #4E2620);
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-search__toggle:hover,
+.header-search__toggle:focus-visible {
+  color: #BB7570;
+  background: rgba(187, 117, 112, 0.08);
+  outline: 2px solid #BB7570;
+  outline-offset: 2px;
+}
+
+.header-search__toggle[aria-expanded="true"] {
+  color: #BB7570;
+}
+
+/* ===========================
+   Panneau de recherche (sous le header)
+   =========================== */
+
+.header-search-panel {
+  background: #fff;
+  border-bottom: 2px solid #D9B7A4;
+  box-shadow: 0 4px 12px rgba(78, 38, 32, 0.08);
+  padding: var(--space-4) 0;
+  animation: searchPanelIn 0.2s ease;
+}
+
+@keyframes searchPanelIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.header-search-panel__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header-search-panel__form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.header-search-panel__input {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: 1.5px solid #D9B7A4;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #4E2620;
+  background: #fdfaf8;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.header-search-panel__input:focus {
+  outline: none;
+  border-color: #BB7570;
+  box-shadow: 0 0 0 3px rgba(187, 117, 112, 0.2);
+}
+
+.header-search-panel__input::placeholder {
+  color: #8B6151;
+  opacity: 0.7;
+}
+
+.header-search-panel__submit {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.header-search-panel__close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  color: #8B6151;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.header-search-panel__close:hover {
+  color: #4E2620;
+}
+
+/* ===========================
+   Page /recherche — layout
+   =========================== */
+
+.page-recherche-produits .view-recherche-produits,
+.view-id-recherche_produits {
+  /* Conteneur principal */
+}
+
+/* Zone de recherche exposée + facettes */
+.view-recherche-produits .view-filters,
+.search-page-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-8, 2rem);
+  align-items: start;
+  max-width: var(--container-max, 1280px);
+  margin: 0 auto;
+  padding: var(--space-6, 1.5rem) var(--container-padding, 1rem);
+}
+
+@media (max-width: 768px) {
+  .search-page-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Titre de la page de résultats */
+.view-recherche-produits .view-header {
+  max-width: var(--container-max, 1280px);
+  margin: 0 auto;
+  padding: var(--space-6) var(--container-padding);
+  padding-bottom: 0;
+}
+
+/* Barre de recherche exposée */
+.view-recherche-produits .views-exposed-form {
+  background: #fdfaf8;
+  border: 1.5px solid #D9B7A4;
+  border-radius: 8px;
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.view-recherche-produits .views-exposed-form label {
+  font-weight: 600;
+  color: #4E2620;
+  margin-bottom: var(--space-1);
+  display: block;
+}
+
+.view-recherche-produits .views-exposed-form input[type="search"],
+.view-recherche-produits .views-exposed-form input[type="text"] {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: 1.5px solid #D9B7A4;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #4E2620;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+.view-recherche-produits .views-exposed-form input[type="search"]:focus,
+.view-recherche-produits .views-exposed-form input[type="text"]:focus {
+  outline: none;
+  border-color: #BB7570;
+  box-shadow: 0 0 0 3px rgba(187, 117, 112, 0.2);
+}
+
+.view-recherche-produits .views-exposed-form .form-actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* Grille résultats — identique au catalogue */
+.view-recherche-produits .view-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-6, 1.5rem);
+}
+
+/* Aucun résultat */
+.search-no-results {
+  text-align: center;
+  padding: var(--space-12, 3rem) var(--container-padding);
+  color: #8B6151;
+  font-size: 1.1rem;
+}
+
+.search-no-results a {
+  color: #BB7570;
+  text-decoration: underline;
+}
+
+/* ===========================
+   Facettes
+   =========================== */
+
+/* Bloc facette */
+.block-facets-ajaxblock,
+.block-facets {
+  background: #fdfaf8;
+  border: 1.5px solid #D9B7A4;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: var(--space-4);
+}
+
+.block-facets .block__title,
+.block-facets-ajaxblock .block__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4E2620;
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+  border-bottom: 1px solid #D9B7A4;
+  background: rgba(217, 183, 164, 0.15);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Liste des éléments de facette */
+.facets-widget-checkbox ul,
+.facets-widget-links ul {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2) 0;
+}
+
+.facets-widget-checkbox li,
+.facets-widget-links li {
+  padding: 0;
+}
+
+.facets-widget-checkbox li a,
+.facets-widget-links li a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  color: #4E2620;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.facets-widget-checkbox li a:hover,
+.facets-widget-links li a:hover {
+  background: rgba(187, 117, 112, 0.08);
+  color: #BB7570;
+}
+
+/* Case à cocher simulée (checkbox widget) */
+.facets-widget-checkbox li a::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #8B6151;
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: background 0.15s, border-color 0.15s;
+  background: #fff;
+}
+
+/* Facette active */
+.facets-widget-checkbox li.is-active a,
+.facets-widget-links li.is-active a {
+  color: #BB7570;
+  font-weight: 600;
+}
+
+.facets-widget-checkbox li.is-active a::before {
+  background: #BB7570;
+  border-color: #BB7570;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%23fff' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Compteur dans la facette */
+.facet-item__count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #8B6151;
+  background: rgba(217, 183, 164, 0.3);
+  border-radius: 10px;
+  padding: 1px 7px;
+}
+
+/* ===========================
+   Autocomplétion Search API
+   =========================== */
+
+.search-api-autocomplete-search {
+  position: relative;
+}
+
+/* Dropdown suggestions */
+.ui-autocomplete.ui-menu {
+  background: #fff;
+  border: 1.5px solid #D9B7A4;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(78, 38, 32, 0.12);
+  padding: var(--space-1) 0;
+  z-index: 1000;
+  list-style: none;
+  margin: 0;
+  font-family: inherit;
+}
+
+.ui-autocomplete .ui-menu-item {
+  border: none;
+}
+
+.ui-autocomplete .ui-menu-item a,
+.ui-autocomplete .ui-menu-item-wrapper {
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  color: #4E2620;
+  font-size: 0.9rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ui-autocomplete .ui-menu-item a:hover,
+.ui-autocomplete .ui-menu-item a.ui-state-active,
+.ui-autocomplete .ui-menu-item-wrapper:hover,
+.ui-autocomplete .ui-menu-item-wrapper.ui-state-active {
+  background: rgba(187, 117, 112, 0.1);
+  color: #BB7570;
+  outline: none;
+}
+
+/* Suggestion item — titre mis en gras */
+.search-api-autocomplete-suggestion .autocomplete-suggestion-title {
+  font-weight: 500;
+}
+
+.search-api-autocomplete-suggestion .autocomplete-suggestion-note {
+  font-size: 0.8rem;
+  color: #8B6151;
+  margin-left: var(--space-1);
+}
+
+/* ===========================
+   Pagination de la vue recherche
+   =========================== */
+
+.view-recherche-produits .pager {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-6) 0;
+}
+
+.view-recherche-produits .pager__item a,
+.view-recherche-produits .pager__item.is-active {
+  padding: 0.4rem 0.8rem;
+  border: 1.5px solid #D9B7A4;
+  border-radius: 4px;
+  color: #4E2620;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.view-recherche-produits .pager__item.is-active {
+  background: #BB7570;
+  border-color: #BB7570;
+  color: #fff;
+  font-weight: 600;
+}
+
+.view-recherche-produits .pager__item a:hover {
+  border-color: #BB7570;
+  color: #BB7570;
+}

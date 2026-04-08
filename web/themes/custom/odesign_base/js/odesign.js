@@ -363,4 +363,53 @@
     }
   };
 
+  /**
+   * Behavior : toggle panneau de recherche header (TCK-018)
+   */
+  Drupal.behaviors.odesignHeaderSearch = {
+    attach: function (context, settings) {
+      once('header-search', '.header-search__toggle', context).forEach(function (toggle) {
+        var panel = document.getElementById('header-search-panel');
+        if (!panel) { return; }
+        var input = panel.querySelector('.header-search-panel__input');
+        var closeBtn = panel.querySelector('[data-search-close]');
+
+        function openSearch() {
+          panel.removeAttribute('hidden');
+          toggle.setAttribute('aria-expanded', 'true');
+          if (input) { input.focus(); }
+        }
+
+        function closeSearch() {
+          panel.setAttribute('hidden', '');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.focus();
+        }
+
+        toggle.addEventListener('click', function () {
+          var isOpen = toggle.getAttribute('aria-expanded') === 'true';
+          isOpen ? closeSearch() : openSearch();
+        });
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', closeSearch);
+        }
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !panel.hasAttribute('hidden')) {
+            closeSearch();
+          }
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!panel.hasAttribute('hidden') &&
+              !panel.contains(e.target) &&
+              !toggle.contains(e.target)) {
+            closeSearch();
+          }
+        });
+      });
+    }
+  };
+
 })(Drupal, once, drupalSettings);

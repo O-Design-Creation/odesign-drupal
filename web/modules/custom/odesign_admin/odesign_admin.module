@@ -272,7 +272,7 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'icon'     => 'ph-gear',
     'type'     => 'group',
     'weight'   => 90,
-    'children' => ['config_boutique', 'personnalisation'],
+    'children' => ['config_boutique', 'personnalisation', 'transporteurs'],
   ];
   $items['config_boutique'] = [
     'label'         => 'Paramètres boutique',
@@ -292,6 +292,19 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
       'entity.personalization_template.add_form',
       'entity.personalization_template.edit_form',
       'entity.personalization_template.delete_form',
+    ],
+    'badge'         => NULL,
+  ];
+  $items['transporteurs'] = [
+    'label'         => 'Transporteurs & tarifs',
+    'icon'          => 'ph-truck',
+    'route'         => 'entity.commerce_shipping_method.collection',
+    'weight'        => 93,
+    'active_routes' => [
+      'entity.commerce_shipping_method.collection',
+      'entity.commerce_shipping_method.add_form',
+      'entity.commerce_shipping_method.edit_form',
+      'entity.commerce_shipping_method.delete_form',
     ],
     'badge'         => NULL,
   ];
@@ -606,6 +619,39 @@ function _odesign_admin_add_product_field_help(array &$form): void {
  * Implémente hook_form_alter() pour personnaliser les labels de l'interface.
  */
 function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, string $form_id): void {
+
+  // --- SSO Google : bouton sur login et register ----------------------------
+  if (in_array($form_id, ['user_login_form', 'user_register_form'])) {
+    if (\Drupal::moduleHandler()->moduleExists('social_auth_google')) {
+      // Vérifier que le module est configuré (Client ID non vide).
+      $google_config = \Drupal::config('social_auth_google.settings');
+      $client_id = $google_config->get('client_id');
+      if (!empty($client_id)) {
+        $form['social_auth'] = [
+          '#type'       => 'container',
+          '#weight'     => -10,
+          '#attributes' => ['class' => ['social-auth-buttons']],
+          'google'      => [
+            '#type'       => 'link',
+            '#title'      => t('Continuer avec Google'),
+            '#url'        => \Drupal\Core\Url::fromRoute('social_auth.network.redirect', ['network' => 'google']),
+            '#attributes' => ['class' => ['btn', 'btn-social', 'btn-google']],
+          ],
+        ];
+        $form['social_auth_divider'] = [
+          '#type'       => 'container',
+          '#weight'     => -9,
+          '#attributes' => ['class' => ['social-auth-divider']],
+          'text'        => [
+            '#markup' => t('ou'),
+          ],
+        ];
+        $form['#attached']['library'][] = 'odesign_base/social-auth';
+      }
+    }
+  }
+  // -------------------------------------------------------------------------
+
   // Améliorer le libellé du bouton "Enregistrer" sur les formulaires produit.
   if (in_array($form_id, [
     'commerce_product_default_add_form',
@@ -1086,6 +1132,104 @@ function odesign_admin_contact_honeypot_validate(array $form, FormStateInterface
     \Drupal::logger('odesign_admin')->notice('Honeypot déclenché — soumission de formulaire contact bloquée.');
     $form_state->setErrorByName('', t('Une erreur de validation est survenue. Veuillez réessayer.'));
   }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ *
+ * RGPD — Désactive GA4 si le visiteur n'a pas consenti aux cookies.
+ * eu_cookie_compliance stocke le consentement dans le cookie 'cookie-agreed' :
+ *   2 = accepté, 0/absent = refusé ou non encore choisi.
+ *
+ * Injecte également drupalSettings.ga4Order sur la page /merci pour permettre
+ * le push de l'événement GA4 'purchase' côté client.
+ */
+function odesign_admin_page_attachments_alter(array &$attachments): void {
+  // --- Bloc RGPD : retrait GA4 si consentement absent -----------------------
+  $consent = \Drupal::request()->cookies->get('cookie-agreed', '0');
+  if ($consent !== '2') {
+    // Supprimer les librairies google_tag ajoutées par google_tag_page_attachments().
+    if (!empty($attachments['#attached']['library'])) {
+      $attachments['#attached']['library'] = array_values(array_filter(
+        $attachments['#attached']['library'],
+        static fn($lib) => !str_starts_with((string) $lib, 'google_tag/')
+      ));
+    }
+    // Supprimer les drupalSettings gtag/gtm.
+    unset(
+      $attachments['#attached']['drupalSettings']['gtag'],
+      $attachments['#attached']['drupalSettings']['gtm']
+    );
+  }
+  // Varier le cache selon la valeur du cookie de consentement.
+  $attachments['#cache']['contexts'][] = 'cookies:cookie-agreed';
+
+  // --- Bloc GA4 purchase : injection ga4Order sur /merci --------------------
+  if ($consent !== '2') {
+    return;
+  }
+  $alias_manager = \Drupal::service('path_alias.manager');
+  $current_path = \Drupal::service('path.current')->getPath();
+  $alias = $alias_manager->getAliasByPath($current_path);
+
+  $is_merci = ($alias === '/merci');
+  $is_checkout_complete = str_starts_with(\Drupal::routeMatch()->getRouteName() ?? '', 'commerce_checkout.');
+
+  if (!$is_merci && !$is_checkout_complete) {
+    return;
+  }
+
+  // Récupérer la dernière commande complétée de l'utilisateur courant.
+  $current_user = \Drupal::currentUser();
+  $order_storage = \Drupal::entityTypeManager()->getStorage('commerce_order');
+
+  $query = $order_storage->getQuery()
+    ->condition('state', ['fulfillment', 'completed', 'in_fabrication', 'quality_control', 'packed', 'shipped', 'delivered'], 'IN')
+    ->accessCheck(FALSE)
+    ->sort('order_id', 'DESC')
+    ->range(0, 1);
+
+  if ($current_user->isAuthenticated()) {
+    $query->condition('uid', $current_user->id());
+  }
+  else {
+    // Utilisateur anonyme : chercher via la session Commerce.
+    /** @var \Drupal\commerce_cart\CartSessionInterface $cart_session */
+    $cart_session = \Drupal::service('commerce_cart.cart_session');
+    $order_ids = $cart_session->getCartIds();
+    if (empty($order_ids)) {
+      return;
+    }
+    $query->condition('order_id', $order_ids, 'IN');
+  }
+
+  $order_ids = $query->execute();
+  if (empty($order_ids)) {
+    return;
+  }
+
+  /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
+  $order = $order_storage->load(reset($order_ids));
+  if (!$order) {
+    return;
+  }
+
+  $items = [];
+  foreach ($order->getItems() as $order_item) {
+    $items[] = [
+      'item_name'  => $order_item->getTitle(),
+      'item_id'    => $order_item->getPurchasedEntityId(),
+      'price'      => (float) $order_item->getUnitPrice()->getNumber(),
+      'quantity'   => (int) $order_item->getQuantity(),
+    ];
+  }
+
+  $attachments['#attached']['drupalSettings']['ga4Order'] = [
+    'id'    => $order->getOrderNumber() ?? $order->id(),
+    'total' => (float) $order->getTotalPrice()->getNumber(),
+    'items' => $items,
+  ];
+  $attachments['#cache']['max-age'] = 0;
 }
 
 /**

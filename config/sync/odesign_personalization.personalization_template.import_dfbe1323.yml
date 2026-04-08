@@ -1,0 +1,23 @@
+uuid: 835edb8c-876d-4c90-b72b-01ed3b568769
+langcode: fr
+status: true
+dependencies: {  }
+id: import_dfbe1323
+label: Personnalisation
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

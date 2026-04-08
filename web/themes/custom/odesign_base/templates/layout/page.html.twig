@@ -85,8 +85,22 @@
           </nav>
         {% endif %}
 
-        {# Actions header : compte client + panier #}
+        {# Actions header : compte client + panier + recherche #}
         <div class="site-header__actions">
+
+          {# Barre de recherche header #}
+          <div class="header-search" role="search">
+            <button class="header-search__toggle"
+                    aria-label="{{ 'Ouvrir la recherche'|t }}"
+                    aria-expanded="false"
+                    aria-controls="header-search-panel"
+                    type="button">
+              <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+            </button>
+          </div>
+
           {# Connexion / espace personnel #}
           {% if not logged_in %}
             <div class="header-account">
@@ -162,6 +176,32 @@
 
       </div>
     </header>
+
+    {# Panneau de recherche — s'affiche sous le header sur toggle #}
+    <div id="header-search-panel" class="header-search-panel" hidden aria-label="{{ 'Recherche produits'|t }}" role="search">
+      <div class="header-search-panel__inner container">
+        <form class="header-search-panel__form"
+              action="/recherche"
+              method="get">
+          <label for="header-search-panel-input" class="visually-hidden">{{ 'Rechercher un produit'|t }}</label>
+          <input id="header-search-panel-input"
+                 class="header-search-panel__input"
+                 type="search"
+                 name="keys"
+                 placeholder="{{ 'Rechercher un produit...'|t }}"
+                 autocomplete="off"
+                 aria-label="{{ 'Rechercher un produit'|t }}">
+          <button type="submit" class="btn btn--primary header-search-panel__submit">
+            {{ 'Rechercher'|t }}
+          </button>
+          <button type="button" class="header-search-panel__close" aria-label="{{ 'Fermer la recherche'|t }}" data-search-close>
+            <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
 
     {# Messages de statut Drupal #}
     {% if page.highlighted %}

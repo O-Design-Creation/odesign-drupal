@@ -1,0 +1,38 @@
+uuid: 0112c199-c60a-4086-b62c-59238b005202
+langcode: fr
+status: true
+dependencies: {  }
+id: import_c9083b3c
+label: 'Prénoms + Date'
+description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+fields:
+  -
+    id: field_1
+    label: Prénoms
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Date
+    type: date
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 0
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
