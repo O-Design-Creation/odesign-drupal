@@ -1,0 +1,26 @@
+uuid: ecf910d5-6b63-4c7b-99cb-e6d39331fc7f
+langcode: fr
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_image
+    - node.type.guide
+  module:
+    - image
+id: node.guide.field_image
+field_name: field_image
+entity_type: node
+bundle: guide
+label: 'Image de couverture'
+description: "Image affichée en vignette dans la liste des guides et en en-tête du guide."
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: guides
+  file_extensions: 'png gif jpg jpeg webp'
+  max_filesize: '2 MB'
+field_type: image
