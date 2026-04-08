@@ -52,7 +52,8 @@
         "drupal/scheduler": "^2.0",
         "drupal/easy_breadcrumb": "^2.0",
         "drupal/contact_storage": "^1.5",
-        "drupal/simplenews": "^4.1"
+        "drupal/simplenews": "^4.1",
+        "drupal/robotstxt": "^1.6"
     },
     "config": {
         "allow-plugins": {

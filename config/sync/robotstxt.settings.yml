@@ -1,0 +1,13 @@
+_core:
+  default_config_hash: ceCx5XZ_ay1Mxcv-sB95U_fBKoVkpvo8RaQiwutSZLI
+content: |-
+  User-agent: *
+  Disallow: /cart
+  Disallow: /checkout
+  Disallow: /user/
+  Disallow: /user/login
+  Disallow: /user/register
+  Disallow: /user/password
+  Disallow: /user/logout
+
+  Sitemap: https://atelierodesign.fr/sitemap.xml
