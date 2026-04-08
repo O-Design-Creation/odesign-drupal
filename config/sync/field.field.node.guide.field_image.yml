@@ -12,7 +12,7 @@ field_name: field_image
 entity_type: node
 bundle: guide
 label: 'Image de couverture'
-description: "Image affichée en vignette dans la liste des guides et en en-tête du guide."
+description: 'Image affichée en vignette dans la liste des guides et en en-tête du guide.'
 required: false
 translatable: true
 default_value: {  }
@@ -23,4 +23,16 @@ settings:
   file_directory: guides
   file_extensions: 'png gif jpg jpeg webp'
   max_filesize: '2 MB'
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: true
+  alt_field_required: true
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: null
+    alt: ''
+    title: ''
+    width: null
+    height: null
 field_type: image

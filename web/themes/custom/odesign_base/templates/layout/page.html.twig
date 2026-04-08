@@ -22,9 +22,21 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ base_path ~ directory }}/images/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ base_path ~ directory }}/images/apple-touch-icon.png">
     <link rel="manifest" href="{{ base_path ~ directory }}/images/site.webmanifest">
-    {# Preconnect Google Fonts pour la performance #}
+    {# Google Fonts — chargement async non-render-blocking (remplacement de @import CSS) #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {# media="print" + onload="this.media='all'" = chargement asynchrone (non bloquant pour le rendu) #}
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+          media="print"
+          onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap">
+    </noscript>
+    {# Preload hero image si disponible — réduit le LCP sur la page d'accueil #}
+    {% if front_hero_image_url %}
+      <link rel="preload" as="image" href="{{ front_hero_image_url|e('html_attr') }}">
+    {% endif %}
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
   </head>
