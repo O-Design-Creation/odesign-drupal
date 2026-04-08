@@ -82,7 +82,8 @@
   flex-shrink: 0;
 }
 
-.odesign-admin-nav__items a {
+.odesign-admin-nav__items a,
+.odesign-admin-nav__items button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -100,7 +101,8 @@
 }
 
 /* Icône Phosphor dans les liens */
-.odesign-admin-nav__items a .ph {
+.odesign-admin-nav__items a .ph,
+.odesign-admin-nav__items button .ph {
   font-size: 17px;
   line-height: 1;
   color: rgba(255,255,255,.55);
@@ -108,16 +110,19 @@
   transition: color .15s;
 }
 
-.odesign-admin-nav__items a:hover {
+.odesign-admin-nav__items a:hover,
+.odesign-admin-nav__items button:hover {
   background: rgba(255,255,255,.12);
   color: #fff;
 }
 
-.odesign-admin-nav__items a:hover .ph {
+.odesign-admin-nav__items a:hover .ph,
+.odesign-admin-nav__items button:hover .ph {
   color: #D9B7A4;
 }
 
-.odesign-admin-nav__items a:focus-visible {
+.odesign-admin-nav__items a:focus-visible,
+.odesign-admin-nav__items button:focus-visible {
   outline: 2px solid rgba(217,183,164,.7);
   outline-offset: 1px;
   color: #fff;
