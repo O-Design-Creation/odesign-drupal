@@ -12,3 +12,4 @@ web_docroot: true
 # MariaDB 10.6 requis par Drupal 11 (minimum 10.6)
 database:
   version: 10.6
+# last-sync: 2026-04-08
