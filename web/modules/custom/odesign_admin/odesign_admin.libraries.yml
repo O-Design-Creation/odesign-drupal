@@ -8,6 +8,12 @@ odesign_admin/admin_global:
     theme:
       css/admin-global.css: {}
 
+odesign_admin/admin_nav:
+  js:
+    js/admin-nav.js: { minified: false }
+  dependencies:
+    - core/drupal
+
 hub:
   css:
     theme:

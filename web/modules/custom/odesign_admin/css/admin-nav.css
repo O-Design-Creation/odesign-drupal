@@ -68,7 +68,7 @@
   margin: 0;
   padding: 0;
   flex: 1;
-  overflow-x: auto;
+  overflow: visible;
   scrollbar-width: none;
 }
 
@@ -271,4 +271,171 @@
   .odesign-admin-nav__username {
     display: none;
   }
+}
+
+/* ─── Zone droite : boutons icônes seuls ─────────────────────────────────── */
+
+.odesign-admin-nav__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 6px;
+  color: rgba(255,255,255,.60);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+}
+
+.odesign-admin-nav__icon-btn .ph {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.odesign-admin-nav__icon-btn:hover {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+.odesign-admin-nav__icon-btn:focus-visible {
+  outline: 2px solid rgba(217,183,164,.7);
+  outline-offset: 1px;
+  color: #fff;
+}
+
+.odesign-admin-nav__user {
+  cursor: default;
+}
+
+.odesign-admin-nav__logout .ph {
+  font-size: 17px;
+}
+
+/* ─── Groupe déroulant ───────────────────────────────────────────────────── */
+
+.odesign-admin-nav__group {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* Bouton du groupe — même look que les liens */
+.odesign-admin-nav__group-toggle {
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Caret — pivote quand le menu est ouvert */
+.odesign-admin-nav__caret {
+  font-size: 13px !important;
+  margin-left: -2px;
+  transition: transform .18s ease;
+  color: rgba(255,255,255,.45) !important;
+}
+
+.odesign-admin-nav__group--open .odesign-admin-nav__caret,
+.odesign-admin-nav__group:focus-within .odesign-admin-nav__caret {
+  transform: rotate(180deg);
+}
+
+/* État actif sur le groupe */
+.odesign-admin-nav__group--active .odesign-admin-nav__group-toggle,
+.odesign-admin-nav__group--active .odesign-admin-nav__link {
+  background: rgba(255,255,255,.16);
+  color: #fff;
+  font-weight: 600;
+}
+
+.odesign-admin-nav__group--active .odesign-admin-nav__group-toggle .ph:not(.odesign-admin-nav__caret) {
+  color: #D9B7A4;
+}
+
+/* Panneau déroulant */
+.odesign-admin-nav__dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 200px;
+  background: #3a1c17;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.20);
+  padding: 6px;
+  list-style: none;
+  margin: 0;
+  z-index: 600;
+  /* Légère flèche via pseudo-élément */
+}
+
+.odesign-admin-nav__dropdown::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 18px;
+  width: 10px;
+  height: 10px;
+  background: #3a1c17;
+  border-left: 1px solid rgba(255,255,255,.10);
+  border-top: 1px solid rgba(255,255,255,.10);
+  transform: rotate(45deg);
+}
+
+/* Ouverture : hover CSS + classe JS */
+.odesign-admin-nav__group:hover .odesign-admin-nav__dropdown,
+.odesign-admin-nav__group:focus-within .odesign-admin-nav__dropdown,
+.odesign-admin-nav__group--open .odesign-admin-nav__dropdown {
+  display: block;
+}
+
+/* Items dans le dropdown */
+.odesign-admin-nav__dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,.75);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .14s, color .14s;
+}
+
+.odesign-admin-nav__dropdown-link .ph {
+  font-size: 16px;
+  color: rgba(255,255,255,.45);
+  flex-shrink: 0;
+  transition: color .14s;
+}
+
+.odesign-admin-nav__dropdown-link:hover {
+  background: rgba(255,255,255,.10);
+  color: #fff;
+}
+
+.odesign-admin-nav__dropdown-link:hover .ph {
+  color: #D9B7A4;
+}
+
+.odesign-admin-nav__dropdown-link:focus-visible {
+  outline: 2px solid rgba(217,183,164,.7);
+  outline-offset: 1px;
+  color: #fff;
+}
+
+.odesign-admin-nav__dropdown-link--active {
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-weight: 600;
+}
+
+.odesign-admin-nav__dropdown-link--active .ph {
+  color: #D9B7A4;
 }

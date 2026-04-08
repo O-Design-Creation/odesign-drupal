@@ -49,6 +49,9 @@ function odesign_admin_page_attachments(array &$attachments): void {
     'odesign_admin_nav_css',
   ];
 
+  // JS nav admin — groupes déroulants.
+  $attachments['#attached']['library'][] = 'odesign_admin/admin_nav';
+
   // CSS global admin (hors nav — views, forms, Gin overrides).
   $attachments['#attached']['html_head'][] = [
     [
@@ -185,14 +188,7 @@ function odesign_admin_theme(): array {
  * Les items de domaine (Commandes) sont déclarés par leurs modules respectifs.
  */
 function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
-  $items['dashboard'] = [
-    'label'         => 'Tableau de bord',
-    'icon'          => 'ph-storefront',
-    'route'         => 'odesign_admin.dashboard',
-    'weight'        => 0,
-    'active_routes' => ['odesign_admin.dashboard'],
-    'badge'         => NULL,
-  ];
+  // Pas d'item "Tableau de bord" : le logo remplit ce rôle (lien identique).
   $items['catalogue'] = [
     'label'         => 'Catalogue',
     'icon'          => 'ph-package',
@@ -208,6 +204,17 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     ],
     'badge'         => NULL,
   ];
+
+  // Groupe "Contenu" — regroupe les items éditoriaux, médias et documentation.
+  // Tout futur item de type contenu doit déclarer son ID dans ce tableau 'children'.
+  $items['contenu'] = [
+    'label'    => 'Contenu',
+    'icon'     => 'ph-layout',
+    'type'     => 'group',
+    'weight'   => 35,
+    'children' => ['editorial', 'newsletter', 'mediatheque', 'guide_marketing', 'documentation'],
+  ];
+
   $items['editorial'] = [
     'label'         => 'Éditorial',
     'icon'          => 'ph-article',

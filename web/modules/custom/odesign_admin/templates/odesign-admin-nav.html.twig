@@ -5,7 +5,9 @@
  *
  * Variables :
  * - nav_items  : array — items déclarés via hook_odesign_boutique_nav_items_alter()
- *                Chaque item : id, label, icon (classe Phosphor), url, is_active, badge
+ *                Types :
+ *                  - 'link'  : { id, label, icon, url, is_active, badge }
+ *                  - 'group' : { id, label, icon, is_active, children[] }
  * - site_url   : string — URL de la page d'accueil du site
  * - username   : string — nom affiché de l'utilisateur courant
  * - logout_url : string — URL de déconnexion
@@ -14,8 +16,8 @@
 
 <nav class="odesign-admin-nav" aria-label="Navigation boutique">
 
-  {# Logo — lien vers le dashboard #}
-  <a href="/admin/boutique" class="odesign-admin-nav__logo" aria-label="Tableau de bord">
+  {# Logo — lien vers le dashboard (remplace l'item "Tableau de bord") #}
+  <a href="/admin/boutique" class="odesign-admin-nav__logo" aria-label="Tableau de bord — Ma boutique">
     <i class="ph ph-storefront" aria-hidden="true"></i>
     <span class="odesign-admin-nav__logo-text">O Design</span>
   </a>
@@ -23,34 +25,75 @@
   {# Items de navigation (déclarés par les modules via hook) #}
   <ul class="odesign-admin-nav__items" role="list">
     {% for item in nav_items %}
-      <li>
-        <a href="{{ item.url }}"
-           class="odesign-admin-nav__link{% if item.is_active %} odesign-admin-nav__link--active{% endif %}"
-           {% if item.is_active %}aria-current="page"{% endif %}>
-          <i class="ph {{ item.icon }}" aria-hidden="true"></i>
-          <span class="odesign-admin-nav__link-label">{{ item.label }}</span>
-          {% if item.badge %}
-            <span class="odesign-admin-nav__badge" aria-label="{{ item.badge }} en attente">{{ item.badge }}</span>
-          {% endif %}
-        </a>
-      </li>
+
+      {% if item.type == 'group' %}
+        {# ── Groupe déroulant ── #}
+        <li class="odesign-admin-nav__group{% if item.is_active %} odesign-admin-nav__group--active{% endif %}">
+          <button class="odesign-admin-nav__link odesign-admin-nav__group-toggle"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  type="button">
+            <i class="ph {{ item.icon }}" aria-hidden="true"></i>
+            <span class="odesign-admin-nav__link-label">{{ item.label }}</span>
+            <i class="ph ph-caret-down odesign-admin-nav__caret" aria-hidden="true"></i>
+          </button>
+          <ul class="odesign-admin-nav__dropdown" role="menu">
+            {% for child in item.children %}
+              <li role="none">
+                <a href="{{ child.url }}"
+                   class="odesign-admin-nav__dropdown-link{% if child.is_active %} odesign-admin-nav__dropdown-link--active{% endif %}"
+                   role="menuitem"
+                   {% if child.is_active %}aria-current="page"{% endif %}>
+                  <i class="ph {{ child.icon }}" aria-hidden="true"></i>
+                  <span>{{ child.label }}</span>
+                  {% if child.badge %}
+                    <span class="odesign-admin-nav__badge" aria-label="{{ child.badge }} en attente">{{ child.badge }}</span>
+                  {% endif %}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+
+      {% else %}
+        {# ── Item standard ── #}
+        <li>
+          <a href="{{ item.url }}"
+             class="odesign-admin-nav__link{% if item.is_active %} odesign-admin-nav__link--active{% endif %}"
+             {% if item.is_active %}aria-current="page"{% endif %}>
+            <i class="ph {{ item.icon }}" aria-hidden="true"></i>
+            <span class="odesign-admin-nav__link-label">{{ item.label }}</span>
+            {% if item.badge %}
+              <span class="odesign-admin-nav__badge" aria-label="{{ item.badge }} en attente">{{ item.badge }}</span>
+            {% endif %}
+          </a>
+        </li>
+      {% endif %}
+
     {% endfor %}
   </ul>
 
-  {# Zone droite : voir le site, utilisateur, déconnexion #}
+  {# Zone droite : icônes seules + tooltips (libère ~150px) #}
   <div class="odesign-admin-nav__right">
-    <a href="{{ site_url }}" class="odesign-admin-nav__site-link" target="_blank" rel="noopener noreferrer" title="Voir le site">
+    <a href="{{ site_url }}"
+       class="odesign-admin-nav__icon-btn"
+       target="_blank" rel="noopener noreferrer"
+       title="Voir le site"
+       aria-label="Voir le site (nouvel onglet)">
       <i class="ph ph-arrow-square-out" aria-hidden="true"></i>
-      <span>Voir le site</span>
     </a>
-    <span class="odesign-admin-nav__user" title="{{ username }}">
+    <span class="odesign-admin-nav__icon-btn odesign-admin-nav__user"
+          title="{{ username }}"
+          aria-label="Connecté en tant que {{ username }}">
       <i class="ph ph-user-circle" aria-hidden="true"></i>
-      <span class="odesign-admin-nav__username">{{ username }}</span>
     </span>
-    <a href="{{ logout_url }}" class="odesign-admin-nav__logout" title="Se déconnecter">
+    <a href="{{ logout_url }}"
+       class="odesign-admin-nav__icon-btn odesign-admin-nav__logout"
+       title="Se déconnecter ({{ username }})"
+       aria-label="Se déconnecter">
       <i class="ph ph-sign-out" aria-hidden="true"></i>
-      <span class="odesign-admin-nav__logout-label">Déconnexion</span>
     </a>
   </div>
 
 </nav>
+
