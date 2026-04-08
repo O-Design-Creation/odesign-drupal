@@ -1097,7 +1097,7 @@ function odesign_base_preprocess_feed_icon(array &$variables): void {
 /**
  * Implements hook_form_FORM_ID_alter() for user_login_form.
  *
- * Ajoute un lien "Mot de passe oublié ?" sous le bouton de connexion (F-LOGIN-UX).
+ * Ajoute "Mot de passe oublié ?" et un CTA "Créer un compte" sous le bouton.
  */
 function odesign_base_form_user_login_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state, string $form_id): void {
   $form['forgot_password'] = [
@@ -1110,13 +1110,14 @@ function odesign_base_form_user_login_form_alter(array &$form, \Drupal\Core\Form
     '#attributes' => ['class' => ['login-forgot-password']],
     '#weight' => 100,
   ];
+
+  $register_url = \Drupal\Core\Url::fromRoute('user.register')->toString();
   $form['create_account'] = [
     '#type' => 'html_tag',
-    '#tag' => 'p',
-    '#value' => t('Pas encore de compte ? ') . \Drupal\Core\Link::createFromRoute(
-      t('Créer un compte'),
-      'user.register'
-    )->toString(),
+    '#tag' => 'div',
+    '#value' => '<p class="login-create-account__label">' . t('Première visite ?') . '</p>'
+      . '<a href="' . $register_url . '" class="btn btn--outline login-create-account__btn">'
+      . t('Créer un compte') . '</a>',
     '#attributes' => ['class' => ['login-create-account']],
     '#weight' => 101,
   ];

@@ -90,18 +90,13 @@
           {# Connexion / espace personnel #}
           {% if not logged_in %}
             <div class="header-account">
-              <a href="{{ path('user.login') }}" class="header-login-link" aria-label="{{ 'Se connecter à votre espace'|t }}">
+              <a href="{{ path('user.login') }}" class="header-login-link" aria-label="{{ 'Accéder à mon compte'|t }}">
                 <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                   <circle cx="12" cy="7" r="4"/>
                 </svg>
-                <span class="header-login-link__label">{{ 'Connexion'|t }}</span>
+                <span class="header-login-link__label">{{ 'Mon compte'|t }}</span>
               </a>
-              {% if user_register_url is defined %}
-                <a href="{{ user_register_url }}" class="header-register-link" aria-label="{{ 'Créer un compte client'|t }}">
-                  {{ 'S\'inscrire'|t }}
-                </a>
-              {% endif %}
             </div>
           {% else %}
             {# Menu déroulant — différencié client / gestionnaire #}

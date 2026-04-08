@@ -15,7 +15,7 @@ Comprendre le parcours de vos clients (connexion, commande, suivi) pour répondr
 
 ### Créer un compte
 
-Les clients peuvent créer un compte depuis la page `/user/register` ou lors du passage de commande. Ils reçoivent un **email de confirmation** avec un lien d'activation.
+Les clients peuvent créer un compte depuis le bouton **Mon compte** en haut à droite du site (qui donne accès à la fois à la connexion et à la création de compte), depuis la page `/user/register` directement, ou lors du passage de commande. Ils reçoivent un **email de confirmation** avec un lien d'activation.
 
 > 💡 **Si un client dit qu'il n'a pas reçu l'email** : demandez-lui de vérifier ses spams. Si le problème persiste, vous pouvez vérifier son adresse email dans [Clients](07-clients.md).
 
