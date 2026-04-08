@@ -12,8 +12,15 @@ web/modules/contrib/
 web/themes/contrib/
 web/profiles/contrib/
 
-# DDEV
-/.ddev/
+# DDEV — config.yaml et les fichiers de configuration sont versionnés.
+# Les artefacts locaux sont gérés par .ddev/.gitignore (interne DDEV).
+# Seul mysql/ est exclu ici car non couvert par le .gitignore interne.
+/.ddev/mysql/
+
+# Variables d'environnement
+.env
+.env.local
+.env.*.local
 
 # OS
 .DS_Store
@@ -31,5 +38,43 @@ Thumbs.db
 playwright/screenshots/
 playwright/node_modules/
 playwright/.env.playwright
+playwright/scripts/audit-*.json
+playwright/scripts/*-results.json
 node_modules/
 web/robots.txt
+
+# Outils IA et agents locaux (non partageables entre postes)
+.adal/
+.agents/
+.augment/
+.bob/
+.claude/
+.codebuddy/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.cursor/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+skills/
+skills-lock.json
+stripe

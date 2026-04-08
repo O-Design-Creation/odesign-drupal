@@ -1,0 +1,19 @@
+services:
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.49.0-noble
+    container_name: ddev-${DDEV_SITENAME}-playwright
+    hostname: ${DDEV_SITENAME}-playwright
+    volumes:
+      - ../playwright:/playwright
+      - ../.ddev:/mnt/ddev_config:ro
+    working_dir: /playwright
+    environment:
+      - PLAYWRIGHT_BASE_URL=http://web
+      - DRUPAL_ADMIN_USER=${DRUPAL_ADMIN_USER:-admin}
+      - DRUPAL_ADMIN_PASS=${DRUPAL_ADMIN_PASS:-admin}
+      - DRUPAL_CLIENT_USER=${DRUPAL_CLIENT_USER:-client_ateliero}
+      - DRUPAL_CLIENT_PASS=${DRUPAL_CLIENT_PASS:-admin}
+    command: ["tail", "-f", "/dev/null"]
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
