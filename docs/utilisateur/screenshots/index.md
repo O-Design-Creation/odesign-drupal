@@ -24,3 +24,8 @@
 | `recherche-resultats.png` | Recherche — résultats |
 | `recherche-zero-resultat.png` | Recherche — zéro résultat |
 | `analytics-cockpit-kpi.png` | Analytics — cockpit KPI |
+| `reviews-liste.png` | Avis clients — liste de modération |
+| `reviews-formulaire-client.png` | Avis clients — formulaire public (lien unique) |
+| `reviews-homepage-bloc.png` | Avis clients — bloc homepage |
+| `reviews-produit-bloc.png` | Avis clients — bloc fiche produit |
+| `reviews-categorie-bloc.png` | Avis clients — bloc page univers |

@@ -7,12 +7,16 @@
  * - reviews: avis approuvés.
  */
 #}
-<section class="home-reviews" aria-labelledby="home-reviews-title">
+{% set block_title = title|default('Avis clients'|t) %}
+{% set block_eyebrow = eyebrow|default('Ils nous ont fait confiance'|t) %}
+{% set block_variant = variant|default('home') %}
+
+<section class="home-reviews home-reviews--{{ block_variant|clean_class }}" aria-labelledby="home-reviews-title">
   <div class="container">
     <div class="section-heading">
       <div>
-        <p class="section-heading__eyebrow">{{ 'Ils nous ont fait confiance'|t }}</p>
-        <h2 id="home-reviews-title" class="section-heading__title">{{ 'Avis clients'|t }}</h2>
+        <p class="section-heading__eyebrow">{{ block_eyebrow }}</p>
+        <h2 id="home-reviews-title" class="section-heading__title">{{ block_title }}</h2>
       </div>
     </div>
 

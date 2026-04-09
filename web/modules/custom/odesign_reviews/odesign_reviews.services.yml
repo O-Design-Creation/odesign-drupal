@@ -8,6 +8,7 @@ services:
       - '@logger.factory'
       - '@date.formatter'
       - '@cache_tags.invalidator'
+      - '@entity_type.manager'
 
   odesign_reviews.deliver_subscriber:
     class: Drupal\odesign_reviews\EventSubscriber\ReviewRequestSubscriber

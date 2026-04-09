@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\Core\Url;
+use Drupal\commerce_product\Entity\ProductInterface;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Implements hook_mail().
@@ -49,9 +51,79 @@ function odesign_reviews_theme(): array {
     'odesign_reviews_block' => [
       'variables' => [
         'reviews' => [],
+        'eyebrow' => '',
+        'title' => '',
+        'variant' => 'home',
       ],
       'template' => 'odesign-reviews-block',
     ],
   ];
 }
 
+/**
+ * Implements hook_preprocess_commerce_product().
+ */
+function odesign_reviews_preprocess_commerce_product(array &$variables): void {
+  if (empty($variables['product_entity']) || !$variables['product_entity'] instanceof ProductInterface) {
+    return;
+  }
+
+  /** @var \Drupal\commerce_product\Entity\ProductInterface $product */
+  $product = $variables['product_entity'];
+  $reviews = \Drupal::service('odesign_reviews.manager')->getApprovedForProduct((int) $product->id(), 3);
+  if (!$reviews) {
+    return;
+  }
+
+  $variables['product_reviews_block'] = [
+    '#theme' => 'odesign_reviews_block',
+    '#reviews' => $reviews,
+    '#eyebrow' => t('Retours clients'),
+    '#title' => t('Avis sur ce produit'),
+    '#variant' => 'product',
+    '#attached' => [
+      'library' => ['odesign_reviews/frontend'],
+    ],
+    '#cache' => [
+      'tags' => ['odesign_reviews:list'],
+      'contexts' => ['route'],
+      'max-age' => 300,
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_taxonomy_term().
+ */
+function odesign_reviews_preprocess_taxonomy_term(array &$variables): void {
+  if (empty($variables['term']) || !$variables['term'] instanceof TermInterface) {
+    return;
+  }
+
+  /** @var \Drupal\taxonomy\TermInterface $term */
+  $term = $variables['term'];
+  if ($term->bundle() !== 'life_occasion') {
+    return;
+  }
+
+  $reviews = \Drupal::service('odesign_reviews.manager')->getApprovedForLifeOccasion((int) $term->id(), 3);
+  if (!$reviews) {
+    return;
+  }
+
+  $variables['life_occasion_reviews_block'] = [
+    '#theme' => 'odesign_reviews_block',
+    '#reviews' => $reviews,
+    '#eyebrow' => t('Preuve sociale'),
+    '#title' => t('Avis de cet univers'),
+    '#variant' => 'category',
+    '#attached' => [
+      'library' => ['odesign_reviews/frontend'],
+    ],
+    '#cache' => [
+      'tags' => ['odesign_reviews:list'],
+      'contexts' => ['route'],
+      'max-age' => 300,
+    ],
+  ];
+}

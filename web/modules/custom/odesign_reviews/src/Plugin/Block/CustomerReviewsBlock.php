@@ -51,6 +51,9 @@ class CustomerReviewsBlock extends BlockBase implements ContainerFactoryPluginIn
     return [
       '#theme' => 'odesign_reviews_block',
       '#reviews' => $reviews,
+      '#eyebrow' => $this->t('Ils nous ont fait confiance'),
+      '#title' => $this->t('Avis clients'),
+      '#variant' => 'home',
       '#attached' => [
         'library' => ['odesign_reviews/frontend'],
       ],

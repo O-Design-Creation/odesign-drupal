@@ -51,9 +51,13 @@ Le site collecte les avis automatiquement après la livraison d’une commande:
 ## Ce que cela change sur le site
 
 - Les avis **approuvés** peuvent apparaître sur la page d’accueil dans la section **Avis clients**
+- Les avis **approuvés** remontent aussi sur certaines fiches produit concernées
+- Les avis **approuvés** remontent aussi sur les pages univers (catégories `Occasions de vie`) concernées
 - Les avis **rejetés** restent en backoffice pour historique
 
 ![Section Avis clients visible sur la page d'accueil](screenshots/reviews-homepage-bloc.png)
+![Bloc avis visible sur une fiche produit](screenshots/reviews-produit-bloc.png)
+![Bloc avis visible sur une page univers](screenshots/reviews-categorie-bloc.png)
 
 ## Bonnes pratiques
 

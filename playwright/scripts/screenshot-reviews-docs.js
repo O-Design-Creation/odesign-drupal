@@ -61,8 +61,10 @@ async function dismissCookies(page) {
   await loginViaUli(page);
   const targets = [
     { key: 'reviews-liste', url: '/admin/boutique/avis' },
-    { key: 'reviews-formulaire-client', url: '/avis/commande/990013/docreviewtoken123' },
+    { key: 'reviews-formulaire-client', url: '/avis/commande/26/docreviewtoken123' },
     { key: 'reviews-homepage-bloc', url: '/', sectionSelector: '.home-reviews' },
+    { key: 'reviews-produit-bloc', url: '/products/arbre-de-vie-personnalise', sectionSelector: '.home-reviews--product' },
+    { key: 'reviews-categorie-bloc', url: '/occasions/naissance-bebe', sectionSelector: '.home-reviews--category' },
   ];
 
   for (const target of targets) {

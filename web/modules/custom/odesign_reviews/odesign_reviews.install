@@ -125,6 +125,49 @@ function odesign_reviews_schema(): array {
     ],
   ];
 
+  $schema['odesign_review_products'] = [
+    'description' => 'Liaisons entre avis et produits commandés.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'review_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'order_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'product_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'product_title' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'review_product_unique' => ['review_id', 'product_id'],
+    ],
+    'indexes' => [
+      'product_id' => ['product_id'],
+      'order_id' => ['order_id'],
+    ],
+  ];
+
   return $schema;
 }
 
@@ -134,4 +177,22 @@ function odesign_reviews_schema(): array {
 function odesign_reviews_update_11001(): string {
   user_role_grant_permissions('gestionnaire_boutique', ['administer boutique reviews']);
   return 'Permission administer boutique reviews attribuée au rôle gestionnaire_boutique.';
+}
+
+/**
+ * Crée la table de liaison avis <-> produits et backfill les lignes.
+ */
+function odesign_reviews_update_11002(): string {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('odesign_review_products')) {
+    $schema_definition = odesign_reviews_schema();
+    $schema->createTable('odesign_review_products', $schema_definition['odesign_review_products']);
+  }
+
+  $manager = \Drupal::service('odesign_reviews.manager');
+  $count = method_exists($manager, 'backfillReviewProducts')
+    ? (int) $manager->backfillReviewProducts()
+    : 0;
+
+  return "Table odesign_review_products créée. Backfill exécuté sur {$count} avis.";
 }

@@ -8,6 +8,10 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\commerce_order\Entity\OrderInterface;
+use Drupal\commerce_order\Entity\OrderItemInterface;
+use Drupal\commerce_product\Entity\ProductVariationInterface;
 use Drupal\Core\Url;
 
 /**
@@ -22,6 +26,7 @@ class ReviewManager {
     private readonly LoggerChannelFactoryInterface $loggerFactory,
     private readonly DateFormatterInterface $dateFormatter,
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
+    private readonly EntityTypeManagerInterface $entityTypeManager,
   ) {}
 
   /**
@@ -116,7 +121,7 @@ class ReviewManager {
    */
   public function saveReview(array $request, array $review_values): void {
     $timestamp = \Drupal::time()->getRequestTime();
-    $this->database->insert('odesign_reviews')
+    $review_id = (int) $this->database->insert('odesign_reviews')
       ->fields([
         'order_id' => (int) $request['order_id'],
         'order_number' => (string) $request['order_number'],
@@ -130,6 +135,8 @@ class ReviewManager {
         'updated' => $timestamp,
       ])
       ->execute();
+
+    $this->attachPurchasedProducts($review_id, (int) $request['order_id']);
 
     $this->database->update('odesign_review_requests')
       ->fields(['used' => 1])
@@ -179,6 +186,131 @@ class ReviewManager {
       ->execute()
       ->fetchAllAssoc('id');
 
+    return $this->formatRows($rows);
+  }
+
+  /**
+   * Returns approved reviews tied to a given product.
+   */
+  public function getApprovedForProduct(int $product_id, int $limit = 3): array {
+    if ($product_id <= 0) {
+      return [];
+    }
+
+    $query = $this->database->select('odesign_reviews', 'r');
+    $query->fields('r');
+    $query->join('odesign_review_products', 'rp', 'rp.review_id = r.id');
+    $query->condition('r.status', 'approved');
+    $query->condition('rp.product_id', $product_id);
+    $query->orderBy('r.created', 'DESC');
+    $query->range(0, $limit);
+    $rows = $query->execute()->fetchAllAssoc('id');
+
+    return $this->formatRows($rows);
+  }
+
+  /**
+   * Returns approved reviews tied to a life_occasion category.
+   */
+  public function getApprovedForLifeOccasion(int $term_id, int $limit = 3): array {
+    if ($term_id <= 0) {
+      return [];
+    }
+
+    $query = $this->database->select('odesign_reviews', 'r');
+    $query->fields('r');
+    $query->join('odesign_review_products', 'rp', 'rp.review_id = r.id');
+    $query->join('commerce_product__field_life_occasion', 'pl', 'pl.entity_id = rp.product_id');
+    $query->condition('r.status', 'approved');
+    $query->condition('pl.field_life_occasion_target_id', $term_id);
+    $query->distinct();
+    $query->orderBy('r.created', 'DESC');
+    $query->range(0, $limit);
+    $rows = $query->execute()->fetchAllAssoc('id');
+
+    return $this->formatRows($rows);
+  }
+
+  /**
+   * Backfills review/product links for rows created before v2 mapping.
+   */
+  public function backfillReviewProducts(): int {
+    $query = $this->database->select('odesign_reviews', 'r');
+    $query->fields('r', ['id', 'order_id']);
+    $query->leftJoin('odesign_review_products', 'rp', 'rp.review_id = r.id');
+    $query->isNull('rp.review_id');
+    $review_ids = $query->execute()->fetchAllKeyed();
+
+    $count = 0;
+    foreach ($review_ids as $review_id => $order_id) {
+      $this->attachPurchasedProducts((int) $review_id, (int) $order_id);
+      $count++;
+    }
+    return $count;
+  }
+
+  /**
+   * Adds product links for one review from the source order items.
+   */
+  private function attachPurchasedProducts(int $review_id, int $order_id): void {
+    if ($review_id <= 0 || $order_id <= 0) {
+      return;
+    }
+
+    $order = $this->entityTypeManager->getStorage('commerce_order')->load($order_id);
+    if (!$order instanceof OrderInterface) {
+      return;
+    }
+
+    $links = [];
+    foreach ($order->getItems() as $item) {
+      if (!$item instanceof OrderItemInterface) {
+        continue;
+      }
+      $purchased_entity = $item->getPurchasedEntity();
+      if (!$purchased_entity instanceof ProductVariationInterface || !$purchased_entity->getProduct()) {
+        continue;
+      }
+      $product = $purchased_entity->getProduct();
+      $product_id = (int) $product->id();
+      if ($product_id <= 0) {
+        continue;
+      }
+      $links[$product_id] = [
+        'review_id' => $review_id,
+        'order_id' => $order_id,
+        'product_id' => $product_id,
+        'product_title' => mb_substr($product->label(), 0, 255),
+        'created' => \Drupal::time()->getRequestTime(),
+      ];
+    }
+
+    if (!$links) {
+      return;
+    }
+
+    foreach ($links as $link) {
+      $exists = (bool) $this->database->select('odesign_review_products', 'rp')
+        ->fields('rp', ['id'])
+        ->condition('review_id', (int) $link['review_id'])
+        ->condition('product_id', (int) $link['product_id'])
+        ->execute()
+        ->fetchField();
+
+      if ($exists) {
+        continue;
+      }
+
+      $this->database->insert('odesign_review_products')
+        ->fields($link)
+        ->execute();
+    }
+  }
+
+  /**
+   * Adds formatted date label to rows.
+   */
+  private function formatRows(array $rows): array {
     foreach ($rows as &$row) {
       $row->created_label = $this->dateFormatter->format((int) $row->created, 'custom', 'd/m/Y');
     }

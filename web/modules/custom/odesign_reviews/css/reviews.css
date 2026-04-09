@@ -2,6 +2,14 @@
   padding: 2.75rem 0 2.25rem;
 }
 
+.home-reviews--product {
+  padding: 1.75rem 0 0.75rem;
+}
+
+.home-reviews--category {
+  padding: 2rem 0 1rem;
+}
+
 .home-reviews__grid {
   display: grid;
   gap: 1rem;

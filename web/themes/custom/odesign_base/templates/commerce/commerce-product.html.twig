@@ -138,6 +138,10 @@
         <p class="product-detail__personalization-notice">{{ product_personalization_notice_text }}</p>
       {% endif %}
 
+      {% if product_reviews_block is not empty %}
+        {{ product_reviews_block }}
+      {% endif %}
+
       <p class="product-detail__contact">
         <a href="/contact" class="product-detail__contact-link">
           {{ 'Une question sur ce produit ? Contactez-nous'|t }}
