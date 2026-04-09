@@ -452,7 +452,7 @@
 }
 
 .odesign-top-products__item:first-child .odesign-top-products__rank {
-  background: #4E2620;
+  background: #A86460;
   color: #fff;
 }
 
@@ -477,7 +477,7 @@
 .odesign-top-products__count strong {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #4E2620;
+  color: #A86460;
 }
 
 .odesign-top-products__count-label {
@@ -578,12 +578,12 @@
 
 .odesign-dashboard__section-header h3 .material-symbols-outlined {
   font-size: 1.2rem;
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
 }
 
 .odesign-dashboard__see-all {
   font-size: 0.8rem;
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
   text-decoration: none;
   font-weight: 500;
 }
@@ -648,7 +648,7 @@
   text-overflow: ellipsis;
 }
 .article-item__title:hover {
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
   text-decoration: underline;
 }
 
@@ -698,7 +698,7 @@
 }
 .article-item__btn:hover {
   background: var(--color-brand-bg, #faf4f0);
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
 }
 
 /* ─── Bouton "Écrire un nouvel article" ─────────────────────────────────── */
@@ -712,7 +712,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 18px;
-  background: var(--color-brand-dark, #4E2620);
+  background: var(--color-brand-dark, #A86460);
   color: #fff;
   border-radius: 20px;
   text-decoration: none;
@@ -809,7 +809,7 @@
 .odesign-hub__newsletter-stat .odesign-hub__stat-value {
   font-size: 2rem;
   font-weight: 700;
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
   line-height: 1;
 }
 

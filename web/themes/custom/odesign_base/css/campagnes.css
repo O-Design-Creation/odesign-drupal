@@ -253,7 +253,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
   margin-bottom: 0.25rem;
 }
 
@@ -281,6 +281,6 @@
 
 .campagne-widget__cta:hover,
 .campagne-widget__cta:focus {
-  background: var(--color-brand-dark, #4E2620);
+  background: var(--color-brand-dark, #A86460);
   color: #fff;
 }

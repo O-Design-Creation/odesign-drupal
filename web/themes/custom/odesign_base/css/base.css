@@ -14,14 +14,14 @@
    --------------------------------------------------------------------------- */
 :root {
   /* Palette officielle O'Design Création — fournie par la cliente */
-  --color-brand-dark:     #72413D;   /* 🪵 Brun irisé du logo — footer, header barre annonce, accents forts */
+  --color-brand-dark:     #A86460;   /* 🪵 Brun irisé du logo — footer, header barre annonce, accents forts */
   --color-brand-medium:   #BB7570;   /* 🌸 Rose terracotta doux — barres, hover, boutons secondaires */
   --color-brand-warm:     #8B6151;   /* 🪵 Brun naturel chaud   — prix, CTA forts, icônes */
   --color-brand-beige:    #D9B7A4;   /* 🕊️ Beige rosé lumineux  — fonds chauds, cartes, bordures */
   --color-brand-light:    #ecddd5;   /* Dérivé beige clair      — bordures, fonds légers */
   --color-brand-cream:    #faf4f0;   /* Dérivé crème            — fonds de page alternés */
   --color-accent:         #8B6151;   /* = brand-warm pour cohérence — CTA, prix */
-  --color-accent-hover:   #4E2620;   /* = brand-dark au hover */
+  --color-accent-hover:   #8B6151;   /* = brand-dark au hover */
 
   /* Neutrals — dérivés de la palette officielle */
   --color-text:           #1a1210;   /* quasi-noir chaud */
@@ -980,7 +980,7 @@ strong { font-weight: 600; }
 
 .header-login-link:hover,
 .header-login-link:focus {
-  color: var(--color-brand-dark, #4E2620);
+  color: var(--color-brand-dark, #A86460);
   border-color: var(--color-brand-beige, #D9B7A4);
   background: var(--color-brand-cream, #faf4f0);
 }
@@ -3793,7 +3793,7 @@ nav ul {
 
 .account-dashboard__title {
   font-size: 1.75rem;
-  color: var(--color-terracotta-dark, #4E2620);
+  color: var(--color-terracotta-dark, #A86460);
   margin-bottom: 1.5rem;
 }
 
@@ -3815,7 +3815,7 @@ nav ul {
   background: #fff;
   border: 1px solid #e8d8d0;
   border-radius: 8px;
-  color: #4E2620;
+  color: #A86460;
   text-decoration: none;
   font-weight: 600;
   transition: background 0.2s, box-shadow 0.2s;
@@ -3845,7 +3845,7 @@ nav ul {
 /* Détail commande ----------------------------------------------------- */
 .order-detail__title {
   font-size: 1.5rem;
-  color: #4E2620;
+  color: #A86460;
   margin-bottom: 0.5rem;
 }
 
@@ -3891,7 +3891,7 @@ nav ul {
 .order-detail__section-title {
   font-size: 1rem;
   font-weight: 700;
-  color: #4E2620;
+  color: #A86460;
   border-bottom: 1px solid #e8d8d0;
   padding-bottom: 0.4rem;
   margin-bottom: 0.75rem;
@@ -3902,7 +3902,7 @@ nav ul {
   font-size: 1.1rem;
   font-weight: 700;
   text-align: right;
-  color: #4E2620;
+  color: #A86460;
 }
 
 /* ── Liste commandes client (orders-list + order-card) ───────────────────── */
@@ -3953,7 +3953,7 @@ nav ul {
 
 .order-card__number {
   font-weight: 600;
-  color: #4E2620;
+  color: #A86460;
   font-size: 1rem;
 }
 
@@ -3997,7 +3997,7 @@ nav ul {
 .account-dashboard__section-title {
   font-size: 1rem;
   font-weight: 700;
-  color: #4E2620;
+  color: #A86460;
   margin-bottom: 0.75rem;
   border-bottom: 1px solid #e8d8d0;
   padding-bottom: 0.4rem;
@@ -4031,7 +4031,7 @@ nav ul {
 .confirmation-page__lead {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #4E2620;
+  color: #A86460;
   margin-bottom: 0.75rem;
 }
 
@@ -4066,8 +4066,8 @@ nav ul {
 
 .btn--primary:hover,
 .btn--primary:focus {
-  background: #4E2620;
-  border-color: #4E2620;
+  background: #A86460;
+  border-color: #A86460;
 }
 
 .btn--secondary {
@@ -4098,7 +4098,7 @@ nav ul {
 
 .checkout-complete__message {
   font-size: 1.1rem;
-  color: #4E2620;
+  color: #A86460;
   margin-bottom: 1.75rem;
 }
 

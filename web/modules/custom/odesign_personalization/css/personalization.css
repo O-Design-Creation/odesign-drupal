@@ -11,7 +11,7 @@
 .personalization-fields legend,
 .personalization-fields .fieldset-legend {
   font-weight: 600;
-  color: #4e2620;
+  color: #A86460;
   font-size: 1rem;
   padding: 0 0.5rem;
 }
@@ -61,7 +61,7 @@
 .perso-price-summary {
   margin-top: 1rem;
   padding: 0.75rem 1rem;
-  background: #4e2620;
+  background: #A86460;
   color: #fff;
   border-radius: 4px;
   font-weight: 600;
@@ -110,7 +110,7 @@
   display: inline-flex;
   align-items: center;
   font-weight: 600;
-  color: #4e2620;
+  color: #A86460;
 }
 
 .tree-personalization-group__wall-help {

@@ -13,7 +13,7 @@
   position: sticky;
   top: 0;
   z-index: 499;
-  background: linear-gradient(135deg, #4E2620 0%, #3a1c17 100%);
+  background: linear-gradient(135deg, #A86460 0%, #7a4845 100%);
   padding: 0 20px 0 16px;
   display: flex;
   align-items: center;
@@ -239,11 +239,67 @@
   display: none;
 }
 
-/* ─── Tablette (max-width: 640px — corrigé depuis 860px, F-38) ───────────── */
+/* ─── Bouton hamburger — mobile only ────────────────────────────────────── */
+
+.odesign-admin-nav__burger {
+  display: none; /* caché en desktop */
+  appearance: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+  margin-left: 4px;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: rgba(255,255,255,.75);
+  flex-shrink: 0;
+  transition: background .15s, color .15s;
+}
+
+.odesign-admin-nav__burger:hover {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+
+.odesign-admin-nav__burger:focus-visible {
+  outline: 2px solid rgba(217,183,164,.7);
+  outline-offset: 1px;
+}
+
+.odesign-admin-nav__burger .ph {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* ─── Overlay backdrop drawer ─────────────────────────────────────────────── */
+
+.odesign-admin-nav__overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 998;
+  cursor: pointer;
+}
+
+.odesign-admin-nav__overlay.is-visible {
+  display: block;
+}
+
+/* ─── Pied de drawer : lien "Voir le site" mobile ───────────────────────── */
+
+.odesign-admin-nav__drawer-footer {
+  display: none; /* visible uniquement dans le drawer mobile */
+}
+
+/* ─── Tablette / mobile (max-width: 640px) ───────────────────────────────── */
 
 @media (max-width: 640px) {
   .odesign-admin-nav {
-    height: 40px;
+    height: 44px;
     padding: 0 12px;
   }
 
@@ -253,26 +309,127 @@
 
   .odesign-admin-nav__logo {
     padding-right: 10px;
-    margin-right: 4px;
+    margin-right: 0;
+    border-right: none;
   }
 
-  /* Masquer les labels texte — garder les icônes seules */
+  /* Hamburger visible */
+  .odesign-admin-nav__burger {
+    display: inline-flex;
+  }
+
+  /* Liste d'items cachée — remplacée par le drawer */
+  .odesign-admin-nav__items {
+    display: none;
+    /* Mode drawer : panneau latéral gauche */
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(280px, 85vw);
+    height: 100vh;
+    background: linear-gradient(180deg, #A86460 0%, #7a4845 60%);
+    z-index: 999;
+    padding: 56px 8px 24px;
+    overflow-y: auto;
+    box-shadow: 4px 0 32px rgba(0,0,0,.45);
+    gap: 2px;
+    transform: translateX(-100%);
+    transition: transform .22s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* Drawer ouvert */
+  .odesign-admin-nav__items.is-open {
+    display: flex;
+    transform: translateX(0);
+  }
+
+  /* Liens en pleine largeur dans le drawer */
+  .odesign-admin-nav__items li {
+    width: 100%;
+    flex-shrink: unset;
+  }
+
+  .odesign-admin-nav__items a,
+  .odesign-admin-nav__items button {
+    width: 100%;
+    padding: 0 14px;
+    height: 42px;
+    font-size: 13.5px;
+    border-radius: 8px;
+    justify-content: flex-start;
+  }
+
+  .odesign-admin-nav__items a .ph,
+  .odesign-admin-nav__items button .ph {
+    font-size: 18px;
+  }
+
+  /* Labels visibles dans le drawer */
   .odesign-admin-nav__link-label {
+    display: inline;
+  }
+
+  /* Dropdown en statique dans le drawer */
+  .odesign-admin-nav__group:hover .odesign-admin-nav__dropdown,
+  .odesign-admin-nav__group:focus-within .odesign-admin-nav__dropdown {
+    display: none; /* désactiver hover CSS — géré par JS uniquement */
+  }
+
+  .odesign-admin-nav__group--open .odesign-admin-nav__dropdown {
+    display: block;
+    position: static;
+    background: rgba(0,0,0,.2);
+    border: none;
+    border-radius: 6px;
+    box-shadow: none;
+    padding: 4px 0 4px 8px;
+    margin-top: 2px;
+  }
+
+  .odesign-admin-nav__group--open .odesign-admin-nav__dropdown::before {
     display: none;
   }
 
-  .odesign-admin-nav__items a {
-    padding: 0 8px;
-    height: 30px;
+  /* Lien "Voir le site" en pied de drawer */
+  .odesign-admin-nav__drawer-footer {
+    display: flex;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,.10);
+    width: 100%;
   }
 
-  .odesign-admin-nav__items a .ph {
-    font-size: 19px;
+  .odesign-admin-nav__drawer-footer a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    height: 42px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,.65);
+    text-decoration: none;
+    border-radius: 8px;
+    width: 100%;
+    transition: background .14s, color .14s;
   }
 
-  /* Masquer labels dans la zone droite */
-  .odesign-admin-nav__site-link span:not(.ph),
-  .odesign-admin-nav__logout-label,
+  .odesign-admin-nav__drawer-footer a:hover {
+    background: rgba(255,255,255,.10);
+    color: #fff;
+  }
+
+  .odesign-admin-nav__drawer-footer a .ph {
+    font-size: 18px;
+    color: rgba(255,255,255,.45);
+  }
+
+  /* Zone droite allégée : juste user + logout */
+  .odesign-admin-nav__site-link {
+    display: none;
+  }
+
   .odesign-admin-nav__username {
     display: none;
   }
@@ -367,7 +524,7 @@
   top: calc(100% + 6px);
   left: 0;
   min-width: 200px;
-  background: #3a1c17;
+  background: #7a4845;
   border: 1px solid rgba(255,255,255,.10);
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.20);
@@ -385,7 +542,7 @@
   left: 18px;
   width: 10px;
   height: 10px;
-  background: #3a1c17;
+  background: #7a4845;
   border-left: 1px solid rgba(255,255,255,.10);
   border-top: 1px solid rgba(255,255,255,.10);
   transform: rotate(45deg);

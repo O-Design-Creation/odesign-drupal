@@ -14,6 +14,8 @@
  */
 #}
 
+<div class="odesign-admin-nav__overlay" id="boutique-nav-overlay" aria-hidden="true"></div>
+
 <nav class="odesign-admin-nav" aria-label="Navigation boutique">
 
   {# Logo — lien vers le dashboard (remplace l'item "Tableau de bord") #}
@@ -22,8 +24,17 @@
     <span class="odesign-admin-nav__logo-text">O Design</span>
   </a>
 
+  {# Bouton hamburger — mobile uniquement #}
+  <button class="odesign-admin-nav__burger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="boutique-nav-drawer"
+          aria-label="Ouvrir le menu">
+    <i class="ph ph-list" aria-hidden="true"></i>
+  </button>
+
   {# Items de navigation (déclarés par les modules via hook) #}
-  <ul class="odesign-admin-nav__items" role="list">
+  <ul class="odesign-admin-nav__items" role="list" id="boutique-nav-drawer">
     {% for item in nav_items %}
 
       {% if item.type == 'group' %}
@@ -71,16 +82,25 @@
       {% endif %}
 
     {% endfor %}
+
+    {# Pied du drawer (mobile) — lien vers la homepage du site #}
+    <li class="odesign-admin-nav__drawer-footer" aria-hidden="true">
+      <a href="{{ site_url }}" target="_blank" rel="noopener noreferrer">
+        <i class="ph ph-house" aria-hidden="true"></i>
+        Voir le site
+      </a>
+    </li>
   </ul>
 
-  {# Zone droite : icônes seules + tooltips (libère ~150px) #}
+  {# Zone droite : lien site + user + déconnexion #}
   <div class="odesign-admin-nav__right">
     <a href="{{ site_url }}"
-       class="odesign-admin-nav__icon-btn"
+       class="odesign-admin-nav__site-link"
        target="_blank" rel="noopener noreferrer"
-       title="Voir le site"
+       title="Voir le site (nouvel onglet)"
        aria-label="Voir le site (nouvel onglet)">
       <i class="ph ph-arrow-square-out" aria-hidden="true"></i>
+      <span>Voir le site</span>
     </a>
     <span class="odesign-admin-nav__icon-btn odesign-admin-nav__user"
           title="{{ username }}"

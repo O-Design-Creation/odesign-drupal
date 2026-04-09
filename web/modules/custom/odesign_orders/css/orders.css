@@ -5,7 +5,7 @@
 
 /* ─── Variables locales (héritent de la palette boutique) ─────────────────── */
 :root {
-  --orders-primary: #4E2620;
+  --orders-primary: #A86460;
   --orders-accent: #D9B7A4;
   --orders-bg: #f8f4ef;
   --orders-border: #e4d9cb;
@@ -217,7 +217,7 @@
 }
 
 .odesign-orders__btn--primary:hover {
-  background: #3a1c17;
+  background: #7a4845;
   color: #fff;
 }
 
@@ -337,7 +337,7 @@
 }
 
 .odesign-order-detail__transition-btn:hover {
-  background: #3a1c17;
+  background: #7a4845;
 }
 
 .odesign-order-detail__transition-btn--danger {

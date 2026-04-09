@@ -1,6 +1,6 @@
 /**
  * search.css — Styles moteur de recherche produits (TCK-018)
- * Palette : #4E2620 (foncé) / #BB7570 (terracotta) / #8B6151 (moyen) / #D9B7A4 (clair)
+ * Palette : #A86460 (foncé) / #BB7570 (terracotta) / #8B6151 (moyen) / #D9B7A4 (clair)
  */
 
 /* ===========================
@@ -17,7 +17,7 @@
   border: none;
   cursor: pointer;
   padding: var(--space-1);
-  color: var(--color-text, #4E2620);
+  color: var(--color-text, #A86460);
   border-radius: 4px;
   transition: color 0.2s, background 0.2s;
   display: flex;
@@ -76,7 +76,7 @@
   border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   background: #fdfaf8;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -111,7 +111,7 @@
 }
 
 .header-search-panel__close:hover {
-  color: #4E2620;
+  color: var(--color-brand-dark);
 }
 
 /* ===========================
@@ -160,7 +160,7 @@
 
 .view-recherche-produits .views-exposed-form label {
   font-weight: 600;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   margin-bottom: var(--space-1);
   display: block;
 }
@@ -172,7 +172,7 @@
   border: 1.5px solid #D9B7A4;
   border-radius: 6px;
   font-size: 1rem;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   background: #fff;
   transition: border-color 0.2s;
 }
@@ -220,7 +220,7 @@
 
 .search-no-results-extended__title {
   margin: 0 0 0.4rem;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   font-size: 1.2rem;
 }
 
@@ -231,7 +231,7 @@
 
 .search-no-results-extended__section-title {
   margin: 0.6rem 0 0.2rem;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   font-size: 0.95rem;
 }
 
@@ -263,7 +263,7 @@
   font-family: 'Playfair Display', serif;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   padding: var(--space-3) var(--space-4);
   margin: 0;
   border-bottom: 1px solid #D9B7A4;
@@ -291,7 +291,7 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-4);
-  color: #4E2620;
+  color: var(--color-brand-dark);
   text-decoration: none;
   font-size: 0.9rem;
   transition: background 0.15s, color 0.15s;
@@ -370,7 +370,7 @@
 .ui-autocomplete .ui-menu-item-wrapper {
   display: block;
   padding: var(--space-2) var(--space-4);
-  color: #4E2620;
+  color: var(--color-brand-dark);
   font-size: 0.9rem;
   text-decoration: none;
   cursor: pointer;
@@ -412,7 +412,7 @@
   padding: 0.4rem 0.8rem;
   border: 1.5px solid #D9B7A4;
   border-radius: 4px;
-  color: #4E2620;
+  color: var(--color-brand-dark);
   text-decoration: none;
   transition: background 0.15s, border-color 0.15s;
 }
