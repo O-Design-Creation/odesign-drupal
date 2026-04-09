@@ -12,7 +12,8 @@
     "audit:lighthouse": "node playwright/scripts/audit-lighthouse.js",
     "audit:full": "node playwright/scripts/audit-frontend.js && node playwright/scripts/audit-a11y.js && node playwright/scripts/audit-seo.js && node playwright/scripts/audit-performance.js",
     "audit:general": "node playwright/scripts/audit-general.js",
-    "audit:report": "node playwright/scripts/audit-report-html.js"
+    "audit:report": "node playwright/scripts/audit-report-html.js",
+    "audit:docs-images": "bash scripts/audit-doc-images.sh"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.9.1",

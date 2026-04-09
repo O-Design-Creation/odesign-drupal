@@ -92,3 +92,10 @@ Si quelque chose ne fonctionne pas comme décrit dans cette documentation :
 ---
 
 *Documentation O'Design Création — v1.0 — Pour toute question : contactez votre prestataire technique*
+
+---
+
+### Note prestataire technique
+
+La maintenance des captures d'écran de cette documentation est décrite dans :
+[MAINTENANCE.md](MAINTENANCE.md)
