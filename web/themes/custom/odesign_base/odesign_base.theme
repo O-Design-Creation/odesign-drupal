@@ -2,7 +2,7 @@
 
 /**
  * @file
- * odesign_base.theme — Fonctions du thème O'Design Création.
+ * odesign_base.theme — Fonctions du thème O\'Design Création.
  */
 
 use Drupal\image\Entity\ImageStyle;
@@ -110,13 +110,21 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
   $variables['product_has_volume_offer'] = FALSE;
   $variables['product_volume_offer_label'] = '';
   $variables['product_volume_offer_tiers'] = [];
+  $variables['product_show_personalization_notice'] = FALSE;
+  $variables['product_personalization_notice_text'] = (string) t('Les produits personnalisés selon les informations fournies par le client ne peuvent être ni modifiés, ni retournés, ni remboursés en cas d’erreur de saisie (orthographe, prénom, date, etc.). Merci de vérifier attentivement vos informations avant validation de la commande.');
   $product_term_ids = [];
+  $product_is_pancarte_evenementielle = FALSE;
 
   if ($product->hasField('field_life_occasion') && !$product->get('field_life_occasion')->isEmpty()) {
     $terms = $product->get('field_life_occasion')->referencedEntities();
+    $alias_manager = \Drupal::service('path_alias.manager');
     foreach ($terms as $term) {
       if ($term instanceof TermInterface) {
         $product_term_ids[] = (int) $term->id();
+        $term_alias = $alias_manager->getAliasByPath('/taxonomy/term/' . $term->id());
+        if ($term_alias === '/occasions/pancarte-evenementielles') {
+          $product_is_pancarte_evenementielle = TRUE;
+        }
         $variables['product_life_occasion_links'][] = [
           'title' => $term->label(),
           'url' => $term->toUrl()->toString(),
@@ -143,6 +151,10 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
       }
     }
   }
+
+  $has_personalization_template = $product->hasField('field_personalization_template')
+    && !$product->get('field_personalization_template')->isEmpty();
+  $variables['product_show_personalization_notice'] = $has_personalization_template && !$product_is_pancarte_evenementielle;
 
   // Offre volume configurable (scope univers/produits), 1ère règle applicable.
   $raw_rules = \Drupal::config('odesign_admin.settings')->get('promotion_volume_rules') ?? [];
@@ -242,7 +254,7 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
     '@context' => 'https://schema.org',
     '@type'    => 'Product',
     'name'     => $product->label(),
-    'brand'    => ['@type' => 'Brand', 'name' => 'O'Design Création'],
+    'brand'    => ['@type' => 'Brand', 'name' => 'O\'Design Création'],
     'url'      => $product->toUrl('canonical', ['absolute' => TRUE])->toString(),
   ];
 
@@ -892,6 +904,23 @@ function odesign_base_preprocess_page(array &$variables): void {
     static fn(TermInterface $term) => odesign_base_build_life_occasion_card($term, 3),
     $terms
   );
+  $variables['front_pancarte_offer'] = NULL;
+  $alias_manager = \Drupal::service('path_alias.manager');
+  foreach ($terms as $term) {
+    $term_alias = $alias_manager->getAliasByPath('/taxonomy/term/' . $term->id());
+    if ($term_alias !== '/occasions/pancarte-evenementielles') {
+      continue;
+    }
+    $pancarte_card = odesign_base_build_life_occasion_card($term, 3);
+    $variables['front_pancarte_offer'] = [
+      'title' => $pancarte_card['title'] ?? $term->label(),
+      'url' => $pancarte_card['url'] ?? $term->toUrl()->toString(),
+      'intro' => $pancarte_card['intro'] ?? '',
+      'image_url' => $pancarte_card['preview_image_url'] ?? '',
+      'reassurance_items' => $pancarte_card['reassurance_items'] ?? [],
+    ];
+    break;
+  }
   $hero = odesign_base_build_homepage_hero();
   $variables['front_hero_image_url'] = $hero['url'];
   $variables['front_hero_text_mode'] = $hero['text_mode'];
@@ -1207,7 +1236,7 @@ function odesign_base_preprocess_node(array &$variables): void {
     'url'           => $node_url,
     'publisher'     => [
       '@type' => 'Organization',
-      'name'  => 'O'Design Création',
+      'name'  => 'O\'Design Création',
       'url'   => $base_url . '/',
     ],
   ];

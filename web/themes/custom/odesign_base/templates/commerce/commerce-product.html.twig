@@ -134,6 +134,10 @@
         {{- product|without('title', 'body', 'field_product_images') -}}
       </div>
 
+      {% if product_show_personalization_notice %}
+        <p class="product-detail__personalization-notice">{{ product_personalization_notice_text }}</p>
+      {% endif %}
+
       <p class="product-detail__contact">
         <a href="/contact" class="product-detail__contact-link">
           {{ 'Une question sur ce produit ? Contactez-nous'|t }}

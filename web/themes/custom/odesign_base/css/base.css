@@ -578,40 +578,41 @@ strong { font-weight: 600; }
   }
 
   .menu-dropdown__link {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     font-weight: 500;
-    padding: var(--space-3) var(--space-3);
+    line-height: 1.35;
+    padding: var(--space-2) var(--space-3);
     border-bottom: 1px solid rgba(139, 97, 81, 0.12);
   }
 
   .site-nav a {
     display: block;
     width: 100%;
-    font-size: clamp(1.3rem, 4.6vw, 1.65rem);
-    line-height: 1.28;
-    font-weight: 600;
+    font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+    line-height: 1.34;
+    font-weight: 500;
     text-decoration: none;
     padding: var(--space-4) 0;
     color: var(--color-brand-dark);
     border-bottom: 1px solid rgba(139, 97, 81, 0.12);
     border-radius: 0;
     text-transform: none;
-    letter-spacing: 0;
+    letter-spacing: 0.01em;
   }
 
   .site-nav .menu-item__summary {
     display: block;
     width: 100%;
-    font-size: clamp(1.3rem, 4.6vw, 1.65rem);
-    line-height: 1.28;
-    font-weight: 600;
+    font-size: clamp(1.1rem, 4.2vw, 1.35rem);
+    line-height: 1.34;
+    font-weight: 500;
     text-decoration: none;
     padding: var(--space-4) 0;
     color: var(--color-brand-dark);
     border-bottom: 1px solid rgba(139, 97, 81, 0.12);
     border-radius: 0;
     text-transform: none;
-    letter-spacing: 0;
+    letter-spacing: 0.01em;
   }
 
   .site-nav a:hover,
@@ -1649,6 +1650,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: auto;
 }
@@ -1665,6 +1667,9 @@ textarea {
   font-size: var(--font-size-xs);
   padding: var(--space-2) var(--space-3);
   flex-shrink: 0;
+  margin-left: auto;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
 /* Header catalogue */
@@ -1957,6 +1962,18 @@ textarea {
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   color: var(--color-text-muted);
+}
+
+.product-detail__personalization-notice {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid #efb4c9;
+  border-left: 4px solid #dd6e99;
+  border-radius: var(--radius-md);
+  background: #fff4f8;
+  color: #7a2b4a;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
 }
 
 .product-detail__navigation {
@@ -3157,6 +3174,44 @@ nav ul {
   padding: clamp(2.75rem, 5vw, 4.5rem) 0;
 }
 
+.home-pancarte-offer {
+  padding: 0 0 clamp(2.25rem, 4vw, 3.5rem);
+}
+
+.home-pancarte-offer__inner {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(139, 97, 81, 0.14);
+  background: linear-gradient(180deg, #fff 0%, #fdf7f4 100%);
+  box-shadow: 0 10px 22px rgba(78, 38, 32, 0.06);
+}
+
+.home-pancarte-offer__media {
+  display: block;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-brand-cream);
+}
+
+.home-pancarte-offer__media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.home-pancarte-offer__content {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.home-pancarte-offer__content p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
 .home-universe-quick {
   padding: clamp(2rem, 4vw, 3rem) 0 clamp(1.2rem, 2.4vw, 2rem);
   background: linear-gradient(180deg, #fff 0%, #fdf9f7 100%);
@@ -3663,9 +3718,28 @@ nav ul {
   .home-story-proof__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .home-pancarte-offer__inner {
+    grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.2fr);
+    align-items: center;
+  }
 }
 
 @media (max-width: 980px) {
+  .life-occasion-cards {
+    display: flex;
+    overflow-x: auto;
+    gap: var(--space-4);
+    padding-bottom: var(--space-2);
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .life-occasion-card {
+    flex: 0 0 min(86vw, 420px);
+    scroll-snap-align: start;
+  }
+
   .home-story-proof__grid {
     grid-template-columns: 1fr;
   }
@@ -3692,6 +3766,11 @@ nav ul {
   /* R-03/R-04 — intro plus légère sur mobile */
   .home-hero__intro {
     font-size: var(--font-size-base);
+  }
+
+  .product-card__cta {
+    width: 100%;
+    text-align: center;
   }
 
   /* R-07 — panel highlights masqué sur mobile pour alléger le hero */

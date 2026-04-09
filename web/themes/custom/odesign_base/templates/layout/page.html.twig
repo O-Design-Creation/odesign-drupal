@@ -66,8 +66,8 @@
       <div class="site-header__inner">
 
         {# Logo — lien séparé, jamais wrappé autour de blocs dynamiques #}
-        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Retour à l\'accueil O'Design Création'|t }}" aria-label="{{ 'Retour à l\'accueil O'Design Création'|t }}">
-          <img src="{{ base_path ~ directory }}/logo.svg" alt="{{ 'O'Design Création'|t }}">
+        <a href="{{ path('<front>') }}" class="site-logo" title="{{ "Retour à l'accueil O'Design Création"|t }}" aria-label="{{ "Retour à l'accueil O'Design Création"|t }}">
+          <img src="{{ base_path ~ directory }}/logo.svg" alt="{{ "O'Design Création"|t }}">
         </a>
 
         {# Blocs optionnels région header (ex: branding personnalisé) #}
@@ -228,7 +228,7 @@
         >
           <div class="container home-hero__inner">
             <div class="home-hero__content">
-              <p class="home-hero__eyebrow">{{ 'O'Design Création'|t }}</p>
+              <p class="home-hero__eyebrow">{{ "O'Design Création"|t }}</p>
               <h1 class="home-hero__title">
                 {{ 'Des créations en bois personnalisées pour les moments qui comptent.'|t }}
               </h1>
@@ -237,15 +237,14 @@
               </p>
               <div class="home-hero__actions">
                 <a href="#home-universes" class="btn btn--primary">{{ 'Voir les univers'|t }}</a>
-                <a href="{{ front_catalogue_url }}" class="btn btn--secondary">{{ 'Voir tout le catalogue'|t }}</a>
               </div>
             </div>
 
-            <aside class="home-hero__panel" aria-label="{{ 'Points forts O'Design Création'|t }}">
+            <aside class="home-hero__panel" aria-label="{{ "Points forts O'Design Création"|t }}">
               <ul class="home-hero__highlights">
                 <li>{{ 'Atelier réel, fabrication soignée et personnalisations lisibles.'|t }}</li>
                 <li>{{ 'Univers pensés pour le mariage, la naissance et les cadeaux personnalisés.'|t }}</li>
-                <li>{{ 'Chaque création est réalisée avec soin dans notre atelier, en France.'|t }}</li>
+                <li>{{ 'Chaque création est réalisée avec soin dans notre atelier, en France, dans le Nord.'|t }}</li>
               </ul>
             </aside>
           </div>
@@ -319,6 +318,28 @@
             </div>
           </div>
         </section>
+
+        {% if front_pancarte_offer %}
+          <section class="home-pancarte-offer" aria-label="{{ 'Offre pancartes événementielles'|t }}">
+            <div class="container home-pancarte-offer__inner">
+              {% if front_pancarte_offer.image_url %}
+                <a href="{{ front_pancarte_offer.url }}" class="home-pancarte-offer__media">
+                  <img src="{{ front_pancarte_offer.image_url }}" alt="{{ front_pancarte_offer.title }}" loading="lazy" decoding="async">
+                </a>
+              {% endif %}
+              <div class="home-pancarte-offer__content">
+                <p class="section-heading__eyebrow">{{ 'Offre mise en avant'|t }}</p>
+                <h2 class="section-heading__title">{{ 'Pancartes événementielles'|t }}</h2>
+                {% if front_pancarte_offer.intro %}
+                  <p>{{ front_pancarte_offer.intro }}</p>
+                {% else %}
+                  <p>{{ 'Découvrez des pancartes personnalisées pour mariages, anniversaires et moments clés.'|t }}</p>
+                {% endif %}
+                <a href="{{ front_pancarte_offer.url }}" class="btn btn--primary">{{ 'Découvrir l’offre'|t }}</a>
+              </div>
+            </div>
+          </section>
+        {% endif %}
 
         <section class="home-story-proof">
           <div class="container">
@@ -450,9 +471,9 @@
       {% else %}
         <div class="container">
           {% if is_contact_page %}
-            <section class="contact-hero" aria-label="{{ 'Contacter O'Design Création'|t }}">
+            <section class="contact-hero" aria-label="{{ "Contacter O'Design Création"|t }}">
               <div class="contact-hero__content">
-                <p class="contact-hero__eyebrow">{{ 'O'Design Création'|t }}</p>
+                <p class="contact-hero__eyebrow">{{ "O'Design Création"|t }}</p>
                 <h1 class="contact-hero__title">{{ 'Parlons de votre création personnalisée'|t }}</h1>
                 <p class="contact-hero__intro">
                   {{ 'Une question sur un produit, une personnalisation ou un délai ? Nous vous répondons rapidement.'|t }}
@@ -516,7 +537,7 @@
         <div class="container">
           <div class="newsletter-strip__inner">
             <div class="newsletter-strip__text">
-              <h2 class="newsletter-strip__title">{{ 'Restez inspirée'|t }}</h2>
+              <h2 class="newsletter-strip__title">{{ 'Restez inspiré'|t }}</h2>
               <p class="newsletter-strip__desc">{{ 'Recevez nos nouvelles créations, offres exclusives et actualités de l\'atelier directement dans votre boîte mail.'|t }}</p>
             </div>
             <div class="newsletter-strip__form">
