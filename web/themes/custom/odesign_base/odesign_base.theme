@@ -111,7 +111,7 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
   $variables['product_volume_offer_label'] = '';
   $variables['product_volume_offer_tiers'] = [];
   $variables['product_show_personalization_notice'] = FALSE;
-  $variables['product_personalization_notice_text'] = (string) t('Les produits personnalisés selon les informations fournies par le client ne peuvent être ni modifiés, ni retournés, ni remboursés en cas d’erreur de saisie (orthographe, prénom, date, etc.). Merci de vérifier attentivement vos informations avant validation de la commande.');
+  $variables['product_personalization_notice_text'] = (string) t('Les produits étant personnalisés selon les informations fournies par le client, aucune modification, retour ou remboursement ne pourra être effectué en cas d’erreur de saisie (orthographe, prénom, date, etc.). Nous vous invitons à vérifier attentivement vos informations avant validation de votre commande.');
   $product_term_ids = [];
   $product_is_pancarte_evenementielle = FALSE;
 
