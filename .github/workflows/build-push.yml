@@ -66,6 +66,8 @@ jobs:
           tags: |
             type=ref,event=tag
             type=sha,prefix=sha-
+            type=raw,value=preprod,enable=${{ steps.tag_type.outputs.is_preprod == 'true' }}
+            type=raw,value=prod,enable=${{ steps.tag_type.outputs.is_preprod == 'false' }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
