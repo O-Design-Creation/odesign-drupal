@@ -27,6 +27,30 @@ Cette commande enchaîne:
 2. Vérification de chargement réel dans Drupal, chapitre par chapitre  
    script: `playwright/scripts/check-doc-images-all.js`
 
+## Intégration au déploiement Pantheon
+
+Le script de déploiement batch inclut désormais un pré-check doc:
+
+```bash
+bash scripts/deploy-pantheon-batch.sh atelierodesign.dev master
+```
+
+Variable dédiée:
+
+- `DEPLOY_DOC_AUDIT=auto` (défaut): lance l’audit doc uniquement si les fichiers doc/captures/scripts doc ont changé
+- `DEPLOY_DOC_AUDIT=1`: force l’audit doc avant push
+- `DEPLOY_DOC_AUDIT=0`: désactive ce pré-check
+
+Exemples:
+
+```bash
+# Simuler le déploiement + voir le plan (sans push)
+DEPLOY_DRY_RUN=1 DEPLOY_DOC_AUDIT=auto bash scripts/deploy-pantheon-batch.sh atelierodesign.dev master
+
+# Forcer le contrôle doc avant push réel
+DEPLOY_DOC_AUDIT=1 bash scripts/deploy-pantheon-batch.sh atelierodesign.dev master
+```
+
 ## Regénérer des captures (chapitre avis clients)
 
 ```bash
