@@ -72,6 +72,7 @@ module:
   odesign_personalization: 0
   odesign_personalization_poc: 0
   odesign_promotions: 0
+  odesign_reviews: 0
   options: 0
   page_cache: 0
   path: 0
