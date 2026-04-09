@@ -7,6 +7,7 @@
 #
 # Secrets requis dans GitHub → Settings → Secrets :
 #   COOLIFY_PREPROD_WEBHOOK  — webhook Coolify pour déclencher le déploiement preprod
+#   COOLIFY_API_TOKEN        — token API Coolify (Bearer)
 # ──────────────────────────────────────────────────────────────────────────────
 
 name: Build & Push Docker image
@@ -98,6 +99,7 @@ jobs:
       - name: Déclencher webhook Coolify (preprod)
         run: |
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
             -X GET "${{ secrets.COOLIFY_PREPROD_WEBHOOK }}")
           if [ "$HTTP_CODE" != "200" ] && [ "$HTTP_CODE" != "201" ]; then
             echo "Webhook Coolify a répondu HTTP $HTTP_CODE"
