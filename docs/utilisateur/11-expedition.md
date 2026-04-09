@@ -1,8 +1,4 @@
-# 11 — Expédition et transporteurs
-
-> Guide gestionnaire boutique · O'Design Création
-
----
+# Expédition et transporteurs
 
 ## État des fonctionnalités par transporteur
 
@@ -13,7 +9,7 @@
 | **Chronopost** | ✅ Disponible | — | ⏳ Phase future |
 | **Mondial Relay** | ✅ Disponible | ✅ Widget actif (BDTEST → prod) | ⏳ Phase future |
 
-> **Phases :** La sélection du transporteur et la saisie du numéro de suivi sont disponibles dès maintenant. La génération automatique d'étiquettes d'expédition nécessite une intégration API par transporteur — prévu en V2.
+> 💡 **Phases :** La sélection du transporteur et la saisie du numéro de suivi sont disponibles dès maintenant. La génération automatique d'étiquettes d'expédition nécessite une intégration API par transporteur — prévu en V2.
 
 ---
 
@@ -27,7 +23,7 @@
 | **Mondial Relay** — Point relais | 3,90 € | Réseau Mondial Relay |
 | **Mondial Relay gratuit** *(≥ 50€)* | 0,00 € | Réseau Mondial Relay |
 
-> **Note :** Le Mondial Relay gratuit n'apparaît dans la liste du checkout que si le montant du panier est supérieur ou égal à 50 €.
+> 💡 **Note :** Le Mondial Relay gratuit n'apparaît dans la liste du checkout que si le montant du panier est supérieur ou égal à 50 €.
 
 ---
 
@@ -37,7 +33,7 @@
 2. Cliquez sur une commande pour ouvrir son détail
 3. Dans le bloc **Transporteur & suivi** (colonne de gauche), le transporteur sélectionné par le client s'affiche en gras
 
-> **Mondial Relay :** l'adresse du point relais choisi par le client est visible dans le bloc **Adresse de livraison** de la même fiche commande.
+> 💡 **Mondial Relay :** l'adresse du point relais choisi par le client est visible dans le bloc **Adresse de livraison** de la même fiche commande.
 
 ![Bloc Transporteur & suivi sur la fiche commande](screenshots/transporteurs-detail-commande.png)
 
@@ -62,13 +58,13 @@ Le numéro est immédiatement enregistré. Si le transporteur est reconnu (Colis
 | Chronopost | `https://www.chronopost.fr/tracking-no-cms/suivi-page?listeNumerosLt={numéro}` |
 | Mondial Relay | `https://www.mondialrelay.fr/suivi-de-colis/?numColis={numéro}` |
 
-> Le lien s'ouvre dans un nouvel onglet. Il suffit de cliquer sur le numéro de suivi affiché dans la fiche commande.
+> 💡 Le lien s'ouvre dans un nouvel onglet. Il suffit de cliquer sur le numéro de suivi affiché dans la fiche commande.
 
 ---
 
 ## Configurer le widget point relais Mondial Relay
 
-> **Backoffice** : Configuration → Transporteurs & tarifs → "Mondial Relay — Point relais" → Modifier
+> 📍 **Backoffice** : Configuration → Transporteurs & tarifs → "Mondial Relay — Point relais" → Modifier
 
 Le widget de sélection de point relais est actif avec un **Brand ID de test** (`BDTEST`). Pour la mise en production, il faut le remplacer par votre Brand ID réel.
 
@@ -95,7 +91,7 @@ Le widget de sélection de point relais est actif avec un **Brand ID de test** (
 
 ## Configurer les tarifs d'un transporteur
 
-> **Backoffice** : Configuration → Transporteurs & tarifs
+> 📍 **Backoffice** : Configuration → Transporteurs & tarifs
 
 Tous les transporteurs sont modifiables depuis le backoffice sans intervention technique.
 
@@ -120,7 +116,7 @@ Tous les transporteurs sont modifiables depuis le backoffice sans intervention t
 
 ## Imprimer les étiquettes d'expédition (workflow interim)
 
-> La génération d'étiquettes depuis le backoffice est prévue en **V2** (intégration API par transporteur).
+> 💡 La génération d'étiquettes depuis le backoffice est prévue en **V2** (intégration API par transporteur).
 > En attendant, voici le workflow à suivre pour chaque expédition.
 
 ### Principe général
@@ -162,11 +158,11 @@ Si vous avez un contrat professionnel, chaque transporteur met à disposition un
 4. **Copier le numéro de suivi** (ex : `6X123456789FR`) dans la fiche commande Drupal → cliquer **Enregistrer**
 5. Imprimer l'étiquette et la coller sur le colis
 
-> Le numéro de suivi saisi dans Drupal génère automatiquement un **lien cliquable** vers le site de suivi du transporteur, consultable en backoffice.
+> 💡 Le numéro de suivi saisi dans Drupal génère automatiquement un **lien cliquable** vers le site de suivi du transporteur, consultable en backoffice.
 
 ---
 
-
+## Dépannage
 
 Si les méthodes d'expédition n'apparaissent pas au checkout, contactez votre prestataire technique pour relancer le script de configuration :
 
@@ -176,4 +172,4 @@ ddev drush php-script scripts/seed-shipping-methods.php
 
 Ce script est idempotent : il peut être relancé sans créer de doublons.
 
-> **Note :** Cette commande s'exécute en environnement de développement local (DDEV). Sur Pantheon, le prestataire utilisera l'équivalent via Terminus.
+> 💡 **Note :** Cette commande s'exécute en environnement de développement local (DDEV). Sur Pantheon, le prestataire utilisera l'équivalent via Terminus.

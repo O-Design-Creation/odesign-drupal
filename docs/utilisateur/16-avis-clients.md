@@ -1,6 +1,6 @@
 # Avis clients
 
-> **Rôle concerné** : gestionnaire_boutique  
+> 📍 **Rôle concerné** : gestionnaire_boutique  
 > **Objectif** : valider ou refuser les avis reçus après livraison
 
 ![Liste des avis clients à modérer](screenshots/reviews-liste.png)
@@ -37,7 +37,7 @@ Le site collecte les avis automatiquement après la livraison d’une commande:
 4. Après envoi, l’avis arrive en statut **pending** dans votre backoffice.
 5. Vous choisissez ensuite de **publier** (approuver) ou **refuser** (rejeter) l’avis.
 
-> Important : le lien d’avis est à usage unique (un avis par commande), pour éviter les doublons.
+> ⚠️ **Important** : le lien d’avis est à usage unique (un avis par commande), pour éviter les doublons.
 
 ![Formulaire d'avis reçu par le client via lien unique](screenshots/reviews-formulaire-client.png)
 

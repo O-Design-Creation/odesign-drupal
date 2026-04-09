@@ -1,4 +1,4 @@
-# 13 — Campagnes saisonnières
+# Campagnes saisonnières
 
 Les campagnes saisonnières vous permettent de créer des pages promotionnelles dédiées à des occasions récurrentes (Noël, Saint-Valentin, fête des mères, etc.) et de les programmer à l'avance.
 
@@ -34,7 +34,7 @@ Le module **Scheduler** vous permet de définir des dates automatiques :
 2. Renseignez la **date de publication** : la campagne sera mise en ligne automatiquement à cette date/heure.
 3. Renseignez la **date de dépublication** : la campagne sera retirée automatiquement (sans intervention de votre part).
 
-> **Exemple** : Pour une campagne Noël 2026, publiez le 1er novembre 2026 à 09h00 et dépubliez le 2 janvier 2027 à 00h00.
+> 💡 **Exemple** : Pour une campagne Noël 2026, publiez le 1er novembre 2026 à 09h00 et dépubliez le 2 janvier 2027 à 00h00.
 
 ![Section "Options de planification" — champs Publier le / Dépublier le](screenshots/campagnes-formulaire-scheduler.png)
 
@@ -49,7 +49,7 @@ Pour qu'une campagne apparaisse dans le widget **"Campagne en cours"** sur la pa
 1. Dans le formulaire, cochez la case **Mettre en avant** (champ *Promote to front page*).
 2. Assurez-vous que la campagne est publiée (ou programmée).
 
-> Le widget affiche uniquement la campagne mise en avant la plus récente. Si plusieurs campagnes sont cochées "Mettre en avant", seule la plus récente est affichée.
+> ⚠️ Le widget affiche uniquement la campagne mise en avant la plus récente. Si plusieurs campagnes sont cochées "Mettre en avant", seule la plus récente est affichée.
 
 ![Widget "Campagne en cours" sur la homepage](screenshots/campagnes-widget-homepage.png)
 

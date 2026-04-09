@@ -10,28 +10,96 @@
  */
 #}
 {{ attach_library('odesign_admin/documentation') }}
-<div class="odesign-documentation">
 
-  {# Navigation chapitres #}
+{# ——— Mapping icônes par chapitre ——— #}
+{% set icons = {
+  '01-configuration-boutique':   'ph-gear-six',
+  '02-commandes':                'ph-shopping-cart-simple',
+  '03-produits':                 'ph-package',
+  '04-promotions':               'ph-tag',
+  '05-contenu-editorial':        'ph-newspaper',
+  '06-newsletter':               'ph-envelope-simple',
+  '07-clients':                  'ph-users-three',
+  '08-espace-client':            'ph-user-circle',
+  '09-personnalisation':         'ph-magic-wand',
+  '10-recherche':                'ph-magnifying-glass',
+  '11-expedition':               'ph-truck',
+  '12-analytics':                'ph-chart-line-up',
+  '13-campagnes':                'ph-megaphone-simple',
+  '14-sso-connexion-google':     'ph-google-logo',
+  '15-assistant-ia':             'ph-robot',
+  '16-avis-clients':             'ph-star-half',
+  '17-demandes-sav':             'ph-lifebuoy',
+} %}
+
+{# ——— Index de la position du chapitre courant ——— #}
+{% set current_index = 0 %}
+{% for i, chap in chapters %}
+  {% if chap.chapter == current %}
+    {% set current_index = i + 1 %}
+  {% endif %}
+{% endfor %}
+
+<div class="odesign-documentation{% if content %} odesign-documentation--chapter{% endif %}">
+
+  {# ——— Navigation latérale ——— #}
   <nav class="odesign-documentation__nav" aria-label="Chapitres de la documentation">
-    <h2 class="odesign-documentation__nav-title">
-      <i class="ph ph-book-bookmark"></i> Documentation
-    </h2>
-    <ul class="odesign-documentation__nav-list">
-      {% for chap in chapters %}
-        <li class="odesign-documentation__nav-item{% if chap.chapter == current %} is-active{% endif %}">
-          <a href="{{ path('odesign_admin.documentation_chapter', {chapter: chap.chapter}) }}"
-             {% if chap.chapter == current %}aria-current="page"{% endif %}>
-            {{ chap.title }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
+
+    {# Toggle mobile #}
+    <button class="odesign-documentation__nav-toggle" aria-expanded="true" aria-controls="doc-nav-list">
+      <i class="ph ph-book-bookmark"></i>
+      <span>Documentation</span>
+      <i class="ph ph-caret-down odesign-documentation__nav-caret"></i>
+    </button>
+
+    <div id="doc-nav-list" class="odesign-documentation__nav-inner">
+      <h2 class="odesign-documentation__nav-title" aria-hidden="true">
+        <i class="ph ph-book-bookmark"></i> Documentation
+      </h2>
+      <ul class="odesign-documentation__nav-list">
+        {% for i, chap in chapters %}
+          <li class="odesign-documentation__nav-item{% if chap.chapter == current %} is-active{% endif %}">
+            <a href="{{ path('odesign_admin.documentation_chapter', {chapter: chap.chapter}) }}"
+               {% if chap.chapter == current %}aria-current="page"{% endif %}>
+              <span class="odesign-documentation__nav-num">{{ '%02d'|format(i + 1) }}</span>
+              {{ chap.title }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </nav>
 
-  {# Contenu principal #}
+  {# ——— Corps principal ——— #}
   <div class="odesign-documentation__body">
     {% if content %}
+
+      {# Indicateur de progression #}
+      {% if current_index > 0 %}
+        <div class="odesign-documentation__progress">
+          <span class="odesign-documentation__progress-badge">
+            {{ current_index }} / {{ chapters|length }}
+          </span>
+          <div class="odesign-documentation__progress-bar" role="progressbar"
+               aria-valuenow="{{ current_index }}"
+               aria-valuemin="1"
+               aria-valuemax="{{ chapters|length }}">
+            <div class="odesign-documentation__progress-fill"
+                 style="width: {{ ((current_index / chapters|length) * 100)|round }}%"></div>
+          </div>
+        </div>
+      {% endif %}
+
+      {# TOC — peuplé par JS #}
+      <aside class="odesign-documentation__toc" hidden aria-label="Sommaire du chapitre">
+        <button class="odesign-documentation__toc-toggle" aria-expanded="true">
+          <i class="ph ph-list"></i> Dans ce chapitre
+          <i class="ph ph-caret-down odesign-documentation__toc-caret"></i>
+        </button>
+        <ul class="odesign-documentation__toc-list"></ul>
+      </aside>
+
+      {# Contenu Markdown #}
       <div class="odesign-documentation__markdown prose">
         {{ content|raw }}
       </div>
@@ -51,14 +119,16 @@
           <div class="odesign-documentation__pager-prev">
             {% if prev %}
               <a href="{{ path('odesign_admin.documentation_chapter', {chapter: prev.chapter}) }}">
-                <i class="ph ph-arrow-left"></i> {{ prev.title }}
+                <i class="ph ph-arrow-left"></i>
+                <span class="odesign-documentation__pager-label">{{ prev.title }}</span>
               </a>
             {% endif %}
           </div>
           <div class="odesign-documentation__pager-next">
             {% if next %}
               <a href="{{ path('odesign_admin.documentation_chapter', {chapter: next.chapter}) }}">
-                {{ next.title }} <i class="ph ph-arrow-right"></i>
+                <span class="odesign-documentation__pager-label">{{ next.title }}</span>
+                <i class="ph ph-arrow-right"></i>
               </a>
             {% endif %}
           </div>
@@ -67,7 +137,7 @@
 
     {% else %}
 
-      {# Page d'index — grille des chapitres #}
+      {# ——— Page d'index — grille des chapitres ——— #}
       <div class="odesign-documentation__index">
         <h1 class="odesign-documentation__index-title">
           <i class="ph ph-books"></i> Documentation gestionnaire
@@ -77,11 +147,13 @@
           Chaque chapitre couvre une fonctionnalité clé du backoffice.
         </p>
         <ul class="odesign-documentation__index-grid">
-          {% for chap in chapters %}
+          {% for i, chap in chapters %}
+            {% set icon = icons[chap.chapter] ?? 'ph-file-text' %}
             <li>
               <a href="{{ path('odesign_admin.documentation_chapter', {chapter: chap.chapter}) }}"
                  class="odesign-documentation__index-card">
-                <i class="ph ph-file-text odesign-documentation__index-card-icon"></i>
+                <span class="odesign-documentation__index-card-num">{{ '%02d'|format(i + 1) }}</span>
+                <i class="ph {{ icon }} odesign-documentation__index-card-icon"></i>
                 <span class="odesign-documentation__index-card-title">{{ chap.title }}</span>
               </a>
             </li>

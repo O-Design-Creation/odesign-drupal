@@ -1,6 +1,6 @@
-# 14 — Connexion Google (SSO)
+# Connexion Google (SSO)
 
-> Ce guide explique comment fonctionne la connexion via Google pour vos clients,
+> 📍 Ce guide explique comment fonctionne la connexion via Google pour vos clients,
 > comment activer cette fonctionnalité et comment vérifier les comptes créés.
 
 ---
@@ -49,7 +49,7 @@ Le rôle **gestionnaire_boutique** ne peut **jamais** être attribué automatiqu
 3. Cliquer sur **Modifier** (ou l'icône de crayon)
 4. Vérifier la section **Rôles** : seul `Utilisateur authentifié` doit être coché
 
-> Si par erreur un compte SSO avait le rôle gestionnaire, décocher immédiatement
+> ⚠️ Si par erreur un compte SSO avait le rôle gestionnaire, décocher immédiatement
 > et enregistrer la modification.
 
 ---
@@ -68,7 +68,7 @@ Pour désactiver temporairement ou définitivement la connexion Google :
 2. Décocher **"Social Auth Google"**
 3. Cliquer sur **"Désinstaller"** (via `/admin/modules/uninstall`)
 
-> Attention : la désinstallation supprime la configuration — il faudra ressaisir
+> ⚠️ Attention : la désinstallation supprime la configuration — il faudra ressaisir
 > les credentials si vous souhaitez réactiver plus tard.
 
 ---
@@ -94,7 +94,7 @@ Si un client possède déjà un compte Drupal avec le même email que son compte
 
 ---
 
-## Captures d'écran
+## Visuels de référence
 
 ![Page de connexion — formulaire standard (bouton Google absent sans configuration OAuth)](screenshots/sso-login-page.png)
 
@@ -110,4 +110,3 @@ Si un client possède déjà un compte Drupal avec le même email que son compte
 
 - Runbook configuration : `notes/RUNBOOK-TCK-043-sso-google-setup.md`
 - Module Drupal : [social_auth_google](https://www.drupal.org/project/social_auth_google)
-- Ticket projet : `TCK-043`

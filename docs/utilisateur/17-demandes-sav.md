@@ -1,4 +1,4 @@
-# 17. Demandes SAV
+# Demandes SAV
 
 > 📍 **Accès** : Menu navigation gestionnaire → **Demandes SAV**
 > **URL directe** : `/admin/boutique/sav`

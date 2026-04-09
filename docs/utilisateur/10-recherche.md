@@ -1,6 +1,6 @@
 # Recherche produits — Guide gestionnaire
 
-> Ce guide explique comment la recherche fonctionne pour les visiteurs du site
+> 📍 Ce guide explique comment la recherche fonctionne pour les visiteurs du site
 > et comment le gestionnaire peut l'administrer.
 
 ---
@@ -47,7 +47,7 @@ Le module `search_api_autocomplete` propose des suggestions dès 2 caractères
 
 ---
 
-## Merchandising de recherche (TCK-072)
+## Merchandising de recherche
 
 La recherche inclut désormais un niveau de merchandising B2C pour limiter les
 sorties sans achat.
@@ -118,7 +118,7 @@ ddev exec drush search-api:index
 2. Cliquer sur `default_db`
 3. Dans l'onglet **Index**, cliquer sur **Réindexer**
 
-> **Note :** L'index est aussi mis à jour automatiquement lors de la prochaine
+> 💡 **Note :** L'index est aussi mis à jour automatiquement lors de la prochaine
 > exécution des tâches cron (toutes les heures en production Pantheon).
 
 ---
@@ -152,7 +152,7 @@ Pour modifier ou ajouter une facette :
 
 ---
 
-## Captures d'écran
+## Visuels de référence
 
 ![Panneau de recherche header — icône loupe ouverte](screenshots/recherche-header-loupe.png)
 

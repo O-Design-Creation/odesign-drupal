@@ -1,41 +1,78 @@
 /**
- * Documentation gestionnaire — mise en page deux colonnes.
+ * Documentation gestionnaire — mise en page et styles UX.
  */
 
+/* ════════════════════════════════════════════
+   Conteneur principal — grille 2 colonnes
+   ════════════════════════════════════════════ */
 .odesign-documentation {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 220px 1fr;
   gap: var(--gin-spacing-l, 2rem);
   align-items: start;
   max-width: 1200px;
 }
 
-/* ——— Navigation latérale ——— */
+/* ════════════════════════════════════════════
+   Navigation latérale
+   ════════════════════════════════════════════ */
 .odesign-documentation__nav {
   background: var(--gin-bg-layer, #f5f5f5);
   border: 1px solid var(--gin-border-color, #e0e0e0);
-  border-radius: 6px;
-  padding: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
   position: sticky;
   top: 1rem;
 }
 
+/* Bouton toggle — visible uniquement sur mobile */
+.odesign-documentation__nav-toggle {
+  display: none;
+  width: 100%;
+  align-items: center;
+  gap: .5rem;
+  padding: .75rem 1rem;
+  background: var(--gin-color-primary, #0071b8);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: .9rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.odesign-documentation__nav-caret {
+  margin-left: auto;
+  transition: transform .2s;
+}
+
+.odesign-documentation__nav.is-collapsed .odesign-documentation__nav-caret {
+  transform: rotate(-90deg);
+}
+
+/* Titre desktop — caché sur mobile (le toggle le remplace) */
 .odesign-documentation__nav-title {
-  font-size: .85rem;
+  font-size: .8rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .04em;
-  color: var(--gin-color-primary, #1f1f1f);
-  margin: 0 0 .75rem;
+  letter-spacing: .05em;
+  color: var(--gin-color-primary, #0071b8);
+  margin: 0;
+  padding: .9rem 1rem .5rem;
   display: flex;
   align-items: center;
   gap: .35rem;
 }
 
+.odesign-documentation__nav-inner {
+  overflow: hidden;
+  transition: max-height .25s ease;
+}
+
 .odesign-documentation__nav-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 .5rem;
 }
 
 .odesign-documentation__nav-item {
@@ -43,13 +80,15 @@
 }
 
 .odesign-documentation__nav-item a {
-  display: block;
-  padding: .45rem .6rem;
-  border-radius: 4px;
-  font-size: .9rem;
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+  padding: .4rem .9rem;
+  font-size: .85rem;
   color: var(--gin-color-text, #333);
   text-decoration: none;
   transition: background .15s, color .15s;
+  line-height: 1.4;
 }
 
 .odesign-documentation__nav-item a:hover {
@@ -63,19 +102,149 @@
   font-weight: 600;
 }
 
-/* ——— Corps principal ——— */
+/* Numéro ordinal dans la nav */
+.odesign-documentation__nav-num {
+  flex-shrink: 0;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--gin-color-text-secondary, #888);
+  font-variant-numeric: tabular-nums;
+  min-width: 1.6rem;
+}
+
+.odesign-documentation__nav-item.is-active .odesign-documentation__nav-num {
+  color: rgba(255, 255, 255, .7);
+}
+
+/* ════════════════════════════════════════════
+   Corps principal
+   ════════════════════════════════════════════ */
 .odesign-documentation__body {
   min-width: 0;
 }
 
-/* ——— Rendu Markdown ——— */
+/* ════════════════════════════════════════════
+   Indicateur de progression
+   ════════════════════════════════════════════ */
+.odesign-documentation__progress {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: 1.25rem;
+}
+
+.odesign-documentation__progress-badge {
+  flex-shrink: 0;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--gin-color-primary, #0071b8);
+  background: var(--gin-color-primary-light, #e8f4fd);
+  padding: .2rem .55rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.odesign-documentation__progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--gin-border-color, #e0e0e0);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.odesign-documentation__progress-fill {
+  height: 100%;
+  background: var(--gin-color-primary, #0071b8);
+  border-radius: 4px;
+  transition: width .3s ease;
+}
+
+/* ════════════════════════════════════════════
+   TOC — Sommaire interne
+   ════════════════════════════════════════════ */
+.odesign-documentation__toc {
+  background: var(--gin-bg-layer, #f8faff);
+  border: 1px solid var(--gin-border-color, #e0e0e0);
+  border-left: 3px solid var(--gin-color-primary, #0071b8);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.odesign-documentation__toc-toggle {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  width: 100%;
+  padding: .65rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: .82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--gin-color-primary, #0071b8);
+  text-align: left;
+}
+
+.odesign-documentation__toc-caret {
+  margin-left: auto;
+  transition: transform .2s;
+}
+
+.odesign-documentation__toc:not(.is-open) .odesign-documentation__toc-caret {
+  transform: rotate(-90deg);
+}
+
+.odesign-documentation__toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 .5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+}
+
+.odesign-documentation__toc.is-open .odesign-documentation__toc-list {
+  display: block;
+}
+
+.odesign-documentation__toc-link {
+  display: block;
+  padding: .3rem 1rem;
+  font-size: .85rem;
+  color: var(--gin-color-text, #444);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition: color .15s, border-color .15s, background .15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.odesign-documentation__toc-link:hover {
+  color: var(--gin-color-primary, #0071b8);
+  background: rgba(0, 113, 184, .05);
+}
+
+.odesign-documentation__toc-link.is-active {
+  color: var(--gin-color-primary, #0071b8);
+  border-left-color: var(--gin-color-primary, #0071b8);
+  font-weight: 600;
+  background: rgba(0, 113, 184, .06);
+}
+
+/* ════════════════════════════════════════════
+   Rendu Markdown
+   ════════════════════════════════════════════ */
 .odesign-documentation__markdown {
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--gin-color-text, #333);
 }
 
 .odesign-documentation__markdown h1 {
-  font-size: 1.6rem;
+  font-size: 1.55rem;
   margin-top: 0;
   margin-bottom: 1rem;
   border-bottom: 2px solid var(--gin-color-primary, #0071b8);
@@ -83,10 +252,11 @@
 }
 
 .odesign-documentation__markdown h2 {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   margin-top: 2rem;
   margin-bottom: .75rem;
   color: var(--gin-color-primary, #0071b8);
+  scroll-margin-top: 4rem;
 }
 
 .odesign-documentation__markdown h3 {
@@ -94,14 +264,20 @@
   font-weight: 700;
   margin-top: 1.5rem;
   margin-bottom: .5rem;
+  scroll-margin-top: 4rem;
 }
 
+.odesign-documentation__markdown p {
+  margin-bottom: .75rem;
+}
+
+/* ——— Blockquotes — base ——— */
 .odesign-documentation__markdown blockquote {
-  border-left: 4px solid var(--gin-color-primary, #0071b8);
-  background: var(--gin-bg-layer, #f5f8ff);
+  border-left: 4px solid var(--gin-border-color, #ccc);
+  background: var(--gin-bg-layer, #f5f5f5);
   margin: 1rem 0;
   padding: .75rem 1rem;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 6px 6px 0;
   font-size: .92rem;
 }
 
@@ -109,6 +285,35 @@
   margin: 0;
 }
 
+/* ——— Callout : 📍 Accès ——— */
+.odesign-documentation__markdown blockquote.callout--access {
+  border-left-color: #4E2620;
+  background: #fdf6f5;
+  color: #3a1a16;
+}
+
+/* ——— Callout : 💡 Astuce ——— */
+.odesign-documentation__markdown blockquote.callout--tip {
+  border-left-color: #d68910;
+  background: #fffbf0;
+  color: #5d4100;
+}
+
+/* ——— Callout : ⚠️ Attention ——— */
+.odesign-documentation__markdown blockquote.callout--warning {
+  border-left-color: #c0392b;
+  background: #fdf2f1;
+  color: #6b1c16;
+}
+
+/* ——— Callout : ✅ Succès ——— */
+.odesign-documentation__markdown blockquote.callout--success {
+  border-left-color: #27ae60;
+  background: #f0fdf5;
+  color: #145a32;
+}
+
+/* ——— Code ——— */
 .odesign-documentation__markdown code {
   background: var(--gin-bg-layer2, #eee);
   border-radius: 3px;
@@ -131,12 +336,24 @@
   font-size: .88rem;
 }
 
+/* ——— Images — zoomables ——— */
 .odesign-documentation__markdown img {
   max-width: 100%;
   border-radius: 6px;
   border: 1px solid var(--gin-border-color, #ddd);
   margin: 1rem 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+  display: block;
+}
+
+.odesign-documentation__markdown img.is-zoomable {
+  cursor: zoom-in;
+  transition: box-shadow .15s, transform .15s;
+}
+
+.odesign-documentation__markdown img.is-zoomable:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .18);
+  transform: scale(1.005);
 }
 
 .odesign-documentation__markdown hr {
@@ -158,7 +375,35 @@
   color: var(--gin-color-primary, #0071b8);
 }
 
-/* ——— Paginateur précédent / suivant ——— */
+/* ——— Tables ——— */
+.odesign-documentation__markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+  margin: 1rem 0;
+}
+
+.odesign-documentation__markdown th {
+  background: var(--gin-bg-layer2, #eee);
+  padding: .5rem .75rem;
+  text-align: left;
+  border: 1px solid var(--gin-border-color, #ddd);
+  font-weight: 700;
+}
+
+.odesign-documentation__markdown td {
+  padding: .5rem .75rem;
+  border: 1px solid var(--gin-border-color, #ddd);
+  vertical-align: top;
+}
+
+.odesign-documentation__markdown tr:nth-child(even) td {
+  background: var(--gin-bg-layer, #f8f8f8);
+}
+
+/* ════════════════════════════════════════════
+   Paginateur précédent / suivant
+   ════════════════════════════════════════════ */
 .odesign-documentation__pager {
   display: flex;
   justify-content: space-between;
@@ -172,25 +417,34 @@
   display: flex;
   align-items: center;
   gap: .4rem;
-  font-size: .9rem;
+  font-size: .88rem;
   color: var(--gin-color-primary, #0071b8);
   text-decoration: none;
   padding: .5rem .75rem;
   border: 1px solid var(--gin-border-color, #ddd);
-  border-radius: 4px;
-  transition: background .15s;
+  border-radius: 6px;
+  transition: background .15s, border-color .15s;
+  max-width: 45%;
 }
 
 .odesign-documentation__pager a:hover {
   background: var(--gin-color-primary-light, #e8f4fd);
+  border-color: var(--gin-color-primary, #0071b8);
+}
+
+.odesign-documentation__pager-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .odesign-documentation__pager-next {
-  text-align: right;
   margin-left: auto;
 }
 
-/* ——— Page d'index ——— */
+/* ════════════════════════════════════════════
+   Page d'index
+   ════════════════════════════════════════════ */
 .odesign-documentation__index-title {
   font-size: 1.5rem;
   margin-top: 0;
@@ -201,7 +455,7 @@
 
 .odesign-documentation__index-intro {
   color: var(--gin-color-text-secondary, #555);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .odesign-documentation__index-grid {
@@ -209,7 +463,7 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
   gap: 1rem;
 }
 
@@ -218,19 +472,32 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: .6rem;
-  padding: 1.25rem 1rem;
+  gap: .5rem;
+  padding: 1.25rem 1rem 1rem;
   background: var(--gin-bg-layer, #f8f8f8);
   border: 1px solid var(--gin-border-color, #e0e0e0);
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
   color: var(--gin-color-text, #333);
-  transition: box-shadow .15s, border-color .15s;
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+  position: relative;
 }
 
 .odesign-documentation__index-card:hover {
-  box-shadow: 0 3px 12px rgba(0, 0, 0, .1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
   border-color: var(--gin-color-primary, #0071b8);
+  transform: translateY(-2px);
+}
+
+/* Numéro ordinal en badge sur la carte */
+.odesign-documentation__index-card-num {
+  position: absolute;
+  top: .55rem;
+  left: .6rem;
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--gin-color-text-secondary, #aaa);
+  font-variant-numeric: tabular-nums;
 }
 
 .odesign-documentation__index-card-icon {
@@ -239,17 +506,124 @@
 }
 
 .odesign-documentation__index-card-title {
-  font-size: .9rem;
+  font-size: .85rem;
   font-weight: 600;
+  line-height: 1.3;
 }
 
-/* ——— Responsive ——— */
+/* ════════════════════════════════════════════
+   Lightbox
+   ════════════════════════════════════════════ */
+.odesign-doc-lightbox {
+  display: none; /* caché par défaut — activé via .is-visible */
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: lightbox-fade .15s ease;
+}
+
+.odesign-doc-lightbox.is-visible {
+  display: flex;
+}
+
+@keyframes lightbox-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.odesign-doc-lightbox__img {
+  max-width: 90vw;
+  max-height: 85vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, .5);
+  object-fit: contain;
+}
+
+.odesign-doc-lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, .15);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  transition: background .15s;
+}
+
+.odesign-doc-lightbox__close:hover {
+  background: rgba(255, 255, 255, .3);
+}
+
+body.lightbox-open {
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════════════
+   Responsive — tablette / mobile
+   ════════════════════════════════════════════ */
 @media (max-width: 900px) {
   .odesign-documentation {
     grid-template-columns: 1fr;
+    gap: .75rem;
   }
 
+  /* Sur mobile : le toggle remplace le titre */
   .odesign-documentation__nav {
     position: static;
+    border-radius: 8px;
+  }
+
+  .odesign-documentation__nav-toggle {
+    display: flex;
+  }
+
+  .odesign-documentation__nav-title {
+    display: none;
+  }
+
+  /* Collapse de la liste */
+  .odesign-documentation__nav.is-collapsed .odesign-documentation__nav-inner {
+    display: none;
+  }
+
+  /* TOC : fermé par défaut sur mobile */
+  .odesign-documentation__toc-list {
+    max-height: 200px;
+  }
+
+  /* Paginateur : empilé sur mobile */
+  .odesign-documentation__pager {
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .odesign-documentation__pager a {
+    max-width: 100%;
+  }
+
+  .odesign-documentation__pager-next {
+    margin-left: 0;
+  }
+
+  /* Grille index : 2 colonnes sur mobile */
+  .odesign-documentation__index-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .odesign-documentation__index-grid {
+    grid-template-columns: 1fr;
   }
 }

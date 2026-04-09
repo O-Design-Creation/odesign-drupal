@@ -1,4 +1,4 @@
-# 12 — Suivi analytique GA4 (Google Analytics 4)
+# Suivi analytique GA4 (Google Analytics 4)
 
 > **Rôle concerné** : gestionnaire_boutique (lecture) / administrateur (configuration)
 
