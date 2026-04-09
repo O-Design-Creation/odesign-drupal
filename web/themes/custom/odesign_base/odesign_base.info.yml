@@ -1,6 +1,6 @@
 name: ODesign Base
 type: theme
-description: 'Thème O'Design Création — boutique Drupal Commerce.'
+description: "Thème O'Design Création — boutique Drupal Commerce."
 core_version_requirement: ^11
 package: Custom
 base theme: false

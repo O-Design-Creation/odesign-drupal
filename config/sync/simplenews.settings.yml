@@ -14,7 +14,7 @@ subscriber:
 subscription:
   skip_verification: false
   tidy_unconfirmed: 7
-  confirm_subject: 'Confirmez votre inscription — O'Design Création'
+  confirm_subject: "Confirmez votre inscription — O'Design Création"
   confirm_body: |-
     Bonjour,
 
@@ -28,7 +28,7 @@ subscription:
     L'équipe O'Design Création
   confirm_subscribe_page: ''
   confirm_unsubscribe_page: ''
-  validate_subject: 'Gérer vos préférences — O'Design Création'
+  validate_subject: "Gérer vos préférences — O'Design Création"
   validate_body: |-
     Bonjour,
 

@@ -28,7 +28,7 @@ $demo_products = [
   ],
   [
     'title' => 'Poster typographie - Citation minimaliste',
-    'body'  => '<p>Impression numerique sur papier satine 250 g/m2. Design exclusif O'Design Création. Sans cadre.</p>',
+    'body'  => '<p>Impression numerique sur papier satine 250 g/m2. Design exclusif O\'Design Création. Sans cadre.</p>',
     'variations' => [
       ['label' => 'Format 30x40 cm', 'sku' => 'POST-TYP-3040', 'price' => '14.90'],
       ['label' => 'Format 40x50 cm', 'sku' => 'POST-TYP-4050', 'price' => '22.90'],

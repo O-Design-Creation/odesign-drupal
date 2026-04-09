@@ -9,7 +9,7 @@ $summaries = [
   'Idées cadeaux de naissance originaux en bois' =>
     'Sélection de cadeaux de naissance originaux en bois personnalisés : cartes de naissance, supports de bracelet, magnets. Des souvenirs uniques pour accueillir bébé.',
   'Nos techniques de gravure laser sur bois' =>
-    'Tout savoir sur la gravure laser sur bois chez O'Design Création : types de bois, profondeur de gravure, finitions et personnalisation. Artisanat français de qualité.',
+    'Tout savoir sur la gravure laser sur bois chez O\'Design Création : types de bois, profondeur de gravure, finitions et personnalisation. Artisanat français de qualité.',
 ];
 
 foreach ($articles as $article) {

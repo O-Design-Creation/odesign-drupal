@@ -9,7 +9,7 @@ use Drupal\node\Entity\Node;
 $articles = [
   [
     'title' => 'Comment personnaliser une carte de naissance en bois',
-    'body' => '<p>La <strong>carte de naissance en bois personnalisée</strong> est l\'un de nos créations les plus appréciées chez O'Design Création. Fabriquée à la main en France à partir de contreplaqué de peuplier 3 mm, elle constitue un souvenir précieux pour immortaliser les premiers instants de votre enfant.</p>
+    'body' => '<p>La <strong>carte de naissance en bois personnalisée</strong> est l\'un de nos créations les plus appréciées chez O\'Design Création. Fabriquée à la main en France à partir de contreplaqué de peuplier 3 mm, elle constitue un souvenir précieux pour immortaliser les premiers instants de votre enfant.</p>
 
 <h2>Choisir le bon design</h2>
 <p>Nous proposons plusieurs formes : ovale, rectangulaire, et en forme de prénom. Chaque pièce est découpée et gravée au laser avec soin. La gravure peut inclure le prénom du bébé, sa date et heure de naissance, son poids et sa taille.</p>
@@ -24,11 +24,11 @@ $articles = [
 
 <h2>Délai de fabrication</h2>
 <p>Chaque pièce est fabriquée sur commande. Comptez 3 à 5 jours ouvrés pour la fabrication, puis 2 à 3 jours pour la livraison. Nous proposons également une option livraison express en 24h.</p>',
-    'summary' => 'Découvrez comment personnaliser une carte de naissance en bois gravée au laser, fabriquée à la main en France chez O'Design Création.',
+    'summary' => 'Découvrez comment personnaliser une carte de naissance en bois gravée au laser, fabriquée à la main en France chez O\'Design Création.',
   ],
   [
     'title' => 'Idées cadeaux de naissance originaux en bois',
-    'body' => '<p>Vous cherchez un <strong>cadeau de naissance original</strong> qui sortira du lot ? Chez O'Design Création, nous créons des souvenirs uniques en bois gravé, fabriqués à la main en France. Voici notre sélection d\'idées pour marquer ce moment précieux.</p>
+    'body' => '<p>Vous cherchez un <strong>cadeau de naissance original</strong> qui sortira du lot ? Chez O\'Design Création, nous créons des souvenirs uniques en bois gravé, fabriqués à la main en France. Voici notre sélection d\'idées pour marquer ce moment précieux.</p>
 
 <h2>Le magnet photo personnalisé</h2>
 <p>Un petit format délicat, parfait comme cadeau de naissance. Le magnet en bois de peuplier 3 mm est gravé avec le prénom et la date de naissance du bébé. Il peut orner le réfrigérateur ou un tableau magnétique dans la chambre.</p>
@@ -41,11 +41,11 @@ $articles = [
 
 <h2>Pourquoi choisir le bois ?</h2>
 <p>Le bois est un matériau naturel, chaleureux et durable. La gravure laser y est particulièrement précise, permettant de reproduire des détails fins. C\'est aussi un choix éco-responsable, avec des approvisionnements locaux.</p>',
-    'summary' => 'Sélection d\'idées cadeaux de naissance originaux en bois gravé, fabriqués à la main en France par O'Design Création.',
+    'summary' => 'Sélection d\'idées cadeaux de naissance originaux en bois gravé, fabriqués à la main en France par O\'Design Création.',
   ],
   [
     'title' => 'Nos techniques de gravure laser sur bois',
-    'body' => '<p>La <strong>gravure laser sur bois</strong> est au cœur de notre savoir-faire chez O'Design Création. Cette technique de précision nous permet de créer des décors fins et durables sur tous nos produits. Voici comment nous travaillons.</p>
+    'body' => '<p>La <strong>gravure laser sur bois</strong> est au cœur de notre savoir-faire chez O\'Design Création. Cette technique de précision nous permet de créer des décors fins et durables sur tous nos produits. Voici comment nous travaillons.</p>
 
 <h2>Le matériau : contreplaqué de peuplier</h2>
 <p>Nous utilisons principalement du contreplaqué de peuplier de 3 mm. Ce matériau offre un excellent rapport légèreté/solidité et permet une gravure nette avec un beau contraste. Le veinage naturel du bois apporte une touche chaleureuse unique à chaque pièce.</p>
@@ -58,7 +58,7 @@ $articles = [
 
 <h2>La finition</h2>
 <p>Après gravure et découpe, chaque pièce est soigneusement poncée et nettoyée. Sur demande, nous proposons une finition à l\'huile naturelle qui protège le bois et accentue le contraste de la gravure.</p>',
-    'summary' => 'Découvrez les techniques de gravure laser sur bois utilisées par O'Design Création pour créer des pièces uniques et durables.',
+    'summary' => 'Découvrez les techniques de gravure laser sur bois utilisées par O\'Design Création pour créer des pièces uniques et durables.',
   ],
 ];
 

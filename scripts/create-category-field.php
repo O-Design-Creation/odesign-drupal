@@ -9,7 +9,7 @@ if (!Vocabulary::load('product_category')) {
   Vocabulary::create([
     'vid' => 'product_category',
     'name' => 'Catégories produits',
-    'description' => 'Catégories de produits O'Design Création',
+    'description' => 'Catégories de produits O\'Design Création',
   ])->save();
   echo "✅ Vocabulaire 'product_category' créé\n";
 } else {

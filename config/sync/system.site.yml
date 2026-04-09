@@ -2,7 +2,7 @@ _core:
   default_config_hash: HlN7eAN2N4JIHsYv56V4E7sqC9bS609KwvGFjyD_mgk
 langcode: fr
 uuid: 4ca2df33-62da-4aeb-8948-27fb278db39e
-name: 'O'Design Création'
+name: "O'Design Création"
 mail: admin@example.com
 slogan: ''
 page:
