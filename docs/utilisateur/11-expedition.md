@@ -118,7 +118,55 @@ Tous les transporteurs sont modifiables depuis le backoffice sans intervention t
 
 ---
 
-## En cas de problème
+## Imprimer les étiquettes d'expédition (workflow interim)
+
+> La génération d'étiquettes depuis le backoffice est prévue en **V2** (intégration API par transporteur).
+> En attendant, voici le workflow à suivre pour chaque expédition.
+
+### Principe général
+
+1. Préparer la commande (emballer, peser, mesurer)
+2. Générer l'étiquette **directement sur le portail du transporteur**
+3. **Saisir le numéro de suivi** obtenu dans la fiche commande Drupal (bloc Transporteur & suivi → champ → Enregistrer)
+4. Imprimer et coller l'étiquette sur le colis
+
+### Sans contrat pro — dépôt ponctuel en bureau
+
+Si vous n'avez pas encore de contrat professionnel avec le transporteur, vous pouvez créer des envois au tarif public :
+
+| Transporteur | Service | Lien |
+|---|---|---|
+| **Colissimo** | Colissimo.fr — envoi en ligne | [colissimo.fr](https://www.laposte.fr/colissimo) |
+| **DPD** | DPD Predict — particulier | [dpd.fr](https://www.dpd.fr/particulier) |
+| **Chronopost** | Chronopost.fr | [chronopost.fr](https://www.chronopost.fr) |
+| **Mondial Relay** | Mondial Relay — envoi en ligne | [mondialrelay.fr](https://www.mondialrelay.fr/envoi-de-colis/) |
+
+> ⚠️ Le tarif public est plus élevé que les tarifs négociés. Cette solution convient en phase de lancement ou pour un volume faible.
+
+### Avec un contrat pro — portail transporteur
+
+Si vous avez un contrat professionnel, chaque transporteur met à disposition un portail ou un logiciel d'impression d'étiquettes :
+
+| Transporteur | Portail pro | Notes |
+|---|---|---|
+| **Colissimo** | [Colissimo Business / Affranchigo](https://www.laposte.fr/colissimo/professionnels) | Impression depuis le navigateur ou Coliship (logiciel) |
+| **DPD** | [DPD Shipper / MyDPD Business](https://www.dpd.fr/professionnel) | Portail en ligne, pas d'installation requise |
+| **Chronopost** | [Chronopost Business](https://www.chronopost.fr/professionnels) | Compte pro requis |
+| **Mondial Relay** | [Mondial Relay Connect](https://connect.mondialrelay.com/) | Le même portail que pour le Brand ID |
+
+### Workflow type (exemple Colissimo)
+
+1. Récupérer dans la fiche commande Drupal : **nom client**, **adresse de livraison**, **poids estimé** du colis
+2. Se connecter au portail Colissimo (public ou pro)
+3. Saisir les informations de l'expédition → générer l'étiquette PDF
+4. **Copier le numéro de suivi** (ex : `6X123456789FR`) dans la fiche commande Drupal → cliquer **Enregistrer**
+5. Imprimer l'étiquette et la coller sur le colis
+
+> Le numéro de suivi saisi dans Drupal génère automatiquement un **lien cliquable** vers le site de suivi du transporteur, consultable en backoffice.
+
+---
+
+
 
 Si les méthodes d'expédition n'apparaissent pas au checkout, contactez votre prestataire technique pour relancer le script de configuration :
 
