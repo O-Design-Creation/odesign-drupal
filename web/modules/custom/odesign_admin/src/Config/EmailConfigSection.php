@@ -23,6 +23,7 @@ class EmailConfigSection implements ConfigSectionInterface {
 
   public function buildForm(array &$tab, FormStateInterface $form_state): void {
     $smtp   = \Drupal::configFactory()->get('smtp.settings');
+    $state = \Drupal::state();
     $ok     = $this->isConfigured();
 
     $tab['#attributes']['class'][] = $ok ? 'config-ok' : 'config-warning';
@@ -48,7 +49,9 @@ class EmailConfigSection implements ConfigSectionInterface {
       '#title'         => 'Clé SMTP Brevo',
       '#description'   => 'Clé SMTP générée dans <em>Brevo → SMTP & API → SMTP Keys</em>. Laissez vide pour conserver la clé actuelle.',
       '#default_value' => '',
-      '#placeholder'   => $ok ? '(clé enregistrée — laisser vide pour ne pas changer)' : '',
+      '#placeholder'   => ($ok || !empty($state->get('odesign_admin.smtp_password')))
+        ? '(clé enregistrée — laisser vide pour ne pas changer)'
+        : '',
     ];
 
     $tab['smtp_from'] = [
@@ -83,11 +86,23 @@ class EmailConfigSection implements ConfigSectionInterface {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $state = \Drupal::state();
     $smtp = \Drupal::configFactory()->getEditable('smtp.settings');
     $smtp->set('smtp_username', $form_state->getValue('smtp_username'));
-    if ($form_state->getValue('smtp_password')) {
-      $smtp->set('smtp_password', $form_state->getValue('smtp_password'));
+
+    $configured_password = (string) $smtp->get('smtp_password');
+    $submitted_password = trim((string) $form_state->getValue('smtp_password'));
+    if ($submitted_password !== '') {
+      $state->set('odesign_admin.smtp_password', $submitted_password);
     }
+    elseif ($state->get('odesign_admin.smtp_password', '') === '' && $configured_password !== '') {
+      // Migration douce d'une ancienne valeur stockée en configuration.
+      $state->set('odesign_admin.smtp_password', $configured_password);
+    }
+
+    // Évite l'export du secret en configuration versionnée.
+    $smtp->set('smtp_password', '');
+
     if ($from = $form_state->getValue('smtp_from')) {
       $smtp->set('smtp_from', $from);
     }
@@ -96,7 +111,8 @@ class EmailConfigSection implements ConfigSectionInterface {
 
   private function isConfigured(): bool {
     $smtp = \Drupal::configFactory()->get('smtp.settings');
-    return !empty($smtp->get('smtp_username')) && !empty($smtp->get('smtp_password'));
+    $password = \Drupal::state()->get('odesign_admin.smtp_password', '') ?: $smtp->get('smtp_password');
+    return !empty($smtp->get('smtp_username')) && !empty($password);
   }
 
 }

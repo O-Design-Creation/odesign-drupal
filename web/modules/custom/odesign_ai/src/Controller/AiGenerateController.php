@@ -115,7 +115,10 @@ class AiGenerateController extends ControllerBase {
     catch (\Exception $e) {
       $this->loggerFactory->get('odesign_ai')
         ->error('Erreur appel OpenAI : @msg', ['@msg' => $e->getMessage()]);
-      return new JsonResponse(['success' => FALSE, 'error' => 'Erreur de connexion à l\'API IA : ' . $e->getMessage()], 502);
+      return new JsonResponse([
+        'success' => FALSE,
+        'error' => 'Le service IA est temporairement indisponible. Réessayez dans quelques instants.',
+      ], 502);
     }
 
     $text = $data['choices'][0]['message']['content'] ?? NULL;

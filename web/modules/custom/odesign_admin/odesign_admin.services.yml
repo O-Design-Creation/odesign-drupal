@@ -4,3 +4,9 @@ services:
     arguments:
       - '@module_handler'
       - '@current_route_match'
+  odesign_admin.config_override.sensitive:
+    class: Drupal\odesign_admin\ConfigOverride\SensitiveConfigOverride
+    arguments:
+      - '@state'
+    tags:
+      - { name: config.factory.override, priority: 100 }

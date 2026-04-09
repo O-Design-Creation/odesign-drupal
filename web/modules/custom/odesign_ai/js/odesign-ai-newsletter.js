@@ -37,7 +37,16 @@
             csrfToken = await tokenRes.text();
           }
           catch (err) {
-            // Continuer sans jeton — la permission protège l'accès.
+            // Le endpoint exige un jeton CSRF.
+          }
+
+          if (!csrfToken) {
+            if (status) {
+              status.textContent = '❌ Impossible de récupérer le jeton de sécurité.';
+              status.style.color = '#c62828';
+            }
+            btn.disabled = false;
+            return;
           }
 
           try {

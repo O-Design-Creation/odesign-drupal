@@ -127,6 +127,13 @@ function odesign_orders_commerce_order_post_save(\Drupal\commerce_order\Entity\O
     return;
   }
 
+  $original = $order->original ?? NULL;
+  if ($original instanceof \Drupal\commerce_order\Entity\OrderInterface
+    && $original->getState()->getId() === 'pending_payment') {
+    // Rien à faire si l'état était déjà en attente de paiement.
+    return;
+  }
+
   $manager_emails = [];
   $ids = \Drupal::entityQuery('user')
     ->condition('roles', 'gestionnaire_boutique')

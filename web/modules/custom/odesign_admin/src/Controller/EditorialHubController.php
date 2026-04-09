@@ -101,7 +101,7 @@ class EditorialHubController extends ControllerBase {
           '#type'       => 'link',
           '#title'      => $this->t('Voir sur le site'),
           '#url'        => $term_url,
-          '#attributes' => ['class' => ['button', 'button--small', 'button--secondary'], 'target' => '_blank'],
+          '#attributes' => ['class' => ['button', 'button--small', 'button--secondary'], 'target' => '_blank', 'rel' => 'noopener noreferrer'],
           '#prefix'     => '<i class="ph ph-arrow-square-out" aria-hidden="true"></i> ',
         ],
       ];

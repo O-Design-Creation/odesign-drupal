@@ -375,6 +375,7 @@ function odesign_admin_odesign_boutique_dashboard_cards_alter(array &$cards): vo
   ];
 
   // CA du mois courant (commandes complétées).
+  $ca_raw = 0.0;
   try {
     $month_start = mktime(0, 0, 0, (int) date('n'), 1);
     $ca_raw = (float) $db->query(

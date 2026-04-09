@@ -128,7 +128,7 @@ class DocumentationController extends ControllerBase {
     );
 
     $parsedown = new \Parsedown();
-    $parsedown->setSafeMode(FALSE);
+    $parsedown->setSafeMode(TRUE);
 
     return $parsedown->text($markdown);
   }

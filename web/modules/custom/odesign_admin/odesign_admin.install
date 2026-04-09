@@ -41,3 +41,53 @@ function odesign_admin_update_11002(): string {
   $module_installer->install(['odesign_orders']);
   return 'Module odesign_orders activé (refonte modulaire commandes).';
 }
+
+/**
+ * Migre les secrets SMTP/Stripe vers state et nettoie la configuration.
+ */
+function odesign_admin_update_11003(): string {
+  $state = \Drupal::state();
+
+  $messages = [];
+
+  $smtp = \Drupal::configFactory()->getEditable('smtp.settings');
+  $smtp_password = (string) $smtp->get('smtp_password');
+  if ($smtp_password !== '' && $state->get('odesign_admin.smtp_password', '') === '') {
+    $state->set('odesign_admin.smtp_password', $smtp_password);
+    $messages[] = 'smtp_password migré vers state.';
+  }
+  if ($smtp_password !== '') {
+    $smtp->set('smtp_password', '')->save();
+    $messages[] = 'smtp_password retiré de smtp.settings.';
+  }
+
+  $stripe = \Drupal::configFactory()->getEditable('commerce_payment.commerce_payment_gateway.stripe_sandbox');
+  $configuration = $stripe->get('configuration') ?? [];
+  $stripe_secret = trim((string) ($configuration['secret_key'] ?? ''));
+  $stripe_webhook_secret = trim((string) ($configuration['webhook_secret'] ?? ''));
+
+  if ($stripe_secret !== '' && $state->get('odesign_admin.stripe_sandbox.secret_key', '') === '') {
+    $state->set('odesign_admin.stripe_sandbox.secret_key', $stripe_secret);
+    $messages[] = 'Stripe secret_key migrée vers state.';
+  }
+  if ($stripe_webhook_secret !== '' && $state->get('odesign_admin.stripe_sandbox.webhook_secret', '') === '') {
+    $state->set('odesign_admin.stripe_sandbox.webhook_secret', $stripe_webhook_secret);
+    $messages[] = 'Stripe webhook_secret migrée vers state.';
+  }
+
+  $updated = FALSE;
+  if (isset($configuration['secret_key'])) {
+    unset($configuration['secret_key']);
+    $updated = TRUE;
+  }
+  if (isset($configuration['webhook_secret'])) {
+    unset($configuration['webhook_secret']);
+    $updated = TRUE;
+  }
+  if ($updated) {
+    $stripe->set('configuration', $configuration)->save();
+    $messages[] = 'Secrets retirés de la config Stripe exportable.';
+  }
+
+  return $messages ? implode(' ', $messages) : 'Aucune migration de secret nécessaire.';
+}

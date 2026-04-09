@@ -23,6 +23,7 @@ class StripeConfigSection implements ConfigSectionInterface {
 
   public function buildForm(array &$tab, FormStateInterface $form_state): void {
     $stripe = \Drupal::configFactory()->get('commerce_payment.commerce_payment_gateway.stripe_sandbox');
+    $state = \Drupal::state();
     $ok     = $this->isConfigured();
 
     $tab['#attributes']['class'][] = $ok ? 'config-ok' : 'config-warning';
@@ -63,7 +64,8 @@ class StripeConfigSection implements ConfigSectionInterface {
       '#type'        => 'password',
       '#title'       => 'Webhook secret',
       '#description' => 'Commence par <code>whsec_</code>. Laissez vide pour ne pas modifier.',
-      '#placeholder' => !empty($stripe->get('configuration.webhook_secret'))
+      '#placeholder' => !empty($state->get('odesign_admin.stripe_sandbox.webhook_secret'))
+        || !empty($stripe->get('configuration.webhook_secret'))
         ? '(secret enregistré — laisser vide pour ne pas changer)'
         : 'whsec_...',
     ];
@@ -83,19 +85,37 @@ class StripeConfigSection implements ConfigSectionInterface {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $state = \Drupal::state();
     $stripe = \Drupal::configFactory()->getEditable('commerce_payment.commerce_payment_gateway.stripe_sandbox');
     $config = $stripe->get('configuration') ?? [];
 
     if ($pk = $form_state->getValue('publishable_key')) {
       $config['publishable_key'] = trim($pk);
     }
-    if ($sk = $form_state->getValue('secret_key')) {
-      $config['secret_key'] = trim($sk);
+    $submitted_secret = trim((string) $form_state->getValue('secret_key'));
+    $existing_secret = trim((string) ($config['secret_key'] ?? ''));
+    if ($submitted_secret !== '') {
+      $state->set('odesign_admin.stripe_sandbox.secret_key', $submitted_secret);
     }
-    if ($wh = $form_state->getValue('webhook_secret')) {
-      $config['webhook_secret'] = trim($wh);
+    elseif ($state->get('odesign_admin.stripe_sandbox.secret_key', '') === '' && $existing_secret !== '') {
+      // Migration douce d'une ancienne valeur stockée en configuration.
+      $state->set('odesign_admin.stripe_sandbox.secret_key', $existing_secret);
     }
-    if (!empty($config['publishable_key']) && !empty($config['secret_key'])) {
+
+    $submitted_webhook = trim((string) $form_state->getValue('webhook_secret'));
+    $existing_webhook = trim((string) ($config['webhook_secret'] ?? ''));
+    if ($submitted_webhook !== '') {
+      $state->set('odesign_admin.stripe_sandbox.webhook_secret', $submitted_webhook);
+    }
+    elseif ($state->get('odesign_admin.stripe_sandbox.webhook_secret', '') === '' && $existing_webhook !== '') {
+      // Migration douce d'une ancienne valeur stockée en configuration.
+      $state->set('odesign_admin.stripe_sandbox.webhook_secret', $existing_webhook);
+    }
+
+    // Évite l'export des secrets en configuration versionnée.
+    unset($config['secret_key'], $config['webhook_secret']);
+
+    if (!empty($config['publishable_key']) && !empty($state->get('odesign_admin.stripe_sandbox.secret_key', ''))) {
       $config['authentication_method'] = 'api_keys';
       $config['access_token'] = '';
       $config['stripe_user_id'] = '';
@@ -106,7 +126,7 @@ class StripeConfigSection implements ConfigSectionInterface {
   private function isConfigured(): bool {
     $stripe = \Drupal::configFactory()->get('commerce_payment.commerce_payment_gateway.stripe_sandbox');
     $pk = $stripe->get('configuration.publishable_key') ?? '';
-    $sk = $stripe->get('configuration.secret_key') ?? '';
+    $sk = \Drupal::state()->get('odesign_admin.stripe_sandbox.secret_key', '') ?: ($stripe->get('configuration.secret_key') ?? '');
     return !empty($pk) && !str_contains($pk, 'PLACEHOLDER')
       && !empty($sk) && !str_contains($sk, 'PLACEHOLDER');
   }
