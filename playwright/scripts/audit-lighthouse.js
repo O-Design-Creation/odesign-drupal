@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE_URL = process.env.BASE_URL || 'http://odesign-drupal.ddev.site';
+const IS_HTTP_BASE_URL = BASE_URL.startsWith('http://');
 
 const PAGES = [
   { label: 'Accueil / Catalogue', path: '/' },
@@ -52,14 +53,57 @@ function scoreBar(score) {
   return '█'.repeat(filled) + '░'.repeat(20 - filled) + ` ${pct}`;
 }
 
+function getFailingAuditsForCategory(lhr, categoryKey) {
+  const category = lhr.categories?.[categoryKey];
+  if (!category || !Array.isArray(category.auditRefs)) {
+    return [];
+  }
+
+  return category.auditRefs
+    .filter((ref) => (ref.weight || 0) > 0)
+    .map((ref) => {
+      const audit = lhr.audits?.[ref.id];
+      return {
+        id: ref.id,
+        weight: ref.weight,
+        title: audit?.title || ref.id,
+        score: audit?.score,
+        scoreDisplayMode: audit?.scoreDisplayMode,
+      };
+    })
+    .filter((audit) => {
+      if (audit.scoreDisplayMode === 'notApplicable' || audit.scoreDisplayMode === 'informative') {
+        return false;
+      }
+      return typeof audit.score === 'number' && audit.score < 1;
+    })
+    .sort((a, b) => (a.score ?? 1) - (b.score ?? 1));
+}
+
+function resolveWritableReportDir() {
+  const preferred = path.join(__dirname, '../screenshots/frontend-audit/lighthouse');
+  const fallback = '/tmp/odesign-audits/lighthouse';
+
+  try {
+    fs.mkdirSync(preferred, { recursive: true });
+    fs.accessSync(preferred, fs.constants.W_OK);
+    return preferred;
+  } catch (_) {
+    fs.mkdirSync(fallback, { recursive: true });
+    return fallback;
+  }
+}
+
 (async () => {
   console.log('\n' + '='.repeat(60));
-  console.log('🏎️  AUDIT LIGHTHOUSE — O'Design Création');
+  console.log("🏎️  AUDIT LIGHTHOUSE — O'Design Création");
   console.log('='.repeat(60) + '\n');
 
   const allResults = [];
-  const reportDir = path.join(__dirname, '../screenshots/frontend-audit/lighthouse');
-  if (!fs.existsSync(reportDir)) fs.mkdirSync(reportDir, { recursive: true });
+  const reportDir = resolveWritableReportDir();
+  const reportDirLabel = reportDir.startsWith('/var/www/html/')
+    ? reportDir.replace('/var/www/html/', '')
+    : reportDir;
 
   for (const pageConfig of PAGES) {
     const url = BASE_URL + pageConfig.path;
@@ -91,6 +135,7 @@ function scoreBar(score) {
       const lhr = runnerResult.lhr;
       const categories = lhr.categories;
       const pageIssues = [];
+      const bestPracticesFailingAudits = getFailingAuditsForCategory(lhr, 'best-practices');
 
       for (const [key, label] of Object.entries(CATEGORY_LABELS)) {
         const cat = categories[key];
@@ -98,28 +143,29 @@ function scoreBar(score) {
         const threshold = THRESHOLDS[key] || 0.8;
         const icon = scoreIcon(score, threshold);
         console.log(`  ${icon} ${label.padEnd(18)} ${scoreBar(score)}`);
-        if (score !== null && score < threshold) {
+
+        let ignoreThreshold = false;
+        if (key === 'best-practices' && IS_HTTP_BASE_URL && bestPracticesFailingAudits.length === 1 && bestPracticesFailingAudits[0].id === 'is-on-https') {
+          ignoreThreshold = true;
+          console.log('  ℹ️  Best Practices: écart local attendu (audit HTTPS sur environnement http://).');
+        }
+
+        if (score !== null && score < threshold && !ignoreThreshold) {
           pageIssues.push({ category: label, score: Math.round(score * 100), threshold: Math.round(threshold * 100) });
         }
       }
 
-      // Top failing audits
-      const failingAudits = Object.values(lhr.audits)
-        .filter(a => a.score !== null && a.score < 0.9 && a.weight > 0)
-        .sort((a, b) => (a.score || 0) - (b.score || 0))
-        .slice(0, 5);
-
-      if (failingAudits.length > 0) {
-        console.log('  📋 Top audits à améliorer :');
-        for (const audit of failingAudits) {
-          console.log(`     • ${audit.title} (score: ${Math.round((audit.score || 0) * 100)})`);
+      if (bestPracticesFailingAudits.length > 0) {
+        console.log('  📋 Détail Best Practices en échec :');
+        for (const audit of bestPracticesFailingAudits) {
+          console.log(`     • [${audit.id}] ${audit.title} (score: ${Math.round((audit.score || 0) * 100)})`);
         }
       }
 
       const slug = pageConfig.label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
       const htmlPath = path.join(reportDir, `${slug}.html`);
       fs.writeFileSync(htmlPath, htmlReport);
-      console.log(`  💾 Rapport HTML : playwright/screenshots/frontend-audit/lighthouse/${slug}.html`);
+      console.log(`  💾 Rapport HTML : ${path.join(reportDirLabel, `${slug}.html`)}`);
 
       allResults.push({
         label: pageConfig.label,
@@ -160,7 +206,7 @@ function scoreBar(score) {
 
   const jsonPath = path.join(reportDir, 'lighthouse-summary.json');
   fs.writeFileSync(jsonPath, JSON.stringify({ results: allResults, timestamp: new Date().toISOString() }, null, 2));
-  console.log(`💾 Résumé JSON : playwright/screenshots/frontend-audit/lighthouse/lighthouse-summary.json\n`);
+  console.log(`💾 Résumé JSON : ${path.join(reportDirLabel, 'lighthouse-summary.json')}\n`);
 
   process.exit(allIssues.length > 0 ? 1 : 0);
 })();

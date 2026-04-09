@@ -253,7 +253,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--color-brand-medium, #BB7570);
+  color: var(--color-brand-dark, #4E2620);
   margin-bottom: 0.25rem;
 }
 

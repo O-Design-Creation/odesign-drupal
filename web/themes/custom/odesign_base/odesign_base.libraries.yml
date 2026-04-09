@@ -11,7 +11,6 @@ global:
     - core/once
 
 ga4-ecommerce:
-  header: true
   js:
     js/ga4-ecommerce.js: { weight: -20, preprocess: false }
   dependencies:
@@ -28,4 +27,3 @@ campagnes:
   css:
     component:
       css/campagnes.css: {}
-

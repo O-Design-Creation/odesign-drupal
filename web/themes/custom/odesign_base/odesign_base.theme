@@ -1273,9 +1273,19 @@ function odesign_base_preprocess_node(array &$variables): void {
 
   // Inject image for article and guide bundles (field_image).
   if (in_array($node->bundle(), ['article', 'guide'], TRUE) && $node->hasField('field_image') && !$node->get('field_image')->isEmpty()) {
-    /** @var \Drupal\file\FileInterface|null $file */
-    $file = $node->get('field_image')->entity?->get('field_media_image')?->entity
-      ?? $node->get('field_image')->entity;
+    $image_entity = $node->get('field_image')->entity;
+    $file = NULL;
+
+    if ($image_entity instanceof \Drupal\file\FileInterface) {
+      $file = $image_entity;
+    }
+    elseif ($image_entity instanceof \Drupal\media\MediaInterface && $image_entity->hasField('field_media_image') && !$image_entity->get('field_media_image')->isEmpty()) {
+      $candidate = $image_entity->get('field_media_image')->entity;
+      if ($candidate instanceof \Drupal\file\FileInterface) {
+        $file = $candidate;
+      }
+    }
+
     if ($file instanceof \Drupal\file\FileInterface) {
       $json_ld['image'] = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
     }

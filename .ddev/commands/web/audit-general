@@ -1,0 +1,21 @@
+#!/bin/bash
+## Description: Audit général site (SEO/RGPD/Accessibilité/Performance/Lighthouse)
+## Usage: audit-general [base_url]
+## Example: "ddev audit-general" or "ddev audit-general https://odesign-drupal.ddev.site"
+
+set -eu
+
+cd /var/www/html
+
+BASE_URL="${1:-http://web}"
+
+if [ ! -d node_modules ]; then
+  echo "⏳ Installation des dépendances Node.js..."
+  npm install --silent
+fi
+
+echo "⏳ Vérification navigateur Playwright (Chromium)..."
+npx playwright install chromium >/dev/null 2>&1 || true
+
+echo "🚀 Lancement audit général sur ${BASE_URL}"
+BASE_URL="${BASE_URL}" npm run audit:general

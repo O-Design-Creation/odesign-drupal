@@ -26,11 +26,29 @@ const PAGES = [
   { label: 'Accueil / Catalogue',   path: '/',                              allowNoindex: false },
   { label: 'Fiche produit',         path: '/products/carte-naissance-ovale-bois', allowNoindex: false },
   { label: 'Blog',                   path: '/blog',                          allowNoindex: false },
-  { label: 'Article blog',           path: '/blog/comment-personnaliser-une-carte-de-naissance-en-bois', allowNoindex: false },
+  { label: 'Article blog',           path: null,                             allowNoindex: false, dynamicPath: 'first-blog-article' },
   { label: 'CGV',                    path: '/cgv',                           allowNoindex: true  },
   { label: 'Mentions légales',       path: '/mentions-legales',              allowNoindex: true  },
   { label: 'Panier',                 path: '/cart',                          allowNoindex: true  },
 ];
+
+async function resolveDynamicPath(page, pageConfig) {
+  if (pageConfig.dynamicPath !== 'first-blog-article') {
+    return pageConfig.path;
+  }
+
+  await page.goto(BASE_URL + '/blog', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  const articlePath = await page.evaluate(() => {
+    const links = Array.from(document.querySelectorAll('a[href]'));
+    const candidate = links.find((a) => {
+      const href = a.getAttribute('href') || '';
+      return href.startsWith('/blog/') && href !== '/blog';
+    });
+    return candidate ? candidate.getAttribute('href') : null;
+  });
+
+  return articlePath;
+}
 
 async function auditPage(page, { label, path: pagePath, allowNoindex }) {
   const url = BASE_URL + pagePath;
@@ -126,14 +144,27 @@ async function checkSitemapAndRobots(page) {
   await page.setExtraHTTPHeaders({ 'Accept-Language': 'fr-FR,fr;q=0.9' });
 
   console.log('\n' + '='.repeat(60));
-  console.log('🔍 AUDIT SEO — O'Design Création');
+  console.log("🔍 AUDIT SEO — O'Design Création");
   console.log('='.repeat(60) + '\n');
 
   const pageResults = [];
   for (const pageConfig of PAGES) {
-    process.stdout.write(`[${pageConfig.label}] ${BASE_URL + pageConfig.path}\n`);
+    const resolvedPath = await resolveDynamicPath(page, pageConfig);
+    if (!resolvedPath) {
+      pageResults.push({
+        label: pageConfig.label,
+        url: BASE_URL + '/blog',
+        issues: [{ severity: 'warning', msg: 'Aucun article blog trouvé pour audit automatique.' }],
+        info: [],
+      });
+      process.stdout.write(`[${pageConfig.label}] ${BASE_URL + '/blog'}\n`);
+      console.log('  ⚠️  Aucun article blog trouvé, audit de cette page ignoré.\n');
+      continue;
+    }
+
+    process.stdout.write(`[${pageConfig.label}] ${BASE_URL + resolvedPath}\n`);
     try {
-      const result = await auditPage(page, pageConfig);
+      const result = await auditPage(page, { ...pageConfig, path: resolvedPath });
       pageResults.push(result);
       if (result.issues.length === 0) {
         console.log('  ✅ OK — ' + result.info.join(' | '));

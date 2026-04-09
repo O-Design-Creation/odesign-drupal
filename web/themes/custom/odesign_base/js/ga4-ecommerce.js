@@ -33,6 +33,12 @@
 (function (Drupal, drupalSettings, once) {
   'use strict';
 
+  // Sécurité d'exécution: si Drupal/once ne sont pas encore exposés, on stoppe
+  // silencieusement pour éviter les erreurs console bloquantes.
+  if (!Drupal || !Drupal.behaviors || !once) {
+    return;
+  }
+
   /**
    * view_item — déclenché sur chaque fiche produit portant [data-ga4-product].
    *
@@ -114,4 +120,4 @@
     }
   };
 
-})(Drupal, drupalSettings, once);
+})(window.Drupal, window.drupalSettings, window.once);
