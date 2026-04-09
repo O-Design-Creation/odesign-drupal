@@ -26,8 +26,9 @@ Une fois connectée, vous retrouvez votre tableau de bord avec les raccourcis ve
 | 06 | [Newsletter](06-newsletter.md) | Créer, envoyer, planifier une newsletter, gérer les abonnées | `/admin/content/simplenews` |
 | 07 | [Clients](07-clients.md) | Rechercher un client, consulter ses commandes | `/admin/people` |
 | 08 | [Espace client](08-espace-client.md) | Ce que voient vos clients, parcours commande, FAQ support | — |
-| 16 | [Avis clients](16-avis-clients.md) | Modérer les avis reçus après livraison (approuver/rejeter) | `/admin/boutique/avis` |
 | 15 | [Assistant IA](15-assistant-ia.md) | Générer des textes pour vos produits, articles et newsletters | `/admin/boutique/configuration` |
+| 16 | [Avis clients](16-avis-clients.md) | Modérer les avis reçus après livraison (approuver/rejeter) | `/admin/boutique/avis` |
+| 17 | [Demandes SAV](17-demandes-sav.md) | Suivre et traiter les questions clients liées aux commandes | `/admin/boutique/sav` |
 | — | [Glossaire](glossaire.md) | Définitions des termes utilisés dans cette documentation | — |
 
 ---
@@ -63,6 +64,9 @@ Une fois connectée, vous retrouvez votre tableau de bord avec les raccourcis ve
 
 **Je veux modérer les avis clients**
 → Aller sur [Avis clients](16-avis-clients.md) — section "Comment modérer un avis"
+
+**Je veux traiter une demande SAV client**
+→ Aller sur [Demandes SAV](17-demandes-sav.md) — section "Traiter une demande"
 
 **Un client me pose une question sur sa commande ou son compte**
 → Aller sur [Espace client](08-espace-client.md) — section "Questions fréquentes de vos clients"
