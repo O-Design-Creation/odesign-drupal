@@ -7,7 +7,7 @@ $global = $storage->load('global');
 if ($global) {
   $tags = $global->get('tags');
   $tags['og_title']       = '[current-page:title] | [site:name]';
-  $tags['og_description'] = 'Atelier O Design — cadeaux personnalisés en bois gravés au laser, faits main en France.';
+  $tags['og_description'] = 'O'Design Création — cadeaux personnalisés en bois gravés au laser, faits main en France.';
   $tags['og_site_name']   = '[site:name]';
   $tags['og_type']        = 'website';
   $tags['og_url']         = '[current-page:url]';

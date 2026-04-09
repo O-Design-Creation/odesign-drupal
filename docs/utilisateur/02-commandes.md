@@ -115,7 +115,7 @@ Dans certains cas rares, une commande peut être verrouillée (par exemple suite
 
 ---
 
-*Documentation Atelier O Design — Commandes — v1.1*
+*Documentation O'Design Création — Commandes — v1.1*
 
 
 ## Ce que vous pouvez faire ici
@@ -217,4 +217,4 @@ Dans certains cas rares, une commande peut être verrouillée (par exemple suite
 
 ---
 
-*Documentation Atelier O Design — Commandes — v1.0*
+*Documentation O'Design Création — Commandes — v1.0*

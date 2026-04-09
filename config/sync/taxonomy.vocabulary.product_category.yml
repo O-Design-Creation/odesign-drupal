@@ -4,6 +4,6 @@ status: true
 dependencies: {  }
 name: 'Catégories produits'
 vid: product_category
-description: 'Catégories de produits Atelier O Design'
+description: 'Catégories de produits O'Design Création'
 weight: 0
 new_revision: false

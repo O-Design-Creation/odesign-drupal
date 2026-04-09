@@ -2,13 +2,13 @@ uuid: 4a5882d5-2dd9-4b85-a018-49fb9a208f13
 langcode: fr
 status: true
 dependencies: {  }
-name: 'Nouveautés Atelier O Design'
+name: 'Nouveautés O'Design Création'
 id: nouveautes_atelier
 description: 'Recevez nos nouveaux produits, créations artisanales et offres exclusives.'
 format: html
 priority: 0
 receipt: true
-from_name: 'Atelier O Design'
+from_name: 'O'Design Création'
 subject: '[node:title]'
 from_address: boutique@atelierodesign.fr
 hyperlinks: true

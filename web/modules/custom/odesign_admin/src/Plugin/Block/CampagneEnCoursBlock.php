@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @Block(
  *   id = "campagne_en_cours",
  *   admin_label = @Translation("Campagne en cours"),
- *   category = @Translation("Atelier O Design"),
+ *   category = @Translation("O'Design Création"),
  * )
  */
 final class CampagneEnCoursBlock extends BlockBase implements ContainerFactoryPluginInterface {

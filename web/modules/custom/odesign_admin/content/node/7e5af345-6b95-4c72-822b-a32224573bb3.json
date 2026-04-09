@@ -137,7 +137,7 @@
       "tag": "meta",
       "attributes": {
         "name": "title",
-        "content": "Politique de Confidentialité | Atelier O Design"
+        "content": "Politique de Confidentialité | O'Design Création"
       },
       "lang": "fr"
     },
@@ -145,7 +145,7 @@
       "tag": "meta",
       "attributes": {
         "name": "description",
-        "content": "Politique de confidentialité d'Atelier O Design : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD."
+        "content": "Politique de confidentialité d'O'Design Création : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD."
       },
       "lang": "fr"
     },
@@ -169,7 +169,7 @@
       "tag": "meta",
       "attributes": {
         "property": "og:description",
-        "content": "Politique de confidentialité d'Atelier O Design : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD."
+        "content": "Politique de confidentialité d'O'Design Création : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD."
       },
       "lang": "fr"
     }
@@ -184,9 +184,9 @@
   ],
   "body": [
     {
-      "value": "<h2>Politique de Confidentialité</h2>\n<p>Atelier O Design s'engage à protéger votre vie privée et vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>\n\n<h3>Données collectées</h3>\n<p>Lors d'une commande : nom, prénom, adresse de livraison, adresse email, numéro de téléphone. Ces données sont nécessaires au traitement et à la livraison de votre commande.</p>\n\n<h3>Finalités du traitement</h3>\n<p>Traitement des commandes, gestion de la relation client, envoi de confirmations et notifications liées à votre commande, respect des obligations légales.</p>\n\n<h3>Conservation des données</h3>\n<p>Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées, et au maximum 3 ans après votre dernière interaction.</p>\n\n<h3>Vos droits</h3>\n<p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation et de portabilité de vos données. Pour exercer ces droits : odesigncrea@gmail.com</p>",
+      "value": "<h2>Politique de Confidentialité</h2>\n<p>O'Design Création s'engage à protéger votre vie privée et vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>\n\n<h3>Données collectées</h3>\n<p>Lors d'une commande : nom, prénom, adresse de livraison, adresse email, numéro de téléphone. Ces données sont nécessaires au traitement et à la livraison de votre commande.</p>\n\n<h3>Finalités du traitement</h3>\n<p>Traitement des commandes, gestion de la relation client, envoi de confirmations et notifications liées à votre commande, respect des obligations légales.</p>\n\n<h3>Conservation des données</h3>\n<p>Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées, et au maximum 3 ans après votre dernière interaction.</p>\n\n<h3>Vos droits</h3>\n<p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation et de portabilité de vos données. Pour exercer ces droits : odesigncrea@gmail.com</p>",
       "format": "basic_html",
-      "processed": "<h2>Politique de Confidentialité</h2>\n<p>Atelier O Design s'engage à protéger votre vie privée et vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>\n<h3>Données collectées</h3>\n<p>Lors d'une commande : nom, prénom, adresse de livraison, adresse email, numéro de téléphone. Ces données sont nécessaires au traitement et à la livraison de votre commande.</p>\n<h3>Finalités du traitement</h3>\n<p>Traitement des commandes, gestion de la relation client, envoi de confirmations et notifications liées à votre commande, respect des obligations légales.</p>\n<h3>Conservation des données</h3>\n<p>Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées, et au maximum 3 ans après votre dernière interaction.</p>\n<h3>Vos droits</h3>\n<p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation et de portabilité de vos données. Pour exercer ces droits : odesigncrea@gmail.com</p>\n",
+      "processed": "<h2>Politique de Confidentialité</h2>\n<p>O'Design Création s'engage à protéger votre vie privée et vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>\n<h3>Données collectées</h3>\n<p>Lors d'une commande : nom, prénom, adresse de livraison, adresse email, numéro de téléphone. Ces données sont nécessaires au traitement et à la livraison de votre commande.</p>\n<h3>Finalités du traitement</h3>\n<p>Traitement des commandes, gestion de la relation client, envoi de confirmations et notifications liées à votre commande, respect des obligations légales.</p>\n<h3>Conservation des données</h3>\n<p>Vos données sont conservées pendant la durée nécessaire aux finalités pour lesquelles elles ont été collectées, et au maximum 3 ans après votre dernière interaction.</p>\n<h3>Vos droits</h3>\n<p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de limitation et de portabilité de vos données. Pour exercer ces droits : odesigncrea@gmail.com</p>\n",
       "summary": null,
       "lang": "fr"
     }

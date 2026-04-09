@@ -43,13 +43,13 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
     $total = $params['total'] ?? '—';
     $message['subject'] = 'Nouvelle commande reçue — #' . $order_number;
     $message['body'][] = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">'
-      . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;"><span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>'
+      . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;"><span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">O'Design Création</span></td></tr>'
       . '<tr><td style="padding:28px 24px;">'
       . '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">Nouvelle commande à traiter</p>'
       . '<p style="margin:0 0 8px;"><strong>Commande</strong> : #' . htmlspecialchars((string) $order_number) . '</p>'
       . '<p style="margin:0 0 8px;"><strong>Total</strong> : ' . htmlspecialchars((string) $total) . '</p>'
       . '</td></tr>'
-      . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">Atelier O Design</td></tr>'
+      . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">O'Design Création</td></tr>'
       . '</table>';
     return;
   }
@@ -75,7 +75,7 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
 
   $body = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">';
   $body .= '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;">';
-  $body .= '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>';
+  $body .= '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">O'Design Création</span></td></tr>';
   $body .= '<tr><td style="padding:28px 24px;">';
   $body .= '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">' . htmlspecialchars($label) . '</p>';
   $body .= '<p style="margin:0 0 8px;"><strong>Commande</strong> : #' . htmlspecialchars($order_number ?? '—') . '</p>';
@@ -99,7 +99,7 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
 
   $body .= '</td></tr>';
   $body .= '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">';
-  $body .= 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>';
+  $body .= 'O'Design Création · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>';
   $body .= '</table>';
 
   $message['body'][] = $body;

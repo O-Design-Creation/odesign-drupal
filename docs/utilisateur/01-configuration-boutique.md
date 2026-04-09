@@ -115,4 +115,4 @@ Les champs **Clé publiable**, **Clé secrète** et **Webhook secret** sont conf
 
 ---
 
-*Documentation Atelier O Design — Configuration boutique — v1.0*
+*Documentation O'Design Création — Configuration boutique — v1.0*

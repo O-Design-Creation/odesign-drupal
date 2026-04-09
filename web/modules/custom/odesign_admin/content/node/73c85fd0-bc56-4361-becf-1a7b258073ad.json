@@ -145,7 +145,7 @@
             "tag": "meta",
             "attributes": {
                 "name": "description",
-                "content": "Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais. D\u00e9couvrir le catalogue ou retourner \u00e0 l'accueil."
+                "content": "Votre message a bien \u00e9t\u00e9 re\u00e7u. O'Design Création vous r\u00e9pondra dans les plus brefs d\u00e9lais. D\u00e9couvrir le catalogue ou retourner \u00e0 l'accueil."
             },
             "lang": "fr"
         },
@@ -193,7 +193,7 @@
             "tag": "meta",
             "attributes": {
                 "property": "og:description",
-                "content": "Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais. D\u00e9couvrir le catalogue ou retourner \u00e0 l'accueil."
+                "content": "Votre message a bien \u00e9t\u00e9 re\u00e7u. O'Design Création vous r\u00e9pondra dans les plus brefs d\u00e9lais. D\u00e9couvrir le catalogue ou retourner \u00e0 l'accueil."
             },
             "lang": "fr"
         }
@@ -208,9 +208,9 @@
     ],
     "body": [
         {
-            "value": "<p>Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais.<\/p><p><a href=\"\/produits\">D\u00e9couvrir le catalogue<\/a> ou <a href=\"\/\">retourner \u00e0 l'accueil<\/a>.<\/p>",
+            "value": "<p>Votre message a bien \u00e9t\u00e9 re\u00e7u. O'Design Création vous r\u00e9pondra dans les plus brefs d\u00e9lais.<\/p><p><a href=\"\/produits\">D\u00e9couvrir le catalogue<\/a> ou <a href=\"\/\">retourner \u00e0 l'accueil<\/a>.<\/p>",
             "format": "basic_html",
-            "processed": "<p>Votre message a bien \u00e9t\u00e9 re\u00e7u. Atelier O Design vous r\u00e9pondra dans les plus brefs d\u00e9lais.<\/p>\n<p><a href=\"\/produits\">D\u00e9couvrir le catalogue<\/a> ou <a href=\"\/\">retourner \u00e0 l'accueil<\/a>.<\/p>\n",
+            "processed": "<p>Votre message a bien \u00e9t\u00e9 re\u00e7u. O'Design Création vous r\u00e9pondra dans les plus brefs d\u00e9lais.<\/p>\n<p><a href=\"\/produits\">D\u00e9couvrir le catalogue<\/a> ou <a href=\"\/\">retourner \u00e0 l'accueil<\/a>.<\/p>\n",
             "summary": null,
             "lang": "fr"
         }

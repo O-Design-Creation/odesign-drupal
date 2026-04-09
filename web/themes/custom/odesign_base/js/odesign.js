@@ -1,6 +1,6 @@
 /**
  * @file
- * Atelier O Design — JavaScript thème principal.
+ * O'Design Création — JavaScript thème principal.
  * Accessible, progressive enhancement, no external deps.
  */
 

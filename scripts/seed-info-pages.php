@@ -84,7 +84,7 @@ HTML;
 
 $atelier_body = <<<HTML
 <h2>L'atelier d'Océane</h2>
-<p>Atelier O Design est un atelier physique de créations personnalisées en bois.</p>
+<p>O'Design Création est un atelier physique de créations personnalisées en bois.</p>
 <ul>
   <li><strong>Adresse :</strong> à compléter</li>
   <li><strong>Horaires :</strong> à compléter</li>

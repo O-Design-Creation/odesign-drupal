@@ -3,7 +3,7 @@
 > 📍 **Accès** : Tableau de bord → **Configuration** → onglet **Intelligence artificielle**
 > **URL directe** : `/admin/boutique/configuration`
 
-L'assistant IA vous aide à rédiger rapidement des textes pour votre boutique : descriptions de fiches produit, articles de blog, newsletters. Il utilise OpenAI (GPT-4o-mini) avec un ton artisanal et chaleureux adapté à Atelier O Design.
+L'assistant IA vous aide à rédiger rapidement des textes pour votre boutique : descriptions de fiches produit, articles de blog, newsletters. Il utilise OpenAI (GPT-4o-mini) avec un ton artisanal et chaleureux adapté à O'Design Création.
 
 ---
 
@@ -104,4 +104,4 @@ Le formulaire de rédaction de newsletter dispose d'un bouton **✨ Générer av
 
 ---
 
-*Documentation générée pour Atelier O Design — Drupal Commerce 11.3.5*
+*Documentation générée pour O'Design Création — Drupal Commerce 11.3.5*

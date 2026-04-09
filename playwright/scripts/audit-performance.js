@@ -1,6 +1,6 @@
 /**
  * audit-performance.js — Audit performance via Playwright
- * Atelier O Design
+ * O'Design Création
  *
  * Métriques mesurées :
  *   - LCP (Largest Contentful Paint)

@@ -1,4 +1,4 @@
-# Glossaire — Atelier O Design
+# Glossaire — O'Design Création
 
 Ce glossaire explique les termes utilisés dans cette documentation, sans jargon technique.
 
@@ -123,4 +123,4 @@ Une déclinaison d'un produit avec ses propres caractéristiques (taille, couleu
 
 ---
 
-*Documentation Atelier O Design — Glossaire — v1.0*
+*Documentation O'Design Création — Glossaire — v1.0*

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Module ODesign AI — assistant IA éditorial pour la boutique Atelier O Design.
+ * Module ODesign AI — assistant IA éditorial pour la boutique O'Design Création.
  *
  * Fournit :
  * - Un plugin AiProvider OpenAI (GPT-4o-mini) pour drupal/ai + ai_ckeditor.

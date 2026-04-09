@@ -90,7 +90,7 @@
     ],
     "title": [
         {
-            "value": "L'Atelier \u2014 Atelier O Design",
+            "value": "L'Atelier \u2014 O'Design Création",
             "lang": "fr"
         }
     ],
@@ -137,7 +137,7 @@
             "tag": "meta",
             "attributes": {
                 "name": "title",
-                "content": "L'Atelier \u2014 Atelier O Design | ODesign Drupal"
+                "content": "L'Atelier \u2014 O'Design Création | ODesign Drupal"
             },
             "lang": "fr"
         },
@@ -145,7 +145,7 @@
             "tag": "meta",
             "attributes": {
                 "name": "description",
-                "content": "Atelier O Design \u2014 cr\u00e9ations personnalis\u00e9es en bois grav\u00e9es \u00e0 la main par Oc\u00e9ane. D\u00e9couvrez l'artisane, l'atelier et les techniques utilis\u00e9es."
+                "content": "O'Design Création \u2014 cr\u00e9ations personnalis\u00e9es en bois grav\u00e9es \u00e0 la main par Oc\u00e9ane. D\u00e9couvrez l'artisane, l'atelier et les techniques utilis\u00e9es."
             },
             "lang": "fr"
         },
@@ -185,7 +185,7 @@
             "tag": "meta",
             "attributes": {
                 "property": "og:title",
-                "content": "L'Atelier \u2014 Atelier O Design"
+                "content": "L'Atelier \u2014 O'Design Création"
             },
             "lang": "fr"
         },
@@ -193,7 +193,7 @@
             "tag": "meta",
             "attributes": {
                 "property": "og:description",
-                "content": "Atelier O Design \u2014 cr\u00e9ations personnalis\u00e9es en bois grav\u00e9es \u00e0 la main par Oc\u00e9ane. D\u00e9couvrez l'artisane, l'atelier et les techniques utilis\u00e9es."
+                "content": "O'Design Création \u2014 cr\u00e9ations personnalis\u00e9es en bois grav\u00e9es \u00e0 la main par Oc\u00e9ane. D\u00e9couvrez l'artisane, l'atelier et les techniques utilis\u00e9es."
             },
             "lang": "fr"
         }
@@ -208,10 +208,10 @@
     ],
     "body": [
         {
-            "value": "<h2>L'artisane<\/h2>\n<p>Je m'appelle Oc\u00e9ane, j'ai cr\u00e9\u00e9 Atelier O Design en 2023 avec un r\u00eave simple : vivre de mon travail passion tout en \u00e9tant pr\u00e9sente pour ma famille. Chaque cr\u00e9ation na\u00eet dans mon atelier, grav\u00e9e et d\u00e9coup\u00e9e \u00e0 la main au laser.<\/p>\n<p>Je travaille principalement le bois \u2014 un mat\u00e9riau chaleureux et naturel qui s'adapte \u00e0 tous les univers : naissance, mariage, famille, \u00e9v\u00e9nements. Mon objectif : vous proposer des pi\u00e8ces uniques qui racontent votre histoire.<\/p>\n\n<h2>L'atelier<\/h2>\n<p>L'atelier est bas\u00e9 en France. Chaque commande est fabriqu\u00e9e \u00e0 la main, avec soin, dans des d\u00e9lais de fabrication habituellement compris entre 3 et 7 jours ouvr\u00e9s.<\/p>\n\n<h2>Adresse et retrait<\/h2>\n<p><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n<p><strong>Horaires d'accueil \/ retrait :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n\n<h2>Les cr\u00e9ations<\/h2>\n<p>Pancartes personnalis\u00e9es, arbres de vie, cartes de naissance, cadeaux \u00e9v\u00e9nementiels\u2026 chaque pi\u00e8ce est unique et r\u00e9alis\u00e9e \u00e0 votre demande.<\/p>\n<p><a href=\"\/produits\">Voir toutes nos cr\u00e9ations \u2192<\/a><\/p>",
+            "value": "<h2>L'artisane<\/h2>\n<p>Je m'appelle Oc\u00e9ane, j'ai cr\u00e9\u00e9 O'Design Création en 2023 avec un r\u00eave simple : vivre de mon travail passion tout en \u00e9tant pr\u00e9sente pour ma famille. Chaque cr\u00e9ation na\u00eet dans mon atelier, grav\u00e9e et d\u00e9coup\u00e9e \u00e0 la main au laser.<\/p>\n<p>Je travaille principalement le bois \u2014 un mat\u00e9riau chaleureux et naturel qui s'adapte \u00e0 tous les univers : naissance, mariage, famille, \u00e9v\u00e9nements. Mon objectif : vous proposer des pi\u00e8ces uniques qui racontent votre histoire.<\/p>\n\n<h2>L'atelier<\/h2>\n<p>L'atelier est bas\u00e9 en France. Chaque commande est fabriqu\u00e9e \u00e0 la main, avec soin, dans des d\u00e9lais de fabrication habituellement compris entre 3 et 7 jours ouvr\u00e9s.<\/p>\n\n<h2>Adresse et retrait<\/h2>\n<p><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n<p><strong>Horaires d'accueil \/ retrait :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n\n<h2>Les cr\u00e9ations<\/h2>\n<p>Pancartes personnalis\u00e9es, arbres de vie, cartes de naissance, cadeaux \u00e9v\u00e9nementiels\u2026 chaque pi\u00e8ce est unique et r\u00e9alis\u00e9e \u00e0 votre demande.<\/p>\n<p><a href=\"\/produits\">Voir toutes nos cr\u00e9ations \u2192<\/a><\/p>",
             "format": "basic_html",
-            "processed": "<h2>L'artisane<\/h2>\n<p>Je m'appelle Oc\u00e9ane, j'ai cr\u00e9\u00e9 Atelier O Design en 2023 avec un r\u00eave simple : vivre de mon travail passion tout en \u00e9tant pr\u00e9sente pour ma famille. Chaque cr\u00e9ation na\u00eet dans mon atelier, grav\u00e9e et d\u00e9coup\u00e9e \u00e0 la main au laser.<\/p>\n<p>Je travaille principalement le bois \u2014 un mat\u00e9riau chaleureux et naturel qui s'adapte \u00e0 tous les univers : naissance, mariage, famille, \u00e9v\u00e9nements. Mon objectif : vous proposer des pi\u00e8ces uniques qui racontent votre histoire.<\/p>\n<h2>L'atelier<\/h2>\n<p>L'atelier est bas\u00e9 en France. Chaque commande est fabriqu\u00e9e \u00e0 la main, avec soin, dans des d\u00e9lais de fabrication habituellement compris entre 3 et 7 jours ouvr\u00e9s.<\/p>\n<h2>Adresse et retrait<\/h2>\n<p><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n<p><strong>Horaires d'accueil \/ retrait :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n<h2>Les cr\u00e9ations<\/h2>\n<p>Pancartes personnalis\u00e9es, arbres de vie, cartes de naissance, cadeaux \u00e9v\u00e9nementiels\u2026 chaque pi\u00e8ce est unique et r\u00e9alis\u00e9e \u00e0 votre demande.<\/p>\n<p><a href=\"\/produits\">Voir toutes nos cr\u00e9ations \u2192<\/a><\/p>\n",
-            "summary": "Atelier O Design \u2014 cr\u00e9ations personnalis\u00e9es en bois grav\u00e9es \u00e0 la main par Oc\u00e9ane. D\u00e9couvrez l'artisane, l'atelier et les techniques utilis\u00e9es.",
+            "processed": "<h2>L'artisane<\/h2>\n<p>Je m'appelle Oc\u00e9ane, j'ai cr\u00e9\u00e9 O'Design Création en 2023 avec un r\u00eave simple : vivre de mon travail passion tout en \u00e9tant pr\u00e9sente pour ma famille. Chaque cr\u00e9ation na\u00eet dans mon atelier, grav\u00e9e et d\u00e9coup\u00e9e \u00e0 la main au laser.<\/p>\n<p>Je travaille principalement le bois \u2014 un mat\u00e9riau chaleureux et naturel qui s'adapte \u00e0 tous les univers : naissance, mariage, famille, \u00e9v\u00e9nements. Mon objectif : vous proposer des pi\u00e8ces uniques qui racontent votre histoire.<\/p>\n<h2>L'atelier<\/h2>\n<p>L'atelier est bas\u00e9 en France. Chaque commande est fabriqu\u00e9e \u00e0 la main, avec soin, dans des d\u00e9lais de fabrication habituellement compris entre 3 et 7 jours ouvr\u00e9s.<\/p>\n<h2>Adresse et retrait<\/h2>\n<p><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n<p><strong>Horaires d'accueil \/ retrait :<\/strong> \u00e0 compl\u00e9ter par la gestionnaire<\/p>\n<h2>Les cr\u00e9ations<\/h2>\n<p>Pancartes personnalis\u00e9es, arbres de vie, cartes de naissance, cadeaux \u00e9v\u00e9nementiels\u2026 chaque pi\u00e8ce est unique et r\u00e9alis\u00e9e \u00e0 votre demande.<\/p>\n<p><a href=\"\/produits\">Voir toutes nos cr\u00e9ations \u2192<\/a><\/p>\n",
+            "summary": "O'Design Création \u2014 cr\u00e9ations personnalis\u00e9es en bois grav\u00e9es \u00e0 la main par Oc\u00e9ane. D\u00e9couvrez l'artisane, l'atelier et les techniques utilis\u00e9es.",
             "lang": "fr"
         }
     ],

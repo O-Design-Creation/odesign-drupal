@@ -133,4 +133,4 @@ Les factures sont disponibles dans [Commandes](02-commandes.md) — section "Acc
 
 ---
 
-*Documentation Atelier O Design — Espace client — v1.0*
+*Documentation O'Design Création — Espace client — v1.0*

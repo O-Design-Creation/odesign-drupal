@@ -37,8 +37,8 @@ foreach ($nodes as $node) {
 
 // --- Pages légales (body.summary) ---
 $legalDescriptions = [
-  'cgv' => 'Consultez les conditions générales de vente d\'Atelier O Design : modalités de commande, livraison, retours et paiement pour nos produits artisanaux personnalisés.',
-  'mentions-legales' => 'Mentions légales d\'Atelier O Design : informations sur l\'éditeur du site, l\'hébergeur, et les données personnelles conformément à la réglementation française.',
+  'cgv' => 'Consultez les conditions générales de vente d\'O'Design Création : modalités de commande, livraison, retours et paiement pour nos produits artisanaux personnalisés.',
+  'mentions-legales' => 'Mentions légales d\'O'Design Création : informations sur l\'éditeur du site, l\'hébergeur, et les données personnelles conformément à la réglementation française.',
 ];
 
 $pageNodes = $nodeStorage->loadByProperties(['type' => 'page']);

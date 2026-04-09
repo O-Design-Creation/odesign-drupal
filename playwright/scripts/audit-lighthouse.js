@@ -1,6 +1,6 @@
 /**
  * audit-lighthouse.js — Audit Lighthouse (performance, SEO, a11y, best practices)
- * Atelier O Design
+ * O'Design Création
  *
  * Scores cibles (Good) :
  *   Performance  ≥ 0.75
@@ -54,7 +54,7 @@ function scoreBar(score) {
 
 (async () => {
   console.log('\n' + '='.repeat(60));
-  console.log('🏎️  AUDIT LIGHTHOUSE — Atelier O Design');
+  console.log('🏎️  AUDIT LIGHTHOUSE — O'Design Création');
   console.log('='.repeat(60) + '\n');
 
   const allResults = [];

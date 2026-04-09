@@ -1,4 +1,4 @@
-# Documentation utilisateur — Atelier O Design
+# Documentation utilisateur — O'Design Création
 
 > Bienvenue, Océane ! Ce guide est fait pour vous accompagner au quotidien dans la gestion de votre boutique. Chaque section répond à une question concrète : "Comment faire X ?"
 > Vous n'avez pas besoin de connaissances techniques pour l'utiliser.
@@ -87,4 +87,4 @@ Si quelque chose ne fonctionne pas comme décrit dans cette documentation :
 
 ---
 
-*Documentation Atelier O Design — v1.0 — Pour toute question : contactez votre prestataire technique*
+*Documentation O'Design Création — v1.0 — Pour toute question : contactez votre prestataire technique*

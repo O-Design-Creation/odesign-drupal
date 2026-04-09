@@ -137,7 +137,7 @@
       "tag": "meta",
       "attributes": {
         "name": "title",
-        "content": "Mentions Légales | Atelier O Design"
+        "content": "Mentions Légales | O'Design Création"
       },
       "lang": "fr"
     },
@@ -145,7 +145,7 @@
       "tag": "meta",
       "attributes": {
         "name": "description",
-        "content": "Mentions légales d'Atelier O Design : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française."
+        "content": "Mentions légales d'O'Design Création : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française."
       },
       "lang": "fr"
     },
@@ -169,7 +169,7 @@
       "tag": "meta",
       "attributes": {
         "property": "og:description",
-        "content": "Mentions légales d'Atelier O Design : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française."
+        "content": "Mentions légales d'O'Design Création : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française."
       },
       "lang": "fr"
     }
@@ -184,10 +184,10 @@
   ],
   "body": [
     {
-      "value": "<h2>Mentions Légales</h2>\n<p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>\n\n<h3>Éditeur du site</h3>\n<p>Atelier O Design<br>\nEmail : odesigncrea@gmail.com<br>\n<em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>\n\n<h3>Hébergement</h3>\n<p>Ce site est hébergé par Pantheon Systems, Inc.<br>\n717 California Street, San Francisco, CA 94108, États-Unis</p>\n\n<h3>Propriété intellectuelle</h3>\n<p>L'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>\n\n<h3>Données personnelles</h3>\n<p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>\n\n<h3>Cookies</h3>\n<p>Ce site utilise des cookies nécessaires à son fonctionnement. Votre consentement est demandé pour les cookies non essentiels.</p>",
+      "value": "<h2>Mentions Légales</h2>\n<p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>\n\n<h3>Éditeur du site</h3>\n<p>O'Design Création<br>\nEmail : odesigncrea@gmail.com<br>\n<em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>\n\n<h3>Hébergement</h3>\n<p>Ce site est hébergé par Pantheon Systems, Inc.<br>\n717 California Street, San Francisco, CA 94108, États-Unis</p>\n\n<h3>Propriété intellectuelle</h3>\n<p>L'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d'O'Design Création. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>\n\n<h3>Données personnelles</h3>\n<p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>\n\n<h3>Cookies</h3>\n<p>Ce site utilise des cookies nécessaires à son fonctionnement. Votre consentement est demandé pour les cookies non essentiels.</p>",
       "format": "basic_html",
-      "processed": "<h2>Mentions Légales</h2>\n<p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>\n<h3>Éditeur du site</h3>\n<p>Atelier O Design<br><br>\nEmail : odesigncrea@gmail.com<br><br>\n<em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>\n<h3>Hébergement</h3>\n<p>Ce site est hébergé par Pantheon Systems, Inc.<br><br>\n717 California Street, San Francisco, CA 94108, États-Unis</p>\n<h3>Propriété intellectuelle</h3>\n<p>L'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>\n<h3>Données personnelles</h3>\n<p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>\n<h3>Cookies</h3>\n<p>Ce site utilise des cookies nécessaires à son fonctionnement. Votre consentement est demandé pour les cookies non essentiels.</p>\n",
-      "summary": "Mentions légales d'Atelier O Design : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française.",
+      "processed": "<h2>Mentions Légales</h2>\n<p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>\n<h3>Éditeur du site</h3>\n<p>O'Design Création<br><br>\nEmail : odesigncrea@gmail.com<br><br>\n<em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>\n<h3>Hébergement</h3>\n<p>Ce site est hébergé par Pantheon Systems, Inc.<br><br>\n717 California Street, San Francisco, CA 94108, États-Unis</p>\n<h3>Propriété intellectuelle</h3>\n<p>L'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d'O'Design Création. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>\n<h3>Données personnelles</h3>\n<p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>\n<h3>Cookies</h3>\n<p>Ce site utilise des cookies nécessaires à son fonctionnement. Votre consentement est demandé pour les cookies non essentiels.</p>\n",
+      "summary": "Mentions légales d'O'Design Création : informations sur l'éditeur du site, l'hébergeur, et les données personnelles conformément à la réglementation française.",
       "lang": "fr"
     }
   ],

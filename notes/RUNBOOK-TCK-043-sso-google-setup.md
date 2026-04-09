@@ -21,7 +21,7 @@
 
 1. Aller sur [https://console.cloud.google.com/](https://console.cloud.google.com/)
 2. Cliquer sur le sélecteur de projet (en haut à gauche) → **"Nouveau projet"**
-3. Nommer le projet : `Atelier O Design — Boutique` (ou similaire)
+3. Nommer le projet : `O'Design Création — Boutique` (ou similaire)
 4. Cliquer sur **"Créer"**
 
 ---
@@ -31,7 +31,7 @@
 1. Dans le menu de gauche : **"API et Services"** → **"Écran d'autorisation OAuth"**
 2. Choisir **"Externe"** (pour les comptes Google de vos clients)
 3. Remplir les champs obligatoires :
-   - **Nom de l'application** : `Atelier O Design`
+   - **Nom de l'application** : `O'Design Création`
    - **E-mail d'assistance utilisateur** : votre email Google
    - **Logo** : optionnel (recommandé — améliore la confiance)
    - **Domaines autorisés** : `atelierodesign.fr` (et `ddev.site` pour les tests)

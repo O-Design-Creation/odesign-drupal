@@ -85,4 +85,4 @@ La newsletter sera envoyée automatiquement à l'heure programmée.
 
 ---
 
-*Documentation Atelier O Design — Newsletter — v1.0*
+*Documentation O'Design Création — Newsletter — v1.0*

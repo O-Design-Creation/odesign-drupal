@@ -40,7 +40,7 @@ L'événement `purchase` inclut : identifiant de commande, montant total, liste 
 ## Vérifier que les events arrivent dans GA4
 
 1. Connectez-vous sur [analytics.google.com](https://analytics.google.com)
-2. Sélectionnez la propriété **Atelier O Design** (`G-4J4LCNHJ4N`)
+2. Sélectionnez la propriété **O'Design Création** (`G-4J4LCNHJ4N`)
 3. Dans le menu de gauche → **Rapports → Temps réel**
 4. Sur le site Drupal, effectuez une action (vue produit, ajout panier)
 5. Dans GA4, vous devez voir les événements apparaître dans la vue **Temps réel → Événements**

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Atelier O Design — Thème Drupal Commerce
+   O'Design Création — Thème Drupal Commerce
    Palette terracotta chaud · Playfair Display + DM Sans
    Palette officielle fournie par la cliente (2026-04-01)
    ========================================================================== */
@@ -13,7 +13,7 @@
    1. Design tokens (custom properties)
    --------------------------------------------------------------------------- */
 :root {
-  /* Palette officielle Atelier O Design — fournie par la cliente */
+  /* Palette officielle O'Design Création — fournie par la cliente */
   --color-brand-dark:     #72413D;   /* 🪵 Brun irisé du logo — footer, header barre annonce, accents forts */
   --color-brand-medium:   #BB7570;   /* 🌸 Rose terracotta doux — barres, hover, boutons secondaires */
   --color-brand-warm:     #8B6151;   /* 🪵 Brun naturel chaud   — prix, CTA forts, icônes */

@@ -454,16 +454,16 @@ function odesign_admin_mail(string $key, array &$message, array $params): void {
 
   // ── Email de test (page configuration boutique) ───────────────────────────
   if ($key === 'test_email') {
-    $message['subject'] = 'Test email — Atelier O Design';
+    $message['subject'] = 'Test email — O'Design Création';
     $message['body'][] = '<table style="max-width:500px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;border:1px solid #e0dbd4;border-radius:4px;">'
       . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;background:#fdfaf7;">'
-      . '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">Atelier O Design</span></td></tr>'
+      . '<span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">O'Design Création</span></td></tr>'
       . '<tr><td style="padding:28px 24px;">'
       . '<p style="font-size:18px;margin:0 0 12px;">✅ Configuration email fonctionnelle</p>'
       . '<p style="color:#6b5744;margin:0;">Si vous recevez cet email, votre configuration Brevo fonctionne correctement. Vos clients recevront bien leurs confirmations de commande.</p>'
       . '</td></tr>'
       . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">'
-      . 'Atelier O Design · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>'
+      . 'O'Design Création · <a href="https://atelierodesign.fr" style="color:#b0a090;">atelierodesign.fr</a></td></tr>'
       . '</table>';
     return;
   }
@@ -728,7 +728,7 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
     });
     $form['gdpr_consent'] = [
       '#type'          => 'checkbox',
-      '#title'         => t("J'accepte de recevoir la newsletter de l'Atelier O Design et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
+      '#title'         => t("J'accepte de recevoir la newsletter de O'Design Création et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
       '#required'      => TRUE,
       '#weight'        => 5,
       '#attributes'    => ['class' => ['newsletter-gdpr-checkbox']],

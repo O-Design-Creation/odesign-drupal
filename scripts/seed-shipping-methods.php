@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Seed des méthodes d'expédition Atelier O Design — TCK-067.
+ * Seed des méthodes d'expédition O'Design Création — TCK-067.
  *
  * 5 méthodes : Colissimo, DPD, Chronopost, Mondial Relay, Mondial Relay gratuit.
  * Script idempotent : supprime les anciennes méthodes génériques avant recréation.
@@ -22,10 +22,10 @@ $store_storage = \Drupal::entityTypeManager()->getStorage('commerce_store');
 $stores = $store_storage->loadMultiple();
 
 if (empty($stores)) {
-  echo "Aucun store trouvé. Création du store Atelier O Design…\n";
+  echo "Aucun store trouvé. Création du store O'Design Création…\n";
   $store = Store::create([
     'type'             => 'online',
-    'name'             => 'Atelier O Design',
+    'name'             => 'O'Design Création',
     'mail'             => 'odesigncrea@gmail.com',
     'default_currency' => 'EUR',
     'timezone'         => 'Europe/Paris',

@@ -85,4 +85,4 @@ La promotion est désactivée mais reste dans la liste. Vous pouvez la réactive
 
 ---
 
-*Documentation Atelier O Design — Promotions — v1.0*
+*Documentation O'Design Création — Promotions — v1.0*

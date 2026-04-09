@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * page.html.twig — Template de page principal Atelier O Design
+ * page.html.twig — Template de page principal O'Design Création
  *
  * Variables :
  * - is_front, logged_in, is_admin
@@ -66,8 +66,8 @@
       <div class="site-header__inner">
 
         {# Logo — lien séparé, jamais wrappé autour de blocs dynamiques #}
-        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Retour à l\'accueil Atelier O Design'|t }}" aria-label="{{ 'Retour à l\'accueil Atelier O Design'|t }}">
-          <img src="{{ base_path ~ directory }}/logo.svg" alt="{{ 'Atelier O Design'|t }}">
+        <a href="{{ path('<front>') }}" class="site-logo" title="{{ 'Retour à l\'accueil O'Design Création'|t }}" aria-label="{{ 'Retour à l\'accueil O'Design Création'|t }}">
+          <img src="{{ base_path ~ directory }}/logo.svg" alt="{{ 'O'Design Création'|t }}">
         </a>
 
         {# Blocs optionnels région header (ex: branding personnalisé) #}
@@ -228,7 +228,7 @@
         >
           <div class="container home-hero__inner">
             <div class="home-hero__content">
-              <p class="home-hero__eyebrow">{{ 'Atelier O Design'|t }}</p>
+              <p class="home-hero__eyebrow">{{ 'O'Design Création'|t }}</p>
               <h1 class="home-hero__title">
                 {{ 'Des créations en bois personnalisées pour les moments qui comptent.'|t }}
               </h1>
@@ -241,7 +241,7 @@
               </div>
             </div>
 
-            <aside class="home-hero__panel" aria-label="{{ 'Points forts Atelier O Design'|t }}">
+            <aside class="home-hero__panel" aria-label="{{ 'Points forts O'Design Création'|t }}">
               <ul class="home-hero__highlights">
                 <li>{{ 'Atelier réel, fabrication soignée et personnalisations lisibles.'|t }}</li>
                 <li>{{ 'Univers pensés pour le mariage, la naissance et les cadeaux personnalisés.'|t }}</li>
@@ -450,9 +450,9 @@
       {% else %}
         <div class="container">
           {% if is_contact_page %}
-            <section class="contact-hero" aria-label="{{ 'Contacter Atelier O Design'|t }}">
+            <section class="contact-hero" aria-label="{{ 'Contacter O'Design Création'|t }}">
               <div class="contact-hero__content">
-                <p class="contact-hero__eyebrow">{{ 'Atelier O Design'|t }}</p>
+                <p class="contact-hero__eyebrow">{{ 'O'Design Création'|t }}</p>
                 <h1 class="contact-hero__title">{{ 'Parlons de votre création personnalisée'|t }}</h1>
                 <p class="contact-hero__intro">
                   {{ 'Une question sur un produit, une personnalisation ou un délai ? Nous vous répondons rapidement.'|t }}
@@ -554,7 +554,7 @@
             <a href="/politique-confidentialite">{{ 'Politique de confidentialité'|t }}</a>
           </nav>
           <p class="site-footer__copyright">
-            &copy; {{ 'now'|date('Y') }} Atelier O Design. {{ 'Tous droits réservés.'|t }}
+            &copy; {{ 'now'|date('Y') }} O'Design Création. {{ 'Tous droits réservés.'|t }}
           </p>
           <p class="site-footer__legal-notice">
             {{ 'TVA non applicable — franchise en base de TVA, art. 293 B du CGI.'|t }}

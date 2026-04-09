@@ -5,7 +5,7 @@ dependencies:
   module:
     - system
 id: default
-label: 'Atelier O Design — GA4'
+label: 'O'Design Création — GA4'
 weight: 0
 tag_container_ids:
   - G-4J4LCNHJ4N

@@ -1,6 +1,6 @@
 /**
  * audit-a11y.js — Audit accessibilité axe-core + Playwright
- * Atelier O Design
+ * O'Design Création
  *
  * Usage : node playwright/scripts/audit-a11y.js [url]
  * Produit un rapport JSON + résumé console

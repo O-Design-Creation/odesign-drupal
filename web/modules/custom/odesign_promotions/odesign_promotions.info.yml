@@ -1,6 +1,6 @@
 name: 'ODesign Promotions'
 type: module
-description: 'Moteur de promotions métier low-code pour Atelier O Design.'
+description: 'Moteur de promotions métier low-code pour O'Design Création.'
 package: ODesign
 core_version_requirement: ^10 || ^11
 dependencies:

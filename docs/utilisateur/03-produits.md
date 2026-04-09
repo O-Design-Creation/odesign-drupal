@@ -113,4 +113,4 @@ Les attributs sont les options proposées à vos clients lors de l'achat (ex. : 
 
 ---
 
-*Documentation Atelier O Design — Produits — v1.0*
+*Documentation O'Design Création — Produits — v1.0*

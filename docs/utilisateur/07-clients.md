@@ -63,4 +63,4 @@ Dirigez le client vers la page de connexion de votre boutique, où il peut cliqu
 
 ---
 
-*Documentation Atelier O Design — Clients — v1.1*
+*Documentation O'Design Création — Clients — v1.1*

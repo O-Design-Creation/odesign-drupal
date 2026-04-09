@@ -1,6 +1,6 @@
 /**
  * audit-seo.js — Audit SEO technique via Playwright
- * Atelier O Design
+ * O'Design Création
  *
  * Vérifie par page :
  *   - <title> présent et non vide
@@ -126,7 +126,7 @@ async function checkSitemapAndRobots(page) {
   await page.setExtraHTTPHeaders({ 'Accept-Language': 'fr-FR,fr;q=0.9' });
 
   console.log('\n' + '='.repeat(60));
-  console.log('🔍 AUDIT SEO — Atelier O Design');
+  console.log('🔍 AUDIT SEO — O'Design Création');
   console.log('='.repeat(60) + '\n');
 
   const pageResults = [];

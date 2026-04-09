@@ -144,7 +144,7 @@ class AiGenerateController extends ControllerBase {
     switch ($context_type) {
 
       case 'newsletter':
-        $system = "Tu es l'assistant éditorial d'Atelier O Design, boutique artisanale française "
+        $system = "Tu es l'assistant éditorial d'O'Design Création, boutique artisanale française "
           . "spécialisée dans les créations personnalisées en bois gravé. "
           . "Ton : chaleureux, artisanal, personnel. Utilise le vouvoiement.";
         $user   = "Rédige un email newsletter avec le thème : {$title}. "
@@ -153,7 +153,7 @@ class AiGenerateController extends ControllerBase {
         break;
 
       case 'product':
-        $system = "Tu es l'assistant éditorial d'Atelier O Design. "
+        $system = "Tu es l'assistant éditorial d'O'Design Création. "
           . "Rédige des descriptions de fiches produit artisanales, chaleureuses, "
           . "qui valorisent le fait-main et la personnalisation. Utilise le vouvoiement.";
         $user   = "Rédige une description de fiche produit pour : {$title}. "
@@ -165,7 +165,7 @@ class AiGenerateController extends ControllerBase {
 
       case 'article':
       default:
-        $system = "Tu es l'assistant éditorial d'Atelier O Design. "
+        $system = "Tu es l'assistant éditorial d'O'Design Création. "
           . "Rédige des articles de blog chaleureux sur l'artisanat, "
           . "les occasions de vie, les cadeaux personnalisés. Utilise le vouvoiement.";
         $user   = "Rédige une introduction d'article de blog (150 mots) sur le thème : {$title}.";

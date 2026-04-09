@@ -1,6 +1,6 @@
 /**
  * @file
- * Bouton IA pour la rédaction de newsletters Atelier O Design.
+ * Bouton IA pour la rédaction de newsletters O'Design Création.
  *
  * Injecte un bouton "✨ Générer avec l'IA" dans les formulaires newsletter
  * simplenews. Au clic, appelle l'endpoint AJAX /admin/boutique/ai/generate

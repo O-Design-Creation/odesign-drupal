@@ -1,6 +1,6 @@
 name: 'Odesign AI'
 type: module
-description: 'Assistant IA éditorial pour Atelier O Design — fiches produit, articles, newsletter.'
+description: 'Assistant IA éditorial pour O'Design Création — fiches produit, articles, newsletter.'
 package: 'ODesign'
 core_version_requirement: ^11
 dependencies:

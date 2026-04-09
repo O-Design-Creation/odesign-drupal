@@ -96,4 +96,4 @@ Vous pouvez ajouter ou modifier les catégories qui servent à organiser vos pro
 
 ---
 
-*Documentation Atelier O Design — Contenu éditorial — v1.0*
+*Documentation O'Design Création — Contenu éditorial — v1.0*

@@ -1,7 +1,7 @@
 odesign_order:
   id: odesign_order
   group: commerce_order
-  label: 'Atelier O Design — Commandes'
+  label: 'O'Design Création — Commandes'
   states:
     draft:
       label: 'Brouillon'

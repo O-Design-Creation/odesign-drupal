@@ -11,7 +11,7 @@ smtp_timeout: 30
 smtp_username: ''
 smtp_password: ''
 smtp_from: boutique@atelierodesign.fr
-smtp_fromname: 'Atelier O Design'
+smtp_fromname: 'O'Design Création'
 smtp_client_hostname: ''
 smtp_client_helo: ''
 smtp_allowhtml: true

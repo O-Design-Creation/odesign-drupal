@@ -66,7 +66,7 @@ function odesign_admin_deploy_001(): void {
  * Corrige les metatag des pages légales encore en DB avec des valeurs DDEV :
  * - Supprime les canonicals pointant vers odesign-drupal.ddev.site
  * - Supprime les og:site_name hardcodés (héritage global via [site:name])
- * - Corrige les titres meta (ODesign Drupal → Atelier O Design)
+ * - Corrige les titres meta (ODesign Drupal → O'Design Création)
  * - Normalise la description de la politique de confidentialité
  *
  * Déclencheur : déploiement fix/seo-noindex-canonicals (2026-04-07).
@@ -74,16 +74,16 @@ function odesign_admin_deploy_001(): void {
 function odesign_admin_deploy_002(): void {
   $aliases = [
     '/cgv'                      => [
-      'title'       => 'Conditions Générales de Vente | Atelier O Design',
+      'title'       => 'Conditions Générales de Vente | O'Design Création',
       'description' => NULL,
     ],
     '/mentions-legales'         => [
-      'title'       => 'Mentions Légales | Atelier O Design',
+      'title'       => 'Mentions Légales | O'Design Création',
       'description' => NULL,
     ],
     '/politique-confidentialite' => [
-      'title'       => 'Politique de Confidentialité | Atelier O Design',
-      'description' => "Politique de confidentialité d'Atelier O Design : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD.",
+      'title'       => 'Politique de Confidentialité | O'Design Création',
+      'description' => "Politique de confidentialité d'O'Design Création : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD.",
     ],
   ];
 
@@ -120,7 +120,7 @@ function odesign_admin_deploy_002(): void {
         $value = $overrides['title'];
       }
       if ($key === 'og_title') {
-        $value = str_replace('ODesign Drupal', 'Atelier O Design', (string) $value);
+        $value = str_replace('ODesign Drupal', 'O'Design Création', (string) $value);
       }
       if ($key === 'description' && $overrides['description'] !== NULL) {
         $value = $overrides['description'];
@@ -152,7 +152,7 @@ function odesign_admin_deploy_003(): void {
     'type'     => 'page',
     'title'    => 'Merci pour votre message',
     'body'     => [
-      'value'  => '<p>Votre message a bien été reçu. Atelier O Design vous répondra dans les plus brefs délais.</p>'
+      'value'  => '<p>Votre message a bien été reçu. O'Design Création vous répondra dans les plus brefs délais.</p>'
                . '<p><a href="/produits">Découvrir le catalogue</a> ou <a href="/">retourner à l\'accueil</a>.</p>',
       'format' => 'basic_html',
     ],

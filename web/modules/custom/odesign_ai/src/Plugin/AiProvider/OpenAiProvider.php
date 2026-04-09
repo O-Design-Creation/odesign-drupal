@@ -14,7 +14,7 @@ use Drupal\Core\Config\ImmutableConfig;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Plugin AiProvider OpenAI pour Atelier O Design.
+ * Plugin AiProvider OpenAI pour O'Design Création.
  *
  * Ce plugin expose l'API OpenAI (GPT-4o-mini et GPT-4o) comme fournisseur
  * IA natif pour drupal/ai et ai_ckeditor. La clé API est stockée dans

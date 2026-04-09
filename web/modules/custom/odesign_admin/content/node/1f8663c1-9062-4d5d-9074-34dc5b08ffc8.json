@@ -145,7 +145,7 @@
             "tag": "meta",
             "attributes": {
                 "name": "description",
-                "content": "L'atelier d'Oc\u00e9ane Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois. Adresse : \u00e0 compl\u00e9ter Horaires : \u00e0 compl\u00e9ter Retrait \/ accueil : \u00e0 compl\u00e9ter Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier. Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal."
+                "content": "L'atelier d'Oc\u00e9ane O'Design Création est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois. Adresse : \u00e0 compl\u00e9ter Horaires : \u00e0 compl\u00e9ter Retrait \/ accueil : \u00e0 compl\u00e9ter Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier. Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal."
             },
             "lang": "fr"
         },
@@ -193,7 +193,7 @@
             "tag": "meta",
             "attributes": {
                 "property": "og:description",
-                "content": "L'atelier d'Oc\u00e9ane Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois. Adresse : \u00e0 compl\u00e9ter Horaires : \u00e0 compl\u00e9ter Retrait \/ accueil : \u00e0 compl\u00e9ter Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier. Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal."
+                "content": "L'atelier d'Oc\u00e9ane O'Design Création est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois. Adresse : \u00e0 compl\u00e9ter Horaires : \u00e0 compl\u00e9ter Retrait \/ accueil : \u00e0 compl\u00e9ter Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier. Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal."
             },
             "lang": "fr"
         }
@@ -208,9 +208,9 @@
     ],
     "body": [
         {
-            "value": "<h2>L'atelier d'Oc\u00e9ane<\/h2>\n<p>Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois.<\/p>\n<ul>\n  <li><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter<\/li>\n  <li><strong>Horaires :<\/strong> \u00e0 compl\u00e9ter<\/li>\n  <li><strong>Retrait \/ accueil :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<\/ul>\n<p>Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier.<\/p>\n<p><em>Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal.<\/em><\/p>",
+            "value": "<h2>L'atelier d'Oc\u00e9ane<\/h2>\n<p>O'Design Création est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois.<\/p>\n<ul>\n  <li><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter<\/li>\n  <li><strong>Horaires :<\/strong> \u00e0 compl\u00e9ter<\/li>\n  <li><strong>Retrait \/ accueil :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<\/ul>\n<p>Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier.<\/p>\n<p><em>Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal.<\/em><\/p>",
             "format": "full_html",
-            "processed": "<h2>L'atelier d'Oc\u00e9ane<\/h2>\n<p>Atelier O Design est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois.<\/p>\n<ul>\n<li><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<li><strong>Horaires :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<li><strong>Retrait \/ accueil :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<\/ul>\n<p>Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier.<\/p>\n<p><em>Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal.<\/em><\/p>\n",
+            "processed": "<h2>L'atelier d'Oc\u00e9ane<\/h2>\n<p>O'Design Création est un atelier physique de cr\u00e9ations personnalis\u00e9es en bois.<\/p>\n<ul>\n<li><strong>Adresse :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<li><strong>Horaires :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<li><strong>Retrait \/ accueil :<\/strong> \u00e0 compl\u00e9ter<\/li>\n<\/ul>\n<p>Chaque r\u00e9alisation est pr\u00e9par\u00e9e avec soin \u00e0 l'atelier.<\/p>\n<p><em>Cette page est modifiable \u00e0 tout moment depuis l'administration Drupal.<\/em><\/p>\n",
             "summary": null,
             "lang": "fr"
         }

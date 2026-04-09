@@ -2,7 +2,7 @@
 
 /**
  * @file
- * odesign_base.theme — Fonctions du thème Atelier O Design.
+ * odesign_base.theme — Fonctions du thème O'Design Création.
  */
 
 use Drupal\image\Entity\ImageStyle;
@@ -242,7 +242,7 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
     '@context' => 'https://schema.org',
     '@type'    => 'Product',
     'name'     => $product->label(),
-    'brand'    => ['@type' => 'Brand', 'name' => 'Atelier O Design'],
+    'brand'    => ['@type' => 'Brand', 'name' => 'O'Design Création'],
     'url'      => $product->toUrl('canonical', ['absolute' => TRUE])->toString(),
   ];
 
@@ -1207,7 +1207,7 @@ function odesign_base_preprocess_node(array &$variables): void {
     'url'           => $node_url,
     'publisher'     => [
       '@type' => 'Organization',
-      'name'  => 'Atelier O Design',
+      'name'  => 'O'Design Création',
       'url'   => $base_url . '/',
     ],
   ];

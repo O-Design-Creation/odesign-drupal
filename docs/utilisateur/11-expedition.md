@@ -1,6 +1,6 @@
 # 11 — Expédition et transporteurs
 
-> Guide gestionnaire boutique · Atelier O Design
+> Guide gestionnaire boutique · O'Design Création
 
 ---
 

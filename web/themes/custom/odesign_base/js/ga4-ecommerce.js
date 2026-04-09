@@ -1,6 +1,6 @@
 /**
  * @file
- * GA4 e-commerce events pour Drupal Commerce — Atelier O Design.
+ * GA4 e-commerce events pour Drupal Commerce — O'Design Création.
  *
  * Deux niveaux de gating RGPD :
  *  1. Serveur (hook_page_attachments_alter) : supprime drupalSettings.gtag si

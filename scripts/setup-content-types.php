@@ -119,7 +119,7 @@ if (!$node_type_storage->load('article')) {
   $article_type = NodeType::create([
     'type'              => 'article',
     'name'              => 'Article',
-    'description'       => 'Articles de blog pour le journal Atelier O Design (ADR-005).',
+    'description'       => 'Articles de blog pour le journal O'Design Création (ADR-005).',
     'new_revision'      => TRUE,
     'display_submitted' => TRUE,
   ]);
@@ -141,16 +141,16 @@ $pages_legales = [
     'title'  => 'Conditions Générales de Vente',
     'alias'  => '/cgv',
     'body'   => '<h2>Conditions Générales de Vente</h2>
-<p>Les présentes conditions générales de vente (CGV) régissent les relations contractuelles entre Atelier O Design et ses clients pour toute commande passée sur le site atelierodesign.fr.</p>
+<p>Les présentes conditions générales de vente (CGV) régissent les relations contractuelles entre O'Design Création et ses clients pour toute commande passée sur le site atelierodesign.fr.</p>
 
 <h3>1. Objet</h3>
-<p>Les présentes CGV définissent les droits et obligations des parties dans le cadre de la vente en ligne de produits personnalisés proposés par Atelier O Design.</p>
+<p>Les présentes CGV définissent les droits et obligations des parties dans le cadre de la vente en ligne de produits personnalisés proposés par O'Design Création.</p>
 
 <h3>2. Produits</h3>
 <p>Les produits proposés sont décrits avec la plus grande précision possible. Les photographies et visuels sont fournis à titre indicatif. Les créations personnalisées sont réalisées sur commande.</p>
 
 <h3>3. Prix</h3>
-<p>Les prix sont indiqués en euros TTC. Atelier O Design se réserve le droit de modifier ses prix à tout moment, étant entendu que le prix figurant au catalogue le jour de la commande sera le seul applicable.</p>
+<p>Les prix sont indiqués en euros TTC. O'Design Création se réserve le droit de modifier ses prix à tout moment, étant entendu que le prix figurant au catalogue le jour de la commande sera le seul applicable.</p>
 
 <h3>4. Commande</h3>
 <p>Toute commande vaut acceptation des prix et descriptifs des produits disponibles à la vente. En cas de litige, l\'acheteur devra apporter la preuve de son paiement.</p>
@@ -172,7 +172,7 @@ $pages_legales = [
 <p>Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l\'économie numérique, dite L.C.E.N., les présentes mentions légales sont portées à la connaissance des utilisateurs et visiteurs du site atelierodesign.fr.</p>
 
 <h3>Éditeur du site</h3>
-<p>Atelier O Design<br>
+<p>O'Design Création<br>
 Email : odesigncrea@gmail.com<br>
 <em>(À compléter : forme juridique, SIRET, adresse, capital social)</em></p>
 
@@ -181,7 +181,7 @@ Email : odesigncrea@gmail.com<br>
 717 California Street, San Francisco, CA 94108, États-Unis</p>
 
 <h3>Propriété intellectuelle</h3>
-<p>L\'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d\'Atelier O Design. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>
+<p>L\'ensemble du contenu de ce site (textes, images, vidéos, créations) est la propriété exclusive d\'O'Design Création. Toute reproduction, distribution ou utilisation sans autorisation préalable est interdite.</p>
 
 <h3>Données personnelles</h3>
 <p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d\'un droit d\'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit : odesigncrea@gmail.com</p>
@@ -193,7 +193,7 @@ Email : odesigncrea@gmail.com<br>
     'title'  => 'Politique de Confidentialité',
     'alias'  => '/politique-confidentialite',
     'body'   => '<h2>Politique de Confidentialité</h2>
-<p>Atelier O Design s\'engage à protéger votre vie privée et vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>
+<p>O'Design Création s\'engage à protéger votre vie privée et vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés.</p>
 
 <h3>Données collectées</h3>
 <p>Lors d\'une commande : nom, prénom, adresse de livraison, adresse email, numéro de téléphone. Ces données sont nécessaires au traitement et à la livraison de votre commande.</p>

@@ -123,7 +123,7 @@ class BoutiqueConfigForm extends FormBase {
       $email,
       \Drupal::languageManager()->getDefaultLanguage()->getId(),
       [
-        'subject' => 'Test email — Atelier O Design',
+        'subject' => 'Test email — O'Design Création',
         'body'    => 'Si vous recevez cet email, votre configuration Brevo fonctionne correctement.',
       ],
     );
