@@ -6,6 +6,7 @@ BRANCH="${2:-master}"
 MODE="${DEPLOY_MODE:-auto}" # auto|full|fast
 DRY_RUN="${DEPLOY_DRY_RUN:-0}"
 NO_PUSH="${DEPLOY_NO_PUSH:-0}"
+DOC_AUDIT="${DEPLOY_DOC_AUDIT:-auto}" # auto|1|0
 
 usage() {
   cat <<'EOF'
@@ -16,6 +17,7 @@ Env options:
   DEPLOY_MODE=auto|full|fast   (default: auto)
   DEPLOY_DRY_RUN=1             Simule sans exécuter push/drush
   DEPLOY_NO_PUSH=1             N'exécute pas le push git
+  DEPLOY_DOC_AUDIT=auto|1|0    Audit captures doc avant push (default: auto)
 EOF
 }
 
@@ -39,6 +41,7 @@ echo "    branch=${BRANCH}"
 echo "    mode=${MODE}"
 echo "    dry_run=${DRY_RUN}"
 echo "    no_push=${NO_PUSH}"
+echo "    doc_audit=${DOC_AUDIT}"
 
 git fetch pantheon "${BRANCH}" >/dev/null 2>&1 || true
 
@@ -71,6 +74,34 @@ else
   echo "    (aucun changement détecté)"
 fi
 echo "    plan: updb=${needs_updb} cim=${needs_cim}"
+
+needs_doc_audit=0
+if [[ "${DOC_AUDIT}" == "1" ]]; then
+  needs_doc_audit=1
+elif [[ "${DOC_AUDIT}" == "auto" ]]; then
+  if grep -Eq '^docs/utilisateur/|^playwright/scripts/(screenshot-docs-utilisateur|screenshot-reviews-docs|check-doc-page-images|check-doc-images-all)\.js$|^scripts/(verify-doc-screenshots|audit-doc-images)\.sh$|^web/modules/custom/odesign_admin/src/Controller/DocumentationController\.php$|^web/modules/custom/odesign_admin/odesign_admin\.routing\.yml$' <<< "${CHANGED_FILES}"; then
+    needs_doc_audit=1
+  fi
+fi
+
+if [[ "${needs_doc_audit}" == "1" ]]; then
+  echo "==> Pré-check: audit captures documentation"
+  if [[ "${DRY_RUN}" == "1" ]]; then
+    echo "[dry-run] bash scripts/audit-doc-images.sh"
+  else
+    if ! command -v ddev >/dev/null 2>&1; then
+      echo "Erreur: ddev est requis pour DEPLOY_DOC_AUDIT=${DOC_AUDIT}." >&2
+      exit 1
+    fi
+    if ! command -v node >/dev/null 2>&1; then
+      echo "Erreur: node est requis pour DEPLOY_DOC_AUDIT=${DOC_AUDIT}." >&2
+      exit 1
+    fi
+    bash scripts/audit-doc-images.sh
+  fi
+else
+  echo "==> Pré-check doc: ignoré"
+fi
 
 if [[ "${NO_PUSH}" != "1" ]]; then
   echo "==> Push code vers pantheon/${BRANCH}"
