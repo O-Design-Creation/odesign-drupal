@@ -72,3 +72,49 @@
 .perso-price-summary.has-modifier {
   display: block;
 }
+
+.tree-personalization-group {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed #d1b3a0;
+  border-radius: 6px;
+  background: #fffaf7;
+}
+
+.tree-personalization-group__intro {
+  margin: 0 0 0.75rem;
+  color: #6a4a3d;
+  font-size: 0.9rem;
+}
+
+.tree-personalization-group__names {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.tree-personalization-group__wall {
+  margin-top: 0.6rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid #ebd9cf;
+}
+
+.tree-personalization-group__wall .form-item {
+  margin-bottom: 0.35rem;
+}
+
+.tree-personalization-group__wall .form-checkbox {
+  margin-right: 0.45rem;
+}
+
+.tree-personalization-group__wall .option {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  color: #4e2620;
+}
+
+.tree-personalization-group__wall-help {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #8b6151;
+}

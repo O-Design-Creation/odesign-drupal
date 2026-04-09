@@ -83,9 +83,25 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
     '#weight'     => 50,
   ];
 
+  $prenom_field_keys = [];
+  $wall_mount_field_key = NULL;
+  $field_labels_by_key = [];
+
   foreach ($fields as $field) {
     $fieldId  = $field['id'];
     $fieldKey = 'perso_' . preg_replace('/[^a-z0-9_]/i', '_', strtolower($field['label'] ?: $fieldId));
+    $normalized_label = mb_strtolower(trim((string) ($field['label'] ?? '')));
+    $field_labels_by_key[$fieldKey] = (string) ($field['label'] ?? '');
+
+    if (str_contains($normalized_label, 'prénom') || str_contains($normalized_label, 'prenom') || str_contains($normalized_label, 'prénoms') || str_contains($normalized_label, 'prenoms')) {
+      $prenom_field_keys[] = $fieldKey;
+    }
+    if (
+      str_contains($normalized_label, 'attache')
+      && (str_contains($normalized_label, 'murale') || str_contains($normalized_label, 'mur'))
+    ) {
+      $wall_mount_field_key = $fieldKey;
+    }
 
     $baseProps = [
       '#title'       => $field['label'],
@@ -223,6 +239,58 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
           . t('Supplément si renseigné : <strong>@label</strong>', ['@label' => $modLabel])
           . '</div>',
         '#weight' => $form['personalization'][$fieldKey]['#weight'] ?? 0 + 0.1,
+      ];
+    }
+  }
+
+  // Cas "Arbre de vie" / multi-prénoms :
+  // regroupe les champs prénoms ensemble et place l'option attache murale
+  // à côté du bloc pour rendre la saisie plus lisible côté client.
+  if (count($prenom_field_keys) >= 2) {
+    $form['personalization']['tree_personalization_group'] = [
+      '#type' => 'container',
+      '#weight' => 15,
+      '#attributes' => ['class' => ['tree-personalization-group']],
+      'intro' => [
+        '#markup' => '<p class="tree-personalization-group__intro">' . t('Arbre de vie : renseignez les prénoms dans l’ordre souhaité de placement.') . '</p>',
+      ],
+      'names' => [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['tree-personalization-group__names']],
+      ],
+      'wall_mount' => [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['tree-personalization-group__wall']],
+      ],
+    ];
+
+    foreach ($prenom_field_keys as $key) {
+      if (!isset($form['personalization'][$key])) {
+        continue;
+      }
+      $form['personalization']['tree_personalization_group']['names'][$key] = $form['personalization'][$key];
+      unset($form['personalization'][$key]);
+
+      $hint_key = $key . '_price_hint';
+      if (isset($form['personalization'][$hint_key])) {
+        $form['personalization']['tree_personalization_group']['names'][$hint_key] = $form['personalization'][$hint_key];
+        unset($form['personalization'][$hint_key]);
+      }
+    }
+
+    if ($wall_mount_field_key && isset($form['personalization'][$wall_mount_field_key])) {
+      $form['personalization']['tree_personalization_group']['wall_mount'][$wall_mount_field_key] = $form['personalization'][$wall_mount_field_key];
+      unset($form['personalization'][$wall_mount_field_key]);
+
+      $hint_key = $wall_mount_field_key . '_price_hint';
+      if (isset($form['personalization'][$hint_key])) {
+        $form['personalization']['tree_personalization_group']['wall_mount'][$hint_key] = $form['personalization'][$hint_key];
+        unset($form['personalization'][$hint_key]);
+      }
+
+      $label = $field_labels_by_key[$wall_mount_field_key] ?? '';
+      $form['personalization']['tree_personalization_group']['wall_mount']['help'] = [
+        '#markup' => '<p class="tree-personalization-group__wall-help">' . t('Option @label : cochez si vous souhaitez une fixation murale.', ['@label' => $label !== '' ? $label : t('attache murale')]) . '</p>',
       ];
     }
   }
