@@ -526,8 +526,9 @@ strong { font-weight: 600; }
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at 18% 0%, rgba(217, 183, 164, 0.24), transparent 34%),
-      linear-gradient(180deg, #fffdfb 0%, #f8f2ee 100%);
+      radial-gradient(circle at 18% 0%, rgba(217, 183, 164, 0.35), transparent 40%),
+      linear-gradient(180deg, #fff9f6 0%, #fef0e8 100%);
+    background-color: #fef7f2;
     z-index: 200;
     flex-direction: column;
     justify-content: flex-start;
@@ -2752,17 +2753,8 @@ textarea {
 .nav-toggle[aria-expanded="true"] .nav-toggle__icon-open  { display: none; }
 .nav-toggle[aria-expanded="true"] .nav-toggle__icon-close { display: block; }
 
-/* Overlay mobile (fond semi-transparent derrière le menu) */
+/* Fermer bouton dans le menu mobile */
 @media (max-width: 900px) {
-  .site-nav.is-open::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(26,22,20,0.4);
-    z-index: -1;
-  }
-
-  /* Fermer bouton dans le menu mobile */
   .site-nav.is-open {
     padding-top: calc(var(--header-height) + var(--space-6));
     animation: slideInLeft 0.25s ease;
