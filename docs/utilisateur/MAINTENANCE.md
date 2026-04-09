@@ -40,6 +40,7 @@ Variable dédiée:
 - `DEPLOY_DOC_AUDIT=auto` (défaut): lance l’audit doc uniquement si les fichiers doc/captures/scripts doc ont changé
 - `DEPLOY_DOC_AUDIT=1`: force l’audit doc avant push
 - `DEPLOY_DOC_AUDIT=0`: désactive ce pré-check
+- `DEPLOY_REQUIRE_CLEAN=1`: bloque le déploiement si le working tree Git contient des modifications non commit
 
 Exemples:
 
@@ -49,6 +50,9 @@ DEPLOY_DRY_RUN=1 DEPLOY_DOC_AUDIT=auto bash scripts/deploy-pantheon-batch.sh ate
 
 # Forcer le contrôle doc avant push réel
 DEPLOY_DOC_AUDIT=1 bash scripts/deploy-pantheon-batch.sh atelierodesign.dev master
+
+# Exiger un working tree propre avant déploiement
+DEPLOY_REQUIRE_CLEAN=1 DEPLOY_DOC_AUDIT=1 bash scripts/deploy-pantheon-batch.sh atelierodesign.dev master
 ```
 
 ## Regénérer des captures (chapitre avis clients)

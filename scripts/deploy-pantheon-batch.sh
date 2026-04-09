@@ -7,6 +7,7 @@ MODE="${DEPLOY_MODE:-auto}" # auto|full|fast
 DRY_RUN="${DEPLOY_DRY_RUN:-0}"
 NO_PUSH="${DEPLOY_NO_PUSH:-0}"
 DOC_AUDIT="${DEPLOY_DOC_AUDIT:-auto}" # auto|1|0
+REQUIRE_CLEAN="${DEPLOY_REQUIRE_CLEAN:-0}" # 1|0
 
 usage() {
   cat <<'EOF'
@@ -18,6 +19,7 @@ Env options:
   DEPLOY_DRY_RUN=1             Simule sans exécuter push/drush
   DEPLOY_NO_PUSH=1             N'exécute pas le push git
   DEPLOY_DOC_AUDIT=auto|1|0    Audit captures doc avant push (default: auto)
+  DEPLOY_REQUIRE_CLEAN=1|0     Bloque le déploiement si git status n'est pas propre
 EOF
 }
 
@@ -42,6 +44,16 @@ echo "    mode=${MODE}"
 echo "    dry_run=${DRY_RUN}"
 echo "    no_push=${NO_PUSH}"
 echo "    doc_audit=${DOC_AUDIT}"
+echo "    require_clean=${REQUIRE_CLEAN}"
+
+if [[ "${REQUIRE_CLEAN}" == "1" ]]; then
+  if [[ -n "$(git status --porcelain)" ]]; then
+    echo "Erreur: working tree non propre. Commit/stash requis (DEPLOY_REQUIRE_CLEAN=1)." >&2
+    git status --short
+    exit 1
+  fi
+  echo "==> Pré-check git: working tree propre"
+fi
 
 git fetch pantheon "${BRANCH}" >/dev/null 2>&1 || true
 
