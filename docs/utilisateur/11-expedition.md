@@ -37,7 +37,9 @@
 2. Cliquez sur une commande pour ouvrir son détail
 3. Dans le bloc **Transporteur & suivi** (colonne de gauche), le transporteur sélectionné par le client s'affiche en gras
 
-![TODO screenshot — bloc transporteur & suivi sur la page de détail commande]()
+> **Mondial Relay :** l'adresse du point relais choisi par le client est visible dans le bloc **Adresse de livraison** de la même fiche commande.
+
+![Bloc Transporteur & suivi sur la fiche commande](screenshots/transporteurs-detail-commande.png)
 
 ---
 
@@ -49,7 +51,7 @@
 
 Le numéro est immédiatement enregistré. Si le transporteur est reconnu (Colissimo, DPD, Chronopost ou Mondial Relay), un **lien cliquable vers le site de suivi** apparaît automatiquement.
 
-![TODO screenshot — champ saisie numéro de suivi + lien généré]()
+![Saisie du numéro de suivi et lien généré automatiquement](screenshots/transporteurs-saisie-suivi.png)
 
 ### Liens de suivi générés automatiquement
 
@@ -73,13 +75,13 @@ Le widget de sélection de point relais est actif avec un **Brand ID de test** (
 ### Obtenir votre Brand ID de production
 
 1. Connectez-vous à votre espace pro Mondial Relay : [connect.mondialrelay.com](https://connect.mondialrelay.com/)
-2. Allez dans **Mes Paramètres de Connexion** → **Api settings**
-3. Cliquez sur **Générer api credentials**
-4. Notez votre **Brand ID** (format numérique, ex : `12345`)
+2. Accédez à vos paramètres API (section **Api settings** ou équivalent selon votre type de compte)
+3. Générez ou récupérez vos identifiants API
+4. Notez votre **Brand ID** (code alphanumérique fourni par Mondial Relay, ex : `12345`)
 
 ### Saisir le Brand ID dans le backoffice
 
-1. Ouvrez **Transporteurs & tarifs** dans la navigation boutique
+1. Dans la navigation boutique, ouvrez **Configuration** → **Transporteurs & tarifs**
 2. Cliquez sur **Modifier** à côté de "Mondial Relay — Point relais"
 3. Dans le champ **Marque**, remplacez `BDTEST` par votre Brand ID réel
 4. Répétez pour "Mondial Relay gratuit (commande ≥ 50€)"
@@ -125,3 +127,5 @@ ddev drush php-script scripts/seed-shipping-methods.php
 ```
 
 Ce script est idempotent : il peut être relancé sans créer de doublons.
+
+> **Note :** Cette commande s'exécute en environnement de développement local (DDEV). Sur Pantheon, le prestataire utilisera l'équivalent via Terminus.

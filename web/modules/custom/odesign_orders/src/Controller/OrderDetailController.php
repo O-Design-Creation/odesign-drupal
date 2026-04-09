@@ -205,6 +205,12 @@ class OrderDetailController extends ControllerBase {
           }
         }
       }
+      // Fallback : chercher dans les ajustements de type shipping.
+      foreach ($order->getAdjustments(['shipping']) as $adjustment) {
+        if ($adjustment->getLabel()) {
+          return $adjustment->getLabel();
+        }
+      }
     }
     catch (\Exception) {}
     return '';
