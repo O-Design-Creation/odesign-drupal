@@ -20,3 +20,6 @@
 | `newsletter-nouveau.png` | Newsletter — nouvelle newsletter |
 | `clients-liste.png` | Clients — liste |
 | `sav-liste.png` | SAV — liste |
+| `recherche-header-loupe.png` | Recherche — panneau header |
+| `recherche-resultats.png` | Recherche — résultats |
+| `recherche-zero-resultat.png` | Recherche — zéro résultat |

@@ -8,6 +8,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implémente hook_page_attachments().
@@ -1224,6 +1225,321 @@ function odesign_admin_page_attachments_alter(array &$attachments): void {
     'items' => $items,
   ];
   $attachments['#cache']['max-age'] = 0;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Enrichit la page recherche en cas de zéro résultat :
+ * - suggestions synonymes / catégories / produits
+ * - journalisation des requêtes ratées pour boucle d'amélioration mensuelle.
+ */
+function odesign_admin_views_pre_render(ViewExecutable $view): void {
+  if ($view->id() !== 'recherche_produits' || $view->current_display !== 'page_1') {
+    return;
+  }
+
+  $request = \Drupal::requestStack()->getCurrentRequest();
+  if (!$request) {
+    return;
+  }
+
+  $raw_keys = trim((string) $request->query->get('keys', ''));
+  if ($raw_keys === '' || !empty($view->result)) {
+    return;
+  }
+
+  $suggestions = _odesign_admin_search_build_suggestions($raw_keys);
+  _odesign_admin_search_log_no_result_query($raw_keys, 0);
+
+  $view->attachment_before[] = _odesign_admin_search_build_no_result_render($raw_keys, $suggestions);
+}
+
+/**
+ * Retourne le dictionnaire de synonymes métier (FR) pour la boutique.
+ *
+ * @return array<string, string[]>
+ *   Clé = terme canonique, valeur = liste synonymes/variantes usuelles.
+ */
+function _odesign_admin_search_synonyms(): array {
+  return [
+    'pancarte' => ['panneau', 'affiche', 'plaque'],
+    'naissance' => ['bebe', 'bébé', 'birth', 'newborn'],
+    'mariage' => ['wedding', 'noces'],
+    'bapteme' => ['baptême', 'baptême religieux'],
+    'anniversaire' => ['birthday', 'fete', 'fête'],
+    'arbre de vie' => ['tree of life', 'arbre'],
+    'prenom' => ['prénom', 'prenom(s)', 'prénoms'],
+    'personnalise' => ['personnalisé', 'sur mesure', 'custom'],
+  ];
+}
+
+/**
+ * Construit les suggestions affichées en cas de recherche sans résultat.
+ *
+ * @param string $raw_keys
+ *   Requête utilisateur brute.
+ *
+ * @return array<string, array>
+ *   - synonym_queries: string[]
+ *   - term_links: array<int, array{label:string,url:string}>
+ *   - product_links: array<int, array{label:string,url:string}>
+ */
+function _odesign_admin_search_build_suggestions(string $raw_keys): array {
+  $normalized = _odesign_admin_search_normalize_text($raw_keys);
+  $synonyms = _odesign_admin_search_synonyms();
+
+  $synonym_queries = [];
+  foreach ($synonyms as $canonical => $aliases) {
+    $canonical_norm = _odesign_admin_search_normalize_text($canonical);
+    if ($canonical_norm !== '' && str_contains($normalized, $canonical_norm)) {
+      $synonym_queries[] = $canonical;
+      foreach ($aliases as $alias) {
+        $synonym_queries[] = $alias;
+      }
+      continue;
+    }
+    foreach ($aliases as $alias) {
+      $alias_norm = _odesign_admin_search_normalize_text($alias);
+      if ($alias_norm !== '' && str_contains($normalized, $alias_norm)) {
+        $synonym_queries[] = $canonical;
+        foreach ($aliases as $candidate) {
+          $synonym_queries[] = $candidate;
+        }
+        break;
+      }
+    }
+  }
+  $synonym_queries = array_values(array_unique(array_filter(array_map('trim', $synonym_queries))));
+  if (count($synonym_queries) > 5) {
+    $synonym_queries = array_slice($synonym_queries, 0, 5);
+  }
+
+  $tokens = preg_split('/\s+/', trim($raw_keys)) ?: [];
+  $tokens = array_values(array_filter(array_map('trim', $tokens)));
+  if (empty($tokens)) {
+    $tokens = [$raw_keys];
+  }
+  $seed = (string) ($tokens[0] ?? $raw_keys);
+  if (mb_strlen($seed) < 2) {
+    $seed = $raw_keys;
+  }
+
+  $term_links = [];
+  $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+  $term_ids = $term_storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('vid', ['life_occasion', 'product_category'], 'IN')
+    ->condition('name', '%' . $seed . '%', 'LIKE')
+    ->range(0, 3)
+    ->execute();
+  if ($term_ids) {
+    foreach ($term_storage->loadMultiple($term_ids) as $term) {
+      $term_links[] = [
+        'label' => $term->label(),
+        'url' => $term->toUrl()->toString(),
+      ];
+    }
+  }
+
+  $product_links = [];
+  $product_storage = \Drupal::entityTypeManager()->getStorage('commerce_product');
+  $product_ids = $product_storage->getQuery()
+    ->accessCheck(TRUE)
+    ->condition('status', 1)
+    ->condition('title', '%' . $seed . '%', 'LIKE')
+    ->sort('changed', 'DESC')
+    ->range(0, 3)
+    ->execute();
+  if (!$product_ids) {
+    $product_ids = $product_storage->getQuery()
+      ->accessCheck(TRUE)
+      ->condition('status', 1)
+      ->sort('changed', 'DESC')
+      ->range(0, 3)
+      ->execute();
+  }
+  if ($product_ids) {
+    foreach ($product_storage->loadMultiple($product_ids) as $product) {
+      $product_links[] = [
+        'label' => $product->label(),
+        'url' => $product->toUrl()->toString(),
+      ];
+    }
+  }
+
+  return [
+    'synonym_queries' => $synonym_queries,
+    'term_links' => $term_links,
+    'product_links' => $product_links,
+  ];
+}
+
+/**
+ * Rend le bloc d'aide affiché au-dessus des résultats vides.
+ */
+function _odesign_admin_search_build_no_result_render(string $raw_keys, array $suggestions): array {
+  $build = [
+    '#type' => 'container',
+    '#attributes' => ['class' => ['search-no-results-extended']],
+    'title' => [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => t('Aucun résultat pour "@query"', ['@query' => $raw_keys]),
+      '#attributes' => ['class' => ['search-no-results-extended__title']],
+    ],
+    'intro' => [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => t('Essayez une autre formulation, ou utilisez les suggestions ci-dessous.'),
+      '#attributes' => ['class' => ['search-no-results-extended__intro']],
+    ],
+  ];
+
+  $synonym_links = [];
+  foreach ($suggestions['synonym_queries'] ?? [] as $query) {
+    $synonym_links[] = [
+      'data' => [
+        '#type' => 'link',
+        '#title' => $query,
+        '#url' => Url::fromUri('internal:/recherche', ['query' => ['keys' => $query]]),
+      ],
+    ];
+  }
+  if (!empty($synonym_links)) {
+    $build['synonyms_title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => t('Recherches proches'),
+      '#attributes' => ['class' => ['search-no-results-extended__section-title']],
+    ];
+    $build['synonyms'] = [
+      '#theme' => 'item_list',
+      '#items' => $synonym_links,
+      '#attributes' => ['class' => ['search-no-results-extended__list']],
+    ];
+  }
+
+  $term_links = [];
+  foreach ($suggestions['term_links'] ?? [] as $term_link) {
+    $term_links[] = [
+      'data' => [
+        '#type' => 'link',
+        '#title' => $term_link['label'],
+        '#url' => Url::fromUri('internal:' . $term_link['url']),
+      ],
+    ];
+  }
+  if (!empty($term_links)) {
+    $build['terms_title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => t('Catégories à explorer'),
+      '#attributes' => ['class' => ['search-no-results-extended__section-title']],
+    ];
+    $build['terms'] = [
+      '#theme' => 'item_list',
+      '#items' => $term_links,
+      '#attributes' => ['class' => ['search-no-results-extended__list']],
+    ];
+  }
+
+  $product_links = [];
+  foreach ($suggestions['product_links'] ?? [] as $product_link) {
+    $product_links[] = [
+      'data' => [
+        '#type' => 'link',
+        '#title' => $product_link['label'],
+        '#url' => Url::fromUri('internal:' . $product_link['url']),
+      ],
+    ];
+  }
+  if (!empty($product_links)) {
+    $build['products_title'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h3',
+      '#value' => t('Produits suggérés'),
+      '#attributes' => ['class' => ['search-no-results-extended__section-title']],
+    ];
+    $build['products'] = [
+      '#theme' => 'item_list',
+      '#items' => $product_links,
+      '#attributes' => ['class' => ['search-no-results-extended__list']],
+    ];
+  }
+
+  return $build;
+}
+
+/**
+ * Journalise une requête sans résultat (agrégat par terme normalisé).
+ */
+function _odesign_admin_search_log_no_result_query(string $raw_keys, int $result_count): void {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('odesign_search_no_result_log')) {
+    return;
+  }
+
+  $normalized = _odesign_admin_search_normalize_text($raw_keys);
+  if ($normalized === '') {
+    return;
+  }
+
+  $hash = sha1($normalized);
+  $now = \Drupal::time()->getRequestTime();
+
+  $record = \Drupal::database()->select('odesign_search_no_result_log', 'l')
+    ->fields('l', ['id', 'hit_count'])
+    ->condition('query_hash', $hash)
+    ->range(0, 1)
+    ->execute()
+    ->fetchAssoc();
+
+  if ($record) {
+    \Drupal::database()->update('odesign_search_no_result_log')
+      ->fields([
+        'query_raw' => mb_substr($raw_keys, 0, 255),
+        'query_normalized' => mb_substr($normalized, 0, 255),
+        'last_seen' => $now,
+        'last_result_count' => $result_count,
+        'hit_count' => ((int) $record['hit_count']) + 1,
+      ])
+      ->condition('id', (int) $record['id'])
+      ->execute();
+    return;
+  }
+
+  \Drupal::database()->insert('odesign_search_no_result_log')
+    ->fields([
+      'query_hash' => $hash,
+      'query_raw' => mb_substr($raw_keys, 0, 255),
+      'query_normalized' => mb_substr($normalized, 0, 255),
+      'hit_count' => 1,
+      'first_seen' => $now,
+      'last_seen' => $now,
+      'last_result_count' => $result_count,
+    ])
+    ->execute();
+}
+
+/**
+ * Normalise un texte de recherche (lowercase, ASCII, espaces simples).
+ */
+function _odesign_admin_search_normalize_text(string $text): string {
+  $text = trim($text);
+  if ($text === '') {
+    return '';
+  }
+
+  $ascii = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $text);
+  if ($ascii !== FALSE) {
+    $text = $ascii;
+  }
+
+  $text = mb_strtolower($text);
+  $text = preg_replace('/[^a-z0-9\s]+/', ' ', $text) ?? $text;
+  $text = preg_replace('/\s+/', ' ', $text) ?? $text;
+  return trim($text);
 }
 
 /**

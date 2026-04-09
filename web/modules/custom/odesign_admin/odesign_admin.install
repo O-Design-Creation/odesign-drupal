@@ -3,6 +3,66 @@
 use Drupal\field\Entity\FieldStorageConfig;
 
 /**
+ * Implements hook_schema().
+ */
+function odesign_admin_schema(): array {
+  $schema['odesign_search_no_result_log'] = [
+    'description' => 'Journal des requêtes de recherche sans résultat (B2C).',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'query_hash' => [
+        'type' => 'varchar',
+        'length' => 40,
+        'not null' => TRUE,
+      ],
+      'query_raw' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'query_normalized' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'hit_count' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'last_result_count' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'first_seen' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'last_seen' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'query_hash' => ['query_hash'],
+    ],
+    'indexes' => [
+      'last_seen' => ['last_seen'],
+      'hit_count' => ['hit_count'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
  * Aligne les valeurs de suivi atelier avec le workflow artisanal.
  */
 function odesign_admin_update_11001(): string {
@@ -90,4 +150,18 @@ function odesign_admin_update_11003(): string {
   }
 
   return $messages ? implode(' ', $messages) : 'Aucune migration de secret nécessaire.';
+}
+
+/**
+ * Crée le journal des recherches sans résultat.
+ */
+function odesign_admin_update_11004(): string {
+  $schema = \Drupal::database()->schema();
+  if ($schema->tableExists('odesign_search_no_result_log')) {
+    return 'Table odesign_search_no_result_log déjà présente.';
+  }
+
+  $definition = odesign_admin_schema()['odesign_search_no_result_log'];
+  $schema->createTable('odesign_search_no_result_log', $definition);
+  return 'Table odesign_search_no_result_log créée.';
 }

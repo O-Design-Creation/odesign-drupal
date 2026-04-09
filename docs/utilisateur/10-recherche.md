@@ -47,6 +47,55 @@ Le module `search_api_autocomplete` propose des suggestions dès 2 caractères
 
 ---
 
+## Merchandising de recherche (TCK-072)
+
+La recherche inclut désormais un niveau de merchandising B2C pour limiter les
+sorties sans achat.
+
+### 1. Synonymes métier (FR)
+
+Un dictionnaire interne couvre les variantes les plus fréquentes, par exemple :
+
+- `panneau` / `affiche` → `pancarte`
+- `bébé` / `newborn` → `naissance`
+- `sur mesure` / `custom` → `personnalisé`
+
+Quand une recherche ne remonte rien, ces synonymes sont proposés sous forme de
+liens rapides "Recherches proches".
+
+### 2. Expérience "zéro résultat" enrichie
+
+Si aucune fiche produit ne correspond, la page affiche un bloc d'aide avec :
+
+- des recherches proches (synonymes)
+- des catégories à explorer
+- des produits suggérés
+
+Objectif : éviter une impasse pour le client et faciliter la reprise du parcours.
+
+### 3. Journal des requêtes sans résultat
+
+Les requêtes sans résultat sont historisées dans la table :
+
+- `odesign_search_no_result_log`
+
+Chaque entrée agrège :
+
+- la requête normalisée
+- le nombre d'occurrences (`hit_count`)
+- la première et la dernière date d'observation
+
+Requête SQL utile pour la revue mensuelle :
+
+```sql
+SELECT query_raw, query_normalized, hit_count, last_seen
+FROM odesign_search_no_result_log
+ORDER BY hit_count DESC, last_seen DESC
+LIMIT 30;
+```
+
+---
+
 ## Réindexer manuellement
 
 Si des produits récemment créés ou modifiés ne remontent pas dans les résultats,
@@ -112,6 +161,10 @@ Pour modifier ou ajouter une facette :
 ![Page /recherche — résultats avec facettes Occasion et Catégorie](screenshots/recherche-resultats.png)
 
 *La page `/recherche` affiche les résultats en grille avec les facettes de filtrage à gauche.*
+
+![Page /recherche — zéro résultat avec suggestions](screenshots/recherche-zero-resultat.png)
+
+*Quand aucun produit ne correspond, un bloc propose des alternatives utiles.*
 
 ---
 
