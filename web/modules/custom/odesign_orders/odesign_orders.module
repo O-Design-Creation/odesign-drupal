@@ -477,7 +477,7 @@ function odesign_orders_odesign_boutique_nav_items_alter(array &$items): void {
     'label'         => 'Commandes',
     'icon'          => 'ph-receipt',
     'route'         => 'entity.commerce_order.collection',
-    'weight'        => 20,
+    'weight'        => 10,
     'active_routes' => [
       'entity.commerce_order.collection',
       'odesign_orders.actionable_orders',
@@ -500,11 +500,12 @@ function odesign_orders_odesign_boutique_nav_items_alter(array &$items): void {
   }
   catch (\Exception) {}
 
+  // SAV — dans le groupe "Clientèle" (déclaré dans odesign_admin).
   $items['sav'] = [
     'label'         => 'Demandes SAV',
     'icon'          => 'ph-chat-circle-text',
     'route'         => 'odesign_orders.admin_sav_list',
-    'weight'        => 25,
+    'weight'        => 32,
     'active_routes' => ['odesign_orders.admin_sav_list'],
     'badge'         => $sav_badge,
   ];

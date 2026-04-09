@@ -213,11 +213,13 @@ function odesign_admin_theme(): array {
  */
 function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
   // Pas d'item "Tableau de bord" : le logo remplit ce rôle (lien identique).
+
+  // Catalogue — accès direct, priorité haute après Commandes.
   $items['catalogue'] = [
     'label'         => 'Catalogue',
     'icon'          => 'ph-package',
     'route'         => 'odesign_admin.catalogue',
-    'weight'        => 30,
+    'weight'        => 20,
     'active_routes' => [
       'odesign_admin.catalogue',
       'entity.commerce_product.add_form',
@@ -229,21 +231,40 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'badge'         => NULL,
   ];
 
-  // Groupe "Contenu" — regroupe les items éditoriaux, médias et documentation.
-  // Tout futur item de type contenu doit déclarer son ID dans ce tableau 'children'.
+  // Groupe "Clientèle" — regroupe tous les items de relation client :
+  // Clients, Demandes SAV, Avis clients (déclarés dans leurs modules respectifs).
+  $items['clientele'] = [
+    'label'    => 'Clientèle',
+    'icon'     => 'ph-users',
+    'type'     => 'group',
+    'weight'   => 30,
+    'children' => ['clients', 'sav', 'reviews'],
+  ];
+
+  $items['clients'] = [
+    'label'         => 'Clients',
+    'icon'          => 'ph-identification-card',
+    'route'         => 'odesign_admin.clients',
+    'weight'        => 31,
+    'active_routes' => ['odesign_admin.clients'],
+    'badge'         => NULL,
+  ];
+
+  // Groupe "Contenu" — contenu publiable uniquement (éditorial, campagnes, newsletter, médias).
+  // Le guide marketing et la documentation sont dans le groupe "Aide".
   $items['contenu'] = [
     'label'    => 'Contenu',
     'icon'     => 'ph-layout',
     'type'     => 'group',
-    'weight'   => 35,
-    'children' => ['editorial', 'campagnes', 'newsletter', 'mediatheque', 'guide_marketing', 'documentation'],
+    'weight'   => 40,
+    'children' => ['editorial', 'campagnes', 'newsletter', 'mediatheque'],
   ];
 
   $items['editorial'] = [
     'label'         => 'Éditorial',
     'icon'          => 'ph-article',
     'route'         => 'odesign_admin.editorial',
-    'weight'        => 40,
+    'weight'        => 41,
     'active_routes' => [
       'odesign_admin.editorial',
       'system.admin_content',
@@ -282,14 +303,6 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     ],
     'badge'         => NULL,
   ];
-  $items['clients'] = [
-    'label'         => 'Clients',
-    'icon'          => 'ph-users',
-    'route'         => 'odesign_admin.clients',
-    'weight'        => 50,
-    'active_routes' => ['odesign_admin.clients'],
-    'badge'         => NULL,
-  ];
   $items['mediatheque'] = [
     'label'         => 'Médias',
     'icon'          => 'ph-images',
@@ -298,28 +311,32 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'active_routes' => ['view.media.media_page_list', 'entity.media.add_page', 'entity.media.edit_form'],
     'badge'         => NULL,
   ];
-  // "Configuration" devient un groupe déroulant pour accueillir les futurs
-  // paramètres boutique sans surcharger la barre principale.
+
+  // Statistiques — item standalone, accès direct sans passer par Configuration.
+  // Les KPI sont consultés régulièrement ; les noyer dans un menu de config est anti-ergonomique.
+  $items['cockpit_kpi'] = [
+    'label'         => 'Statistiques',
+    'icon'          => 'ph-chart-line',
+    'route'         => 'odesign_admin.analytics',
+    'weight'        => 70,
+    'active_routes' => ['odesign_admin.analytics', 'odesign_admin.analytics_export'],
+    'badge'         => NULL,
+  ];
+
+  // Groupe "Configuration" — paramètres boutique rarement modifiés.
+  // Cockpit KPI en a été sorti (voir ci-dessus).
   $items['configuration'] = [
     'label'    => 'Configuration',
     'icon'     => 'ph-gear',
     'type'     => 'group',
-    'weight'   => 90,
-    'children' => ['cockpit_kpi', 'config_boutique', 'personnalisation', 'transporteurs'],
-  ];
-  $items['cockpit_kpi'] = [
-    'label'         => 'Cockpit KPI',
-    'icon'          => 'ph-chart-line',
-    'route'         => 'odesign_admin.analytics',
-    'weight'        => 90,
-    'active_routes' => ['odesign_admin.analytics', 'odesign_admin.analytics_export'],
-    'badge'         => NULL,
+    'weight'   => 80,
+    'children' => ['config_boutique', 'personnalisation', 'transporteurs'],
   ];
   $items['config_boutique'] = [
     'label'         => 'Paramètres boutique',
     'icon'          => 'ph-sliders',
     'route'         => 'odesign_admin.config',
-    'weight'        => 91,
+    'weight'        => 81,
     'active_routes' => ['odesign_admin.config'],
     'badge'         => NULL,
   ];
@@ -327,7 +344,7 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'label'         => 'Personnalisation produits',
     'icon'          => 'ph-magic-wand',
     'route'         => 'odesign_personalization.templates',
-    'weight'        => 92,
+    'weight'        => 82,
     'active_routes' => [
       'odesign_personalization.templates',
       'entity.personalization_template.add_form',
@@ -340,7 +357,7 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'label'         => 'Transporteurs & tarifs',
     'icon'          => 'ph-truck',
     'route'         => 'entity.commerce_shipping_method.collection',
-    'weight'        => 93,
+    'weight'        => 83,
     'active_routes' => [
       'entity.commerce_shipping_method.collection',
       'entity.commerce_shipping_method.add_form',
@@ -349,19 +366,29 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     ],
     'badge'         => NULL,
   ];
+
+  // Groupe "Aide" — ressources internes gestionnaire (guide + documentation).
+  // Séparé de Contenu car il ne s'agit pas de contenu publiable sur la boutique.
+  $items['aide'] = [
+    'label'    => 'Aide',
+    'icon'     => 'ph-lifebuoy',
+    'type'     => 'group',
+    'weight'   => 88,
+    'children' => ['guide_marketing', 'documentation'],
+  ];
   $items['guide_marketing'] = [
     'label'         => 'Guide marketing',
     'icon'          => 'ph-book-open',
     'route'         => 'odesign_admin.marketing_guide',
-    'weight'        => 95,
+    'weight'        => 88,
     'active_routes' => ['odesign_admin.marketing_guide'],
     'badge'         => NULL,
   ];
   $items['documentation'] = [
     'label'         => 'Documentation',
-    'icon'          => 'ph-question',
+    'icon'          => 'ph-book-open-text',
     'route'         => 'odesign_admin.documentation',
-    'weight'        => 100,
+    'weight'        => 89,
     'active_routes' => ['odesign_admin.documentation', 'odesign_admin.documentation_chapter'],
     'badge'         => NULL,
   ];

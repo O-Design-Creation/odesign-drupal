@@ -16,7 +16,7 @@ Le site intègre **Google Analytics 4** via le module Drupal `google_tag`.
 
 ## Cockpit KPI boutique (pilotage hebdomadaire)
 
-> 📍 **Accès** : Navigation gestionnaire → **Configuration** → **Cockpit KPI**
+> 📍 **Accès** : Navigation gestionnaire → **Statistiques**
 > **URL directe** : `/admin/boutique/analytics`
 
 Le cockpit KPI regroupe les indicateurs actionnables sans ouvrir GA4.

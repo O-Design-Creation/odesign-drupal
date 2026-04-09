@@ -9,7 +9,7 @@
 
 `/admin/boutique/avis`
 
-Depuis le tableau de bord boutique, cliquez sur **Avis clients**.
+Dans la barre de navigation, cliquez sur **Clientèle** puis **Avis clients**.
 
 ## Ce que vous voyez
 

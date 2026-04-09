@@ -1,6 +1,6 @@
 # Demandes SAV
 
-> 📍 **Accès** : Menu navigation gestionnaire → **Demandes SAV**
+> 📍 **Accès** : Menu navigation gestionnaire → **Clientèle** → **Demandes SAV**
 > **URL directe** : `/admin/boutique/sav`
 
 Ce chapitre explique comment traiter les demandes clients envoyées depuis l'espace client.

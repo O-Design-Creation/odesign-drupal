@@ -1,6 +1,6 @@
 # Gestion des clients
 
-> 📍 **Accès** : Menu de navigation → **Clients**
+> 📍 **Accès** : Menu de navigation → **Clientèle** → **Clients**
 > **URL directe** : `/admin/boutique/clients`
 
 ![Liste des clients](screenshots/clients-liste.png)
@@ -13,7 +13,7 @@ Consulter la liste de tous vos clients ayant passé au moins une commande : leur
 
 ## Voir la liste des clients
 
-1. Cliquer sur **Clients** dans la barre de navigation en haut
+1. Cliquer sur **Clientèle** dans la barre de navigation, puis **Clients**
 2. La liste affiche pour chaque client :
    - Son **adresse email**
    - Son **nombre de commandes**
@@ -65,7 +65,7 @@ Dirigez le client vers la page de connexion de votre boutique, où il peut cliqu
 
 ## Gérer les demandes SAV par commande
 
-> 📍 **Accès** : Menu de navigation → **Demandes SAV**
+> 📍 **Accès** : Menu de navigation → **Clientèle** → **Demandes SAV**
 > **URL directe** : `/admin/boutique/sav`
 
 ![Liste des demandes SAV](screenshots/sav-liste.png)

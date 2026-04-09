@@ -33,11 +33,12 @@ function odesign_reviews_mail(string $key, array &$message, array $params): void
  * Implements hook_odesign_boutique_nav_items_alter().
  */
 function odesign_reviews_odesign_boutique_nav_items_alter(array &$items): void {
+  // Avis clients — dans le groupe "Clientèle" (déclaré dans odesign_admin).
   $items['reviews'] = [
     'label' => 'Avis clients',
     'icon' => 'ph-chat-circle-dots',
     'route' => 'odesign_reviews.admin_list',
-    'weight' => 65,
+    'weight' => 33,
     'active_routes' => ['odesign_reviews.admin_list'],
     'badge' => NULL,
   ];
