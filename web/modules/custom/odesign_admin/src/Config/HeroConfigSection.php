@@ -52,6 +52,7 @@ class HeroConfigSection implements ConfigSectionInterface {
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg webp'],
         'file_validate_size'       => [8 * 1024 * 1024],
+        'file_validate_image_resolution' => ['1600x0'],
       ],
       '#states' => [
         'visible' => [
@@ -86,6 +87,7 @@ class HeroConfigSection implements ConfigSectionInterface {
       '#upload_validators' => [
         'file_validate_extensions' => ['png jpg jpeg webp'],
         'file_validate_size'       => [8 * 1024 * 1024],
+        'file_validate_image_resolution' => ['1600x0'],
       ],
     ];
   }
