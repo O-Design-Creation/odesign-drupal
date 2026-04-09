@@ -34,6 +34,21 @@ Vous pouvez consulter, modifier et créer les fiches produit de votre boutique. 
 
 ---
 
+## Mention automatique sur les produits personnalisés
+
+Sur les produits personnalisés, une mention d'information (en rose) peut s'afficher automatiquement sur la fiche produit pour rappeler les conditions liées aux erreurs de saisie client.
+
+- Cette mention n'est pas affichée sur les produits non personnalisés.
+- Elle n'est pas affichée sur l'univers pancartes événementielles.
+
+### Pertinence pour la gestionnaire
+
+- `pertinent` : **oui** (à vérifier après création d'un produit)
+- Impact : meilleure clarté client avant ajout au panier.
+- Action recommandée : après avoir associé un modèle de personnalisation à un produit, contrôler la présence de cette mention sur la fiche côté boutique.
+
+---
+
 ## Gérer les photos d'un produit
 
 ### Ajouter ou remplacer une photo

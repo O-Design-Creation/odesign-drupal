@@ -62,11 +62,31 @@ Les champs **Clé publiable**, **Clé secrète** et **Webhook secret** sont conf
 1. Aller sur `/admin/boutique/configuration`
 2. Cliquer sur l'onglet **Page d'accueil — Hero**
 3. Activer ou désactiver **Afficher une image de fond** selon votre choix
-4. Si activé, cliquer sur **Photo de fond** pour téléverser une nouvelle image (formats acceptés : JPG, PNG — recommandé : au moins 1400 px de large)
+4. Si activé, cliquer sur **Photo de fond** pour téléverser une nouvelle image (formats acceptés : JPG, PNG, WebP — largeur minimale : **1600 px**)
 5. Choisir la **Couleur du texte** (clair ou foncé) selon le contraste avec votre image
 6. Cliquer sur **Enregistrer**
 
 > 💡 **Astuce** : Une image lumineuse avec du texte foncé ou une image sombre avec du texte clair améliorent la lisibilité sur votre page d'accueil.
+
+### Gérer la photo dédiée "Pancartes événementielles"
+
+Dans le même onglet, vous pouvez importer une image spécifique pour la mise en avant des pancartes.
+
+1. Aller sur `/admin/boutique/configuration` → **Page d'accueil — Hero**
+2. Dans **Photo dédiée pancartes événementielles**, téléverser l'image souhaitée
+3. Cliquer sur **Enregistrer**
+
+Cette photo est utilisée automatiquement :
+- dans le bloc de mise en avant pancartes sur la page d'accueil
+- sur la page univers pancartes événementielles
+
+> ⚠️ **Important** : la largeur minimale demandée est **1600 px**. Une image trop petite sera refusée pour éviter le rendu flou.
+
+### Pertinence pour la gestionnaire
+
+- `pertinent` : **oui** (à connaître)
+- Impact : vous pouvez corriger vous-même un visuel flou ou peu adapté sans intervention technique.
+- Action recommandée : préparer une photo horizontale nette (1600 px min), puis la remplacer depuis cet onglet.
 
 ---
 

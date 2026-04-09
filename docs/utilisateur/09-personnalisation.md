@@ -114,6 +114,22 @@ Le client voit :
 
 Les informations saisies sont transmises avec la commande et visibles dans le backoffice commandes.
 
+### Cas particulier : produit "Arbre de vie"
+
+Pour les produits avec plusieurs champs de prénoms (cas Arbre de vie), l'interface client est automatiquement réorganisée :
+
+- les champs de prénoms sont regroupés dans un bloc unique pour une saisie plus claire ;
+- l'option **attache murale** est affichée juste à côté de ce bloc ;
+- un texte d'aide rappelle l'ordre de remplissage.
+
+> ✅ Vous n'avez rien à activer manuellement : ce comportement s'applique automatiquement si le modèle contient plusieurs champs de type prénom.
+
+### Pertinence pour la gestionnaire
+
+- `pertinent` : **oui** (information de contrôle)
+- Impact : moins d'erreurs de saisie côté client sur l'Arbre de vie.
+- Action recommandée : vérifier sur la fiche produit Arbre de vie que les libellés de champs sont cohérents (ex : "Prénom 1", "Prénom 2", etc.).
+
 ---
 
 ## Modifier ou supprimer un modèle
