@@ -36,12 +36,14 @@ Thumbs.db
 
 # Playwright
 playwright/screenshots/
+playwright/screenshots-frontend/
 playwright/node_modules/
 playwright/.env.playwright
 playwright/scripts/audit-*.json
 playwright/scripts/*-results.json
 node_modules/
 web/robots.txt
+.codex
 
 # Outils IA et agents locaux (non partageables entre postes)
 .adal/
