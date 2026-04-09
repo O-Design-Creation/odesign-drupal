@@ -11,6 +11,9 @@ odesign_admin.settings:
     homepage_hero_text_mode:
       type: string
       label: 'Mode de contraste du texte du hero de la page d’accueil'
+    homepage_pancarte_offer_image:
+      type: integer
+      label: 'Image dédiée à la mise en avant pancartes événementielles'
     homepage_story_founder_title:
       type: string
       label: 'Titre du bloc Je me présente'

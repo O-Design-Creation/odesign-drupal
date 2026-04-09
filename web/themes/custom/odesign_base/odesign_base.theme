@@ -678,6 +678,14 @@ function odesign_base_build_life_occasion_card(TermInterface $term, int $product
     ?: odesign_base_first_product_image_url($products)
     ?: odesign_base_theme_asset_url('media/home-hero-historique.png');
 
+  $alias = \Drupal::service('path_alias.manager')->getAliasByPath('/taxonomy/term/' . $term->id());
+  if ($alias === '/occasions/pancarte-evenementielles') {
+    $pancarte_override = odesign_base_file_url_from_id((int) (\Drupal::config('odesign_admin.settings')->get('homepage_pancarte_offer_image') ?? 0));
+    if (!empty($pancarte_override)) {
+      $preview_image_url = $pancarte_override;
+    }
+  }
+
   return [
     'title' => $term->label(),
     'url' => $term->toUrl()->toString(),
@@ -1123,6 +1131,13 @@ function odesign_base_preprocess_taxonomy_term(array &$variables): void {
   $alias_manager = \Drupal::service('path_alias.manager');
   $current_alias = $alias_manager->getAliasByPath('/taxonomy/term/' . $term->id());
   $variables['life_occasion_is_secondary_measured'] = ($current_alias === '/occasions/pancarte-evenementielles');
+  if ($variables['life_occasion_is_secondary_measured']) {
+    $pancarte_override = odesign_base_file_url_from_id((int) (\Drupal::config('odesign_admin.settings')->get('homepage_pancarte_offer_image') ?? 0));
+    if (!empty($pancarte_override)) {
+      $variables['life_occasion_hero_image_url'] = $pancarte_override;
+      $variables['life_occasion_hero_has_image'] = TRUE;
+    }
+  }
   $variables['life_occasion_lot_offer_note'] = $variables['life_occasion_is_secondary_measured']
     ? (string) t('Univers secondaire mesuré : cette page peut porter des offres en lot dédiées aux événements, sans casser la navigation principale.')
     : '';

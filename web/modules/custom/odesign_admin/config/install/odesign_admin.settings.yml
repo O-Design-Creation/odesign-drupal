@@ -1,6 +1,7 @@
 homepage_hero_enable_image: true
 homepage_hero_image: null
 homepage_hero_text_mode: auto
+homepage_pancarte_offer_image: null
 promotion_volume_rules:
   -
     enabled: true
