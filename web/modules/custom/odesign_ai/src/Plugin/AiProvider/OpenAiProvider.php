@@ -79,6 +79,13 @@ class OpenAiProvider extends AiProviderClientBase implements ChatInterface {
   /**
    * {@inheritdoc}
    */
+  public function setAuthentication(mixed $authentication): void {
+    // Authentication is managed via Drupal state in loadApiKey().
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function chat(array|string|ChatInput $input, string $model_id, array $tags = []): ChatOutput {
     $api_key = $this->loadApiKey();
     $messages = $this->buildMessages($input);
