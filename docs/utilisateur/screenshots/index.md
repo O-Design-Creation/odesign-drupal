@@ -19,3 +19,6 @@
 | `newsletter-liste.png` | Newsletter — liste (filtré par type) |
 | `newsletter-abonnes.png` | Newsletter — abonnés |
 | `newsletter-nouveau.png` | Newsletter — nouvelle newsletter |
+| `reviews-liste.png` | Avis clients — liste de modération |
+| `reviews-formulaire-client.png` | Avis clients — formulaire client via lien unique |
+| `reviews-homepage-bloc.png` | Avis clients — bloc affiché sur la homepage |

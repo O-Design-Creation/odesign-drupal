@@ -30,6 +30,7 @@ dependencies:
     - odesign_admin
     - odesign_ai
     - odesign_personalization
+    - odesign_reviews
     - scheduler
     - simplenews
     - system
@@ -60,6 +61,7 @@ permissions:
   - 'administer commerce_invoice'
   - 'administer odesign boutique'
   - 'administer odesign personalization'
+  - 'administer boutique reviews'
   - 'administer simplenews subscriptions'
   - 'create article content'
   - 'create campagne content'

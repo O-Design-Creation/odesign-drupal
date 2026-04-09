@@ -1,0 +1,9 @@
+name: ODesign Reviews
+type: module
+description: "Collecte et modération d'avis clients liés aux commandes."
+package: ODesign
+core_version_requirement: ^11
+dependencies:
+  - drupal:commerce_order
+  - drupal:odesign_orders
+

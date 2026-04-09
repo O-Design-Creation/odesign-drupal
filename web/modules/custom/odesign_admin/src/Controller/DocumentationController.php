@@ -3,6 +3,8 @@
 namespace Drupal\odesign_admin\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -21,7 +23,14 @@ class DocumentationController extends ControllerBase {
    * URL publique du répertoire des captures d'écran.
    */
   private function screenshotsUrl(): string {
-    return base_path() . 'modules/custom/odesign_admin/images/doc-screenshots';
+    return base_path() . 'admin/boutique/documentation/screenshot';
+  }
+
+  /**
+   * Retourne le chemin absolu vers les captures docs.
+   */
+  private function screenshotsPath(): string {
+    return $this->docsPath() . '/screenshots';
   }
 
   /**
@@ -131,6 +140,28 @@ class DocumentationController extends ControllerBase {
     $parsedown->setSafeMode(TRUE);
 
     return $parsedown->text($markdown);
+  }
+
+  /**
+   * Sert une capture d'écran depuis docs/utilisateur/screenshots.
+   */
+  public function screenshot(string $filename): BinaryFileResponse {
+    $filename = basename($filename);
+    $base = realpath($this->screenshotsPath());
+    $file = $base ? $base . '/' . $filename : '';
+    $real = realpath($file);
+
+    if (!$base || !$real || !str_starts_with($real, $base . '/')) {
+      throw new NotFoundHttpException();
+    }
+    if (!is_file($real)) {
+      throw new NotFoundHttpException();
+    }
+
+    $response = new BinaryFileResponse($real);
+    $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $filename);
+    $response->headers->set('Cache-Control', 'public, max-age=300');
+    return $response;
   }
 
 }

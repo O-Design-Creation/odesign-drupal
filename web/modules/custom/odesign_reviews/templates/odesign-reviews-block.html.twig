@@ -1,0 +1,41 @@
+{#
+/**
+ * @file
+ * Bloc "Avis clients" affiché sur la homepage.
+ *
+ * Variables disponibles :
+ * - reviews: avis approuvés.
+ */
+#}
+<section class="home-reviews" aria-labelledby="home-reviews-title">
+  <div class="container">
+    <div class="section-heading">
+      <div>
+        <p class="section-heading__eyebrow">{{ 'Ils nous ont fait confiance'|t }}</p>
+        <h2 id="home-reviews-title" class="section-heading__title">{{ 'Avis clients'|t }}</h2>
+      </div>
+    </div>
+
+    <div class="home-reviews__grid">
+      {% for review in reviews %}
+        <article class="home-review-card">
+          <div class="home-review-card__rating" aria-label="{{ '@count étoiles sur 5'|t({'@count': review.rating}) }}">
+            {% for i in 1..5 %}
+              <span class="home-review-card__star{{ i <= review.rating ? ' is-filled' : '' }}" aria-hidden="true">★</span>
+            {% endfor %}
+          </div>
+          <p class="home-review-card__comment">“{{ review.comment|striptags|trim }}”</p>
+          <p class="home-review-card__meta">
+            <strong>{{ review.author_name }}</strong>
+            {% if review.occasion %}
+              · {{ review.occasion|capitalize }}
+            {% endif %}
+            {% if review.created_label %}
+              · {{ review.created_label }}
+            {% endif %}
+          </p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>

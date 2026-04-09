@@ -1,0 +1,137 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function odesign_reviews_install(): void {
+  user_role_grant_permissions('gestionnaire_boutique', ['administer boutique reviews']);
+}
+
+/**
+ * Implements hook_schema().
+ */
+function odesign_reviews_schema(): array {
+  $schema['odesign_review_requests'] = [
+    'description' => 'Demandes d avis envoyées après livraison.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'order_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'order_number' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'token' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'used' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'order_id' => ['order_id'],
+      'token' => ['token'],
+    ],
+    'indexes' => [
+      'email' => ['email'],
+    ],
+  ];
+
+  $schema['odesign_reviews'] = [
+    'description' => 'Avis clients collectés.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'order_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'order_number' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'author_name' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+      ],
+      'occasion' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'rating' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ],
+      'comment' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => 'pending',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'updated' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'order_id' => ['order_id'],
+    ],
+    'indexes' => [
+      'status_created' => ['status', 'created'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Donne l'accès modération avis au rôle gestionnaire.
+ */
+function odesign_reviews_update_11001(): string {
+  user_role_grant_permissions('gestionnaire_boutique', ['administer boutique reviews']);
+  return 'Permission administer boutique reviews attribuée au rôle gestionnaire_boutique.';
+}

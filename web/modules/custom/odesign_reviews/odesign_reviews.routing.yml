@@ -1,0 +1,33 @@
+odesign_reviews.form:
+  path: '/avis/commande/{order_id}/{token}'
+  defaults:
+    _form: '\Drupal\odesign_reviews\Form\ReviewSubmitForm'
+    _title: 'Votre avis client'
+  requirements:
+    _access: 'TRUE'
+    order_id: '\d+'
+    token: '[A-Za-z0-9\-]+'
+
+odesign_reviews.admin_list:
+  path: '/admin/boutique/avis'
+  defaults:
+    _controller: '\Drupal\odesign_reviews\Controller\ReviewAdminController::list'
+    _title: 'Avis clients'
+  requirements:
+    _permission: 'administer boutique reviews'
+
+odesign_reviews.admin_approve:
+  path: '/admin/boutique/avis/{review_id}/approve'
+  defaults:
+    _controller: '\Drupal\odesign_reviews\Controller\ReviewAdminController::approve'
+  requirements:
+    _permission: 'administer boutique reviews'
+    review_id: '\d+'
+
+odesign_reviews.admin_reject:
+  path: '/admin/boutique/avis/{review_id}/reject'
+  defaults:
+    _controller: '\Drupal\odesign_reviews\Controller\ReviewAdminController::reject'
+  requirements:
+    _permission: 'administer boutique reviews'
+    review_id: '\d+'

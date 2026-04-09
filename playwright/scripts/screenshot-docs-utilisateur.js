@@ -80,6 +80,20 @@ async function loginViaUli(page) {
   console.log('🔑 Connecté via ULI');
 }
 
+async function dismissCookies(page) {
+  const denyButton = page.getByRole('button', { name: /non,\s*merci/i }).first();
+  if (await denyButton.count()) {
+    await denyButton.click();
+    await page.waitForTimeout(300);
+    return;
+  }
+  const acceptButton = page.getByRole('button', { name: /accepter/i }).first();
+  if (await acceptButton.count()) {
+    await acceptButton.click();
+    await page.waitForTimeout(300);
+  }
+}
+
 async function activateTab(page, tabKey) {
   if (!tabKey) return;
   // Drupal vertical tabs: les liens ont href="#edit-{key}"
@@ -102,6 +116,7 @@ async function capture(page, entry) {
     const url = entry.path.split('#')[0];
     await page.goto(`${BASE_URL}${url}`, { waitUntil: 'networkidle', timeout: 20000 });
     await bypassSandbox(page);
+    await dismissCookies(page);
 
     if (entry.tab) await activateTab(page, entry.tab);
     if (entry.scrollY) await page.evaluate((y) => window.scrollTo(0, y), entry.scrollY);

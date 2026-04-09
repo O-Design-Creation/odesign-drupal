@@ -973,6 +973,19 @@ function odesign_base_preprocess_page(array &$variables): void {
 
   $variables['front_featured_life_occasions'] = array_slice($variables['front_life_occasion_cards'], 0, 4);
   $variables['front_latest_articles'] = odesign_base_build_latest_article_items(3);
+  $variables['front_reviews'] = NULL;
+  if (\Drupal::moduleHandler()->moduleExists('odesign_reviews')) {
+    $approved_reviews = \Drupal::service('odesign_reviews.manager')->getApproved(3);
+    if (!empty($approved_reviews)) {
+      $variables['front_reviews'] = [
+        '#theme' => 'odesign_reviews_block',
+        '#reviews' => $approved_reviews,
+        '#attached' => [
+          'library' => ['odesign_reviews/frontend'],
+        ],
+      ];
+    }
+  }
 
   // Campagne saisonnière "en cours" — widget homepage.
   // Affiche la campagne la plus récente avec promote=1 et status=1.

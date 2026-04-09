@@ -88,3 +88,13 @@ odesign_admin.documentation_chapter:
     chapter: '^[0-9]{2}-[a-z0-9\-]+$'
   options:
     _admin_route: TRUE
+
+odesign_admin.documentation_screenshot:
+  path: '/admin/boutique/documentation/screenshot/{filename}'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\DocumentationController::screenshot'
+  requirements:
+    _permission: 'administer odesign boutique'
+    filename: '^[a-zA-Z0-9._-]+\.(png|jpg|jpeg|webp|gif)$'
+  options:
+    _admin_route: TRUE

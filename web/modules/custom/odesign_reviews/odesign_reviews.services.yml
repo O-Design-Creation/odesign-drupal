@@ -1,0 +1,17 @@
+services:
+  odesign_reviews.manager:
+    class: Drupal\odesign_reviews\Service\ReviewManager
+    arguments:
+      - '@database'
+      - '@plugin.manager.mail'
+      - '@language_manager'
+      - '@logger.factory'
+      - '@date.formatter'
+      - '@cache_tags.invalidator'
+
+  odesign_reviews.deliver_subscriber:
+    class: Drupal\odesign_reviews\EventSubscriber\ReviewRequestSubscriber
+    arguments:
+      - '@odesign_reviews.manager'
+    tags:
+      - { name: event_subscriber }

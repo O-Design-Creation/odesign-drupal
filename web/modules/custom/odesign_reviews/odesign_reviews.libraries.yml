@@ -1,0 +1,9 @@
+frontend:
+  css:
+    theme:
+      css/reviews.css: {}
+
+admin:
+  css:
+    theme:
+      css/reviews.css: {}

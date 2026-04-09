@@ -1,0 +1,57 @@
+<?php
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_mail().
+ */
+function odesign_reviews_mail(string $key, array &$message, array $params): void {
+  if ($key !== 'review_request') {
+    return;
+  }
+
+  $order_number = (string) ($params['order_number'] ?? '—');
+  $review_url = (string) ($params['review_url'] ?? '');
+
+  $message['subject'] = 'Votre avis nous intéresse — Commande #' . $order_number;
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+  $message['body'][] = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">'
+    . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;"><span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">O\'Design Création</span></td></tr>'
+    . '<tr><td style="padding:28px 24px;">'
+    . '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">Merci pour votre commande #' . htmlspecialchars($order_number) . '</p>'
+    . '<p style="margin:0 0 18px;">Votre retour nous aide à améliorer notre atelier et à rassurer les prochains clients.</p>'
+    . '<p><a href="' . htmlspecialchars($review_url) . '" style="display:inline-block;padding:10px 24px;background:#8b6f47;color:#fff;text-decoration:none;font-size:13px;border-radius:2px;">Donner mon avis</a></p>'
+    . '<p style="margin:18px 0 0;color:#6b5744;font-size:13px;">Le formulaire prend moins d\'une minute.</p>'
+    . '</td></tr>'
+    . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">O\'Design Création · atelierodesign.fr</td></tr>'
+    . '</table>';
+}
+
+/**
+ * Implements hook_odesign_boutique_nav_items_alter().
+ */
+function odesign_reviews_odesign_boutique_nav_items_alter(array &$items): void {
+  $items['reviews'] = [
+    'label' => 'Avis clients',
+    'icon' => 'ph-chat-circle-dots',
+    'route' => 'odesign_reviews.admin_list',
+    'weight' => 65,
+    'active_routes' => ['odesign_reviews.admin_list'],
+    'badge' => NULL,
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function odesign_reviews_theme(): array {
+  return [
+    'odesign_reviews_block' => [
+      'variables' => [
+        'reviews' => [],
+      ],
+      'template' => 'odesign-reviews-block',
+    ],
+  ];
+}
+
