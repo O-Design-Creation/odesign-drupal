@@ -85,4 +85,22 @@ La newsletter sera envoyée automatiquement à l'heure programmée.
 
 ---
 
+## Relances panier abandonné (automatique)
+
+Le site envoie automatiquement des emails de relance quand un client quitte son panier sans finaliser sa commande.
+
+Règles actuelles :
+
+- 1er rappel après environ **2 heures** d'inactivité
+- 2e rappel après environ **24 heures** (si la commande n'est toujours pas finalisée)
+- Maximum : **2 relances** par panier
+
+Vous n'avez rien à faire pour déclencher ces relances.
+
+> 💡 Si le client termine sa commande, les relances s'arrêtent naturellement pour ce panier.
+
+> ⚠️ Ces emails sont des emails transactionnels automatiques (pas des newsletters marketing).
+
+---
+
 *Documentation O'Design Création — Newsletter — v1.0*

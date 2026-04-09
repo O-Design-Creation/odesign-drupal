@@ -54,6 +54,31 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
     return;
   }
 
+  if ($key === 'cart_recovery_reminder') {
+    $order_number = (string) ($params['order_number'] ?? '—');
+    $total = (string) ($params['total'] ?? '—');
+    $cart_url = (string) ($params['cart_url'] ?? Url::fromUri('internal:/cart', ['absolute' => TRUE])->toString());
+    $reminder_number = (int) ($params['reminder_number'] ?? 1);
+
+    $message['subject'] = $reminder_number === 1
+      ? 'Votre panier vous attend — O\'Design Création'
+      : 'Dernier rappel : votre panier est prêt';
+
+    $message['body'][] = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">'
+      . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;"><span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">O\'Design Création</span></td></tr>'
+      . '<tr><td style="padding:28px 24px;">'
+      . '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">Votre sélection est toujours disponible</p>'
+      . '<p style="margin:0 0 8px;"><strong>Panier</strong> : #' . htmlspecialchars($order_number) . '</p>'
+      . '<p style="margin:0 0 16px;"><strong>Total estimé</strong> : ' . htmlspecialchars($total) . '</p>'
+      . '<p style="margin:0 0 18px;">Vous pouvez reprendre votre commande en un clic.</p>'
+      . '<p><a href="' . htmlspecialchars($cart_url) . '" style="display:inline-block;padding:10px 24px;background:#8b6f47;color:#fff;text-decoration:none;font-size:13px;border-radius:2px;">Reprendre ma commande</a></p>'
+      . '<p style="margin:18px 0 0;color:#6b5744;font-size:13px;">Si votre commande est déjà finalisée, ignorez cet email.</p>'
+      . '</td></tr>'
+      . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">O\'Design Création · atelierodesign.fr</td></tr>'
+      . '</table>';
+    return;
+  }
+
   $order = $params['order'] ?? NULL;
   $label = $params['label'] ?? '';
   $subject = $params['subject'] ?? $label;
@@ -217,6 +242,123 @@ function odesign_orders_toolbar_alter(array &$items): void {
       'odesign_orders.lazy_builders:renderOrdersInbox',
       [],
     ];
+  }
+}
+
+/**
+ * Implements hook_cron().
+ *
+ * Relances frugales panier abandonné:
+ * - relance #1 après 2 heures d'inactivité
+ * - relance #2 après 24 heures d'inactivité
+ * Une relance donnée n'est envoyée qu'une seule fois par commande.
+ */
+function odesign_orders_cron(): void {
+  $now = \Drupal::time()->getRequestTime();
+  $threshold_1 = $now - (2 * 3600);
+  $threshold_2 = $now - (24 * 3600);
+
+  $query = \Drupal::database()->select('commerce_order', 'o')
+    ->fields('o', [
+      'order_id',
+      'order_number',
+      'mail',
+      'changed',
+      'state',
+      'cart',
+      'total_price__number',
+      'total_price__currency_code',
+    ])
+    ->condition('o.cart', 1)
+    ->condition('o.mail', '', '<>')
+    ->condition('o.state', ['draft', 'pending_payment'], 'IN')
+    ->condition('o.changed', $threshold_1, '<=')
+    ->range(0, 200);
+
+  $rows = $query->execute()->fetchAllAssoc('order_id');
+  if (!$rows) {
+    return;
+  }
+
+  $mail_manager = \Drupal::service('plugin.manager.mail');
+  $currency_formatter = \Drupal::service('commerce_price.currency_formatter');
+  $language = \Drupal::languageManager()->getDefaultLanguage()->getId();
+
+  foreach ($rows as $row) {
+    $mail = trim((string) $row->mail);
+    if ($mail === '') {
+      continue;
+    }
+
+    $send_reminder_1 = ((int) $row->changed <= $threshold_1);
+    $send_reminder_2 = ((int) $row->changed <= $threshold_2);
+
+    $reminder_1_sent_at = _odesign_orders_cart_recovery_sent_at((int) $row->order_id, 1);
+    $reminder_2_sent_at = _odesign_orders_cart_recovery_sent_at((int) $row->order_id, 2);
+
+    if ($send_reminder_1 && !$reminder_1_sent_at) {
+      _odesign_orders_send_cart_recovery_mail($mail_manager, $currency_formatter, $language, $row, 1, $now);
+    }
+
+    // La relance #2 ne part jamais dans le même run que la #1.
+    // Elle nécessite une #1 déjà envoyée depuis au moins 20 heures.
+    if ($send_reminder_2
+      && !$reminder_2_sent_at
+      && $reminder_1_sent_at
+      && ((int) $reminder_1_sent_at <= ($now - (20 * 3600)))) {
+      _odesign_orders_send_cart_recovery_mail($mail_manager, $currency_formatter, $language, $row, 2, $now);
+    }
+  }
+}
+
+/**
+ * Returns the sent timestamp for an order reminder level, or NULL.
+ */
+function _odesign_orders_cart_recovery_sent_at(int $order_id, int $reminder_number): ?int {
+  $sent = \Drupal::database()->select('odesign_cart_recovery_log', 'l')
+    ->fields('l', ['sent'])
+    ->condition('order_id', $order_id)
+    ->condition('reminder_number', $reminder_number)
+    ->execute()
+    ->fetchField();
+
+  return $sent !== FALSE ? (int) $sent : NULL;
+}
+
+/**
+ * Sends one abandoned cart reminder and logs the delivery attempt.
+ */
+function _odesign_orders_send_cart_recovery_mail($mail_manager, $currency_formatter, string $language, object $row, int $reminder_number, int $now): void {
+  $order_number = (string) ($row->order_number ?: $row->order_id);
+  $total = '—';
+  if (!empty($row->total_price__number) && !empty($row->total_price__currency_code)) {
+    $total = $currency_formatter->format((string) $row->total_price__number, (string) $row->total_price__currency_code);
+  }
+
+  $params = [
+    'order_number' => $order_number,
+    'total' => $total,
+    'reminder_number' => $reminder_number,
+    'cart_url' => \Drupal\Core\Url::fromUri('internal:/cart', ['absolute' => TRUE])->toString(),
+  ];
+
+  $result = $mail_manager->mail(
+    'odesign_orders',
+    'cart_recovery_reminder',
+    (string) $row->mail,
+    $language,
+    $params
+  );
+
+  if (!empty($result['result'])) {
+    \Drupal::database()->insert('odesign_cart_recovery_log')
+      ->fields([
+        'order_id' => (int) $row->order_id,
+        'mail' => (string) $row->mail,
+        'reminder_number' => $reminder_number,
+        'sent' => $now,
+      ])
+      ->execute();
   }
 }
 

@@ -1,0 +1,57 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function odesign_orders_schema(): array {
+  $schema['odesign_cart_recovery_log'] = [
+    'description' => 'Historique des relances panier abandonné envoyées.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'order_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'mail' => [
+        'type' => 'varchar',
+        'length' => 254,
+        'not null' => TRUE,
+      ],
+      'reminder_number' => [
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+      ],
+      'sent' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'unique keys' => [
+      'order_reminder' => ['order_id', 'reminder_number'],
+    ],
+    'indexes' => [
+      'sent' => ['sent'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Creates the abandoned cart recovery log table for existing installs.
+ */
+function odesign_orders_update_11001(): string {
+  $schema = \Drupal::database()->schema();
+  if ($schema->tableExists('odesign_cart_recovery_log')) {
+    return 'Table odesign_cart_recovery_log déjà présente.';
+  }
+  $definition = odesign_orders_schema()['odesign_cart_recovery_log'];
+  $schema->createTable('odesign_cart_recovery_log', $definition);
+  return 'Table odesign_cart_recovery_log créée.';
+}
