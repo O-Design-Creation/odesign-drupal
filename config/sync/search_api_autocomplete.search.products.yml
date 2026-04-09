@@ -21,15 +21,14 @@ suggester_settings:
     display_plugin: page_1
     limit: 6
 search_settings:
+  'views:recherche_produits':
+    displays:
+      default: false
+      selected:
+        - page_1
+options:
   limit: 6
   min_length: 2
-  show_count: false
   delay: 200
   submit_button_selector: ':submit'
-  auto_redirect: false
-  auto_redirect_url: ''
-  page_id: page_1
-  displays:
-    default: false
-    selected:
-      - page_1
+  autosubmit: false
