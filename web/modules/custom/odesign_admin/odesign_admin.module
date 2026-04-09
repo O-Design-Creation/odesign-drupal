@@ -179,6 +179,18 @@ function odesign_admin_theme(): array {
         'current'  => NULL,
       ],
     ],
+    'odesign_admin_kpi_cockpit' => [
+      'template'  => 'odesign-admin-kpi-cockpit',
+      'variables' => [
+        'kpi_7d' => [],
+        'kpi_30d' => [],
+        'alerts' => [],
+        'top_products' => [],
+        'top_categories' => [],
+        'top_search_misses' => [],
+        'export_url' => '',
+      ],
+    ],
     'campagne_en_cours_widget' => [
       'template'  => 'campagne-en-cours-widget',
       'variables' => [
@@ -293,7 +305,15 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'icon'     => 'ph-gear',
     'type'     => 'group',
     'weight'   => 90,
-    'children' => ['config_boutique', 'personnalisation', 'transporteurs'],
+    'children' => ['cockpit_kpi', 'config_boutique', 'personnalisation', 'transporteurs'],
+  ];
+  $items['cockpit_kpi'] = [
+    'label'         => 'Cockpit KPI',
+    'icon'          => 'ph-chart-line',
+    'route'         => 'odesign_admin.analytics',
+    'weight'        => 90,
+    'active_routes' => ['odesign_admin.analytics', 'odesign_admin.analytics_export'],
+    'badge'         => NULL,
   ];
   $items['config_boutique'] = [
     'label'         => 'Paramètres boutique',

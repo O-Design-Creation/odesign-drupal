@@ -58,6 +58,25 @@ odesign_admin.clients:
   options:
     _admin_route: TRUE
 
+odesign_admin.analytics:
+  path: '/admin/boutique/analytics'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\KpiCockpitController::page'
+    _title: 'Cockpit KPI'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
+
+odesign_admin.analytics_export:
+  path: '/admin/boutique/analytics/export'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\KpiCockpitController::exportMonthlyCsv'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
+
 odesign_admin.marketing_guide:
   path: '/admin/boutique/guide-marketing'
   defaults:

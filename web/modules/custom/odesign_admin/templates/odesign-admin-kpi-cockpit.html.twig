@@ -1,0 +1,92 @@
+{#
+/**
+ * @file
+ * Cockpit KPI B2C gestionnaire.
+ *
+ * Variables :
+ * - kpi_7d: [{label, value}]
+ * - kpi_30d: [{label, value}]
+ * - alerts: [{type, message}]
+ * - top_products: [{label, value}]
+ * - top_categories: [{label, value}]
+ * - top_search_misses: [{query, hits, last_seen}]
+ * - export_url: string
+ */
+#}
+
+<div class="odesign-dashboard odesign-kpi-cockpit">
+  <section class="odesign-kpi-cockpit__header">
+    <div>
+      <h1>Cockpit KPI B2C</h1>
+      <p>Pilotage hebdomadaire et mensuel de la boutique.</p>
+    </div>
+    <a href="{{ export_url }}" class="button button--primary">Exporter CSV (mois en cours)</a>
+  </section>
+
+  {% if alerts %}
+    <div class="odesign-dashboard__alerts">
+      {% for alert in alerts %}
+        <div class="odesign-dashboard__alert odesign-dashboard__alert--{{ alert.type }}" role="alert">
+          {{ alert.message|raw }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <section class="odesign-kpi-cockpit__period">
+    <h2>7 derniers jours</h2>
+    <div class="odesign-kpi-cockpit__grid">
+      {% for kpi in kpi_7d %}
+        <article class="odesign-kpi-cockpit__card">
+          <p class="odesign-kpi-cockpit__label">{{ kpi.label }}</p>
+          <p class="odesign-kpi-cockpit__value">{{ kpi.value }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="odesign-kpi-cockpit__period">
+    <h2>30 derniers jours</h2>
+    <div class="odesign-kpi-cockpit__grid">
+      {% for kpi in kpi_30d %}
+        <article class="odesign-kpi-cockpit__card">
+          <p class="odesign-kpi-cockpit__label">{{ kpi.label }}</p>
+          <p class="odesign-kpi-cockpit__value">{{ kpi.value }}</p>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="odesign-kpi-cockpit__lists">
+    <article class="odesign-kpi-cockpit__panel">
+      <h3>Top produits (30j)</h3>
+      <ul>
+        {% for item in top_products %}
+          <li><span>{{ item.label }}</span><strong>{{ item.value }}</strong></li>
+        {% else %}
+          <li>Aucune donnée.</li>
+        {% endfor %}
+      </ul>
+    </article>
+    <article class="odesign-kpi-cockpit__panel">
+      <h3>Top catégories (30j)</h3>
+      <ul>
+        {% for item in top_categories %}
+          <li><span>{{ item.label }}</span><strong>{{ item.value }}</strong></li>
+        {% else %}
+          <li>Aucune donnée.</li>
+        {% endfor %}
+      </ul>
+    </article>
+    <article class="odesign-kpi-cockpit__panel">
+      <h3>Recherches sans résultat (30j)</h3>
+      <ul>
+        {% for item in top_search_misses %}
+          <li><span>{{ item.query }} <small>({{ item.last_seen }})</small></span><strong>{{ item.hits }}</strong></li>
+        {% else %}
+          <li>Aucune donnée.</li>
+        {% endfor %}
+      </ul>
+    </article>
+  </section>
+</div>

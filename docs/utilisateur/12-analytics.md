@@ -14,6 +14,40 @@ Le site intègre **Google Analytics 4** via le module Drupal `google_tag`.
 
 ---
 
+## Cockpit KPI boutique (pilotage hebdomadaire)
+
+> 📍 **Accès** : Navigation gestionnaire → **Configuration** → **Cockpit KPI**
+> **URL directe** : `/admin/boutique/analytics`
+
+Le cockpit KPI regroupe les indicateurs actionnables sans ouvrir GA4.
+
+Vous y retrouvez :
+
+- une vue **7 jours** et **30 jours**
+- le volume de commandes, le CA, le panier moyen
+- les commandes avec promotion et le taux promo
+- les relances paniers envoyées
+- les demandes SAV créées
+- les recherches sans résultat
+- les tops produits / catégories
+
+![Cockpit KPI B2C gestionnaire](screenshots/analytics-cockpit-kpi.png)
+
+### Export mensuel CSV
+
+Le bouton **Exporter CSV (mois en cours)** télécharge un fichier avec un suivi
+journalier minimal :
+
+- commandes finalisées
+- CA
+- panier moyen
+- commandes avec promotion
+- nombre de recherches sans résultat
+
+Ce fichier sert de base pour votre suivi mensuel.
+
+---
+
 ## Propriété GA4 utilisée
 
 | Paramètre | Valeur |

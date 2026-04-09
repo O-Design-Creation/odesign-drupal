@@ -23,3 +23,4 @@
 | `recherche-header-loupe.png` | Recherche — panneau header |
 | `recherche-resultats.png` | Recherche — résultats |
 | `recherche-zero-resultat.png` | Recherche — zéro résultat |
+| `analytics-cockpit-kpi.png` | Analytics — cockpit KPI |

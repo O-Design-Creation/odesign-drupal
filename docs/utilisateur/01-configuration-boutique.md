@@ -11,6 +11,17 @@ Cette page regroupe tous les réglages essentiels de votre boutique : les inform
 
 ---
 
+## Pilotage KPI (à côté de la configuration)
+
+Pour suivre les performances commerciales, utilisez le **Cockpit KPI** :
+
+- Accès : **Configuration → Cockpit KPI**
+- URL : `/admin/boutique/analytics`
+
+Vous y trouverez les indicateurs 7 jours / 30 jours et l'export CSV mensuel.
+
+---
+
 ## Onglet "Boutique" — Informations générales
 
 ### Modifier le nom ou l'adresse email de la boutique

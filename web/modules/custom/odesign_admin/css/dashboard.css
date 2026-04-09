@@ -948,3 +948,103 @@
     gap: 8px;
   }
 }
+
+/* ─── Cockpit KPI ───────────────────────────────────────────────────────── */
+.odesign-kpi-cockpit__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.odesign-kpi-cockpit__header h1 {
+  margin: 0 0 0.3rem;
+  color: #3d2b1f;
+}
+
+.odesign-kpi-cockpit__header p {
+  margin: 0;
+  color: #6b5744;
+}
+
+.odesign-kpi-cockpit__period {
+  margin-bottom: 1.75rem;
+}
+
+.odesign-kpi-cockpit__period h2 {
+  margin-bottom: 0.8rem;
+}
+
+.odesign-kpi-cockpit__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.8rem;
+}
+
+.odesign-kpi-cockpit__card {
+  border: 1px solid #e4d8c9;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fffefd 0%, #fbf5ee 100%);
+  padding: 0.9rem 1rem;
+}
+
+.odesign-kpi-cockpit__label {
+  margin: 0 0 0.35rem;
+  color: #7e6a57;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.odesign-kpi-cockpit__value {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #3d2b1f;
+}
+
+.odesign-kpi-cockpit__lists {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.9rem;
+}
+
+.odesign-kpi-cockpit__panel {
+  border: 1px solid #e4d8c9;
+  border-radius: 12px;
+  background: #fff;
+  padding: 1rem;
+}
+
+.odesign-kpi-cockpit__panel h3 {
+  margin: 0 0 0.65rem;
+}
+
+.odesign-kpi-cockpit__panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.odesign-kpi-cockpit__panel li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.38rem 0;
+  border-bottom: 1px solid #f1e9de;
+}
+
+.odesign-kpi-cockpit__panel li:last-child {
+  border-bottom: 0;
+}
+
+.odesign-kpi-cockpit__panel small {
+  color: #8b7c6d;
+}
+
+@media (max-width: 700px) {
+  .odesign-kpi-cockpit__header {
+    flex-direction: column;
+  }
+}

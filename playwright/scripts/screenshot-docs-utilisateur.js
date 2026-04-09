@@ -58,6 +58,9 @@ const PAGES = [
   // Clients
   { key: 'clients-liste',            path: '/admin/commerce/customers',           label: 'Clients — liste' },
   { key: 'sav-liste',                path: '/admin/boutique/sav',                 label: 'SAV — liste' },
+
+  // Analytics
+  { key: 'analytics-cockpit-kpi',    path: '/admin/boutique/analytics',           label: 'Analytics — cockpit KPI' },
 ];
 
 async function bypassSandbox(page) {
