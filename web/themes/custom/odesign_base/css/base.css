@@ -578,41 +578,42 @@ strong { font-weight: 600; }
   }
 
   .menu-dropdown__link {
-    font-size: var(--font-size-base);
+    font-size: clamp(0.96rem, 3.2vw, 1.03rem);
     font-weight: 500;
-    line-height: 1.35;
+    line-height: 1.4;
     padding: var(--space-2) var(--space-3);
     border-bottom: 1px solid rgba(139, 97, 81, 0.12);
+    letter-spacing: 0.005em;
   }
 
   .site-nav a {
     display: block;
     width: 100%;
-    font-size: clamp(1.1rem, 4.2vw, 1.35rem);
-    line-height: 1.34;
+    font-size: clamp(1rem, 3.4vw, 1.1rem);
+    line-height: 1.28;
     font-weight: 500;
     text-decoration: none;
-    padding: var(--space-4) 0;
+    padding: var(--space-3) 0;
     color: var(--color-brand-dark);
     border-bottom: 1px solid rgba(139, 97, 81, 0.12);
     border-radius: 0;
     text-transform: none;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
   }
 
   .site-nav .menu-item__summary {
     display: block;
     width: 100%;
-    font-size: clamp(1.1rem, 4.2vw, 1.35rem);
-    line-height: 1.34;
+    font-size: clamp(1rem, 3.4vw, 1.1rem);
+    line-height: 1.28;
     font-weight: 500;
     text-decoration: none;
-    padding: var(--space-4) 0;
+    padding: var(--space-3) 0;
     color: var(--color-brand-dark);
     border-bottom: 1px solid rgba(139, 97, 81, 0.12);
     border-radius: 0;
     text-transform: none;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.005em;
   }
 
   .site-nav a:hover,
@@ -3726,6 +3727,19 @@ nav ul {
 }
 
 @media (max-width: 980px) {
+  .home-story-proof__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-bridge__articles {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Mobile hero — image recadrée + titre allégé (R-03, R-04, R-05)
+   --------------------------------------------------------------------------- */
+@media (max-width: 768px) {
   .life-occasion-cards {
     display: flex;
     overflow-x: auto;
@@ -3740,19 +3754,6 @@ nav ul {
     scroll-snap-align: start;
   }
 
-  .home-story-proof__grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home-bridge__articles {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---------------------------------------------------------------------------
-   Mobile hero — image recadrée + titre allégé (R-03, R-04, R-05)
-   --------------------------------------------------------------------------- */
-@media (max-width: 768px) {
   /* R-05 — recadrage image hero : top visible, produits ne disparaissent plus */
   .home-hero--with-image {
     background-position-y: 20%;

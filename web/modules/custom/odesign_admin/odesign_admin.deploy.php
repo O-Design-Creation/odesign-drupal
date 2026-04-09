@@ -83,7 +83,7 @@ function odesign_admin_deploy_002(): void {
     ],
     '/politique-confidentialite' => [
       'title'       => 'Politique de Confidentialité | O\'Design Création',
-      'description' => "Politique de confidentialité d'O\'Design Création : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD.",
+      'description' => "Politique de confidentialité d'O'Design Création : données collectées, durées de conservation, droits d'accès et de suppression, conformément au RGPD.",
     ],
   ];
 

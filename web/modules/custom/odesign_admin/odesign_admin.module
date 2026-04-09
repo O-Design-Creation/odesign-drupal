@@ -728,7 +728,7 @@ function odesign_admin_form_alter(array &$form, FormStateInterface $form_state, 
     });
     $form['gdpr_consent'] = [
       '#type'          => 'checkbox',
-      '#title'         => t("J'accepte de recevoir la newsletter de O\'Design Création et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
+      '#title'         => t("J'accepte de recevoir la newsletter de O'Design Création et je comprends que je peux me désabonner à tout moment. <a href=\"/politique-confidentialite\" target=\"_blank\">Politique de confidentialité</a>."),
       '#required'      => TRUE,
       '#weight'        => 5,
       '#attributes'    => ['class' => ['newsletter-gdpr-checkbox']],

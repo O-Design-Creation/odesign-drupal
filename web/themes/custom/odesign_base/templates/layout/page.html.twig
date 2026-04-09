@@ -257,6 +257,28 @@
           </div>
         {% endif %}
 
+        {% if front_pancarte_offer %}
+          <section class="home-pancarte-offer" aria-label="{{ 'Offre pancartes événementielles'|t }}">
+            <div class="container home-pancarte-offer__inner">
+              {% if front_pancarte_offer.image_url %}
+                <a href="{{ front_pancarte_offer.url }}" class="home-pancarte-offer__media">
+                  <img src="{{ front_pancarte_offer.image_url }}" alt="{{ front_pancarte_offer.title }}" loading="lazy" decoding="async">
+                </a>
+              {% endif %}
+              <div class="home-pancarte-offer__content">
+                <p class="section-heading__eyebrow">{{ 'Offre mise en avant'|t }}</p>
+                <h2 class="section-heading__title">{{ 'Pancartes événementielles'|t }}</h2>
+                {% if front_pancarte_offer.intro %}
+                  <p>{{ front_pancarte_offer.intro }}</p>
+                {% else %}
+                  <p>{{ 'Découvrez des pancartes personnalisées pour mariages, anniversaires et moments clés.'|t }}</p>
+                {% endif %}
+                <a href="{{ front_pancarte_offer.url }}" class="btn btn--primary">{{ 'Découvrir l’offre'|t }}</a>
+              </div>
+            </div>
+          </section>
+        {% endif %}
+
         <section id="home-universes" class="home-universes">
           <div class="container">
             <div class="section-heading">
@@ -318,28 +340,6 @@
             </div>
           </div>
         </section>
-
-        {% if front_pancarte_offer %}
-          <section class="home-pancarte-offer" aria-label="{{ 'Offre pancartes événementielles'|t }}">
-            <div class="container home-pancarte-offer__inner">
-              {% if front_pancarte_offer.image_url %}
-                <a href="{{ front_pancarte_offer.url }}" class="home-pancarte-offer__media">
-                  <img src="{{ front_pancarte_offer.image_url }}" alt="{{ front_pancarte_offer.title }}" loading="lazy" decoding="async">
-                </a>
-              {% endif %}
-              <div class="home-pancarte-offer__content">
-                <p class="section-heading__eyebrow">{{ 'Offre mise en avant'|t }}</p>
-                <h2 class="section-heading__title">{{ 'Pancartes événementielles'|t }}</h2>
-                {% if front_pancarte_offer.intro %}
-                  <p>{{ front_pancarte_offer.intro }}</p>
-                {% else %}
-                  <p>{{ 'Découvrez des pancartes personnalisées pour mariages, anniversaires et moments clés.'|t }}</p>
-                {% endif %}
-                <a href="{{ front_pancarte_offer.url }}" class="btn btn--primary">{{ 'Découvrir l’offre'|t }}</a>
-              </div>
-            </div>
-          </section>
-        {% endif %}
 
         <section class="home-story-proof">
           <div class="container">
