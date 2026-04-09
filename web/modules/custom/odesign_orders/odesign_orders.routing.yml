@@ -56,3 +56,36 @@ odesign_orders.order_transition:
     commerce_order:
       type: entity:commerce_order
 
+odesign_orders.customer_sav:
+  path: '/user/{user}/orders/{commerce_order}/sav'
+  defaults:
+    _form: '\Drupal\odesign_orders\Form\CustomerSavRequestForm'
+    _title: 'Demande SAV'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    user: \d+
+    commerce_order: \d+
+  parameters:
+    commerce_order:
+      type: entity:commerce_order
+
+odesign_orders.admin_sav_list:
+  path: '/admin/boutique/sav'
+  defaults:
+    _controller: '\Drupal\odesign_orders\Controller\SupportRequestController::list'
+    _title: 'Demandes SAV'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
+
+odesign_orders.admin_sav_status:
+  path: '/admin/boutique/sav/{request_id}/{status}'
+  defaults:
+    _controller: '\Drupal\odesign_orders\Controller\SupportRequestController::setStatus'
+  requirements:
+    _permission: 'access commerce administration pages'
+    request_id: \d+
+    status: 'new|in_progress|resolved'
+  options:
+    _admin_route: TRUE

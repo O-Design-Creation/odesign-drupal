@@ -63,4 +63,29 @@ Dirigez le client vers la page de connexion de votre boutique, où il peut cliqu
 
 ---
 
+## Gérer les demandes SAV par commande
+
+> 📍 **Accès** : Menu de navigation → **Demandes SAV**
+> **URL directe** : `/admin/boutique/sav`
+
+![Liste des demandes SAV](screenshots/sav-liste.png)
+
+Quand un client envoie une demande depuis sa commande, vous la retrouvez ici.
+
+Pour chaque demande, vous voyez :
+
+- la commande concernée
+- l'email du client
+- le sujet
+- son message
+- le statut (`Nouveau`, `En cours`, `Traité`)
+
+### Workflow conseillé
+
+1. Passer la demande en **En cours** quand vous la prenez en charge
+2. Répondre au client (email ou téléphone selon votre process)
+3. Passer la demande en **Traité** quand c'est résolu
+
+---
+
 *Documentation O'Design Création — Clients — v1.1*

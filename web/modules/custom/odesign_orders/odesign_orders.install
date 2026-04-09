@@ -40,6 +40,62 @@ function odesign_orders_schema(): array {
     ],
   ];
 
+  $schema['odesign_order_support_request'] = [
+    'description' => 'Demandes SAV liées à une commande client.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'order_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 254,
+        'not null' => TRUE,
+      ],
+      'category' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 'question',
+      ],
+      'message' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => 'new',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'updated' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'order_id' => ['order_id'],
+      'status_created' => ['status', 'created'],
+      'uid' => ['uid'],
+    ],
+  ];
+
   return $schema;
 }
 
@@ -54,4 +110,72 @@ function odesign_orders_update_11001(): string {
   $definition = odesign_orders_schema()['odesign_cart_recovery_log'];
   $schema->createTable('odesign_cart_recovery_log', $definition);
   return 'Table odesign_cart_recovery_log créée.';
+}
+
+/**
+ * Creates the SAV requests table for customer support by order.
+ */
+function odesign_orders_update_11002(): string {
+  $schema = \Drupal::database()->schema();
+  if ($schema->tableExists('odesign_order_support_request')) {
+    return 'Table odesign_order_support_request déjà présente.';
+  }
+
+  $schema->createTable('odesign_order_support_request', [
+    'description' => 'Demandes SAV liées à une commande client.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'order_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'unsigned' => TRUE,
+      ],
+      'email' => [
+        'type' => 'varchar',
+        'length' => 254,
+        'not null' => TRUE,
+      ],
+      'category' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 'question',
+      ],
+      'message' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+      'status' => [
+        'type' => 'varchar',
+        'length' => 16,
+        'not null' => TRUE,
+        'default' => 'new',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'updated' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'order_id' => ['order_id'],
+      'status_created' => ['status', 'created'],
+      'uid' => ['uid'],
+    ],
+  ]);
+
+  return 'Table odesign_order_support_request créée.';
 }

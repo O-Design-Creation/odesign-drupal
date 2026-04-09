@@ -57,7 +57,7 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
   if ($key === 'cart_recovery_reminder') {
     $order_number = (string) ($params['order_number'] ?? '—');
     $total = (string) ($params['total'] ?? '—');
-    $cart_url = (string) ($params['cart_url'] ?? Url::fromUri('internal:/cart', ['absolute' => TRUE])->toString());
+    $cart_url = (string) ($params['cart_url'] ?? \Drupal\Core\Url::fromUri('internal:/cart', ['absolute' => TRUE])->toString());
     $reminder_number = (int) ($params['reminder_number'] ?? 1);
 
     $message['subject'] = $reminder_number === 1
@@ -73,6 +73,25 @@ function odesign_orders_mail(string $key, array &$message, array $params): void 
       . '<p style="margin:0 0 18px;">Vous pouvez reprendre votre commande en un clic.</p>'
       . '<p><a href="' . htmlspecialchars($cart_url) . '" style="display:inline-block;padding:10px 24px;background:#8b6f47;color:#fff;text-decoration:none;font-size:13px;border-radius:2px;">Reprendre ma commande</a></p>'
       . '<p style="margin:18px 0 0;color:#6b5744;font-size:13px;">Si votre commande est déjà finalisée, ignorez cet email.</p>'
+      . '</td></tr>'
+      . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">O\'Design Création · atelierodesign.fr</td></tr>'
+      . '</table>';
+    return;
+  }
+
+  if ($key === 'support_request_notification') {
+    $order_id = (int) ($params['order_id'] ?? 0);
+    $customer_email = (string) ($params['customer_email'] ?? '—');
+    $admin_url = (string) ($params['admin_url'] ?? \Drupal\Core\Url::fromRoute('odesign_orders.admin_sav_list', [], ['absolute' => TRUE])->toString());
+
+    $message['subject'] = 'Nouvelle demande SAV — Commande #' . $order_id;
+    $message['body'][] = '<table style="max-width:600px;margin:30px auto;font-family:Georgia,serif;color:#3d2b1f;">'
+      . '<tr><td style="text-align:center;padding:24px 0;border-bottom:1px solid #e4ddd5;"><span style="font-size:20px;letter-spacing:.08em;text-transform:uppercase;">O\'Design Création</span></td></tr>'
+      . '<tr><td style="padding:28px 24px;">'
+      . '<p style="font-size:18px;color:#3d2b1f;margin:0 0 16px;">Nouvelle demande SAV client</p>'
+      . '<p style="margin:0 0 8px;"><strong>Commande</strong> : #' . htmlspecialchars((string) $order_id) . '</p>'
+      . '<p style="margin:0 0 16px;"><strong>Email client</strong> : ' . htmlspecialchars($customer_email) . '</p>'
+      . '<p><a href="' . htmlspecialchars($admin_url) . '" style="display:inline-block;padding:10px 24px;background:#8b6f47;color:#fff;text-decoration:none;font-size:13px;border-radius:2px;">Voir les demandes SAV</a></p>'
       . '</td></tr>'
       . '<tr><td style="text-align:center;padding:16px;font-size:11px;color:#b0a090;border-top:1px solid #e4ddd5;">O\'Design Création · atelierodesign.fr</td></tr>'
       . '</table>';
@@ -226,6 +245,46 @@ function odesign_orders_form_commerce_order_item_add_to_cart_form_alter(array &$
   if (isset($form['actions']['submit'])) {
     $form['actions']['submit']['#value'] = t('Ajouter au panier');
   }
+}
+
+/**
+ * Injecte un lien SAV sur la vue client d'une commande.
+ */
+function odesign_orders_entity_view_alter(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display): void {
+  if (!$entity instanceof \Drupal\commerce_order\Entity\OrderInterface) {
+    return;
+  }
+
+  if ($display->getTargetEntityTypeId() !== 'commerce_order') {
+    return;
+  }
+
+  if (\Drupal::routeMatch()->getRouteName() !== 'entity.commerce_order.user_view') {
+    return;
+  }
+
+  $account = \Drupal::currentUser();
+  if ($account->isAnonymous()) {
+    return;
+  }
+  if ((int) $entity->getCustomerId() !== (int) $account->id()) {
+    return;
+  }
+
+  $build['odesign_sav_link'] = [
+    '#type' => 'container',
+    '#attributes' => ['class' => ['odesign-order-sav-link']],
+    'link' => [
+      '#type' => 'link',
+      '#title' => t('J\'ai une question sur cette commande'),
+      '#url' => \Drupal\Core\Url::fromRoute('odesign_orders.customer_sav', [
+        'user' => (int) $account->id(),
+        'commerce_order' => (int) $entity->id(),
+      ]),
+      '#attributes' => ['class' => ['button', 'button--primary']],
+    ],
+    '#weight' => 999,
+  ];
 }
 
 /**
@@ -426,6 +485,28 @@ function odesign_orders_odesign_boutique_nav_items_alter(array &$items): void {
       'entity.commerce_order.canonical',
     ],
     'badge'         => $badge,
+  ];
+
+  $sav_badge = NULL;
+  try {
+    $new_count = (int) \Drupal::database()->select('odesign_order_support_request', 'r')
+      ->condition('status', 'new')
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+    if ($new_count > 0) {
+      $sav_badge = $new_count > 99 ? '99+' : (string) $new_count;
+    }
+  }
+  catch (\Exception) {}
+
+  $items['sav'] = [
+    'label'         => 'Demandes SAV',
+    'icon'          => 'ph-chat-circle-text',
+    'route'         => 'odesign_orders.admin_sav_list',
+    'weight'        => 25,
+    'active_routes' => ['odesign_orders.admin_sav_list'],
+    'badge'         => $sav_badge,
   ];
 }
 

@@ -9,16 +9,14 @@
 | `config-boutique-onglet-presentation.png` | Config — Onglet Présentation |
 | `config-boutique-onglet-methode.png` | Config — Comment ça marche |
 | `config-boutique-onglet-promotions.png` | Config — Promotions volume |
-| `commandes-liste.png` | Commandes — liste des commandes à traiter |
-| `clients-liste.png` | Clients — liste des acheteurs |
+| `commandes-liste.png` | Commandes — liste |
 | `produits-liste.png` | Produits — liste |
 | `produits-formulaire-nouveau.png` | Produits — nouveau produit |
 | `promotions-liste.png` | Promotions — liste |
 | `contenu-liste.png` | Contenu — liste |
 | `contenu-article-nouveau.png` | Contenu — nouvel article |
-| `newsletter-liste.png` | Newsletter — liste (filtré par type) |
+| `newsletter-liste.png` | Newsletter — liste |
 | `newsletter-abonnes.png` | Newsletter — abonnés |
 | `newsletter-nouveau.png` | Newsletter — nouvelle newsletter |
-| `reviews-liste.png` | Avis clients — liste de modération |
-| `reviews-formulaire-client.png` | Avis clients — formulaire client via lien unique |
-| `reviews-homepage-bloc.png` | Avis clients — bloc affiché sur la homepage |
+| `clients-liste.png` | Clients — liste |
+| `sav-liste.png` | SAV — liste |
