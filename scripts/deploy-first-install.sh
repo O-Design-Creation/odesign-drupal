@@ -19,7 +19,7 @@ set -euo pipefail
 DRUPAL_ROOT="${DRUPAL_ROOT:-/var/www/html}"
 DRUSH="${DRUPAL_ROOT}/vendor/bin/drush"
 SCRIPTS="${DRUPAL_ROOT}/scripts"
-STEPS_TOTAL=13
+STEPS_TOTAL=14
 STEP=0
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -86,34 +86,43 @@ log "config:import passe 2 (import complet)..."
   | grep -E 'success|error|Error' || true
 ok "Configuration importée (476 objets)"
 
-# ── Étape 5 : Cache rebuild post-config ──────────────────────────────────────
+# ── Étape 5 : Suppression de la langue anglaise ──────────────────────────────
+# site:install minimal installe EN par défaut. Après config:import (FR par défaut),
+# language.entity.en n'est plus dans config/sync — on force sa suppression.
+
+log "Suppression de la langue anglaise..."
+"$DRUSH" language:delete en --yes --no-interaction 2>&1 || \
+  warn "Langue EN déjà absente ou non supprimable (ignoré)"
+ok "Langue EN supprimée — seul FR actif"
+
+# ── Étape 6 : Cache rebuild post-config ──────────────────────────────────────
 
 log "Cache rebuild..."
 "$DRUSH" cr --no-interaction
 ok "Cache rebuild"
 
-# ── Étape 6 : Seed taxonomies occasions de vie ───────────────────────────────
+# ── Étape 7 : Seed taxonomies occasions de vie ───────────────────────────────
 
 log "Seed occasions de vie..."
 "$DRUSH" php:script "${SCRIPTS}/seed-life-occasions.php" --no-interaction 2>&1 \
   | grep -E '^\[OK\]|notice|error' || true
 ok "4 univers occasions de vie créés"
 
-# ── Étape 7 : Seed store Commerce + méthodes d'expédition ────────────────────
+# ── Étape 8 : Seed store Commerce + méthodes d'expédition ────────────────────
 
 log "Seed store + méthodes d'expédition..."
 "$DRUSH" php:script "${SCRIPTS}/seed-shipping-methods.php" --no-interaction 2>&1 \
   | grep -E 'CRÉÉ|Store|error|Seed' || true
 ok "Store + 5 méthodes d'expédition créés"
 
-# ── Étape 8 : Seed pages informations de base ────────────────────────────────
+# ── Étape 9 : Seed pages informations de base ────────────────────────────────
 
 log "Seed pages informations (Contact, Atelier)..."
 "$DRUSH" php:script "${SCRIPTS}/seed-info-pages.php" --no-interaction 2>&1 \
   | grep -E 'Pages OK|error' || true
 ok "Pages informations créées"
 
-# ── Étape 9 : Seed redirections SEO ─────────────────────────────────────────
+# ── Étape 10 : Seed redirections SEO ────────────────────────────────────────
 # Certaines destinations peuvent être manquantes (pages légales non encore créées).
 # Le script est idempotent — re-exécuté après création des pages légales.
 
@@ -122,14 +131,14 @@ log "Seed redirections SEO..."
   | grep -E 'CRÉÉ|SKIP|Résumé|AVERTISSEMENT' || true
 ok "Redirections SEO seedées (avertissements possibles → re-exécuter après pages légales)"
 
-# ── Étape 10 : Import catalogue produits ─────────────────────────────────────
+# ── Étape 11 : Import catalogue produits ─────────────────────────────────────
 
 log "Import catalogue produits depuis catalogue.json..."
 "$DRUSH" php:script "${SCRIPTS}/migrate-catalogue.php" --no-interaction 2>&1 \
   | grep -E 'Créés|Skippés|Erreurs|RÉSULTAT|Store|Produits lus' || true
 ok "Catalogue importé"
 
-# ── Étape 11 : Import articles blog ──────────────────────────────────────────
+# ── Étape 12 : Import articles blog ──────────────────────────────────────────
 
 log "Import articles blog..."
 BLOG_SOURCE_JSON="${SCRIPTS}/blog-articles-real.json" \
@@ -137,14 +146,14 @@ BLOG_SOURCE_JSON="${SCRIPTS}/blog-articles-real.json" \
   | grep -E 'Créés|Lus|Erreurs|OK' || true
 ok "Articles blog importés"
 
-# ── Étape 12 : Reindex Search API ────────────────────────────────────────────
+# ── Étape 13 : Reindex Search API ────────────────────────────────────────────
 
 log "Reindex Search API..."
 "$DRUSH" search-api:index --yes --no-interaction 2>&1 \
   | grep -E 'success|items|error' || true
 ok "Search API indexé"
 
-# ── Étape 13 : Cache rebuild final ───────────────────────────────────────────
+# ── Étape 14 : Cache rebuild final ───────────────────────────────────────────
 
 log "Cache rebuild final..."
 "$DRUSH" cr --no-interaction
