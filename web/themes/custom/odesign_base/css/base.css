@@ -3113,6 +3113,12 @@ nav ul {
   color: var(--color-brand-dark);
 }
 
+/* #1 recette client — marque plus lisible dans le hero */
+.home-hero__eyebrow {
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.12em;
+}
+
 .home-hero__title,
 .section-heading__title,
 .life-occasion-page__title {
