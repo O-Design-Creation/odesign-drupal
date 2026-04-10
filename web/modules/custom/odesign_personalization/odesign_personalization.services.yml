@@ -1,0 +1,7 @@
+services:
+  odesign_personalization.cart_order_item_add_subscriber:
+    class: Drupal\odesign_personalization\EventSubscriber\CartOrderItemAddSubscriber
+    arguments: ['@request_stack']
+    tags:
+      - { name: event_subscriber }
+

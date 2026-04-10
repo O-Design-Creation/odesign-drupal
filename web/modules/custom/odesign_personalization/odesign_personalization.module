@@ -13,10 +13,12 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\commerce_product\Entity\ProductInterface;
 use Drupal\commerce_order\Entity\OrderItemInterface;
 use Drupal\odesign_personalization\Entity\PersonalizationTemplate;
+use Drupal\odesign_personalization\PersonalizationValues;
 
 /**
  * Implements hook_form_FORM_ID_alter() for add_to_cart forms.
@@ -246,7 +248,27 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
   // Cas "Arbre de vie" / multi-prénoms :
   // regroupe les champs prénoms ensemble et place l'option attache murale
   // à côté du bloc pour rendre la saisie plus lisible côté client.
-  if (count($prenom_field_keys) >= 2) {
+  if (count($prenom_field_keys) >= 1) {
+    $allowed_tree_keys = array_values(array_filter(array_unique(array_merge(
+      $prenom_field_keys,
+      $wall_mount_field_key ? [$wall_mount_field_key] : []
+    ))));
+
+    // Pour cet article, seule la saisie des prénoms (et option murale) est utile.
+    foreach (array_keys($form['personalization']) as $child_key) {
+      if (!is_string($child_key) || strpos($child_key, 'perso_') !== 0) {
+        continue;
+      }
+      if (in_array($child_key, $allowed_tree_keys, TRUE) || $child_key === 'perso_tree_slot_map') {
+        continue;
+      }
+      unset($form['personalization'][$child_key]);
+      $hint_key = $child_key . '_price_hint';
+      if (isset($form['personalization'][$hint_key])) {
+        unset($form['personalization'][$hint_key]);
+      }
+    }
+
     $form['personalization']['tree_personalization_group'] = [
       '#type' => 'container',
       '#weight' => 15,
@@ -262,12 +284,40 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
         '#type' => 'container',
         '#attributes' => ['class' => ['tree-personalization-group__wall']],
       ],
+      'builder' => [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['tree-personalization-group__builder']],
+        'title' => [
+          '#markup' => '<h3 class="tree-personalization-group__builder-title">' . t('Placement guidé des prénoms') . '</h3>',
+        ],
+        'help' => [
+          '#markup' => '<p class="tree-personalization-group__builder-help">' . t('Les emplacements s’ajustent automatiquement au nombre de prénoms, de façon symétrique.') . '</p>',
+        ],
+        'instructions' => [
+          '#markup' => '<p class="tree-personalization-group__builder-help tree-personalization-group__builder-help--instructions">' . t('Pour déplacer un prénom : cliquez son étiquette, puis cliquez le cœur souhaité. Cliquez un cœur déjà rempli sans prénom sélectionné pour le libérer.') . '</p>',
+        ],
+        'chips' => [
+          '#markup' => '<div class="tree-personalization-group__chips js-tree-chips"></div>',
+        ],
+        'status' => [
+          '#markup' => '<p class="tree-personalization-group__status js-tree-status" aria-live="polite"></p>',
+        ],
+        'stage' => [
+          '#markup' => '<div class="tree-personalization-group__stage js-tree-stage"></div>',
+        ],
+      ],
     ];
 
     foreach ($prenom_field_keys as $key) {
       if (!isset($form['personalization'][$key])) {
         continue;
       }
+      $form['personalization'][$key]['#title'] = t('Prénoms');
+      $current_max = (int) ($form['personalization'][$key]['#maxlength'] ?? 0);
+      $form['personalization'][$key]['#maxlength'] = max(500, $current_max);
+      $form['personalization'][$key]['#placeholder'] = t('Ex: Emma, Louis, Jade');
+      $form['personalization'][$key]['#description'] = t('Saisissez de 1 à 25 prénoms, séparés par des virgules.');
+      $form['personalization'][$key]['#attributes']['data-tree-name-source'] = '1';
       $form['personalization']['tree_personalization_group']['names'][$key] = $form['personalization'][$key];
       unset($form['personalization'][$key]);
 
@@ -279,6 +329,7 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
     }
 
     if ($wall_mount_field_key && isset($form['personalization'][$wall_mount_field_key])) {
+      $form['personalization'][$wall_mount_field_key]['#attributes']['class'][] = 'js-tree-wall-mount-source';
       $form['personalization']['tree_personalization_group']['wall_mount'][$wall_mount_field_key] = $form['personalization'][$wall_mount_field_key];
       unset($form['personalization'][$wall_mount_field_key]);
 
@@ -293,6 +344,25 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
         '#markup' => '<p class="tree-personalization-group__wall-help">' . t('Option @label : cochez si vous souhaitez une fixation murale.', ['@label' => $label !== '' ? $label : t('attache murale')]) . '</p>',
       ];
     }
+
+    // Mapping exploitable côté atelier : "Sxx -> prénom", alimenté par le JS.
+    $form['personalization']['perso_tree_slot_map'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+      '#attributes' => ['class' => ['js-tree-slot-map']],
+    ];
+    $form['odesign_personalization_data'] = [
+      '#type' => 'hidden',
+      '#default_value' => '',
+      '#attributes' => ['class' => ['js-tree-data-payload']],
+      '#parents' => ['data', 'odesign_personalization_values'],
+    ];
+
+    // Un produit personnalisé ne doit pas être fusionné automatiquement.
+    if (isset($form['settings']['combine'])) {
+      $form['settings']['combine']['#type'] = 'value';
+      $form['settings']['combine']['#value'] = FALSE;
+    }
   }
 
   // Prix dynamique
@@ -305,6 +375,14 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
 
   // Submit handler pour sauvegarder les valeurs perso dans l'order_item.
   $form['#submit'][] = 'odesign_personalization_add_to_cart_submit';
+  if (isset($form['actions']) && is_array($form['actions'])) {
+    foreach ($form['actions'] as &$action) {
+      if (is_array($action) && (($action['#type'] ?? '') === 'submit')) {
+        $action['#submit'][] = 'odesign_personalization_add_to_cart_submit';
+      }
+    }
+    unset($action);
+  }
 }
 
 /**
@@ -320,25 +398,38 @@ function odesign_personalization_add_to_cart_submit(array $form, FormStateInterf
     return;
   }
 
-  if (!$orderItem->hasField('field_personalization_values')) {
-    return;
-  }
-
-  // Collecter toutes les valeurs des champs perso_*
+  // Collecter récursivement toutes les valeurs des champs perso_*.
+  $sources = [
+    (array) $form_state->getValues(),
+    (array) $form_state->getValue('personalization', []),
+    (array) $form_state->getUserInput(),
+    (array) (($form_state->getUserInput()['personalization'] ?? [])),
+  ];
   $values = [];
-  foreach ($form_state->getValues() as $key => $val) {
-    if (strpos($key, 'perso_') === 0) {
-      // Nettoyer la clé → libellé lisible
-      $label = substr($key, 6); // strip 'perso_'
-      $label = ucfirst(str_replace('_', ' ', $label));
-      $cleanVal = is_array($val) ? implode(', ', array_filter($val)) : trim((string) $val);
-      if ($cleanVal !== '' && $cleanVal !== '_none') {
-        $values[$label] = $cleanVal;
-      }
-    }
+  foreach ($sources as $source) {
+    $values += PersonalizationValues::collectFromInput($source);
   }
 
-  $orderItem->set('field_personalization_values', json_encode($values, JSON_UNESCAPED_UNICODE));
+  if ($values) {
+    PersonalizationValues::set($orderItem, $values);
+  }
+  if ($values && !$orderItem->isNew()) {
+    $orderItem->save();
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_submit() for add_to_cart forms.
+ */
+function odesign_personalization_form_commerce_order_item_add_to_cart_form_submit(array $form, FormStateInterface $form_state): void {
+  odesign_personalization_add_to_cart_submit($form, $form_state);
+}
+
+/**
+ * Collecte récursive des valeurs perso_* depuis l'arbre des valeurs du form.
+ */
+function odesign_personalization_collect_perso_values(array $input): array {
+  return PersonalizationValues::collectFromInput($input);
 }
 
 /**
@@ -370,12 +461,111 @@ function odesign_personalization_commerce_order_item_presave(EntityInterface $en
   if (!$entity instanceof OrderItemInterface) {
     return;
   }
-  if (!$entity->hasField('field_personalization_values') || $entity->get('field_personalization_values')->isEmpty()) {
+  $values = PersonalizationValues::get($entity);
+  if (!$values) {
     return;
   }
-  $raw = $entity->get('field_personalization_values')->value;
-  if ($raw && json_decode($raw) === NULL) {
-    // JSON invalide — nettoyer
-    $entity->set('field_personalization_values', NULL);
+  PersonalizationValues::set($entity, $values);
+}
+
+/**
+ * Implements hook_entity_view().
+ *
+ * Ajoute une synthèse "atelier" lisible pour l'Arbre de vie dans les lignes
+ * de commande quand un mapping de slots est disponible.
+ */
+function odesign_personalization_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
+  if (!$entity instanceof OrderItemInterface) {
+    return;
   }
+  $values = PersonalizationValues::get($entity);
+  if (!$values) {
+    return;
+  }
+
+  $slotMap = (string) ($values['Plan de pose prénoms'] ?? '');
+  if ($slotMap === '') {
+    return;
+  }
+
+  $rows = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $slotMap) ?: [])));
+  if (!$rows) {
+    return;
+  }
+
+  $items = '';
+  foreach ($rows as $row) {
+    $items .= '<li>' . htmlspecialchars($row, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '</li>';
+  }
+
+  $build['odesign_tree_summary'] = [
+    '#type' => 'container',
+    '#weight' => 90,
+    '#attributes' => ['class' => ['odesign-tree-summary']],
+    'title' => [
+      '#markup' => '<p class="odesign-tree-summary__title">' . t('Plan de pose prénoms') . '</p>',
+    ],
+    'list' => [
+      '#markup' => '<ul class="odesign-tree-summary__list">' . $items . '</ul>',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_commerce_checkout_order_summary().
+ *
+ * Expose une vue lisible des personnalisations JSON dans le template checkout.
+ */
+function odesign_personalization_preprocess_commerce_checkout_order_summary(array &$variables): void {
+  if (empty($variables['order_entity'])) {
+    return;
+  }
+
+  $items = $variables['order_entity']->getItems();
+  $personalizations = [];
+
+  foreach ($items as $orderItem) {
+    if (!$orderItem instanceof OrderItemInterface) {
+      continue;
+    }
+    $decoded = PersonalizationValues::get($orderItem);
+    if (!$decoded) {
+      continue;
+    }
+
+    $rows = [];
+    foreach ($decoded as $label => $value) {
+      if (!is_scalar($value)) {
+        continue;
+      }
+      $stringValue = trim((string) $value);
+      if ($stringValue === '') {
+        continue;
+      }
+
+      if ($label === 'Plan de pose prénoms') {
+        $lines = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $stringValue) ?: [])));
+        if ($lines) {
+          $rows[] = [
+            'label' => $label,
+            'value' => $lines,
+            'is_list' => TRUE,
+          ];
+        }
+        continue;
+      }
+
+      $rows[] = [
+        'label' => $label,
+        'value' => $stringValue,
+        'is_list' => FALSE,
+      ];
+    }
+
+    if ($rows) {
+      $personalizations[$orderItem->id()] = $rows;
+    }
+  }
+
+  $variables['odesign_personalizations'] = $personalizations;
 }

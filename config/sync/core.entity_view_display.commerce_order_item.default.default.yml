@@ -5,13 +5,6 @@ dependencies:
   config:
     - commerce_order.commerce_order_item_type.default
     - field.field.commerce_order_item.default.field_personalization_values
-    - field.field.commerce_order_item.default.field_poc_finish
-    - field.field.commerce_order_item.default.field_poc_need_upload
-    - field.field.commerce_order_item.default.field_poc_text
-    - field.field.commerce_order_item.default.field_poc_tree_layout
-    - field.field.commerce_order_item.default.field_poc_tree_names
-    - field.field.commerce_order_item.default.field_poc_tree_wall_mount
-    - field.field.commerce_order_item.default.field_poc_upload
   module:
     - commerce_order
     - commerce_price
@@ -36,63 +29,6 @@ content:
       timezone: ''
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_poc_finish:
-    type: list_default
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 21
-    region: content
-  field_poc_need_upload:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 22
-    region: content
-  field_poc_text:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 20
-    region: content
-  field_poc_tree_layout:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 32
-    region: content
-  field_poc_tree_names:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 30
-    region: content
-  field_poc_tree_wall_mount:
-    type: boolean
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 31
-    region: content
-  field_poc_upload:
-    type: file_default
-    label: above
-    settings:
-      use_description_as_link_text: true
-    third_party_settings: {  }
-    weight: 23
     region: content
   purchased_entity:
     type: entity_reference_entity_view

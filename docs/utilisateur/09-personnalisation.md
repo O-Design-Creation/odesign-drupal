@@ -116,19 +116,32 @@ Les informations saisies sont transmises avec la commande et visibles dans le ba
 
 ### Cas particulier : produit "Arbre de vie"
 
-Pour les produits avec plusieurs champs de prénoms (cas Arbre de vie), l'interface client est automatiquement réorganisée :
+Pour l'article **Arbre de vie en bois personnalisé**, l'interface client est spécialisée :
 
-- les champs de prénoms sont regroupés dans un bloc unique pour une saisie plus claire ;
-- l'option **attache murale** est affichée juste à côté de ce bloc ;
-- un texte d'aide rappelle l'ordre de remplissage.
+- un seul champ **Prénoms** est utilisé (jusqu'à 25 prénoms, séparés par des virgules) ;
+- la zone de placement affiche des **cœurs** positionnés automatiquement de façon symétrique ;
+- la taille d'affichage du prénom dans chaque cœur s'adapte automatiquement à la longueur du prénom ;
+- l'option **attache murale** reste visible à côté du bloc.
 
-> ✅ Vous n'avez rien à activer manuellement : ce comportement s'applique automatiquement si le modèle contient plusieurs champs de type prénom.
+![Arbre de vie — formulaire avec placement des cœurs](screenshots/personnalisation-arbre-formulaire.png)
+
+#### Déplacer les prénoms sur les cœurs
+
+Le client peut ajuster les positions avant d'ajouter au panier :
+
+1. Cliquer sur l'étiquette d'un prénom (dans les pastilles au-dessus de la zone).
+2. Cliquer sur le cœur de destination.
+3. Pour libérer un cœur : cliquer sur un cœur déjà rempli sans prénom sélectionné.
+
+![Arbre de vie — exemple rempli](screenshots/personnalisation-arbre-rempli.png)
+
+> ✅ Le plan `slot -> prénom` est enregistré avec la ligne panier et reste disponible pour l'atelier.
 
 ### Pertinence pour la gestionnaire
 
 - `pertinent` : **oui** (information de contrôle)
-- Impact : moins d'erreurs de saisie côté client sur l'Arbre de vie.
-- Action recommandée : vérifier sur la fiche produit Arbre de vie que les libellés de champs sont cohérents (ex : "Prénom 1", "Prénom 2", etc.).
+- Impact : moins d'erreurs de saisie côté client et meilleure lisibilité des placements pour la production atelier.
+- Action recommandée : vérifier périodiquement le comportement sur la fiche `Arbre de vie en bois personnalisé` (lisibilité des cœurs + consigne de déplacement).
 
 ---
 

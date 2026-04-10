@@ -7,6 +7,7 @@ use Drupal\commerce_order\Entity\OrderInterface;
 use Drupal\commerce_order\OrderProcessorInterface;
 use Drupal\commerce_price\Price;
 use Drupal\commerce_product\Entity\ProductVariationInterface;
+use Drupal\odesign_personalization\PersonalizationValues;
 
 /**
  * Applies personalization price modifiers as Commerce Adjustments.
@@ -35,13 +36,8 @@ class PersonalizationOrderProcessor implements OrderProcessorInterface {
         }
       }
 
-      if (!$orderItem->hasField('field_personalization_values') || $orderItem->get('field_personalization_values')->isEmpty()) {
-        continue;
-      }
-
-      $valuesJson = $orderItem->get('field_personalization_values')->value;
-      $values = json_decode($valuesJson, TRUE);
-      if (!is_array($values) || empty($values)) {
+      $values = PersonalizationValues::get($orderItem);
+      if (empty($values)) {
         continue;
       }
 
