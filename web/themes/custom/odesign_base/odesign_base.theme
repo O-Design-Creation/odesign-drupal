@@ -312,6 +312,36 @@ function odesign_base_preprocess_commerce_product(array &$variables): void {
       'og_image_product',
     ];
   }
+
+  // Meta-description : summary > body tronqué > fallback titre.
+  $meta_desc = '';
+  if ($product->hasField('body') && !$product->get('body')->isEmpty()) {
+    $body_item = $product->get('body')->first();
+    $summary = trim((string) ($body_item->summary ?? ''));
+    if ($summary !== '') {
+      $meta_desc = $summary;
+    }
+    else {
+      $raw = trim(strip_tags((string) ($body_item->value ?? '')));
+      $raw = preg_replace('/\s+/', ' ', $raw);
+      if ($raw !== '') {
+        $meta_desc = mb_strlen($raw) > 160 ? rtrim(mb_substr($raw, 0, 157)) . '…' : $raw;
+      }
+    }
+  }
+  if ($meta_desc === '') {
+    $meta_desc = (string) t('@title — création en bois personnalisée, faite main en France par O\'Design Création.', [
+      '@title' => $product->label(),
+    ]);
+  }
+  $variables['#attached']['html_head'][] = [
+    [
+      '#type'       => 'html_tag',
+      '#tag'        => 'meta',
+      '#attributes' => ['name' => 'description', 'content' => $meta_desc],
+    ],
+    'product_meta_description',
+  ];
 }
 
 /**
