@@ -14,7 +14,8 @@
 # Variables d'environnement obligatoires (Coolify) :
 #   DB_HOST, DB_NAME, DB_USER, DB_PASS
 #   DRUPAL_HASH_SALT
-#   DRUPAL_TRUSTED_HOST   (ex: preprod.atelierodesign.fr)
+#   DRUPAL_TRUSTED_HOST   (ex: www.atelierodesign.fr — hôte principal)
+#                         Plusieurs hôtes : séparés par | (ex: www.atelierodesign.fr|atelierodesign.fr)
 #   ADMIN_PASS            (premier déploiement uniquement)
 #
 # Variables optionnelles :
@@ -75,9 +76,10 @@ cat > "${WEB_ROOT}/sites/default/settings.local.php" << SETTINGS_EOF
 
 // ── Sécurité ─────────────────────────────────────────────────────────────────
 \$settings['hash_salt'] = '${DRUPAL_HASH_SALT}';
-\$settings['trusted_host_patterns'] = [
-  '^' . preg_quote('${DRUPAL_TRUSTED_HOST}') . '$',
-];
+\$settings['trusted_host_patterns'] = array_map(
+  fn(\$h) => '^' . preg_quote(trim(\$h)) . '$',
+  explode('|', '${DRUPAL_TRUSTED_HOST}')
+);
 
 // ── Email du site ─────────────────────────────────────────────────────────────
 \$config['system.site']['mail'] = '${SITE_MAIL:-contact@atelierodesign.fr}';
