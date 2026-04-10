@@ -164,6 +164,9 @@ function download_image(string $url, string $filename): ?object {
  * @return object|null  L'entité Media créée, ou null en cas d'erreur.
  */
 function create_media(object $file, string $name, string $alt = ''): ?object {
+  // Le champ name de l'entité Media est limité à 255 chars.
+  // Un titre produit long + suffixe peut dépasser cette limite.
+  $name = mb_substr($name, 0, 255);
   try {
     $media = \Drupal\media\Entity\Media::create([
       'bundle'            => 'product_image',
@@ -365,7 +368,12 @@ $products = [];
 // ---------------------------------------------------------------------------
 
 if ($catalogue_path) {
-  $raw = json_decode(file_get_contents($catalogue_path), TRUE);
+  $raw_content = file_get_contents($catalogue_path);
+  if ($raw_content === FALSE) {
+    echo "ERREUR : impossible de lire catalogue.json (vérifier les permissions).\n";
+    return;
+  }
+  $raw = json_decode($raw_content, TRUE);
   if (!is_array($raw)) {
     echo "ERREUR : catalogue.json invalide ou vide.\n";
     return;
@@ -400,6 +408,8 @@ if ($catalogue_path) {
       'handle'          => $h,
       'title'           => trim($item['title']),
       'body'            => trim($item['body'] ?? ''),
+      // tags : capturé depuis Shopify mais non importé en v1 (pas de field_tags sur
+      // commerce_product). Conserver pour traçabilité et Phase 2.
       'tags'            => trim($item['tags'] ?? ''),
       'seo_title'       => trim($item['seo_title'] ?? ''),
       'seo_desc'        => trim($item['seo_desc'] ?? ''),
@@ -434,8 +444,20 @@ elseif ($csv_path) {
     return;
   }
 
+  // Vérifier la présence des colonnes requises pour éviter des skips silencieux.
+  $required_cols = ['Handle', 'Title', 'Variant Price'];
+  $missing_cols  = array_diff($required_cols, $headers);
+  if (!empty($missing_cols)) {
+    echo "ERREUR : colonnes requises manquantes dans le CSV : " . implode(', ', $missing_cols) . "\n";
+    echo "Colonnes détectées : " . implode(', ', $headers) . "\n";
+    fclose($fh);
+    return;
+  }
+
   while (($row = fgetcsv($fh)) !== FALSE) {
-    $r = array_combine($headers, array_pad($row, count($headers), ''));
+    // array_slice tronque les lignes plus longues que l'entête avant array_pad,
+    // évitant un ValueError dans array_combine (count mismatch).
+    $r = array_combine($headers, array_pad(array_slice($row, 0, count($headers)), count($headers), ''));
     $h = trim($r['Handle']);
     if (empty($h)) {
       continue;
@@ -444,19 +466,20 @@ elseif ($csv_path) {
     if (!isset($products[$h])) {
       $products[$h] = [
         'handle'          => $h,
-        'title'           => trim($r['Title']),
-        'body'            => trim($r['Body (HTML)']),
-        'tags'            => trim($r['Tags']),
-        'seo_title'       => trim($r['SEO Title']),
-        'seo_desc'        => trim($r['SEO Description']),
-        'status'          => trim($r['Status']),
+        'title'           => trim($r['Title'] ?? ''),
+        // Colonnes optionnelles : utiliser ?? '' pour éviter trim(null) → deprecation PHP 8.1.
+        'body'            => trim($r['Body (HTML)'] ?? ''),
+        'tags'            => trim($r['Tags'] ?? ''),
+        'seo_title'       => trim($r['SEO Title'] ?? ''),
+        'seo_desc'        => trim($r['SEO Description'] ?? ''),
+        'status'          => trim($r['Status'] ?? ''),
         'variants'        => [],
         'images'          => [],
         'personalization' => [],
       ];
     }
 
-    $price = trim($r['Variant Price']);
+    $price = trim($r['Variant Price'] ?? '');
     if ($price !== '') {
       $sku_csv = trim($r['Variant SKU'] ?? '');
       $var_idx = count($products[$h]['variants']);
@@ -474,7 +497,7 @@ elseif ($csv_path) {
       ];
     }
 
-    $img = trim($r['Image Src']);
+    $img = trim($r['Image Src'] ?? '');
     if ($img && !in_array($img, $products[$h]['images'])) {
       $products[$h]['images'][] = $img;
     }
@@ -728,6 +751,21 @@ foreach ($products as $handle => $data) {
     }
     catch (\Exception $del_e) {
       echo "  WARN variation orpheline id={$variation->id()} non supprimée : " . $del_e->getMessage() . "\n";
+    }
+    // Supprimer les Media orphelins créés avant l'échec du produit.
+    if (!empty($media_ids)) {
+      $media_storage = \Drupal::entityTypeManager()->getStorage('media');
+      foreach ($media_ids as $mid_ref) {
+        try {
+          $orphan = $media_storage->load($mid_ref['target_id']);
+          if ($orphan) {
+            $orphan->delete();
+          }
+        }
+        catch (\Exception $del_e) {
+          echo "  WARN media orphelin id={$mid_ref['target_id']} non supprimé : " . $del_e->getMessage() . "\n";
+        }
+      }
     }
     $count_error++;
   }
