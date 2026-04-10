@@ -20,6 +20,7 @@
 #
 # Variables optionnelles :
 #   DB_PORT               (défaut : 3306)
+#   SITE_URL              (https://preprod.atelierodesign.fr — pour base_url Drupal)
 #   SITE_MAIL             (défaut : contact@atelierodesign.fr)
 #   STRIPE_SECRET_KEY     (sk_test_... ou sk_live_...)
 #   STRIPE_WEBHOOK_SECRET (whsec_...)
@@ -81,6 +82,12 @@ cat > "${WEB_ROOT}/sites/default/settings.local.php" << SETTINGS_EOF
   explode('|', '${DRUPAL_TRUSTED_HOST}')
 );
 
+// ── URL du site (permet à Drupal de connaître son URL absolue) ───────────────
+// Utilisé pour les emails transactionnels, les liens canoniques, etc.
+if ('${SITE_URL:-}') {
+  \$settings['base_url'] = rtrim('${SITE_URL:-}', '/');
+}
+
 // ── Email du site ─────────────────────────────────────────────────────────────
 \$config['system.site']['mail'] = '${SITE_MAIL:-contact@atelierodesign.fr}';
 
@@ -101,6 +108,32 @@ if (\$smtp_user = getenv('BREVO_SMTP_USERNAME')) {
 SETTINGS_EOF
 
 ok "settings.local.php écrit."
+
+# ── 2b. Corriger les permissions de sites/default/files/ ─────────────────────
+# Les sous-dossiers copiés dans l'image sont owned root. On force www-data à
+# chaque démarrage pour que PHP puisse écrire CSS agrégés, image styles, etc.
+log "Correction des permissions sites/default/files/ ..."
+chown -R www-data:www-data "${WEB_ROOT}/sites/default/files" 2>/dev/null || true
+find "${WEB_ROOT}/sites/default/files" -type d -exec chmod 775 {} \; 2>/dev/null || true
+find "${WEB_ROOT}/sites/default/files" -type f -exec chmod 664 {} \; 2>/dev/null || true
+ok "Permissions files/ corrigées."
+
+# ── 2c. Seeder le volume si vide ─────────────────────────────────────────────
+# Si sites/default/files/ est monté comme volume vide (premier déploiement),
+# copier les assets initiaux (produits, blog) depuis /var/www/html/seeds/.
+SEEDS_DIR="${DRUPAL_ROOT}/seeds"
+if [ -d "${SEEDS_DIR}" ]; then
+  for seed_dir in "${SEEDS_DIR}"/*/; do
+    dir_name=$(basename "${seed_dir}")
+    target="${WEB_ROOT}/sites/default/files/${dir_name}"
+    if [ ! -d "${target}" ]; then
+      log "Seeding files/${dir_name} depuis image..."
+      cp -r "${seed_dir}" "${target}"
+      chown -R www-data:www-data "${target}"
+      ok "Seeding files/${dir_name} terminé."
+    fi
+  done
+fi
 
 # ── 3. Détecter premier déploiement vs mise à jour ────────────────────────────
 
