@@ -1,0 +1,48 @@
+{
+    "_links": {
+        "self": {
+            "href": ""
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/path_alias\/path_alias"
+        }
+    },
+    "id": [
+        {
+            "value": 93
+        }
+    ],
+    "uuid": [
+        {
+            "value": "a330401a-34f4-4d48-bff6-88c5b42f4e72"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr"
+        }
+    ],
+    "path": [
+        {
+            "value": "\/node\/3"
+        }
+    ],
+    "alias": [
+        {
+            "value": "\/cgv"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "_dcd_metadata": {
+        "uuids": {
+            "node": {
+                "3": "798e729d-c9ff-4350-b51f-4684bdf2cb40"
+            }
+        },
+        "export_timestamp": 1775813683
+    }
+}

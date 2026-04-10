@@ -86,26 +86,23 @@ log "config:import passe 2 (import complet)..."
   | grep -E 'success|error|Error' || true
 ok "Configuration importée (476 objets)"
 
-# ── Étape 5 : Suppression de la langue anglaise ──────────────────────────────
-# site:install minimal installe EN par défaut. Après config:import (FR par défaut),
-# language.entity.en n'est plus dans config/sync — on force sa suppression.
+# ── Étape 5 : Vérification — seul FR actif ───────────────────────────────────
+# config:import supprime language.entity.en (absent de config/sync).
+# On vérifie ici que le résultat est bien atteint.
 
-log "Suppression de la langue anglaise..."
-"$DRUSH" language:delete en --yes --no-interaction 2>&1 || \
-  warn "Langue EN déjà absente ou non supprimable (ignoré)"
-ok "Langue EN supprimée — seul FR actif"
+log "Vérification langue — seul FR actif..."
+EN_ACTIVE=$("$DRUSH" php:eval "print(\Drupal::entityTypeManager()->getStorage('configurable_language')->load('en') ? 'yes' : 'no');" --no-interaction 2>/dev/null || echo "no")
+if [ "$EN_ACTIVE" = "no" ]; then
+  ok "Langue FR uniquement — anglais absent"
+else
+  warn "Langue EN encore présente — vérifier config/sync/language.entity.en.yml"
+fi
 
-# ── Étape 6 : Cache rebuild post-config ──────────────────────────────────────
-
-log "Cache rebuild..."
-"$DRUSH" cr --no-interaction
-ok "Cache rebuild"
-
-# ── Étape 7 : Import contenu par défaut (DCD) ────────────────────────────────
+# ── Étape 6 : Import contenu par défaut (DCD) ────────────────────────────────
 # Importe les pages légales (CGV, Mentions légales, Politique de confidentialité),
-# les pages informationnelles (Contact, Atelier, Merci) et les termes de taxonomie
-# depuis odesign_admin/content/. Les URLs ddev.site dans les _links sont normalisées
-# automatiquement par DCD 2.x à l'import.
+# les pages informationnelles (Contact, Atelier, Merci), les termes de taxonomie
+# et leurs path_alias depuis odesign_admin/content/.
+# Les URLs ddev.site dans les _links sont normalisées par DCD 2.x à l'import.
 
 log "Import contenu par défaut (DCD)..."
 "$DRUSH" default-content-deploy:import \
@@ -113,14 +110,23 @@ log "Import contenu par défaut (DCD)..."
   --force-override \
   --no-interaction 2>&1 \
   | grep -E 'Imported|Skipped|error|Error' || true
-ok "Contenu par défaut importé (pages légales, pages info, taxonomies)"
+ok "Contenu par défaut importé (pages légales, pages info, taxonomies, path_alias)"
 
-# ── Étape 8 : Seed taxonomies occasions de vie ───────────────────────────────
+# ── Étape 7 : Seed taxonomies occasions de vie ───────────────────────────────
 
 log "Seed occasions de vie..."
 "$DRUSH" php:script "${SCRIPTS}/seed-life-occasions.php" --no-interaction 2>&1 \
   | grep -E '^\[OK\]|notice|error' || true
 ok "4 univers occasions de vie créés"
+
+# ── Étape 8 : Cache rebuild (après DCD et occasions) ─────────────────────────
+# Le cache rebuild est placé ici pour que les path_alias créés par DCD (étape 6)
+# et les aliases de taxonomie (étape 7) soient dans le cache Drupal avant que
+# seed-redirections.php (étape 10) n'utilise path.validator.
+
+log "Cache rebuild..."
+"$DRUSH" cr --no-interaction
+ok "Cache rebuild"
 
 # ── Étape 9 : Seed store Commerce + méthodes d'expédition ────────────────────
 
@@ -178,8 +184,7 @@ echo "============================================================"
 echo "  Premier déploiement terminé — $(ts)"
 echo ""
 echo "  Actions manuelles requises avant mise en ligne :"
-echo "  · Créer pages légales (CGV, mentions légales, politique de conf.)"
-echo "  · Re-exécuter seed-redirections.php après création des pages légales"
+echo "  · Vérifier les pages légales (/cgv, /mentions-legales, /politique-confidentialite)"
 echo "  · Vérifier clés Stripe (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET)"
 echo "  · Vérifier SMTP (BREVO_SMTP_USERNAME, BREVO_SMTP_PASSWORD)"
 echo "  · Créer compte gestionnaire_boutique (Océane)"
