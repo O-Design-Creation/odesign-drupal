@@ -5,6 +5,12 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc7 — 10 avril 2026
+
+### Sécurité d'accès
+- **Accès limité avant ouverture publique** : les environnements **preprod** et **prod (prévisualisation)** sont désormais accessibles uniquement depuis les adresses IP autorisées par l'équipe.
+- **Protection renforcée** : toute tentative d'accès depuis une autre adresse est automatiquement bloquée.
+
 ## v1.0rc6 — 10 avril 2026
 
 ### Corrections
