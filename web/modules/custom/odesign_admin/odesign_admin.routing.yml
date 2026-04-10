@@ -108,6 +108,16 @@ odesign_admin.documentation_chapter:
   options:
     _admin_route: TRUE
 
+odesign_admin.changelog:
+  path: '/admin/boutique/changelog'
+  defaults:
+    _controller: '\Drupal\odesign_admin\Controller\ChangelogController::page'
+    _title: 'Nouveautés & corrections'
+  requirements:
+    _permission: 'access commerce administration pages'
+  options:
+    _admin_route: TRUE
+
 odesign_admin.documentation_screenshot:
   path: '/admin/boutique/documentation/screenshot/{filename}'
   defaults:
