@@ -80,9 +80,21 @@ COPY .docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY .docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# ── Seeds : fichiers initiaux séparés du volume persistent ────────────────────
+# Les images de seeding (produits, blog) sont copiées dans /var/www/html/seeds/
+# L'entrypoint les copie dans sites/default/files/ si le volume est vide.
+# Ainsi, les uploads du gestionnaire ne sont jamais écrasés par un redéploiement.
+RUN mkdir -p /var/www/html/seeds \
+ && if [ -d /var/www/html/web/sites/default/files/produits ]; then \
+      cp -r /var/www/html/web/sites/default/files/produits /var/www/html/seeds/; \
+    fi \
+ && if [ -d /var/www/html/web/sites/default/files/shopify-blog ]; then \
+      cp -r /var/www/html/web/sites/default/files/shopify-blog /var/www/html/seeds/; \
+    fi
+
 # ── Permissions Drupal ─────────────────────────────────────────────────────────
 RUN mkdir -p /var/www/html/web/sites/default/files \
- && chown -R www-data:www-data /var/www/html/web/sites/default/files \
+ && chown -R www-data:www-data /var/www/html \
  && chmod 755 /var/www/html/web/sites/default/files
 
 EXPOSE 80
