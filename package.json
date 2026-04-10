@@ -15,7 +15,8 @@
     "audit:report": "node playwright/scripts/audit-report-html.js",
     "audit:docs-images": "bash scripts/audit-doc-images.sh",
     "e2e:critical": "node playwright/scripts/e2e-critical-checkout-shipping.js",
-    "e2e:critical:ddev": "ddev drush cim -y && ddev drush scr scripts/seed-shipping-methods.php && ddev drush scr scripts/assign-tree-product-template.php && ddev drush cr && PLAYWRIGHT_BASE_URL=https://odesign-drupal.ddev.site node playwright/scripts/e2e-critical-checkout-shipping.js"
+    "e2e:critical:ddev": "ddev drush cim -y && ddev drush scr scripts/seed-shipping-methods.php && ddev drush scr scripts/assign-tree-product-template.php && ddev drush cr && PLAYWRIGHT_BASE_URL=https://odesign-drupal.ddev.site node playwright/scripts/e2e-critical-checkout-shipping.js",
+    "e2e:blog-import-guard:ddev": "PLAYWRIGHT_BASE_URL=https://odesign-drupal.ddev.site node playwright/scripts/e2e-blog-import-guard.js"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.9.1",
