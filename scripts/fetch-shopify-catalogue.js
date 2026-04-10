@@ -211,7 +211,9 @@ async function scrapePage(ctx, handle) {
         // Variante suspecte : valeur de type entier pur ("1", "2") sans label métier identifiable.
         suspect:    /^\d+$/.test(String(v.option1 || '').trim()),
       })),
-      images:          (p.images || []).map(i => i.src),
+      // Filtrer les entrées sans src valide : undefined deviendrait null dans le JSON,
+      // ce qui provoquerait un TypeError PHP 8.1 dans download_image (string non-nullable).
+      images: (p.images || []).map(i => i.src).filter(src => typeof src === 'string' && src !== ''),
       personalization: [],  // rempli par scraping
     }));
 

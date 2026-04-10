@@ -106,23 +106,49 @@ echo ($dry_run ? "MODE DRY-RUN activé — aucune entité créée\n" : "");
 
 /**
  * Télécharge une image depuis une URL et retourne un file Drupal géré.
+ *
+ * L'extension est déterminée par priorité :
+ *   1. Content-Type HTTP (source la plus fiable)
+ *   2. Extension dans le path de l'URL
+ *   3. Fallback 'jpg'
  */
 function download_image(string $url, string $filename): ?object {
   try {
-    $response = \Drupal::httpClient()->get($url, ['timeout' => 15]);
+    $response = \Drupal::httpClient()->get($url, [
+      'timeout'         => 15,
+      'connect_timeout' => 8,  // Détection rapide d'hôte mort (Shopify CDN).
+    ]);
     $data = (string) $response->getBody();
     if (empty($data)) {
       return NULL;
     }
-    // Déterminer l'extension depuis le content-type ou l'URL.
-    $ext = pathinfo(explode('?', $url, 2)[0], PATHINFO_EXTENSION) ?: 'jpg';
-    $ext = in_array(strtolower($ext), ['jpg','jpeg','png','webp','gif']) ? strtolower($ext) : 'jpg';
-    $safe_name = preg_replace('/[^a-z0-9_\-]/', '-', strtolower($filename)) . '.' . $ext;
-    $uri = 'public://produits/' . $safe_name;
 
-    // Créer le répertoire si nécessaire.
+    // Extension : Content-Type > URL path > fallback 'jpg'.
+    // Le Content-Type est la source la plus fiable : il reflète le format réel
+    // même quand l'URL CDN ne contient pas d'extension explicite.
+    $ct_map = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp', 'image/gif' => 'gif'];
+    $ct     = strtolower(explode(';', $response->getHeaderLine('Content-Type'), 2)[0]);
+    $ext    = $ct_map[$ct] ?? '';
+
+    if ($ext === '') {
+      $url_ext = strtolower(pathinfo(explode('?', $url, 2)[0], PATHINFO_EXTENSION));
+      $ext = in_array($url_ext, ['jpg', 'jpeg', 'png', 'webp', 'gif']) ? $url_ext : 'jpg';
+    }
+    // Normaliser jpeg → jpg pour cohérence avec Drupal (extensions autorisées).
+    if ($ext === 'jpeg') {
+      $ext = 'jpg';
+    }
+
+    $safe_name = preg_replace('/[^a-z0-9_\-]/', '-', strtolower($filename)) . '.' . $ext;
+    $uri       = 'public://produits/' . $safe_name;
+
+    // Créer le répertoire si nécessaire — MODIFY_PERMISSIONS corrige les droits
+    // d'un répertoire existant avec des permissions incorrectes.
     $dir = dirname($uri);
-    \Drupal::service('file_system')->prepareDirectory($dir, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY);
+    \Drupal::service('file_system')->prepareDirectory(
+      $dir,
+      \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY | \Drupal\Core\File\FileSystemInterface::MODIFY_PERMISSIONS
+    );
 
     return \Drupal::service('file.repository')->writeData($data, $uri, \Drupal\Core\File\FileExists::Replace);
   }
@@ -134,20 +160,28 @@ function download_image(string $url, string $filename): ?object {
 
 /**
  * Crée une entité Media de type product_image depuis un fichier Drupal.
+ *
+ * @return object|null  L'entité Media créée, ou null en cas d'erreur.
  */
-function create_media(object $file, string $name, string $alt = ''): object {
-  $media = \Drupal\media\Entity\Media::create([
-    'bundle'            => 'product_image',
-    'name'              => $name,
-    'field_media_image' => [
-      'target_id' => $file->id(),
-      'alt'       => $alt ?: $name,
-      'title'     => $name,
-    ],
-    'status'            => TRUE,
-  ]);
-  $media->save();
-  return $media;
+function create_media(object $file, string $name, string $alt = ''): ?object {
+  try {
+    $media = \Drupal\media\Entity\Media::create([
+      'bundle'            => 'product_image',
+      'name'              => $name,
+      'field_media_image' => [
+        'target_id' => $file->id(),
+        'alt'       => $alt ?: $name,
+        'title'     => $name,
+      ],
+      'status'            => TRUE,
+    ]);
+    $media->save();
+    return $media;
+  }
+  catch (\Exception $e) {
+    echo "  WARN media création échouée ({$name}): " . $e->getMessage() . "\n";
+    return NULL;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -371,7 +405,12 @@ if ($catalogue_path) {
       'seo_desc'        => trim($item['seo_desc'] ?? ''),
       'status'          => $item['status'] ?? 'active',
       'variants'        => $variants,
-      'images'          => $item['images'] ?? [],
+      // Filtrer les URLs d'images null/vides : une entrée null provoquerait
+      // un TypeError PHP 8.1 dans download_image (paramètre string non-nullable).
+      'images'          => array_values(array_filter(
+        $item['images'] ?? [],
+        fn($u) => is_string($u) && $u !== ''
+      )),
       'personalization' => $item['personalization'] ?? [],
     ];
   }
@@ -583,12 +622,15 @@ foreach ($products as $handle => $data) {
   // --- Téléchargement des images. ---
   $media_ids = [];
   foreach ($data['images'] as $idx => $img_url) {
-    $img_name = $handle . '-' . ($idx + 1);
-    $file = download_image($img_url, $img_name);
+    $img_num  = $idx + 1;  // Index 1-based pour noms de fichiers, logs et labels Media.
+    $img_name = $handle . '-' . $img_num;
+    $file     = download_image($img_url, $img_name);
     if ($file) {
-      $media = create_media($file, $data['title'] . ' image ' . ($idx + 1), $data['title']);
-      $media_ids[] = ['target_id' => $media->id()];
-      echo "  Image {$idx} → media id={$media->id()}\n";
+      $media = create_media($file, $data['title'] . ' image ' . $img_num, $data['title']);
+      if ($media) {
+        $media_ids[] = ['target_id' => $media->id()];
+        echo "  Image {$img_num} → media id={$media->id()}\n";
+      }
     }
   }
 
