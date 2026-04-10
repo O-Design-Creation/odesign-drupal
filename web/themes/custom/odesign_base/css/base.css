@@ -670,6 +670,73 @@ strong { font-weight: 600; }
   color: var(--color-brand-dark);
 }
 
+.frontend-local-tasks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.frontend-local-tasks .tabs,
+.frontend-local-tasks .action-links {
+  margin: 0;
+  padding: 0;
+}
+
+.frontend-local-tasks .tabs a,
+.frontend-local-tasks .action-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--color-brand-dark);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.frontend-local-tasks .tabs a:hover,
+.frontend-local-tasks .action-links a:hover {
+  background: var(--color-bg-alt);
+  border-color: var(--color-brand-medium);
+}
+
+.odesign-frontend-local-task {
+  max-width: var(--container-max);
+  margin: var(--space-3) auto 0;
+  padding-inline: var(--container-padding);
+}
+
+.odesign-frontend-local-task ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.odesign-frontend-local-task a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--color-brand-dark);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.odesign-frontend-local-task a:hover {
+  background: var(--color-bg-alt);
+  border-color: var(--color-brand-medium);
+}
+
 /* Messages Drupal */
 .highlighted {
   max-width: var(--container-max);

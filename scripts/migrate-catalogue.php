@@ -39,7 +39,7 @@
 // ---------------------------------------------------------------------------
 
 $dry_run   = (getenv('DRY_RUN') === '1');
-$limit     = (int) (getenv('LIMIT') ?? 0);
+$limit     = (int) (getenv('LIMIT') ?: 0);
 $skip_perso = (getenv('SKIP_PERSO') === '1');
 
 // ---------------------------------------------------------------------------
@@ -115,7 +115,7 @@ function download_image(string $url, string $filename): ?object {
       return NULL;
     }
     // Déterminer l'extension depuis le content-type ou l'URL.
-    $ext = pathinfo(strtok($url, '?'), PATHINFO_EXTENSION) ?: 'jpg';
+    $ext = pathinfo(explode('?', $url, 2)[0], PATHINFO_EXTENSION) ?: 'jpg';
     $ext = in_array(strtolower($ext), ['jpg','jpeg','png','webp','gif']) ? strtolower($ext) : 'jpg';
     $safe_name = preg_replace('/[^a-z0-9_\-]/', '-', strtolower($filename)) . '.' . $ext;
     $uri = 'public://produits/' . $safe_name;
@@ -183,15 +183,30 @@ function normalize_perso_label(string $property): string {
 }
 
 /**
- * Détecte le type de champ Drupal d'après le nom de la propriété.
- * Heuristique sur les mots-clés du label.
+ * Détecte le type de champ Drupal d'après le type Easify ou le nom de la propriété.
+ * Priorité : type explicite du JSON Easify → heuristique sur le nom.
  */
-function detect_perso_field_type(string $property): string {
+function detect_perso_field_type(string $property, string $json_type = ''): string {
+  // Utiliser le type déclaré par Easify quand disponible.
+  if ($json_type !== '') {
+    $type_map = [
+      'text'     => 'text',
+      'textarea' => 'text',
+      'file'     => 'file',
+      'number'   => 'number',
+      'date'     => 'date',
+      'checkbox' => 'checkboxes',
+    ];
+    if (isset($type_map[$json_type])) {
+      return $type_map[$json_type];
+    }
+  }
+  // Fallback : heuristique sur le nom de la propriété.
   $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', mb_strtolower($property)) ?: mb_strtolower($property);
-  if (str_contains($ascii, 'date'))                          return 'date';
-  if (preg_match('/photo|image|file|upload/', $ascii))       return 'file';
+  if (str_contains($ascii, 'date'))                           return 'date';
+  if (preg_match('/photo|image|file|upload/', $ascii))        return 'file';
   if (preg_match('/quantit|quantity|nombre|number/', $ascii)) return 'number';
-  if (preg_match('/checkbox|case/', $ascii))                 return 'checkboxes';
+  if (preg_match('/checkbox|case/', $ascii))                  return 'checkboxes';
   return 'text';
 }
 
@@ -228,12 +243,13 @@ function perso_template_label(array $user_options): string {
  *
  * @return object|null  L'entité PersonalizationTemplate, ou null en cas d'erreur.
  */
-function ensure_perso_template(string $template_id, string $template_label, array $user_options, bool $dry_run): ?object {
+function ensure_perso_template(string $template_id, string $template_label, array $user_options, bool $dry_run, bool &$was_created = FALSE): ?object {
   $storage = \Drupal::entityTypeManager()->getStorage('personalization_template');
 
   $existing = $storage->load($template_id);
   if ($existing) {
     echo "  ↻ Modèle existant réutilisé : [{$template_id}] {$template_label}\n";
+    $was_created = FALSE;
     return $existing;
   }
 
@@ -245,7 +261,7 @@ function ensure_perso_template(string $template_id, string $template_label, arra
   $fields = [];
   foreach ($user_options as $i => $opt) {
     $label  = normalize_perso_label($opt['property']);
-    $type   = detect_perso_field_type($opt['property']);
+    $type   = detect_perso_field_type($opt['property'], $opt['type'] ?? '');
     $fields[] = [
       'id'          => 'field_' . ($i + 1),
       'label'       => $label,
@@ -275,6 +291,7 @@ function ensure_perso_template(string $template_id, string $template_label, arra
     ]);
     $template->save();
     echo "  ✦ Modèle créé : [{$template_id}] {$template_label} (" . count($fields) . " champs)\n";
+    $was_created = TRUE;
     return $template;
   }
   catch (\Exception $e) {
@@ -325,13 +342,23 @@ if ($catalogue_path) {
       continue;
     }
     $variants = [];
-    foreach (($item['variants'] ?? []) as $v) {
-      if (!empty($v['price'])) {
+    foreach (($item['variants'] ?? []) as $idx => $v) {
+      // Vérifier isset plutôt que !empty : un prix à "0" ou "0.00" est valide.
+      if (isset($v['price']) && $v['price'] !== '') {
+        // SKU : utiliser le SKU Shopify s'il est renseigné, sinon générer {handle}-NNN (index).
+        // La génération par index garantit l'unicité par variante au sein du même produit.
+        $sku_raw = trim($v['sku'] ?? '');
+        $sku = $sku_raw !== '' ? $sku_raw : ($h . '-' . str_pad((string) ($idx + 1), 3, '0', STR_PAD_LEFT));
         $variants[] = [
-          'sku'   => $v['sku'] ?: ($h . '-001'),
-          'price' => $v['price'],
-          'opt1n' => $v['opt1_name'] ?? '',
-          'opt1v' => $v['opt1_value'] ?? '',
+          'sku'     => $sku,
+          'price'   => $v['price'],
+          'opt1n'   => $v['opt1_name'] ?? '',   // libellé de l'axe 1 (ex: "Taille")
+          'opt1v'   => $v['opt1_value'] ?? '',   // valeur de l'axe 1 (ex: "A4")
+          'opt2n'   => $v['opt2_name'] ?? '',
+          'opt2v'   => $v['opt2_value'] ?? '',
+          'opt3n'   => $v['opt3_name'] ?? '',
+          'opt3v'   => $v['opt3_value'] ?? '',
+          'suspect' => !empty($v['suspect']),   // variante à valeur numérique pure — à vérifier manuellement
         ];
       }
     }
@@ -362,6 +389,11 @@ elseif ($csv_path) {
   }
 
   $headers = fgetcsv($fh);
+  if (!is_array($headers) || empty($headers)) {
+    echo "ERREUR : CSV vide ou entête illisible.\n";
+    fclose($fh);
+    return;
+  }
 
   while (($row = fgetcsv($fh)) !== FALSE) {
     $r = array_combine($headers, array_pad($row, count($headers), ''));
@@ -386,12 +418,20 @@ elseif ($csv_path) {
     }
 
     $price = trim($r['Variant Price']);
-    if ($price) {
+    if ($price !== '') {
+      $sku_csv = trim($r['Variant SKU'] ?? '');
+      $var_idx = count($products[$h]['variants']);
       $products[$h]['variants'][] = [
-        'sku'   => trim($r['Variant SKU']) ?: ($h . '-001'),
-        'price' => $price,
-        'opt1n' => trim($r['Option1 Name']),
-        'opt1v' => trim($r['Option1 Value']),
+        // SKU : valeur CSV si renseignée, sinon {handle}-NNN (index) — cohérent avec le path JSON.
+        'sku'     => $sku_csv !== '' ? $sku_csv : ($h . '-' . str_pad((string) ($var_idx + 1), 3, '0', STR_PAD_LEFT)),
+        'price'   => $price,
+        'opt1n'   => trim($r['Option1 Name'] ?? ''),
+        'opt1v'   => trim($r['Option1 Value'] ?? ''),
+        'opt2n'   => trim($r['Option2 Name'] ?? ''),
+        'opt2v'   => trim($r['Option2 Value'] ?? ''),
+        'opt3n'   => trim($r['Option3 Name'] ?? ''),
+        'opt3v'   => trim($r['Option3 Value'] ?? ''),
+        'suspect' => FALSE,  // détection suspect non disponible en path CSV
       ];
     }
 
@@ -425,10 +465,10 @@ echo "Store : " . $store->getName() . " (id={$store_id})\n";
 // ---------------------------------------------------------------------------
 // Pré-pass : création des modèles de personnalisation
 // Parcourt tout le catalogue, déduplique les profils et crée les modèles.
-// Résultat : $perso_map[handle] = template_id (ou NULL si pas de perso)
+// Résultat : $perso_map[handle] = PersonalizationTemplate entity (ou NULL si pas de perso)
 // ---------------------------------------------------------------------------
 
-$perso_map         = [];  // handle → template_id
+$perso_map         = [];  // handle → PersonalizationTemplate entity|null
 $perso_templates   = [];  // signature → template_entity (cache session)
 $count_perso_new   = 0;
 $count_perso_reuse = 0;
@@ -447,12 +487,19 @@ if (!$skip_perso && $catalogue_path) {
     $template_id = perso_template_id($sig);
 
     if (!array_key_exists($sig, $perso_templates)) {
-      $label    = perso_template_label($user_opts);
-      $entity   = ensure_perso_template($template_id, $label, $user_opts, $dry_run);
+      $label       = perso_template_label($user_opts);
+      $was_created = FALSE;
+      $entity      = ensure_perso_template($template_id, $label, $user_opts, $dry_run, $was_created);
       $perso_templates[$sig] = $entity;
 
       if ($entity && !$dry_run) {
-        $count_perso_new++;
+        // Distinguer création réelle vs chargement d'un modèle déjà existant (run précédent).
+        if ($was_created) {
+          $count_perso_new++;
+        }
+        else {
+          $count_perso_reuse++;
+        }
       }
     }
     else {
@@ -462,7 +509,8 @@ if (!$skip_perso && $catalogue_path) {
       }
     }
 
-    $perso_map[$handle] = $template_id;
+    // Stocker l'entité directement — évite de recalculer la signature en boucle principale.
+    $perso_map[$handle] = $perso_templates[$sig];
   }
 
   $perso_products = count(array_filter($perso_map));
@@ -491,6 +539,13 @@ foreach ($products as $handle => $data) {
 
   $alias = '/products/' . $handle;
 
+  // Filtrer les produits inactifs en premier — évite deux requêtes DB inutiles.
+  if (in_array($data['status'], ['draft', 'archived'])) {
+    echo "[{$n}] SKIP ({$data['status']}) : '{$data['title']}'\n";
+    $count_skipped++;
+    continue;
+  }
+
   // --- Idempotence forte : alias Shopify d'abord, titre ensuite en fallback. ---
   $existing_ids_by_alias = find_product_ids_by_alias($alias);
   if (!empty($existing_ids_by_alias)) {
@@ -509,11 +564,12 @@ foreach ($products as $handle => $data) {
     continue;
   }
 
-  // Filtrer les produits inactifs (draft/archived).
-  if (in_array($data['status'], ['draft', 'archived'])) {
-    echo "[{$n}] SKIP ({$data['status']}) : '{$data['title']}'\n";
-    $count_skipped++;
-    continue;
+  // Signaler les variantes suspectes seulement pour les produits qui vont être créés.
+  // (après idempotence — évite le bruit sur les produits déjà importés)
+  $suspect_variants = array_filter($data['variants'] ?? [], fn($v) => !empty($v['suspect']));
+  if (!empty($suspect_variants)) {
+    $suspect_vals = implode(', ', array_map(fn($v) => '"' . $v['opt1v'] . '"', $suspect_variants));
+    echo "[{$n}] WARN variantes suspectes ({$suspect_vals}) : '{$data['title']}' — vérifier le sens des valeurs d'option avant la Phase 2.\n";
   }
 
   if ($dry_run) {
@@ -536,13 +592,20 @@ foreach ($products as $handle => $data) {
     }
   }
 
-  // --- Création de la variation (première variante du CSV). ---
+  // --- Création de la variation (première variante). ---
   $first_variant = $data['variants'][0];
   $sku           = $first_variant['sku'];
-  // Éviter les SKU dupliqués.
-  $sku_exists = $variation_storage->loadByProperties(['sku' => $sku]);
-  if (!empty($sku_exists)) {
-    $sku = $sku . '-' . substr(md5($handle), 0, 4);
+  // Éviter les SKU dupliqués en DB (ex: re-run partiel ou collision inter-produits).
+  // La déduplication par index utilise un suffixe croissant pour garantir l'unicité,
+  // contrairement à md5($handle) qui serait identique pour toutes les variantes du même produit.
+  $attempt = 0;
+  while (!empty($variation_storage->loadByProperties(['sku' => $sku]))) {
+    $attempt++;
+    $sku = $first_variant['sku'] . '-dup' . $attempt;
+    if ($attempt >= 10) {
+      // Sécurité anti-boucle infinie — ne devrait jamais se produire.
+      break;
+    }
   }
 
   try {
@@ -566,18 +629,19 @@ foreach ($products as $handle => $data) {
 
   // --- Création du produit. ---
   $product_data = [
-    'type'                 => 'default',
-    'title'                => $data['title'],
-    'stores'               => [['target_id' => $store_id]],
-    'variations'           => [['target_id' => $variation->id()]],
-    'status'               => TRUE,
-    'path'                 => [['alias' => $alias]],
+    'type'       => 'default',
+    'title'      => $data['title'],
+    'stores'     => [['target_id' => $store_id]],
+    'variations' => [['target_id' => $variation->id()]],
+    'status'     => TRUE,
+    'path'       => [['alias' => $alias]],
   ];
 
   if (!empty($data['body'])) {
     $product_data['body'] = [
+      // full_html : le corps Shopify peut contenir du HTML arbitraire (tableaux, attributs, etc.)
       'value'  => $data['body'],
-      'format' => 'basic_html',
+      'format' => 'full_html',
     ];
   }
 
@@ -585,21 +649,31 @@ foreach ($products as $handle => $data) {
     $product_data['field_product_images'] = $media_ids;
   }
 
+  // SEO : metatag title / description issus du scraping Shopify.
+  $meta = [];
+  if (!empty($data['seo_title'])) {
+    $meta['title'] = ['value' => trim($data['seo_title'])];
+  }
+  if (!empty($data['seo_desc'])) {
+    $meta['description'] = ['value' => trim($data['seo_desc'])];
+  }
+  if (!empty($meta)) {
+    $product_data['metatag'] = serialize($meta);
+  }
+
+  // Modèle de personnalisation — assigné avant le premier save pour éviter un double write.
+  $template_entity = $perso_map[$handle] ?? NULL;
+  if ($template_entity !== NULL && !$skip_perso) {
+    $product_data['field_personalization_template'] = ['target_id' => $template_entity->id()];
+  }
+
   try {
     $product = \Drupal\commerce_product\Entity\Product::create($product_data);
     $product->save();
     echo "  ✓ Produit id={$product->id()} variante id={$variation->id()}\n";
 
-    // Assignation du modèle de personnalisation si présent.
-    $template_id = $perso_map[$handle] ?? NULL;
-    if ($template_id && !$skip_perso) {
-      $sig    = perso_signature(perso_user_options($data['personalization'], $PERSO_INTERNAL));
-      $entity = $perso_templates[$sig] ?? NULL;
-      if ($entity) {
-        $product->set('field_personalization_template', ['target_id' => $entity->id()]);
-        $product->save();
-        echo "  ✦ Modèle perso assigné : [{$entity->id()}] {$entity->label()}\n";
-      }
+    if ($template_entity !== NULL && !$skip_perso) {
+      echo "  ✦ Modèle perso assigné : [{$template_entity->id()}] {$template_entity->label()}\n";
     }
 
     $count_created++;
@@ -607,7 +681,12 @@ foreach ($products as $handle => $data) {
   catch (\Exception $e) {
     echo "  ERREUR produit : " . $e->getMessage() . "\n";
     // Supprimer la variation orpheline.
-    $variation->delete();
+    try {
+      $variation->delete();
+    }
+    catch (\Exception $del_e) {
+      echo "  WARN variation orpheline id={$variation->id()} non supprimée : " . $del_e->getMessage() . "\n";
+    }
     $count_error++;
   }
 }
@@ -623,8 +702,8 @@ echo "Skippés         : {$count_skipped}\n";
 echo "Erreurs         : {$count_error}\n";
 echo "Total           : " . ($count_created + $count_skipped + $count_error) . "\n";
 if (!$skip_perso && $catalogue_path) {
-  echo "Modèles perso   : {$count_perso_new} créés, {$count_perso_reuse} réutilisés\n";
-  $assigned = count(array_filter($perso_map, fn($id) => $id !== NULL));
+  echo "Modèles perso   : {$count_perso_new} créés, {$count_perso_reuse} réutilisés (run précédent ou même signature)\n";
+  $assigned = count(array_filter($perso_map, fn($entity) => $entity !== NULL));
   echo "Produits avec modèle perso : {$assigned}\n";
 }
 echo "\nNote : les produits multi-variantes sont migrés avec leur première variante uniquement.\n";
