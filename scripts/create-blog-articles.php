@@ -42,7 +42,11 @@ $alias_manager = \Drupal::service('path_alias.manager');
 $logger = \Drupal::logger('odesign_blog_import');
 $redirect_repository = \Drupal::service('redirect.repository');
 
-$source_path = getenv('BLOG_SOURCE_JSON') ?: (__DIR__ . '/blog-articles.json');
+// Fallback : blog-articles-real.json si blog-articles.json absent (nom canonique post-migration)
+$source_path = getenv('BLOG_SOURCE_JSON')
+  ?: (is_file(__DIR__ . '/blog-articles.json')
+      ? __DIR__ . '/blog-articles.json'
+      : __DIR__ . '/blog-articles-real.json');
 $dry_run = getenv('DRY_RUN') === '1';
 $strict_shopify_url = getenv('STRICT_SHOPIFY_URL') !== '0';
 $requested_body_format = getenv('BLOG_BODY_FORMAT') ?: 'basic_html';
