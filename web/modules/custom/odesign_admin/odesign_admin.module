@@ -227,7 +227,7 @@ function odesign_admin_page_top(array &$page_top): void {
       'dev'     => '⚠ ENVIRONNEMENT LOCAL — DEV',
     ];
     $env_label = $env_labels[$site_env] ?? ('⚠ ' . strtoupper($site_env));
-    $version_tag = $app_version ? " · v{$app_version}" : '';
+    $version_tag = $app_version ? ' · v' . htmlspecialchars($app_version, ENT_QUOTES) : '';
     $page_top['odesign_env_banner'] = [
       '#markup' => '<div class="odesign-env-banner odesign-env-banner--' . htmlspecialchars($site_env, ENT_QUOTES) . '">'
         . $env_label . $version_tag
