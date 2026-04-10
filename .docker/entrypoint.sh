@@ -183,6 +183,14 @@ else
   ok "cache:rebuild"
 fi
 
+# ── 4c. Correction finale des permissions ────────────────────────────────────
+# deploy-first-install.sh et drush CLI tournent en root → peuvent créer des
+# fichiers root:root dans sites/default/files/. On re-chown systématiquement
+# après toute opération de déploiement pour que PHP-FPM (www-data) puisse écrire.
+log "Correction finale des permissions sites/default/files/ ..."
+chown -R www-data:www-data "${WEB_ROOT}/sites/default/files" 2>/dev/null || true
+ok "Permissions files/ corrigées (post-déploiement)."
+
 # ── 5. Smoke test post-déploiement ────────────────────────────────────────────
 
 if [ -f "${DRUPAL_ROOT}/.docker/smoke-test.sh" ]; then
