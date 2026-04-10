@@ -228,18 +228,20 @@ function odesign_admin_page_top(array &$page_top): void {
     ];
     $env_label = $env_labels[$site_env] ?? ('⚠ ' . strtoupper($site_env));
     $version_tag = $app_version ? ' · v' . htmlspecialchars($app_version, ENT_QUOTES) : '';
+    $changelog_link = ' · <a href="/admin/boutique/changelog" class="odesign-env-banner__link">voir les nouveautés →</a>';
     $page_top['odesign_env_banner'] = [
       '#markup' => '<div class="odesign-env-banner odesign-env-banner--' . htmlspecialchars($site_env, ENT_QUOTES) . '">'
-        . $env_label . $version_tag
+        . $env_label . $version_tag . $changelog_link
         . '</div>',
-      '#allowed_tags' => ['div'],
+      '#allowed_tags' => ['div', 'a'],
       '#weight' => -200,
     ];
   }
   elseif ($site_env === 'prod' && $app_version) {
+    $changelog_link = ' · <a href="/admin/boutique/changelog" class="odesign-env-banner__link">voir les nouveautés →</a>';
     $page_top['odesign_env_banner'] = [
-      '#markup' => '<div class="odesign-env-banner odesign-env-banner--prod">PRODUCTION · v' . htmlspecialchars($app_version, ENT_QUOTES) . '</div>',
-      '#allowed_tags' => ['div'],
+      '#markup' => '<div class="odesign-env-banner odesign-env-banner--prod">PRODUCTION · v' . htmlspecialchars($app_version, ENT_QUOTES) . $changelog_link . '</div>',
+      '#allowed_tags' => ['div', 'a'],
       '#weight' => -200,
     ];
   }
@@ -299,6 +301,13 @@ function odesign_admin_theme(): array {
         'chapters' => [],
         'content'  => NULL,
         'current'  => NULL,
+      ],
+    ],
+    'odesign_admin_changelog' => [
+      'template'  => 'odesign-admin-changelog',
+      'variables' => [
+        'content' => NULL,
+        'version' => NULL,
       ],
     ],
     'odesign_admin_kpi_cockpit' => [
@@ -496,7 +505,7 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'icon'     => 'ph-lifebuoy',
     'type'     => 'group',
     'weight'   => 88,
-    'children' => ['guide_marketing', 'documentation'],
+    'children' => ['guide_marketing', 'documentation', 'changelog'],
   ];
   $items['guide_marketing'] = [
     'label'         => 'Guide marketing',
@@ -512,6 +521,14 @@ function odesign_admin_odesign_boutique_nav_items_alter(array &$items): void {
     'route'         => 'odesign_admin.documentation',
     'weight'        => 89,
     'active_routes' => ['odesign_admin.documentation', 'odesign_admin.documentation_chapter'],
+    'badge'         => NULL,
+  ];
+  $items['changelog'] = [
+    'label'         => 'Nouveautés',
+    'icon'          => 'ph-clock-counter-clockwise',
+    'route'         => 'odesign_admin.changelog',
+    'weight'        => 90,
+    'active_routes' => ['odesign_admin.changelog'],
     'badge'         => NULL,
   ];
 }

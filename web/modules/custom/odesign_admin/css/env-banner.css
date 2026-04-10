@@ -37,3 +37,15 @@
   background-color: #4a148c;
   color: #fff;
 }
+
+/* Lien "voir les nouveautés" dans le bandeau */
+.odesign-env-banner__link {
+  color: inherit;
+  opacity: 0.85;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.odesign-env-banner__link:hover {
+  opacity: 1;
+}
