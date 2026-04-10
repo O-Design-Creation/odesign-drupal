@@ -46,10 +46,26 @@
 use Drupal\redirect\Entity\Redirect;
 
 $pathValidator = \Drupal::service('path.validator');
+$aliasStorage = \Drupal::entityTypeManager()->getStorage('path_alias');
 $redirectRepository = \Drupal::service('redirect.repository');
 $count_created = 0;
 $count_skipped = 0;
 $count_warned = 0;
+
+/**
+ * Vérifie qu'une destination est valide : route Drupal directe OU alias FR.
+ * En contexte CLI, Drupal utilise la langue 'en' par défaut — path.validator
+ * ne résout pas les aliases stockés en 'fr'. On interroge path_alias storage
+ * directement pour gérer ce cas.
+ */
+$isValidDestination = static function (string $path) use ($pathValidator, $aliasStorage): bool {
+  // Route ou chemin système directement valide (ex: /, /blog, /user/login).
+  if ($pathValidator->isValid($path)) {
+    return TRUE;
+  }
+  // Alias FR : cherche dans path_alias (ex: /cgv, /occasions/mariage).
+  return !empty($aliasStorage->loadByProperties(['alias' => $path]));
+};
 
 /**
  * Closure : crée une redirection 301 si elle n'existe pas encore.
@@ -63,10 +79,10 @@ $count_warned = 0;
  * pour une idempotence correcte, y compris pour les variantes avec slash final.
  */
 $ensure_redirect = function (string $source, string $destination, bool $skip_validation = FALSE)
-  use ($pathValidator, $redirectRepository, &$count_created, &$count_skipped, &$count_warned): string {
+  use ($isValidDestination, $redirectRepository, &$count_created, &$count_skipped, &$count_warned): string {
 
   // Vérifier si la cible existe (sauf routes système bypassées).
-  if (!$skip_validation && !$pathValidator->isValid($destination)) {
+  if (!$skip_validation && !$isValidDestination($destination)) {
     echo "AVERTISSEMENT : destination introuvable, redirection non créée : $source → $destination\n";
     $count_warned++;
     return 'warned';

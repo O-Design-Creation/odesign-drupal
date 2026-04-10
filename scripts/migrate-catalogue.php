@@ -675,10 +675,11 @@ foreach ($products as $handle => $data) {
 
   try {
     $variation = \Drupal\commerce_product\Entity\ProductVariation::create([
-      'type'   => 'default',
-      'sku'    => $sku,
-      'title'  => $data['title'],
-      'price'  => [
+      'type'     => 'default',
+      'langcode' => 'fr',
+      'sku'      => $sku,
+      'title'    => $data['title'],
+      'price'    => [
         'number'        => number_format((float) $first_variant['price'], 2, '.', ''),
         'currency_code' => 'EUR',
       ],
@@ -695,6 +696,7 @@ foreach ($products as $handle => $data) {
   // --- Création du produit. ---
   $product_data = [
     'type'       => 'default',
+    'langcode'   => 'fr',
     'title'      => $data['title'],
     'stores'     => [['target_id' => $store_id]],
     'variations' => [['target_id' => $variation->id()]],

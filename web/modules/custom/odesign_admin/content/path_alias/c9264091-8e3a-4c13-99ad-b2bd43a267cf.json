@@ -1,0 +1,48 @@
+{
+    "_links": {
+        "self": {
+            "href": ""
+        },
+        "type": {
+            "href": "https:\/\/odesign-drupal.ddev.site\/rest\/type\/path_alias\/path_alias"
+        }
+    },
+    "id": [
+        {
+            "value": 94
+        }
+    ],
+    "uuid": [
+        {
+            "value": "c9264091-8e3a-4c13-99ad-b2bd43a267cf"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "fr"
+        }
+    ],
+    "path": [
+        {
+            "value": "\/node\/5"
+        }
+    ],
+    "alias": [
+        {
+            "value": "\/mentions-legales"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "_dcd_metadata": {
+        "uuids": {
+            "node": {
+                "5": "48b4a093-3269-4630-b44f-d2c8355e2751"
+            }
+        },
+        "export_timestamp": 1775813683
+    }
+}
