@@ -19,7 +19,7 @@ set -euo pipefail
 DRUPAL_ROOT="${DRUPAL_ROOT:-/var/www/html}"
 DRUSH="${DRUPAL_ROOT}/vendor/bin/drush"
 SCRIPTS="${DRUPAL_ROOT}/scripts"
-STEPS_TOTAL=14
+STEPS_TOTAL=15
 STEP=0
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -101,28 +101,42 @@ log "Cache rebuild..."
 "$DRUSH" cr --no-interaction
 ok "Cache rebuild"
 
-# ── Étape 7 : Seed taxonomies occasions de vie ───────────────────────────────
+# ── Étape 7 : Import contenu par défaut (DCD) ────────────────────────────────
+# Importe les pages légales (CGV, Mentions légales, Politique de confidentialité),
+# les pages informationnelles (Contact, Atelier, Merci) et les termes de taxonomie
+# depuis odesign_admin/content/. Les URLs ddev.site dans les _links sont normalisées
+# automatiquement par DCD 2.x à l'import.
+
+log "Import contenu par défaut (DCD)..."
+"$DRUSH" default-content-deploy:import \
+  --folder="${DRUPAL_ROOT}/web/modules/custom/odesign_admin/content" \
+  --force-override \
+  --no-interaction 2>&1 \
+  | grep -E 'Imported|Skipped|error|Error' || true
+ok "Contenu par défaut importé (pages légales, pages info, taxonomies)"
+
+# ── Étape 8 : Seed taxonomies occasions de vie ───────────────────────────────
 
 log "Seed occasions de vie..."
 "$DRUSH" php:script "${SCRIPTS}/seed-life-occasions.php" --no-interaction 2>&1 \
   | grep -E '^\[OK\]|notice|error' || true
 ok "4 univers occasions de vie créés"
 
-# ── Étape 8 : Seed store Commerce + méthodes d'expédition ────────────────────
+# ── Étape 9 : Seed store Commerce + méthodes d'expédition ────────────────────
 
 log "Seed store + méthodes d'expédition..."
 "$DRUSH" php:script "${SCRIPTS}/seed-shipping-methods.php" --no-interaction 2>&1 \
   | grep -E 'CRÉÉ|Store|error|Seed' || true
 ok "Store + 5 méthodes d'expédition créés"
 
-# ── Étape 9 : Seed pages informations de base ────────────────────────────────
+# ── Étape 10 : Seed pages informations de base ───────────────────────────────
 
 log "Seed pages informations (Contact, Atelier)..."
 "$DRUSH" php:script "${SCRIPTS}/seed-info-pages.php" --no-interaction 2>&1 \
   | grep -E 'Pages OK|error' || true
 ok "Pages informations créées"
 
-# ── Étape 10 : Seed redirections SEO ────────────────────────────────────────
+# ── Étape 11 : Seed redirections SEO ────────────────────────────────────────
 # Certaines destinations peuvent être manquantes (pages légales non encore créées).
 # Le script est idempotent — re-exécuté après création des pages légales.
 
@@ -131,14 +145,14 @@ log "Seed redirections SEO..."
   | grep -E 'CRÉÉ|SKIP|Résumé|AVERTISSEMENT' || true
 ok "Redirections SEO seedées (avertissements possibles → re-exécuter après pages légales)"
 
-# ── Étape 11 : Import catalogue produits ─────────────────────────────────────
+# ── Étape 12 : Import catalogue produits ─────────────────────────────────────
 
 log "Import catalogue produits depuis catalogue.json..."
 "$DRUSH" php:script "${SCRIPTS}/migrate-catalogue.php" --no-interaction 2>&1 \
   | grep -E 'Créés|Skippés|Erreurs|RÉSULTAT|Store|Produits lus' || true
 ok "Catalogue importé"
 
-# ── Étape 12 : Import articles blog ──────────────────────────────────────────
+# ── Étape 13 : Import articles blog ──────────────────────────────────────────
 
 log "Import articles blog..."
 BLOG_SOURCE_JSON="${SCRIPTS}/blog-articles-real.json" \
@@ -146,14 +160,14 @@ BLOG_SOURCE_JSON="${SCRIPTS}/blog-articles-real.json" \
   | grep -E 'Créés|Lus|Erreurs|OK' || true
 ok "Articles blog importés"
 
-# ── Étape 13 : Reindex Search API ────────────────────────────────────────────
+# ── Étape 14 : Reindex Search API ────────────────────────────────────────────
 
 log "Reindex Search API..."
 "$DRUSH" search-api:index --yes --no-interaction 2>&1 \
   | grep -E 'success|items|error' || true
 ok "Search API indexé"
 
-# ── Étape 14 : Cache rebuild final ───────────────────────────────────────────
+# ── Étape 15 : Cache rebuild final ───────────────────────────────────────────
 
 log "Cache rebuild final..."
 "$DRUSH" cr --no-interaction
