@@ -124,13 +124,77 @@ function odesign_admin_preprocess_html(array &$variables): void {
 }
 
 /**
+ * Implémente hook_preprocess_page().
+ *
+ * Peuple la variable frontend_local_tasks pour afficher un bouton "Modifier"
+ * sur les pages canoniques d'entités lorsqu'un gestionnaire est connecté en frontend.
+ */
+function odesign_admin_preprocess_page(array &$variables): void {
+  $is_admin_route = \Drupal::service('router.admin_context')->isAdminRoute();
+  $account = \Drupal::currentUser();
+
+  if ($is_admin_route || !$account->isAuthenticated()) {
+    return;
+  }
+
+  if (!$account->hasRole('gestionnaire_boutique') && !$account->hasRole('administrator')) {
+    return;
+  }
+
+  $route_match = \Drupal::routeMatch();
+  $route_name = (string) $route_match->getRouteName();
+  if (preg_match('/^entity\.([a-z0-9_]+)\.canonical$/', $route_name, $m) !== 1) {
+    return;
+  }
+
+  $entity_type = $m[1];
+  $raw_id = $route_match->getRawParameters()?->get($entity_type);
+  if (!is_scalar($raw_id) || $raw_id === '') {
+    return;
+  }
+
+  $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load((string) $raw_id);
+  if (!$entity instanceof \Drupal\Core\Entity\EntityInterface || !$entity->hasLinkTemplate('edit-form')) {
+    return;
+  }
+
+  $access = $entity->access('update', $account, TRUE);
+  if (!$access->isAllowed()) {
+    return;
+  }
+
+  $variables['frontend_local_tasks'] = [
+    '#type' => 'container',
+    '#attributes' => ['class' => ['odesign-frontend-local-task']],
+    'items' => [
+      '#theme' => 'item_list',
+      '#items' => [
+        [
+          '#type' => 'link',
+          '#title' => t('Modifier'),
+          '#url' => $entity->toUrl('edit-form'),
+          '#attributes' => ['class' => ['button', 'button--small']],
+        ],
+      ],
+      '#attributes' => ['class' => []],
+    ],
+    '#cache' => [
+      'contexts' => ['route', 'url.path', 'user.roles', 'user.permissions'],
+      'tags' => $entity->getCacheTags(),
+    ],
+  ];
+}
+
+/**
  * Implémente hook_page_top().
  *
  * Injecte la barre de navigation boutique via le template Twig odesign_admin_nav.
  * Les items sont collectés via hook_odesign_boutique_nav_items_alter() (D-03 déclaratif).
  */
 function odesign_admin_page_top(array &$page_top): void {
-  if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
+  $is_admin_route = \Drupal::service('router.admin_context')->isAdminRoute();
+
+  if (!$is_admin_route) {
     return;
   }
 
@@ -860,18 +924,12 @@ function odesign_admin_menu_links_discovered_alter(array &$links): void {
 }
 
 /**
- * Callback #after_build pour masquer le sélecteur de format de texte.
+ * Callback #after_build conservé pour compatibilité rétroactive.
  *
- * Le widget text_format construit l'élément 'format' via ses callbacks #process,
- * lesquels s'exécutent après form_alter. On utilise #after_build (post-process)
- * pour garantir que la suppression s'applique correctement.
- *
- * Appliqué sur le corps des articles et des descriptions d'univers.
+ * Ne masque plus le sélecteur de format: sa présence est nécessaire pour que
+ * CKEditor s'initialise correctement sur le champ body.
  */
 function _odesign_admin_article_body_after_build(array $element): array {
-  if (isset($element['format'])) {
-    $element['format']['#access'] = FALSE;
-  }
   return $element;
 }
 
@@ -908,13 +966,6 @@ function odesign_admin_form_node_article_edit_form_alter(array &$form, FormState
  * Personnalise le formulaire article (création et édition).
  */
 function _odesign_admin_alter_article_form(array &$form): void {
-  // UX-03 : masquer le sélecteur de format de texte et le journal de révision.
-  // Note : l'élément 'format' est construit par les callbacks #process du widget
-  // text_format après l'exécution de form_alter → on utilise #after_build.
-  if (isset($form['body']['widget'][0])) {
-    $form['body']['widget'][0]['#after_build'][] = '_odesign_admin_article_body_after_build';
-  }
-
   // UX-03 : masquer le journal de révision — détail technique sans valeur métier.
   foreach (['revision_log', 'revision_log_message', 'revision_information'] as $key) {
     if (isset($form[$key])) {

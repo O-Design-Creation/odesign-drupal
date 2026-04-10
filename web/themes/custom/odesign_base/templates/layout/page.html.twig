@@ -217,6 +217,12 @@
       </div>
     {% endif %}
 
+    {% if frontend_local_tasks is not empty %}
+      <div class="frontend-local-tasks container">
+        {{ frontend_local_tasks }}
+      </div>
+    {% endif %}
+
     {# Contenu principal #}
     <main id="main-content" class="main-content" role="main" tabindex="-1">
       {% if is_front and front_life_occasion_cards is defined and front_life_occasion_cards %}

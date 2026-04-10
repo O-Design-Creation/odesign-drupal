@@ -33,7 +33,17 @@
  *     "seo_title": "Arbre de vie...",
  *     "seo_desc": "...",
  *     "variants": [
- *       { "sku": "arbre-scrabble-001", "price": "39.90", "opt1_name": "Taille", "opt1_value": "Unique" }
+ *       {
+ *         "sku": "arbre-scrabble-001",   // SKU Shopify si renseigné, sinon {handle}-NNN (index)
+ *         "price": "39.90",
+ *         "opt1_name": "Taille",         // libellé de l'axe 1 (p.options[0].name), ex: "Format"
+ *         "opt1_value": "A4",            // valeur de l'axe 1 pour cette variante (v.option1)
+ *         "opt2_name": null,             // libellé axe 2 (null si produit 1-dimension)
+ *         "opt2_value": null,
+ *         "opt3_name": null,
+ *         "opt3_value": null,
+ *         "suspect": false               // true si opt1_value est un entier pur ("1","2") — à vérifier
+ *       }
  *     ],
  *     "images": ["https://cdn.shopify.com/..."],
  *     "personalization": [
@@ -181,11 +191,25 @@ async function scrapePage(ctx, handle) {
       status:  p.published_at ? 'active' : 'draft',
       seo_title: null,  // rempli par scraping
       seo_desc:  null,
-      variants: (p.variants || []).map(v => ({
-        sku:        v.sku || (p.handle + '-001'),
+      // Axes d'options Shopify (labels) — issus de p.options, pas des variantes.
+      // p.options = [{ name: "Taille", values: [...] }, ...]
+      // v.option1 = valeur de l'axe 1 pour cette variante (ex: "A4")
+      variants: (p.variants || []).map((v, idx) => ({
+        // SKU unique par variante : SKU Shopify si renseigné, sinon {handle}-NNN (index 1-based).
+        // La valeur '-001' identique pour toutes les variantes d'un produit est un bug corrigé ici.
+        sku:        v.sku || `${p.handle}-${String(idx + 1).padStart(3, '0')}`,
         price:      v.price,
-        opt1_name:  v.option1 || null,
-        opt1_value: v.title !== 'Default Title' ? v.title : null,
+        // opt1_name = libellé de l'axe 1 (ex: "Taille", "Format") — issu de p.options[0].name.
+        // ATTENTION : v.option1 est la VALEUR, pas le nom. Erreur de nommage précédente corrigée.
+        opt1_name:  (p.options && p.options[0]) ? (p.options[0].name || null) : null,
+        opt1_value: (v.option1 && v.option1 !== 'Default Title') ? v.option1 : null,
+        // Axes 2 et 3 — capturés pour les produits avec plusieurs dimensions de variation.
+        opt2_name:  (p.options && p.options[1]) ? (p.options[1].name || null) : null,
+        opt2_value: v.option2 || null,
+        opt3_name:  (p.options && p.options[2]) ? (p.options[2].name || null) : null,
+        opt3_value: v.option3 || null,
+        // Variante suspecte : valeur de type entier pur ("1", "2") sans label métier identifiable.
+        suspect:    /^\d+$/.test(String(v.option1 || '').trim()),
       })),
       images:          (p.images || []).map(i => i.src),
       personalization: [],  // rempli par scraping
