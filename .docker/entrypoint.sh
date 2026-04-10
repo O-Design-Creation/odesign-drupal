@@ -123,16 +123,19 @@ ok "Permissions files/ corrigées."
 # copier les assets initiaux (produits, blog) depuis /var/www/html/seeds/.
 SEEDS_DIR="${DRUPAL_ROOT}/seeds"
 if [ -d "${SEEDS_DIR}" ]; then
+  # shopt nullglob : évite l'erreur si seeds/ est vide (glob non résolu)
+  shopt -s nullglob
   for seed_dir in "${SEEDS_DIR}"/*/; do
     dir_name=$(basename "${seed_dir}")
     target="${WEB_ROOT}/sites/default/files/${dir_name}"
     if [ ! -d "${target}" ]; then
       log "Seeding files/${dir_name} depuis image..."
-      cp -r "${seed_dir}" "${target}"
-      chown -R www-data:www-data "${target}"
+      cp -r "${seed_dir}" "${target}" || { log "WARNING: seeding ${dir_name} échoué (ignoré)"; continue; }
+      chown -R www-data:www-data "${target}" || true
       ok "Seeding files/${dir_name} terminé."
     fi
   done
+  shopt -u nullglob
 fi
 
 # ── 3. Détecter premier déploiement vs mise à jour ────────────────────────────
