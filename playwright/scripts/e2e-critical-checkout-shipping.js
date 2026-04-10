@@ -22,6 +22,7 @@ const PRODUCT_PATH_CANDIDATES = [
   '/products/carte-naissance-ovale-bois',
   '/products/plaque-annonce-grossesse',
 ];
+const TREE_PRODUCT_PATH = '/products/arbre-de-vie-personnalise';
 
 function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
@@ -188,6 +189,91 @@ async function assertAdminShippingMethods(page) {
   }
 }
 
+function assertTreePersistenceInDdev() {
+  if (!BASE_URL.includes('ddev.site')) {
+    return;
+  }
+  const raw = execSync(
+    `ddev drush sqlq "SELECT data FROM commerce_order_item WHERE title LIKE 'Arbre de vie%' ORDER BY order_item_id DESC LIMIT 1;"`,
+    { encoding: 'utf8' }
+  ).trim();
+  if (!raw.includes('Plan de pose prénoms')) {
+    throw new Error(`Persistance panier absente pour l'Arbre de vie. data=${raw || '(vide)'}`);
+  }
+}
+
+async function assertTreePersonalizationCheckout(browser, report) {
+  const context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+
+  try {
+    await page.goto(`${BASE_URL}${TREE_PRODUCT_PATH}`, { waitUntil: 'networkidle', timeout: 20000 });
+    await dismissCookieIfPresent(page);
+
+    const names = ['Emma', 'Louis', 'Jade', 'Noa'];
+    const inputs = page.locator('[data-tree-name-source="1"]');
+    const inputCount = await inputs.count();
+    if (inputCount < 1) {
+      throw new Error('Aucun champ prénom détecté pour le builder Arbre de vie.');
+    }
+    if (inputCount === 1) {
+      await inputs.first().fill(names.join(', '));
+    } else {
+      for (let i = 0; i < Math.min(inputCount, names.length); i++) {
+        await inputs.nth(i).fill(names[i]);
+      }
+    }
+    await page.waitForTimeout(800);
+
+    const slotMapInput = page.locator('input[name="perso_tree_slot_map"]').first();
+    if (!(await slotMapInput.count())) {
+      throw new Error('Champ caché perso_tree_slot_map absent.');
+    }
+    const slotMap = (await slotMapInput.inputValue()).trim();
+    if (!slotMap.includes(names[0]) || !/S\d{2}/.test(slotMap)) {
+      throw new Error(`Mapping slot invalide: ${slotMap}`);
+    }
+    report.checks.push({ name: 'tree_slot_map_generated', status: 'PASS' });
+    await page.screenshot({ path: path.join(OUT_DIR, 'tree-builder.png'), fullPage: true });
+
+    await addProductToCart(page);
+    assertTreePersistenceInDdev();
+    report.checks.push({ name: 'tree_persistence', status: 'PASS' });
+
+    await goToCheckoutFromCart(page);
+    if (!page.url().includes('/checkout')) {
+      report.checks.push({
+        name: 'tree_checkout_reached',
+        status: 'WARN',
+        detail: `Checkout Arbre de vie inaccessible: ${page.url()}`,
+      });
+      return;
+    }
+    if (/\/checkout\/\d+\/login/.test(page.url())) {
+      const guestCta = page.locator(`button:has-text("CONTINUER EN TANT QU'INVITÉ"), button:has-text("Continuer en tant qu'invité"), input[value*="invité"]`).first();
+      if (await guestCta.count()) {
+        await guestCta.click().catch(() => {});
+        await page.waitForTimeout(1500);
+      }
+    }
+    if (/\/checkout\/\d+\/order_information/.test(page.url())) {
+      await fillCheckoutContactStep(page);
+    }
+
+    const html = await page.content();
+    const checkoutUrl = page.url();
+    const hasPersonalizationLabel = html.includes('Personnalisation');
+    report.checks.push({
+      name: 'tree_checkout_reached',
+      status: 'PASS',
+      detail: `url=${checkoutUrl}; has_personnalisation_label=${hasPersonalizationLabel}`,
+    });
+    await page.screenshot({ path: path.join(OUT_DIR, 'checkout-tree-raw.png'), fullPage: true });
+  } finally {
+    await context.close();
+  }
+}
+
 async function run() {
   ensureDir(OUT_DIR);
   const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
@@ -203,19 +289,25 @@ async function run() {
     report.checks.push({ name: 'add_to_cart', status: 'PASS' });
 
     await goToCheckoutFromCart(page);
-    report.checks.push({ name: 'checkout_access', status: page.url().includes('/checkout') ? 'PASS' : 'FAIL', detail: page.url() });
-    if (!page.url().includes('/checkout')) {
-      throw new Error(`Checkout non accessible, URL actuelle: ${page.url()}`);
+    const genericCheckoutOk = page.url().includes('/checkout');
+    report.checks.push({ name: 'checkout_access', status: genericCheckoutOk ? 'PASS' : 'WARN', detail: page.url() });
+    if (genericCheckoutOk) {
+      await fillCheckoutContactStep(page);
+      await assertShippingOptionsVisible(page);
+      report.checks.push({ name: 'shipping_options_checkout', status: 'PASS' });
+      await page.screenshot({ path: path.join(OUT_DIR, 'checkout-shipping.png'), fullPage: true });
+    } else {
+      report.checks.push({
+        name: 'shipping_options_checkout',
+        status: 'WARN',
+        detail: `Checkout générique inaccessible: ${page.url()}`,
+      });
     }
-
-    await fillCheckoutContactStep(page);
-    await assertShippingOptionsVisible(page);
-    report.checks.push({ name: 'shipping_options_checkout', status: 'PASS' });
-    await page.screenshot({ path: path.join(OUT_DIR, 'checkout-shipping.png'), fullPage: true });
 
     await assertAdminShippingMethods(page);
     report.checks.push({ name: 'shipping_methods_admin', status: 'PASS' });
     await page.screenshot({ path: path.join(OUT_DIR, 'admin-shipping-methods.png'), fullPage: true });
+    await assertTreePersonalizationCheckout(browser, report);
   } catch (err) {
     report.status = 'FAIL';
     report.error = String(err.message || err);

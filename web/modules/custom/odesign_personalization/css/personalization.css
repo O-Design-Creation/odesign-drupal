@@ -11,7 +11,7 @@
 .personalization-fields legend,
 .personalization-fields .fieldset-legend {
   font-weight: 600;
-  color: #A86460;
+  color: #5a2d2a;
   font-size: 1rem;
   padding: 0 0.5rem;
 }
@@ -117,4 +117,216 @@
   margin: 0;
   font-size: 0.82rem;
   color: #8b6151;
+}
+
+.tree-personalization-group__builder {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #ecd9ce;
+}
+
+.tree-personalization-group__builder-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.98rem;
+  color: #5c312b;
+}
+
+.tree-personalization-group__builder-help {
+  margin: 0 0 0.6rem;
+  font-size: 0.84rem;
+  color: #795447;
+}
+
+.tree-personalization-group__builder-help--instructions {
+  margin-top: -0.2rem;
+  margin-bottom: 0.7rem;
+  color: #6a4338;
+  font-weight: 500;
+}
+
+.tree-personalization-group__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.tree-personalization-group__chip {
+  border: 1px solid #b98574;
+  background: #fff;
+  color: #6f4037;
+  border-radius: 999px;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.tree-personalization-group__chip.is-selected {
+  background: #A86460;
+  color: #fff;
+  border-color: #A86460;
+}
+
+.tree-personalization-group__chip.is-placed {
+  background: #f2e1d9;
+}
+
+.tree-personalization-group__status {
+  margin: 0 0 0.55rem;
+  color: #6e443b;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.tree-personalization-group__stage {
+  position: relative;
+  min-height: 420px;
+  border-radius: 12px;
+  border: 1px solid #e1c3b3;
+  background: radial-gradient(ellipse at top, #fff8f4 0%, #f9ede6 42%, #f4e2d8 100%);
+  overflow: hidden;
+}
+
+.tree-personalization-group__slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border: 1px solid #b77372;
+  background: linear-gradient(145deg, #f8d9d7, #f3bdb8);
+  clip-path: polygon(50% 95%, 14% 59%, 6% 36%, 13% 20%, 28% 10%, 42% 15%, 50% 26%, 58% 15%, 72% 10%, 87% 20%, 94% 36%, 86% 59%);
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f2824;
+}
+
+.tree-personalization-group__slot::before,
+.tree-personalization-group__slot::after {
+  content: none;
+}
+
+.tree-personalization-group__slot::before {
+  top: auto;
+  left: auto;
+}
+
+.tree-personalization-group__slot::after {
+  top: auto;
+  left: auto;
+}
+
+.tree-personalization-group__slot.is-filled {
+  background: linear-gradient(145deg, #d38c86, #bd6f68);
+  color: #fff;
+}
+
+.tree-personalization-group__slot-id,
+.tree-personalization-group__slot-name {
+  position: relative;
+  transform: none;
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
+}
+
+.tree-personalization-group__slot-id {
+  display: block;
+  font-weight: 700;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+.tree-personalization-group__slot-name {
+  display: block;
+  font-weight: 600;
+  line-height: 1.05;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 90%;
+}
+
+.tree-personalization-group__stage.size-xl .tree-personalization-group__slot {
+  width: 62px;
+  height: 62px;
+}
+
+.tree-personalization-group__stage.size-lg .tree-personalization-group__slot {
+  width: 58px;
+  height: 58px;
+}
+
+.tree-personalization-group__stage.size-md .tree-personalization-group__slot {
+  width: 54px;
+  height: 54px;
+}
+
+.tree-personalization-group__stage.size-sm .tree-personalization-group__slot {
+  width: 50px;
+  height: 50px;
+}
+
+.tree-personalization-group__stage.size-xs .tree-personalization-group__slot {
+  width: 46px;
+  height: 46px;
+}
+
+.tree-personalization-group__stage.size-xxs .tree-personalization-group__slot {
+  width: 42px;
+  height: 42px;
+}
+
+.tree-personalization-group__stage.size-xl .tree-personalization-group__slot-id,
+.tree-personalization-group__stage.size-lg .tree-personalization-group__slot-id {
+  display: none;
+}
+
+.tree-personalization-group__stage.size-md .tree-personalization-group__slot-id,
+.tree-personalization-group__stage.size-sm .tree-personalization-group__slot-id,
+.tree-personalization-group__stage.size-xs .tree-personalization-group__slot-id,
+.tree-personalization-group__stage.size-xxs .tree-personalization-group__slot-id {
+  display: none;
+}
+
+.tree-personalization-group__stage.size-xl .tree-personalization-group__slot-name,
+.tree-personalization-group__stage.size-lg .tree-personalization-group__slot-name {
+  font-size: 0.58rem;
+  max-width: 45px;
+  color: #4d2b1f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.tree-personalization-group__stage.size-md .tree-personalization-group__slot-name {
+  font-size: 0.52rem;
+  max-width: 40px;
+  color: #4d2b1f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.tree-personalization-group__stage.size-sm .tree-personalization-group__slot-name {
+  font-size: 0.48rem;
+  max-width: 36px;
+  color: #4d2b1f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.tree-personalization-group__stage.size-xs .tree-personalization-group__slot-name {
+  font-size: 0.42rem;
+  max-width: 32px;
+  color: #4d2b1f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.tree-personalization-group__stage.size-xxs .tree-personalization-group__slot-name {
+  font-size: 0.38rem;
+  max-width: 28px;
+  color: #4d2b1f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+@media (max-width: 767px) {
+  .tree-personalization-group__stage {
+    min-height: 340px;
+  }
 }

@@ -8,36 +8,25 @@
           {% if order_item.hasPurchasedEntity %}
             <td>
               {{ order_item.getPurchasedEntity|commerce_entity_render('summary') }}
-              {% if order_item.field_poc_text.value or order_item.field_poc_finish.value or order_item.field_poc_need_upload.value or order_item.field_poc_tree_names.value or order_item.field_poc_tree_wall_mount.value %}
+              {% set item_personalizations = odesign_personalizations[order_item.id()] ?? [] %}
+              {% if item_personalizations %}
                 <div class="checkout-order-summary__personalization">
                   <strong>{{ 'Personnalisation'|t }}</strong>
                   <ul>
-                    {% if order_item.field_poc_text.value %}
-                      <li>{{ 'Texte :'|t }} {{ order_item.field_poc_text.value }}</li>
-                    {% endif %}
-                    {% if order_item.field_poc_finish.value %}
-                      <li>{{ 'Finition :'|t }} {{ order_item.field_poc_finish.value|capitalize }}</li>
-                    {% endif %}
-                    {% if order_item.field_poc_need_upload.value %}
-                      <li>{{ 'Fichier client : oui'|t }}</li>
-                    {% endif %}
-                    {% if order_item.field_poc_tree_names.value %}
-                      {% set tree_names = order_item.field_poc_tree_names.value|replace({"\r": "", ",": "\n"})|split('\n') %}
+                    {% for personalization in item_personalizations %}
                       <li>
-                        {{ 'Arbre de vie :'|t }}
-                        <ul>
-                          {% for tree_name in tree_names %}
-                            {% set cleaned_name = tree_name|trim %}
-                            {% if cleaned_name %}
-                              <li>{{ cleaned_name }}</li>
-                            {% endif %}
-                          {% endfor %}
-                        </ul>
+                        {{ personalization.label }} :
+                        {% if personalization.is_list %}
+                          <ul>
+                            {% for line in personalization.value %}
+                              <li>{{ line }}</li>
+                            {% endfor %}
+                          </ul>
+                        {% else %}
+                          {{ personalization.value }}
+                        {% endif %}
                       </li>
-                    {% endif %}
-                    {% if order_item.field_poc_tree_wall_mount.value %}
-                      <li>{{ 'Attache murale : oui'|t }}</li>
-                    {% endif %}
+                    {% endfor %}
                   </ul>
                 </div>
               {% endif %}

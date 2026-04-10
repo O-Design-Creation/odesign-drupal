@@ -10,3 +10,4 @@ dependencies:
   - commerce:commerce_product
   - commerce:commerce_order
   - commerce:commerce_price
+  - commerce:commerce_cart

@@ -13,7 +13,7 @@ const path = require('path');
 
 const BASE_URL = process.env.BASE_URL || 'http://odesign-drupal.ddev.site';
 
-const PAGES = [
+const DEFAULT_PAGES = [
   { label: 'Accueil / Catalogue',       path: '/' },
   { label: 'Catalogue produits',         path: '/produits' },
   { label: 'Fiche produit',              path: '/products/carte-naissance-ovale-bois' },
@@ -22,6 +22,11 @@ const PAGES = [
   { label: 'Mentions légales',            path: '/mentions-legales' },
   { label: 'Panier',                      path: '/cart' },
 ];
+
+const arg = (process.argv[2] || '').trim();
+const PAGES = arg
+  ? [{ label: 'Page ciblée', path: arg.startsWith('http') ? new URL(arg).pathname : arg }]
+  : DEFAULT_PAGES;
 
 // Règles WCAG 2.1 AA ciblées
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'];
@@ -76,6 +81,7 @@ async function main() {
   const ctx = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     locale: 'fr-FR',
+    ignoreHTTPSErrors: true,
   });
   const page = await ctx.newPage();
 

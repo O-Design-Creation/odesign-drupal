@@ -1,10 +1,10 @@
-odesign_personalization.builder:
+builder:
   version: VERSION
   css:
     component:
       css/builder.css: {}
 
-odesign_personalization.frontend:
+frontend:
   version: VERSION
   js:
     js/personalization-frontend.js: { minified: false }
@@ -15,3 +15,4 @@ odesign_personalization.frontend:
     - core/drupal
     - core/drupalSettings
     - core/jquery
+    - core/once

@@ -6,13 +6,6 @@ dependencies:
     - commerce_order.commerce_order_item_type.default
     - core.entity_form_mode.commerce_order_item.add_to_cart
     - field.field.commerce_order_item.default.field_personalization_values
-    - field.field.commerce_order_item.default.field_poc_finish
-    - field.field.commerce_order_item.default.field_poc_need_upload
-    - field.field.commerce_order_item.default.field_poc_text
-    - field.field.commerce_order_item.default.field_poc_tree_layout
-    - field.field.commerce_order_item.default.field_poc_tree_names
-    - field.field.commerce_order_item.default.field_poc_tree_wall_mount
-    - field.field.commerce_order_item.default.field_poc_upload
   module:
     - commerce_product
     - file
@@ -27,57 +20,6 @@ targetEntityType: commerce_order_item
 bundle: default
 mode: add_to_cart
 content:
-  field_poc_finish:
-    type: options_select
-    weight: 11
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_poc_need_upload:
-    type: boolean_checkbox
-    weight: 12
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_poc_text:
-    type: string_textfield
-    weight: 10
-    region: content
-    settings:
-      size: 60
-      placeholder: 'Votre texte'
-    third_party_settings: {  }
-  field_poc_tree_layout:
-    type: string_textarea
-    weight: 32
-    region: content
-    settings:
-      rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-  field_poc_tree_names:
-    type: string_textarea
-    weight: 30
-    region: content
-    settings:
-      rows: 4
-      placeholder: 'ex : Marie, Paul, Jeanne'
-    third_party_settings: {  }
-  field_poc_tree_wall_mount:
-    type: boolean_checkbox
-    weight: 31
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  field_poc_upload:
-    type: file_generic
-    weight: 13
-    region: content
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
   purchased_entity:
     type: commerce_product_variation_attributes
     weight: 0
