@@ -24,18 +24,19 @@
 
 $configFactory = \Drupal::configFactory();
 
-// 1. system.site : langue + mail + front page (ignoré par config_ignore)
+// 1. system.site : langue + nom de site + mail + front page (ignoré par config_ignore)
 // page.front doit être /node (valeur config/sync) et PAS /user/login.
 // Si page.front = /user/login, le route normalizer de redirect module
 // détecte /user/login comme page d'accueil et redirige vers / (301).
 $siteMail = getenv('SITE_MAIL') ?: 'odesigncreation@gmail.com';
 $configFactory->getEditable('system.site')
+  ->set('name', "O'Design Création")
   ->set('langcode', 'fr')
   ->set('default_langcode', 'fr')
   ->set('mail', $siteMail)
   ->set('page.front', '/node')
   ->save();
-echo "system.site : langcode=fr, default_langcode=fr, mail={$siteMail}, front=/node" . PHP_EOL;
+echo "system.site : name=O'Design Création, langcode=fr, default_langcode=fr, mail={$siteMail}, front=/node" . PHP_EOL;
 
 // 2. language.negotiation : URL sans préfixe = FR (pas EN)
 // site:install laisse fr:fr (préfixe /fr/ obligatoire) et en:'' — on corrige.

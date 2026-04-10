@@ -19,7 +19,7 @@ set -euo pipefail
 DRUPAL_ROOT="${DRUPAL_ROOT:-/var/www/html}"
 DRUSH="${DRUPAL_ROOT}/vendor/bin/drush"
 SCRIPTS="${DRUPAL_ROOT}/scripts"
-STEPS_TOTAL=16
+STEPS_TOTAL=17
 STEP=0
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -127,10 +127,18 @@ log "Cache rebuild..."
 "$DRUSH" cr --no-interaction
 ok "Cache rebuild"
 
-# ── Étape 9 : Import traductions custom ──────────────────────────────────────
-# Importe les chaînes traduites du module odesign_admin (terminologie UI, labels
-# Commerce, statuts d'ateliers). --override=all : priorité sur les traductions
-# contrib téléchargées depuis drupal.org.
+# ── Étape 9 : Traductions officielles + traductions custom ───────────────────
+# 9a. locale:update télécharge les fichiers .po officiels depuis localize.drupal.org
+#     pour tous les modules activés (Commerce, Shipping, etc.).
+#     Nécessite un accès internet — actif sur Pantheon et DDEV.
+
+log "Mise à jour traductions officielles (locale:update)..."
+"$DRUSH" locale:check --no-interaction 2>&1 | grep -E 'Checked|error' | tail -3 || true
+"$DRUSH" locale:update --no-interaction 2>&1 \
+  | grep -E 'Translations imported|translation|error' | tail -3 || true
+ok "Traductions officielles mises à jour"
+
+# 9b. Traductions custom odesign_admin (--override=all → priorité sur officiel).
 
 log "Import traductions custom (odesign_admin/translations/fr.po)..."
 "$DRUSH" locale:import fr \

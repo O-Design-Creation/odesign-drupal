@@ -579,12 +579,13 @@ strong { font-weight: 600; }
   }
 
   .menu-dropdown__link {
-    font-size: clamp(0.96rem, 3.2vw, 1.03rem);
-    font-weight: 500;
+    font-size: 0.875rem;
+    font-weight: 400;
     line-height: 1.4;
-    padding: var(--space-2) var(--space-3);
-    border-bottom: 1px solid rgba(139, 97, 81, 0.12);
-    letter-spacing: 0.005em;
+    padding: var(--space-2) var(--space-4);
+    border-bottom: 1px solid rgba(139, 97, 81, 0.08);
+    letter-spacing: 0.01em;
+    color: var(--color-text-muted);
   }
 
   .site-nav a {
@@ -2690,6 +2691,16 @@ textarea {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-4);
+  }
+
+  /* Grille 2 colonnes : cartes trop étroites pour prix + CTA côte à côte (#7) */
+  .product-grid .product-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .product-grid .product-card__cta {
+    width: 100%;
+    text-align: center;
   }
 
   #views-exposed-form-catalogue-page-catalogue {
