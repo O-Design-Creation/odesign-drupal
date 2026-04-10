@@ -67,6 +67,22 @@ function odesign_admin_page_attachments(array &$attachments): void {
     'odesign_admin_global_css',
   ];
 
+  // CSS bandeau environnement (TCK-133) — chargé uniquement si SITE_ENV défini.
+  if (getenv('SITE_ENV')) {
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag'  => 'link',
+        '#attributes' => [
+          'rel'   => 'stylesheet',
+          'href'  => '/modules/custom/odesign_admin/css/env-banner.css',
+          'media' => 'all',
+        ],
+      ],
+      'odesign_admin_env_banner_css',
+    ];
+  }
+
   $attachments['#attached']['html_head'][] = [
     [
       '#type' => 'html_tag',
@@ -196,6 +212,36 @@ function odesign_admin_page_top(array &$page_top): void {
 
   if (!$is_admin_route) {
     return;
+  }
+
+  // ── Bandeau environnement ─────────────────────────────────────────────────
+  // Visible uniquement sur les routes admin, pour tout utilisateur connecté.
+  // Source : variable d'environnement SITE_ENV (preprod / prod / dev).
+  // Objectif : prévenir les confusions d'environnement aux conséquences
+  // potentiellement irréversibles (TCK-133).
+  $site_env = getenv('SITE_ENV') ?: '';
+  $app_version = getenv('APP_VERSION') ?: '';
+  if ($site_env && $site_env !== 'prod') {
+    $env_labels = [
+      'preprod' => '⚠ ENVIRONNEMENT DE TEST — PRÉPROD',
+      'dev'     => '⚠ ENVIRONNEMENT LOCAL — DEV',
+    ];
+    $env_label = $env_labels[$site_env] ?? ('⚠ ' . strtoupper($site_env));
+    $version_tag = $app_version ? " · v{$app_version}" : '';
+    $page_top['odesign_env_banner'] = [
+      '#markup' => '<div class="odesign-env-banner odesign-env-banner--' . htmlspecialchars($site_env, ENT_QUOTES) . '">'
+        . $env_label . $version_tag
+        . '</div>',
+      '#allowed_tags' => ['div'],
+      '#weight' => -200,
+    ];
+  }
+  elseif ($site_env === 'prod' && $app_version) {
+    $page_top['odesign_env_banner'] = [
+      '#markup' => '<div class="odesign-env-banner odesign-env-banner--prod">PRODUCTION · v' . htmlspecialchars($app_version, ENT_QUOTES) . '</div>',
+      '#allowed_tags' => ['div'],
+      '#weight' => -200,
+    ];
   }
 
   /** @var \Drupal\odesign_admin\Service\BoutiqueNavRegistry $registry */

@@ -63,6 +63,11 @@ RUN composer run-script post-install-cmd --no-interaction 2>/dev/null || true
 # ── Image finale ───────────────────────────────────────────────────────────────
 FROM base AS final
 
+# ── Version applicative (injectée par GitHub Actions via --build-arg) ──────────
+# Permet au back-office d'afficher la version déployée (TCK-133).
+ARG APP_VERSION=dev
+ENV APP_VERSION=${APP_VERSION}
+
 WORKDIR /var/www/html
 
 # Copier le code compilé depuis le builder

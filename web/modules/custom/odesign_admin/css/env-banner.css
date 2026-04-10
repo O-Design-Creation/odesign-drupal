@@ -1,0 +1,39 @@
+/**
+ * env-banner.css — Bandeau d'identification d'environnement (TCK-133)
+ *
+ * Visible uniquement dans le back-office admin.
+ * Couleurs : preprod = orange, prod = vert discret, dev = violet.
+ */
+
+.odesign-env-banner {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  width: 100%;
+  padding: 6px 16px;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Préprod — orange vif */
+.odesign-env-banner--preprod {
+  background-color: #e65100;
+  color: #fff;
+}
+
+/* Production — vert discret, moins intrusif */
+.odesign-env-banner--prod {
+  background-color: #2e7d32;
+  color: #fff;
+}
+
+/* Dev local */
+.odesign-env-banner--dev {
+  background-color: #4a148c;
+  color: #fff;
+}
