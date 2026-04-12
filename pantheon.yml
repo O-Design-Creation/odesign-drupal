@@ -1,6 +1,0 @@
-api_version: 1
-php_version: 8.3
-drush_version: 10
-web_docroot: true
-database:
-  version: 10.6
