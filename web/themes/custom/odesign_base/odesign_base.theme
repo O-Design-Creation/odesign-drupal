@@ -900,6 +900,35 @@ function odesign_base_preprocess_page(array &$variables): void {
     $variables['catalogue_contact_url'] = Url::fromUri('internal:/contact')->toString();
   }
 
+  if ($current_route === 'view.recherche_produits.page_1') {
+    $variables['attributes']['class'][] = 'page-recherche-produits';
+  }
+
+  $variables['header_search_autocomplete_enabled'] = FALSE;
+  if (\Drupal::moduleHandler()->moduleExists('search_api_autocomplete')) {
+    /** @var \Drupal\search_api_autocomplete\SearchInterface|null $search */
+    $search = \Drupal\search_api_autocomplete\Entity\Search::load('products');
+    if ($search) {
+      $access = \Drupal::service('search_api_autocomplete.helper')
+        ->access($search, \Drupal::currentUser());
+      if ($access->isAllowed()) {
+        $options = $search->getOptions();
+        $variables['header_search_autocomplete_enabled'] = TRUE;
+        $variables['header_search_autocomplete_path'] = Url::fromRoute('search_api_autocomplete.autocomplete', [
+          'search_api_autocomplete_search' => $search->id(),
+        ])->toString();
+
+        $variables['#attached']['library'][] = 'search_api_autocomplete/search_api_autocomplete';
+        $variables['#attached']['drupalSettings']['search_api_autocomplete'][$search->id()] = array_filter([
+          'delay' => $options['delay'] ?? NULL,
+          'min_length' => $options['min_length'] ?? NULL,
+          'auto_submit' => !empty($options['autosubmit']) ? TRUE : NULL,
+          'selector' => ($options['submit_button_selector'] ?? ':submit') !== ':submit' ? $options['submit_button_selector'] : NULL,
+        ], static fn ($value) => $value !== NULL);
+      }
+    }
+  }
+
   $current_path = \Drupal::service('path.current')->getPath();
   $current_alias = \Drupal::service('path_alias.manager')->getAliasByPath($current_path);
   $request_path = \Drupal::request()->getPathInfo();

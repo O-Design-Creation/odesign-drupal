@@ -248,7 +248,7 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
   // Cas "Arbre de vie" / multi-prénoms :
   // regroupe les champs prénoms ensemble et place l'option attache murale
   // à côté du bloc pour rendre la saisie plus lisible côté client.
-  if (count($prenom_field_keys) >= 1) {
+  if (odesign_personalization_should_use_tree_builder($product) && count($prenom_field_keys) >= 1) {
     $allowed_tree_keys = array_values(array_filter(array_unique(array_merge(
       $prenom_field_keys,
       $wall_mount_field_key ? [$wall_mount_field_key] : []
@@ -383,6 +383,26 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
     }
     unset($action);
   }
+}
+
+/**
+ * Limite le builder "Arbre de vie" aux produits qui l'utilisent réellement.
+ */
+function odesign_personalization_should_use_tree_builder(ProductInterface $product): bool {
+  $tree_handles = [
+    '/products/arbre-de-vie-personnalise',
+  ];
+
+  $product_path = '/product/' . $product->id();
+  $alias_manager = \Drupal::service('path_alias.manager');
+
+  foreach ($tree_handles as $expected_alias) {
+    if ($alias_manager->getPathByAlias($expected_alias) === $product_path) {
+      return TRUE;
+    }
+  }
+
+  return FALSE;
 }
 
 /**

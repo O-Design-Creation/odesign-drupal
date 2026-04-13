@@ -20,5 +20,6 @@ permissions:
   - 'access content'
   - 'display eu cookie compliance popup'
   - 'subscribe to newsletters'
+  - 'use search_api_autocomplete for products'
   - 'view commerce_product'
   - 'view media'

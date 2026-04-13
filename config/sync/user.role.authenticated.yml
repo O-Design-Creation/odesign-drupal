@@ -23,6 +23,7 @@ permissions:
   - 'display eu cookie compliance popup'
   - 'manage own commerce_payment_method'
   - 'subscribe to newsletters'
+  - 'use search_api_autocomplete for products'
   - 'view commerce_product'
   - 'view media'
   - 'view own commerce_order'

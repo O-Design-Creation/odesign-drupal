@@ -1,0 +1,46 @@
+uuid: 419c7c30-bdd4-40af-95d3-0f4cc1221bb4
+langcode: fr
+status: true
+dependencies: {  }
+id: atelier_puzzle_prenom_motif
+label: 'Prénom + Motif puzzle'
+description: 'Modèle dédié au puzzle prénom : prénom à saisir et motif à choisir.'
+fields:
+  -
+    id: field_1
+    label: Prénom
+    type: text
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      currency: EUR
+      label: ''
+  -
+    id: field_2
+    label: Motif
+    type: select
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 0
+    weight: 1
+    options:
+      -
+        value: fleurs
+        label: Fleurs
+      -
+        value: crocodile
+        label: Crocodile
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      currency: EUR
+      label: ''

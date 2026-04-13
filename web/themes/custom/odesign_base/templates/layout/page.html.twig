@@ -185,12 +185,16 @@
               method="get">
           <label for="header-search-panel-input" class="visually-hidden">{{ 'Rechercher un produit'|t }}</label>
           <input id="header-search-panel-input"
-                 class="header-search-panel__input"
+                 class="header-search-panel__input{% if header_search_autocomplete_enabled %} form-autocomplete{% endif %}"
                  type="search"
                  name="keys"
                  placeholder="{{ 'Rechercher un produit...'|t }}"
                  autocomplete="off"
-                 aria-label="{{ 'Rechercher un produit'|t }}">
+                 aria-label="{{ 'Rechercher un produit'|t }}"
+                 {% if header_search_autocomplete_enabled %}
+                 data-autocomplete-path="{{ header_search_autocomplete_path }}"
+                 data-search-api-autocomplete-search="products"
+                 {% endif %}>
           <button type="submit" class="btn btn--primary header-search-panel__submit">
             {{ 'Rechercher'|t }}
           </button>

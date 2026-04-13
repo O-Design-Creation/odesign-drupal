@@ -48,17 +48,7 @@ display:
           expose_sort_order: true
           autosubmit: false
           autosubmit_hide: true
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: text_custom
-          content: '<p class="search-no-results">Aucun résultat pour votre recherche. <a href="/produits">Retour au catalogue</a></p>'
-          tokenize: false
+      empty: {  }
       sorts: {  }
       arguments: {  }
       filters:

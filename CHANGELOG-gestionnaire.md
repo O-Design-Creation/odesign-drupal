@@ -5,6 +5,22 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc10 — 13 avril 2026
+
+### Recherche & catalogue
+- **Recherche plus pratique** : des suggestions reviennent dans la barre de recherche pendant la saisie, pour éviter de devoir lancer la recherche à l'aveugle.
+- **Page résultats plus claire** : la page `/recherche` affiche un résumé du terme recherché et le nombre de résultats trouvés.
+- **Filtres plus lisibles** : les colonnes de filtres vides n'encombrent plus la page quand aucun filtre utile n'est disponible.
+
+### Personnalisation produits
+- **Puzzle prénom** : la personnalisation dédiée au puzzle est rétablie avec le prénom et le choix du motif.
+- **Support cartes de jeux** : le formulaire de personnalisation est réaffecté sur la fiche produit.
+- **Supports bracelet de naissance** : les versions rondes et nuage retrouvent un formulaire complet (prénom, date, heure, poids, taille).
+- **Arbre de vie mieux ciblé** : l'interface spéciale "Arbre de vie" n'est plus censée s'afficher sur d'autres produits qui n'en ont pas besoin.
+
+### Blog
+- **Images d'articles plus nettes** : les cartes du blog utilisent un format d'image plus large pour limiter l'effet de flou sur ordinateur.
+
 ## v1.0rc7 — 10 avril 2026
 
 ### Sécurité d'accès

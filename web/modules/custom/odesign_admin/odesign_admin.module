@@ -1418,7 +1418,13 @@ function odesign_admin_views_pre_render(ViewExecutable $view): void {
   }
 
   $raw_keys = trim((string) $request->query->get('keys', ''));
-  if ($raw_keys === '' || !empty($view->result)) {
+  if ($raw_keys === '') {
+    return;
+  }
+
+  $view->attachment_before[] = _odesign_admin_search_build_results_summary_render($raw_keys, (int) $view->total_rows);
+
+  if (!empty($view->result)) {
     return;
   }
 
@@ -1426,6 +1432,36 @@ function odesign_admin_views_pre_render(ViewExecutable $view): void {
   _odesign_admin_search_log_no_result_query($raw_keys, 0);
 
   $view->attachment_before[] = _odesign_admin_search_build_no_result_render($raw_keys, $suggestions);
+}
+
+/**
+ * Rend un encadré de contexte au-dessus des résultats de recherche.
+ */
+function _odesign_admin_search_build_results_summary_render(string $raw_keys, int $total_rows): array {
+  $result_label = $total_rows > 1 ? t('@count résultats', ['@count' => $total_rows]) : t('@count résultat', ['@count' => $total_rows]);
+
+  return [
+    '#type' => 'container',
+    '#attributes' => ['class' => ['search-results-summary']],
+    'eyebrow' => [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => t('Recherche en cours'),
+      '#attributes' => ['class' => ['search-results-summary__eyebrow']],
+    ],
+    'title' => [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => t('Résultats pour "@query"', ['@query' => $raw_keys]),
+      '#attributes' => ['class' => ['search-results-summary__title']],
+    ],
+    'meta' => [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => t('@count dans la boutique', ['@count' => $result_label]),
+      '#attributes' => ['class' => ['search-results-summary__meta']],
+    ],
+  ];
 }
 
 /**
