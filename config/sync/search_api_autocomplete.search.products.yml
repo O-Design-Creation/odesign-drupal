@@ -1,3 +1,4 @@
+uuid: 472e6abf-d765-4ba0-8936-7eb72bdefe61
 langcode: fr
 status: true
 dependencies:
@@ -20,6 +21,8 @@ suggester_settings:
       title: title
     display_plugin: page_1
     limit: 6
+suggester_weights: {  }
+suggester_limits: {  }
 search_settings:
   'views:recherche_produits':
     displays:

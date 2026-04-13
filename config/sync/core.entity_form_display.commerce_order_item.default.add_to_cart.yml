@@ -30,6 +30,13 @@ hidden:
   adjustments: true
   created: true
   field_personalization_values: true
+  field_poc_finish: true
+  field_poc_need_upload: true
+  field_poc_text: true
+  field_poc_tree_layout: true
+  field_poc_tree_names: true
+  field_poc_tree_wall_mount: true
+  field_poc_upload: true
   quantity: true
   status: true
   total_price: true
