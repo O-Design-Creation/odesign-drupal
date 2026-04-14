@@ -202,10 +202,14 @@ function perso_user_options(array $options, array $internal): array {
 }
 
 /**
- * Normalise un nom de propriété Easify générique en libellé français lisible.
- * Les labels déjà configurés côté Shopify sont conservés tels quels.
+ * Retourne le libellé métier Shopify quand il est disponible, sinon un fallback
+ * lisible pour les noms Easify génériques.
  */
-function normalize_perso_label(string $property): string {
+function normalize_perso_label(string $property, ?string $label = NULL): string {
+  if (is_string($label) && trim($label) !== '') {
+    return trim($label);
+  }
+
   $map = [
     'text-box-1'      => 'Personnalisation',
     'text-box-2'      => 'Personnalisation (2)',
@@ -228,10 +232,12 @@ function detect_perso_field_type(string $property, string $json_type = ''): stri
   if ($json_type !== '') {
     $type_map = [
       'text'     => 'text',
-      'textarea' => 'text',
+      'textarea' => 'textarea',
       'file'     => 'file',
       'number'   => 'number',
       'date'     => 'date',
+      'select'   => 'select',
+      'radio'    => 'radio',
       'checkbox' => 'checkboxes',
     ];
     if (isset($type_map[$json_type])) {
@@ -245,6 +251,28 @@ function detect_perso_field_type(string $property, string $json_type = ''): stri
   if (preg_match('/quantit|quantity|nombre|number/', $ascii)) return 'number';
   if (preg_match('/checkbox|case/', $ascii))                  return 'checkboxes';
   return 'text';
+}
+
+/**
+ * Convertit les choix Easify en options Drupal.
+ */
+function perso_field_options(array $choices): array {
+  $options = [];
+  foreach ($choices as $choice) {
+    if (!is_string($choice)) {
+      continue;
+    }
+    $choice = trim($choice);
+    if ($choice === '') {
+      continue;
+    }
+    $options[$choice] = [
+      'value' => $choice,
+      'label' => $choice,
+    ];
+  }
+
+  return array_values($options);
 }
 
 /**
@@ -269,7 +297,7 @@ function perso_template_id(string $signature): string {
  * Génère un libellé lisible pour l'interface à partir des champs du modèle.
  */
 function perso_template_label(array $user_options): string {
-  $labels = array_map(fn($o) => normalize_perso_label($o['property']), $user_options);
+  $labels = array_map(fn($o) => normalize_perso_label($o['property'], $o['label'] ?? NULL), $user_options);
   $label  = implode(' + ', $labels);
   return mb_strlen($label) > 60 ? mb_substr($label, 0, 57) . '…' : $label;
 }
@@ -297,17 +325,21 @@ function ensure_perso_template(string $template_id, string $template_label, arra
 
   $fields = [];
   foreach ($user_options as $i => $opt) {
-    $label  = normalize_perso_label($opt['property']);
+    $label  = normalize_perso_label($opt['property'], $opt['label'] ?? NULL);
     $type   = detect_perso_field_type($opt['property'], $opt['type'] ?? '');
+    $options = perso_field_options($opt['choices'] ?? []);
+    $maxlength = ($type === 'text' || $type === 'textarea')
+      ? (int) ($opt['maxlength'] ?? ($type === 'text' ? 80 : 0))
+      : 0;
     $fields[] = [
       'id'          => 'field_' . ($i + 1),
       'label'       => $label,
       'type'        => $type,
-      'required'    => FALSE,
-      'placeholder' => '',
+      'required'    => !empty($opt['required']),
+      'placeholder' => trim((string) ($opt['placeholder'] ?? '')),
       'help'        => '',
-      'maxlength'   => ($type === 'text') ? 80 : 0,
-      'options'     => [],
+      'maxlength'   => $maxlength,
+      'options'     => $options,
       'group_max'   => 5,
       'price_modifier' => [
         'type'   => 'none',

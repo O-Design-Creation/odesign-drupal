@@ -37,6 +37,20 @@ function odesign_personalization_deploy_002(): void {
 }
 
 /**
+ * Corrige la description mojibake de la plaque de chaise.
+ *
+ * Déclencheur : `TCK-142` vérifié sur preprod et source catalogue locale.
+ */
+function odesign_personalization_deploy_003(): void {
+  odesign_personalization_replace_body_text_by_handle(
+    'plaque-chaise-mariage-bois',
+    'Cette d��coration peut être personnalisée avec le texte de votre choix, par exemple :',
+    'Cette décoration peut être personnalisée avec le texte de votre choix, par exemple :',
+    'deploy_003'
+  );
+}
+
+/**
  * Résout un produit commerce à partir de son alias Shopify /products/{handle}.
  */
 function odesign_personalization_load_product_by_handle(string $handle): ?Product {
@@ -95,6 +109,42 @@ function odesign_personalization_assign_template_by_handle(string $handle, strin
       '@product' => (string) $product->label(),
       '@handle' => $handle,
       '@before' => $current_template_id ?: 'none',
+    ]
+  );
+}
+
+/**
+ * Remplace un extrait exact dans le body d'un produit résolu par handle Shopify.
+ */
+function odesign_personalization_replace_body_text_by_handle(string $handle, string $search, string $replace, string $context): void {
+  $product = odesign_personalization_load_product_by_handle($handle);
+  if (!$product) {
+    throw new \RuntimeException(sprintf('Produit introuvable via le handle Shopify: %s', $handle));
+  }
+
+  if (!$product->hasField('body')) {
+    throw new \RuntimeException(sprintf('Le produit %s (%s) ne porte pas le champ body.', (string) $product->label(), $handle));
+  }
+
+  $body = $product->get('body')->first();
+  $current_value = (string) ($body?->value ?? '');
+  if (!str_contains($current_value, $search)) {
+    return;
+  }
+
+  $product->set('body', [
+    'value' => str_replace($search, $replace, $current_value),
+    'summary' => (string) ($body?->summary ?? ''),
+    'format' => (string) ($body?->format ?: 'full_html'),
+  ]);
+  $product->save();
+
+  \Drupal::logger('odesign_personalization')->notice(
+    '@context : body corrigé pour le produit @product via @handle.',
+    [
+      '@context' => $context,
+      '@product' => (string) $product->label(),
+      '@handle' => $handle,
     ]
   );
 }
