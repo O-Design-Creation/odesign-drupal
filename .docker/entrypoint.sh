@@ -9,7 +9,7 @@
 #        site:install + UUID + config:import (×2) + seeds + catalogue + blog
 #
 #   MISE À JOUR COURANTE (DB existante)
-#     → drush updatedb + drush config:import + drush cache:rebuild
+#     → drush deploy (updatedb + config:import + deploy hooks + caches)
 #
 # Variables d'environnement obligatoires (Coolify) :
 #   DB_HOST, DB_NAME, DB_USER, DB_PASS
@@ -198,19 +198,10 @@ if [ "$DRUPAL_INSTALLED" = "false" ]; then
 else
   log "Drupal déjà installé — chemin mise à jour."
 
-  log "drush updatedb..."
-  "$DRUSH" updatedb -y --no-interaction \
-    || err "drush updatedb a échoué."
-  ok "updatedb"
-
-  log "drush config:import..."
-  "$DRUSH" config:import -y --no-interaction \
-    || err "drush config:import a échoué."
-  ok "config:import"
-
-  log "drush cache:rebuild..."
-  "$DRUSH" cache:rebuild --no-interaction
-  ok "cache:rebuild"
+  log "drush deploy..."
+  "$DRUSH" deploy -y --no-interaction \
+    || err "drush deploy a échoué."
+  ok "deploy"
 fi
 
 # ── 4c. Correction finale des permissions ────────────────────────────────────
