@@ -3,10 +3,11 @@
 #
 # Convention de tags (ADR-013) :
 #   X.YrcN  (ex: 2.4rc1)  → build + push + déploiement AUTO preprod via Coolify
-#   X.Y.Z   (ex: 2.4.0)   → build + push ; déploiement prod MANUEL dans Coolify
+#   X.Y.Z   (ex: 2.4.0)   → build + push ; déploiement prod MANUEL via workflow_dispatch
 #
 # Secrets requis dans GitHub → Settings → Secrets :
 #   COOLIFY_PREPROD_WEBHOOK  — webhook Coolify pour déclencher le déploiement preprod
+#   COOLIFY_PROD_WEBHOOK     — webhook Coolify pour déclencher le déploiement prod
 #   COOLIFY_API_TOKEN        — token API Coolify (Bearer)
 # ──────────────────────────────────────────────────────────────────────────────
 
@@ -17,6 +18,11 @@ on:
     tags:
       - '[0-9]+.[0-9]+rc[0-9]+'   # ex: 2.4rc1  → preprod
       - '[0-9]+.[0-9]+.[0-9]+'    # ex: 2.4.0   → prod (déploiement manuel)
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Tag stable à déployer en production (ex: 1.0.0)'
+        required: true
 
 env:
   REGISTRY: ghcr.io
@@ -25,6 +31,7 @@ env:
 jobs:
   build-push:
     name: Build & Push
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -187,8 +194,124 @@ jobs:
         run: |
           echo "### Image de production prête ✅" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Le déploiement en production est MANUEL.**" >> $GITHUB_STEP_SUMMARY
+          echo "**Le déploiement en production reste MANUEL.**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Dans Coolify → projet \`drupal-prod\` → déployer l'image :" >> $GITHUB_STEP_SUMMARY
+          echo "Déclencher ensuite ce workflow en \`workflow_dispatch\` avec le tag stable voulu." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Image prête :" >> $GITHUB_STEP_SUMMARY
           echo "\`ghcr.io/${{ github.repository }}:${GITHUB_REF_NAME}\`" >> $GITHUB_STEP_SUMMARY
           echo "Digest : \`${{ needs.build-push.outputs.image_digest }}\`" >> $GITHUB_STEP_SUMMARY
+
+  deploy-prod-manual:
+    name: Déploiement prod (manuel)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Valider le tag stable demandé
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Le tag doit respecter le format stable X.Y.Z"
+            exit 1
+          fi
+
+          git ls-remote --exit-code --tags "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "refs/tags/${RELEASE_TAG}" >/dev/null \
+            || { echo "Tag Git introuvable: ${RELEASE_TAG}"; exit 1; }
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Vérifier la présence de l'image GHCR
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          docker manifest inspect "ghcr.io/${GITHUB_REPOSITORY}:${RELEASE_TAG}" >/dev/null \
+            || { echo "Image GHCR introuvable: ghcr.io/${GITHUB_REPOSITORY}:${RELEASE_TAG}"; exit 1; }
+
+      - name: Aligner le tag Coolify prod sur le tag GitHub
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_PROD_WEBHOOK: ${{ secrets.COOLIFY_PROD_WEBHOOK }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          webhook = os.environ["COOLIFY_PROD_WEBHOOK"]
+          token = os.environ["COOLIFY_API_TOKEN"]
+          tag = os.environ["RELEASE_TAG"]
+
+          parsed = urllib.parse.urlparse(webhook)
+          query = urllib.parse.parse_qs(parsed.query)
+          uuid = query.get("uuid", [None])[0]
+          if not uuid:
+            raise SystemExit("UUID Coolify introuvable dans COOLIFY_PROD_WEBHOOK")
+          if not re.fullmatch(r"[A-Za-z0-9_-]+", uuid):
+            raise SystemExit("UUID Coolify invalide dans COOLIFY_PROD_WEBHOOK")
+
+          api_root_match = re.match(r"^(.*?/api/v1)(?:/|$)", parsed.path)
+          if not api_root_match:
+            raise SystemExit("Impossible de retrouver /api/v1 depuis COOLIFY_PROD_WEBHOOK")
+
+          base_url = urllib.parse.urlunparse(
+              (parsed.scheme, parsed.netloc, api_root_match.group(1), "", "", "")
+          )
+          patch_url = f"{base_url}/applications/{uuid}"
+
+          body = json.dumps({"docker_registry_image_tag": tag}).encode()
+          request = urllib.request.Request(
+              patch_url,
+              data=body,
+              method="PATCH",
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/json",
+              },
+          )
+
+          try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+              if not (200 <= response.status < 300):
+                raise SystemExit(f"Echec PATCH Coolify prod: HTTP {response.status}")
+          except urllib.error.HTTPError as error:
+            details = error.read().decode("utf-8", errors="replace")
+            raise SystemExit(f"Echec PATCH Coolify prod: HTTP {error.code} - {details}") from error
+          except urllib.error.URLError as error:
+            raise SystemExit(f"Echec PATCH Coolify prod: {error.reason}") from error
+
+          print(f"Tag Coolify prod aligné sur {tag} pour l'application {uuid}")
+          PY
+
+      - name: Déclencher webhook Coolify (prod)
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.COOLIFY_API_TOKEN }}" \
+            -X GET "${{ secrets.COOLIFY_PROD_WEBHOOK }}")
+          if [ "$HTTP_CODE" != "200" ] && [ "$HTTP_CODE" != "201" ]; then
+            echo "Webhook Coolify prod a répondu HTTP $HTTP_CODE"
+            exit 1
+          fi
+          echo "Déploiement prod déclenché pour ${RELEASE_TAG} (HTTP $HTTP_CODE)"
+
+      - name: Résumé déploiement prod
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          echo "### Déploiement prod déclenché ✅" >> $GITHUB_STEP_SUMMARY
+          echo "URL : https://prod.atelierodesign.fr" >> $GITHUB_STEP_SUMMARY
+          echo "Image : \`ghcr.io/${{ github.repository }}:${RELEASE_TAG}\`" >> $GITHUB_STEP_SUMMARY
