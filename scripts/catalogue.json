@@ -342,12 +342,15 @@
       },
       {
         "property": "Motifs de fleurs",
-        "label": "Motifs de fleurs",
-        "type": "text",
-        "required": false,
+        "label": "Motifs de fleurs ( Comme sur l'image du produit )",
+        "type": "checkbox",
+        "required": true,
         "placeholder": null,
         "maxlength": null,
-        "choices": []
+        "choices": [
+          "Oui",
+          "Non"
+        ]
       }
     ]
   },
