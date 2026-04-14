@@ -18,41 +18,22 @@ function odesign_personalization_deploy_001(): void {
     'support-bracelet-naissance-nuage-bois' => 'atelier_support_naissance_complet',
   ];
 
-  $template_storage = \Drupal::entityTypeManager()->getStorage('personalization_template');
-
   foreach ($assignments as $handle => $template_id) {
-    $template = $template_storage->load($template_id);
-    if (!$template) {
-      throw new \RuntimeException(sprintf('Template de personnalisation introuvable: %s', $template_id));
-    }
-
-    $product = odesign_personalization_load_product_by_handle($handle);
-    if (!$product) {
-      throw new \RuntimeException(sprintf('Produit introuvable via le handle Shopify: %s', $handle));
-    }
-
-    if (!$product->hasField('field_personalization_template')) {
-      throw new \RuntimeException(sprintf('Le produit %s (%s) ne porte pas field_personalization_template.', (string) $product->label(), $handle));
-    }
-
-    $current_template_id = $product->get('field_personalization_template')->target_id;
-    if ($current_template_id === $template_id) {
-      continue;
-    }
-
-    $product->set('field_personalization_template', ['target_id' => $template_id]);
-    $product->save();
-
-    \Drupal::logger('odesign_personalization')->notice(
-      'deploy_001 : modèle @template affecté au produit @product via @handle (avant : @before).',
-      [
-        '@template' => $template_id,
-        '@product' => (string) $product->label(),
-        '@handle' => $handle,
-        '@before' => $current_template_id ?: 'none',
-      ]
-    );
+    odesign_personalization_assign_template_by_handle($handle, $template_id, 'deploy_001');
   }
+}
+
+/**
+ * Rétablit la personnalisation simple "Prénom" sur la carte ovale.
+ *
+ * Déclencheur : `TCK-140` vérifié sur preprod après correction de `TCK-132`.
+ */
+function odesign_personalization_deploy_002(): void {
+  odesign_personalization_assign_template_by_handle(
+    'carte-naissance-ovale-bois',
+    'import_d82d2bec',
+    'deploy_002'
+  );
 }
 
 /**
@@ -77,4 +58,43 @@ function odesign_personalization_load_product_by_handle(string $handle): ?Produc
   }
 
   return NULL;
+}
+
+/**
+ * Affecte un modèle à un produit résolu par handle Shopify.
+ */
+function odesign_personalization_assign_template_by_handle(string $handle, string $template_id, string $context): void {
+  $template_storage = \Drupal::entityTypeManager()->getStorage('personalization_template');
+  $template = $template_storage->load($template_id);
+  if (!$template) {
+    throw new \RuntimeException(sprintf('Template de personnalisation introuvable: %s', $template_id));
+  }
+
+  $product = odesign_personalization_load_product_by_handle($handle);
+  if (!$product) {
+    throw new \RuntimeException(sprintf('Produit introuvable via le handle Shopify: %s', $handle));
+  }
+
+  if (!$product->hasField('field_personalization_template')) {
+    throw new \RuntimeException(sprintf('Le produit %s (%s) ne porte pas field_personalization_template.', (string) $product->label(), $handle));
+  }
+
+  $current_template_id = $product->get('field_personalization_template')->target_id;
+  if ($current_template_id === $template_id) {
+    return;
+  }
+
+  $product->set('field_personalization_template', ['target_id' => $template_id]);
+  $product->save();
+
+  \Drupal::logger('odesign_personalization')->notice(
+    '@context : modèle @template affecté au produit @product via @handle (avant : @before).',
+    [
+      '@context' => $context,
+      '@template' => $template_id,
+      '@product' => (string) $product->label(),
+      '@handle' => $handle,
+      '@before' => $current_template_id ?: 'none',
+    ]
+  );
 }
