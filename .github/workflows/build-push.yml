@@ -100,6 +100,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Aligner le tag Coolify sur le tag GitHub
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_PREPROD_WEBHOOK: ${{ secrets.COOLIFY_PREPROD_WEBHOOK }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import re
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          webhook = os.environ["COOLIFY_PREPROD_WEBHOOK"]
+          token = os.environ["COOLIFY_API_TOKEN"]
+          tag = os.environ["GITHUB_REF_NAME"]
+
+          parsed = urllib.parse.urlparse(webhook)
+          query = urllib.parse.parse_qs(parsed.query)
+          uuid = query.get("uuid", [None])[0]
+          if not uuid:
+            raise SystemExit("UUID Coolify introuvable dans COOLIFY_PREPROD_WEBHOOK")
+          if not re.fullmatch(r"[A-Za-z0-9_-]+", uuid):
+            raise SystemExit("UUID Coolify invalide dans COOLIFY_PREPROD_WEBHOOK")
+
+          api_root_match = re.match(r"^(.*?/api/v1)(?:/|$)", parsed.path)
+          if not api_root_match:
+            raise SystemExit("Impossible de retrouver /api/v1 depuis COOLIFY_PREPROD_WEBHOOK")
+
+          base_url = urllib.parse.urlunparse(
+              (parsed.scheme, parsed.netloc, api_root_match.group(1), "", "", "")
+          )
+          patch_url = f"{base_url}/applications/{uuid}"
+
+          body = json.dumps({"docker_registry_image_tag": tag}).encode()
+          request = urllib.request.Request(
+              patch_url,
+              data=body,
+              method="PATCH",
+              headers={
+                  "Authorization": f"Bearer {token}",
+                  "Content-Type": "application/json",
+                  "Accept": "application/json",
+              },
+          )
+
+          try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+              if not (200 <= response.status < 300):
+                raise SystemExit(f"Echec PATCH Coolify: HTTP {response.status}")
+          except urllib.error.HTTPError as error:
+            details = error.read().decode("utf-8", errors="replace")
+            raise SystemExit(f"Echec PATCH Coolify: HTTP {error.code} - {details}") from error
+          except urllib.error.URLError as error:
+            raise SystemExit(f"Echec PATCH Coolify: {error.reason}") from error
+
+          print(f"Tag Coolify aligné sur {tag} pour l'application {uuid}")
+          PY
+
       - name: Déclencher webhook Coolify (preprod)
         run: |
           HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
