@@ -3,15 +3,15 @@ langcode: fr
 status: true
 dependencies: {  }
 id: import_f2ef170a
-label: 'Personnalisation + Personnalisation (2) + Symbole'
+label: 'Texte 1 + Texte 2 + Symbole'
 description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
 fields:
   -
     id: field_1
-    label: Personnalisation
+    label: 'Texte 1'
     type: text
     required: false
-    placeholder: ''
+    placeholder: 'ex : Madame'
     help: ''
     maxlength: 80
     weight: 0
@@ -23,10 +23,10 @@ fields:
       label: ''
   -
     id: field_2
-    label: 'Personnalisation (2)'
+    label: 'Texte 2'
     type: text
     required: false
-    placeholder: ''
+    placeholder: 'ex : Couronnel'
     help: ''
     maxlength: 80
     weight: 1
@@ -39,13 +39,19 @@ fields:
   -
     id: field_3
     label: Symbole
-    type: text
+    type: checkboxes
     required: false
     placeholder: ''
     help: ''
-    maxlength: 80
+    maxlength: 0
     weight: 2
-    options: {  }
+    options:
+      -
+        value: Coeur
+        label: Coeur
+      -
+        value: Feuille
+        label: Feuille
     group_max: 5
     price_modifier:
       type: none

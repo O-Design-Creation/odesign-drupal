@@ -121,32 +121,116 @@ async function scrapePage(ctx, handle) {
     return await page.evaluate(({ tpoInternal, tpoGenericPattern }) => {
       const internals = new Set(tpoInternal);
       const genericRe = new RegExp(tpoGenericPattern, 'i');
+      const readProperty = (name) => {
+        const match = name?.match(/^properties\[(.+)\]$/);
+        return match ? match[1] : null;
+      };
+      const optionMap = new Map();
+      const upsertOption = (prop, data) => {
+        if (!prop || internals.has(prop)) return;
+        const current = optionMap.get(prop) || {
+          property: prop,
+          label: genericRe.test(prop) ? null : prop,
+          type: 'text',
+          required: false,
+          placeholder: null,
+          maxlength: null,
+          choices: [],
+        };
 
-      const options = [];
+        if (typeof data.label === 'string' && data.label.trim() !== '') {
+          current.label = data.label.trim();
+        }
+        if (typeof data.type === 'string' && data.type !== '') {
+          current.type = data.type;
+        }
+        if (typeof data.required === 'boolean') {
+          current.required = data.required;
+        }
+        if (typeof data.placeholder === 'string' && data.placeholder.trim() !== '') {
+          current.placeholder = data.placeholder.trim();
+        }
+        if (Number.isInteger(data.maxlength) || data.maxlength === null) {
+          current.maxlength = data.maxlength;
+        }
+        if (Array.isArray(data.choices) && data.choices.length > 0) {
+          current.choices = data.choices;
+        }
+
+        optionMap.set(prop, current);
+      };
+
       document.querySelectorAll('[name^="properties["]').forEach(el => {
-        const match = el.name.match(/^properties\[(.+)\]$/);
-        if (!match) return;
-        const prop = match[1];
-        if (internals.has(prop)) return;
+        const prop = readProperty(el.getAttribute('name'));
+        if (!prop || internals.has(prop)) return;
 
         const type = el.tagName === 'TEXTAREA' ? 'textarea'
           : el.tagName === 'SELECT'   ? 'select'
           : el.type === 'file'        ? 'file'
           : el.type === 'checkbox'    ? 'checkbox'
           : el.type === 'radio'       ? 'radio'
+          : el.type === 'number'      ? 'number'
+          : el.type === 'date'        ? 'date'
           : 'text';
 
         const choices = type === 'select'
           ? Array.from(el.querySelectorAll('option')).filter(o => o.value).map(o => o.textContent.trim())
           : [];
 
-        options.push({
-          property:    prop,
-          label:       genericRe.test(prop) ? null : prop,
+        upsertOption(prop, {
+          label: genericRe.test(prop) ? null : prop,
           type,
-          required:    el.required || false,
+          required: el.required || false,
           placeholder: el.placeholder || null,
-          maxlength:   el.maxLength > 0 ? el.maxLength : null,
+          maxlength: el.maxLength > 0 ? el.maxLength : null,
+          choices,
+        });
+      });
+
+      document.querySelectorAll('.tpo_option-container').forEach(container => {
+        const named = container.querySelector('[name^="properties["]');
+        const prop = readProperty(named?.getAttribute('name'));
+        if (!prop || internals.has(prop)) return;
+
+        const textInput = container.querySelector('input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="date"]):not([type="number"])');
+        const textarea = container.querySelector('textarea');
+        const select = container.querySelector('select');
+        const fileInput = container.querySelector('input[type="file"]');
+        const numberInput = container.querySelector('input[type="number"]');
+        const dateInput = container.querySelector('input[type="date"]');
+        const checkboxInputs = Array.from(container.querySelectorAll('input[type="checkbox"]'));
+        const radioInputs = Array.from(container.querySelectorAll('input[type="radio"]'));
+
+        let type = 'text';
+        if (textarea) {
+          type = 'textarea';
+        } else if (select) {
+          type = 'select';
+        } else if (fileInput) {
+          type = 'file';
+        } else if (checkboxInputs.length > 0) {
+          type = 'checkbox';
+        } else if (radioInputs.length > 0) {
+          type = 'radio';
+        } else if (numberInput) {
+          type = 'number';
+        } else if (dateInput) {
+          type = 'date';
+        }
+
+        const choiceInputs = checkboxInputs.length > 0 ? checkboxInputs : radioInputs;
+        const choices = select
+          ? Array.from(select.querySelectorAll('option')).filter(o => o.value).map(o => o.textContent.trim())
+          : Array.from(new Set(choiceInputs.map(input => (input.value || '').trim()).filter(Boolean)));
+        const label = container.querySelector('.form__label')?.textContent?.replace(/\s+/g, ' ').trim() || null;
+        const control = textarea || select || fileInput || numberInput || dateInput || textInput || named;
+
+        upsertOption(prop, {
+          label,
+          type,
+          required: Boolean(container.querySelector('.tpo_option-required-indicator')?.textContent?.trim()) || Boolean(control?.required),
+          placeholder: textInput?.placeholder || textarea?.placeholder || named?.placeholder || null,
+          maxlength: control && control.maxLength > 0 ? control.maxLength : null,
           choices,
         });
       });
@@ -154,7 +238,7 @@ async function scrapePage(ctx, handle) {
       const seoTitle = document.querySelector('title')?.textContent?.trim() || null;
       const seoDesc  = document.querySelector('meta[name="description"]')?.content?.trim() || null;
 
-      return { options, seoTitle, seoDesc };
+      return { options: Array.from(optionMap.values()), seoTitle, seoDesc };
     }, { tpoInternal: [...TPO_INTERNAL], tpoGenericPattern: TPO_GENERIC_RE.source });
 
   } catch (e) {
