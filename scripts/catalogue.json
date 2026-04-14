@@ -379,19 +379,22 @@
         "property": "text-box-1",
         "label": null,
         "type": "text",
-        "required": false,
+        "required": true,
         "placeholder": "ex : Table des mariés",
         "maxlength": null,
         "choices": []
       },
       {
         "property": "checkbox-1",
-        "label": null,
-        "type": "text",
-        "required": false,
+        "label": "Motif de feuille",
+        "type": "checkbox",
+        "required": true,
         "placeholder": null,
         "maxlength": null,
-        "choices": []
+        "choices": [
+          "Oui",
+          "Non"
+        ]
       }
     ]
   },

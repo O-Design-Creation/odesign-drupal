@@ -3,15 +3,15 @@ langcode: fr
 status: true
 dependencies: {  }
 id: import_27005889
-label: 'Personnalisation + Option'
+label: 'Nom ou numéro de la table + Motif de feuille'
 description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
 fields:
   -
     id: field_1
-    label: Personnalisation
+    label: 'Nom ou numéro de la table'
     type: text
-    required: false
-    placeholder: ''
+    required: true
+    placeholder: 'ex : Table des mariés'
     help: ''
     maxlength: 80
     weight: 0
@@ -23,14 +23,20 @@ fields:
       label: ''
   -
     id: field_2
-    label: Option
+    label: 'Motif de feuille'
     type: checkboxes
-    required: false
+    required: true
     placeholder: ''
     help: ''
     maxlength: 0
     weight: 1
-    options: {  }
+    options:
+      -
+        value: Oui
+        label: Oui
+      -
+        value: Non
+        label: Non
     group_max: 5
     price_modifier:
       type: none
