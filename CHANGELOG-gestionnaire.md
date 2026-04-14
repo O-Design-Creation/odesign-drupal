@@ -5,6 +5,11 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc13 — 14 avril 2026
+
+### Préparation recette
+- **Déploiement préprod plus fiable** : les correctifs techniques et données de déploiement sont désormais rejoués automatiquement au redémarrage après une mise à jour.
+
 ## v1.0rc12 — 14 avril 2026
 
 ### Personnalisation produits
