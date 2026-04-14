@@ -11,7 +11,7 @@ fields:
     label: 'Texte 1'
     type: text
     required: false
-    placeholder: ''
+    placeholder: 'ex : Bonne fête mamie'
     help: ''
     maxlength: 80
     weight: 0
@@ -26,7 +26,7 @@ fields:
     label: 'Texte 2'
     type: text
     required: false
-    placeholder: ''
+    placeholder: 'ex : Choupinette & Poupette'
     help: ''
     maxlength: 80
     weight: 1
@@ -38,14 +38,20 @@ fields:
       label: ''
   -
     id: field_3
-    label: 'Motifs de fleurs'
-    type: text
-    required: false
+    label: "Motifs de fleurs ( Comme sur l'image du produit )"
+    type: checkboxes
+    required: true
     placeholder: ''
     help: ''
-    maxlength: 80
+    maxlength: 0
     weight: 2
-    options: {  }
+    options:
+      -
+        value: Oui
+        label: Oui
+      -
+        value: Non
+        label: Non
     group_max: 5
     price_modifier:
       type: none
