@@ -9,7 +9,8 @@ use Drupal\commerce_product\Entity\Product;
  *
  * Cible les produits par alias Shopify (stable entre environnements) :
  * - /products/arbre-de-vie-personnalise (doit porter le template)
- * - /products/carte-naissance-ovale-bois (ne doit pas le porter)
+ * - /products/carte-naissance-ovale-bois (peut servir de source de template
+ *   mais peut aussi porter légitimement son propre template simple)
  */
 
 $target_handle = getenv('TARGET_HANDLE') ?: 'arbre-de-vie-personnalise';
@@ -73,11 +74,6 @@ $legacy_before = $legacy ? ($legacy->get('field_personalization_template')->targ
 
 $target->set('field_personalization_template', ['target_id' => $template->id()]);
 $target->save();
-
-if ($legacy) {
-  $legacy->set('field_personalization_template', []);
-  $legacy->save();
-}
 
 $target_after = $target->get('field_personalization_template')->target_id ?? 'none';
 $legacy_after = $legacy ? ($legacy->get('field_personalization_template')->target_id ?? 'none') : 'n/a';
