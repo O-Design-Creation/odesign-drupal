@@ -5,6 +5,12 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc12 — 14 avril 2026
+
+### Personnalisation produits
+- **Carte de naissance ovale** : le champ de personnalisation **Prénom** est rétabli sur la fiche produit.
+- **Correction plus fiable** : le correctif est rejouable sans retirer à nouveau cette personnalisation lors d'une maintenance ultérieure.
+
 ## v1.0rc11 — 14 avril 2026
 
 ### Catalogue
