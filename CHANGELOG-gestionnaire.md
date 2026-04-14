@@ -5,6 +5,15 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc11 — 14 avril 2026
+
+### Catalogue
+- **Catalogue complet plus fiable** : la pagination de la page `/produits` est stabilisée pour éviter que certaines créations apparaissent en double d'une page à l'autre.
+- **Produits mieux répartis** : les créations retrouvent une place cohérente dans les différentes pages du catalogue complet.
+
+### Préparation recette
+- **Correction prête pour la preprod** : ce correctif est préparé pour être rejoué sur l'environnement de préproduction avant validation finale.
+
 ## v1.0rc10 — 13 avril 2026
 
 ### Recherche & catalogue
