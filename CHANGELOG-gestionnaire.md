@@ -5,6 +5,24 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc16 — 14 avril 2026
+
+### Personnalisation produits
+- **Numéro de table** : le formulaire affiche maintenant un champ clair pour le **nom ou numéro de la table** avec son exemple de saisie.
+- **Motif de feuille** : le choix **Oui / Non** est de nouveau visible et obligatoire sur la fiche produit.
+
+## v1.0rc15 — 14 avril 2026
+
+### Personnalisation produits
+- **Cadre photo en bois personnalisé** : les exemples de saisie reviennent sur les champs **Texte 1** et **Texte 2**.
+- **Motifs de fleurs** : le choix **Oui / Non** est de nouveau affiché clairement et demandé sur la fiche produit.
+
+## v1.0rc14 — 14 avril 2026
+
+### Personnalisation produits
+- **Plaque de chaise mariage** : le formulaire affiche maintenant les bons champs **Texte 1**, **Texte 2** et **Symbole** avec les choix **Coeur / Feuille**.
+- **Description produit corrigée** : la fiche ne contient plus le texte mal encodé observé en recette.
+
 ## v1.0rc13 — 14 avril 2026
 
 ### Préparation recette
