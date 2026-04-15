@@ -1,0 +1,38 @@
+uuid: f51b3ef6-3b41-4a7b-b7cd-b396ace5b07a
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_6d829a4f
+label: 'Personnalisation + Prénoms'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: true
+    placeholder: 'Ex : Le jardin de Mamie'
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Prénoms
+    type: textarea
+    required: true
+    placeholder: 'ex : Marine, Juline, Pierre, Marie'
+    help: 'Veuillez indiquer 10 prénoms maximum, séparés par une virgule'
+    maxlength: 0
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

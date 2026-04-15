@@ -1,0 +1,38 @@
+uuid: 7ad44d54-2f3c-4317-be31-090f54bdebac
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_ae751283
+label: 'Texte 1 + Texte 2'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Texte 1'
+    type: text
+    required: false
+    placeholder: 'ex : Lya'
+    help: 'Entrez le texte qui apparaîtra au-dessus du vase.'
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Texte 2'
+    type: text
+    required: false
+    placeholder: "ex : Je t'aime mamie d'amour"
+    help: 'Entrez le texte qui apparaîtra au-dessus du vase.'
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

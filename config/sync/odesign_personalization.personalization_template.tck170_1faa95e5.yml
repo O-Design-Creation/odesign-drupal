@@ -1,0 +1,53 @@
+uuid: d462e1c7-eb07-4343-b633-8981bde9b8e1
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_1faa95e5
+label: 'Duo de pancartes + Modèle'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Duo de pancartes'
+    type: checkboxes
+    required: true
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options:
+      -
+        value: 'Elle & Lui'
+        label: 'Elle & Lui'
+      -
+        value: 'Elle & Elle'
+        label: 'Elle & Elle'
+      -
+        value: 'Lui & Lui'
+        label: 'Lui & Lui'
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Modèle
+    type: checkboxes
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 1
+    options:
+      -
+        value: Voyage
+        label: Voyage
+      -
+        value: Feuille
+        label: Feuille
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

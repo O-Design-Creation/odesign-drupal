@@ -1,0 +1,38 @@
+uuid: f99ff799-3993-4d50-9837-1db1bde3ef5f
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_7026601b
+label: 'Personnalisation + Adjectifs'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: true
+    placeholder: 'Ma nounou'
+    help: 'Remplir ce champ avec la personnalisation du destinataire, par exemple, le prénom de la personne ou son surnom.'
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Adjectifs
+    type: text
+    required: false
+    placeholder: 'ex : Bienveillante, Mature, Drôle, Géniale, Intelligente, Belle, Sympa, Forte'
+    help: 'Remplissez ce champ uniquement si vous souhaitez modifier les adjectifs présents dans les cœurs ; merci d’indiquer exactement 8 adjectifs et de les séparer par une virgule.'
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

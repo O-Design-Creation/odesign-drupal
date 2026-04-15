@@ -1,0 +1,59 @@
+uuid: fe6bcdaa-74f9-4b65-9631-3d536026fe1f
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_e397d502
+label: 'Texte 1 + Texte 2 + Symbole'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Texte 1'
+    type: text
+    required: true
+    placeholder: 'ex : Madame'
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Texte 2'
+    type: text
+    required: true
+    placeholder: 'ex : Couronnel'
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_3
+    label: Symbole
+    type: checkboxes
+    required: false
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 2
+    options:
+      -
+        value: Coeur
+        label: Coeur
+      -
+        value: Feuille
+        label: Feuille
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

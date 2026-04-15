@@ -1,0 +1,38 @@
+uuid: ac3c600b-253a-4efb-bb89-b9687acd0cb4
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_3633b8b0
+label: 'Prénom(s) + Date'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Prénom(s)
+    type: text
+    required: true
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Date
+    type: text
+    required: true
+    placeholder: 'Select a date'
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

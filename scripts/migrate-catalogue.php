@@ -277,10 +277,28 @@ function perso_field_options(array $choices): array {
 
 /**
  * Retourne une signature canonique d'un jeu d'options (pour déduplication).
- * Deux produits avec les mêmes champs (mêmes noms, ordre ignoré) partagent la même signature.
+ * Deux produits partagent un modèle seulement si le contenu visible des
+ * champs est réellement identique.
  */
 function perso_signature(array $user_options): string {
-  $keys = array_map(fn($o) => mb_strtolower(trim($o['property'])), $user_options);
+  $keys = [];
+  foreach ($user_options as $o) {
+    $choices = $o['choices'] ?? [];
+    if (is_array($choices)) {
+      $choices = array_values(array_filter(array_map(
+        fn($choice) => is_string($choice) ? trim($choice) : '',
+        $choices
+      )));
+    }
+    $keys[] = implode("\x1f", [
+      mb_strtolower(trim((string) ($o['property'] ?? ''))),
+      mb_strtolower(normalize_perso_label((string) ($o['property'] ?? ''), $o['label'] ?? NULL)),
+      (string) ($o['type'] ?? ''),
+      trim((string) ($o['placeholder'] ?? '')),
+      trim((string) ($o['help'] ?? '')),
+      implode("\x1e", $choices),
+    ]);
+  }
   sort($keys);
   return implode('|', $keys);
 }
@@ -337,7 +355,7 @@ function ensure_perso_template(string $template_id, string $template_label, arra
       'type'        => $type,
       'required'    => !empty($opt['required']),
       'placeholder' => trim((string) ($opt['placeholder'] ?? '')),
-      'help'        => '',
+      'help'        => trim((string) ($opt['help'] ?? '')),
       'maxlength'   => $maxlength,
       'options'     => $options,
       'group_max'   => 5,

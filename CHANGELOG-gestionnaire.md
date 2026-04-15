@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc17 — 15 avril 2026
+
+### Personnalisation produits
+- **Textes d'aide et exemples de saisie** : plusieurs fiches produits retrouvent les textes d'aide et les exemples visibles sur l'ancien site.
+- **Noms des options** : les libellés des champs de personnalisation sont réalignés avec Shopify pour les produits concernés.
+- **Formulaires dédiés par produit** : certains produits utilisent désormais leur propre modèle de personnalisation pour éviter qu'un exemple ou un texte d'aide soit partagé avec une fiche qui n'en a pas besoin.
+- **Calendrier gravé** : le champ principal est renommé **Prénom(s)**.
+
 ## v1.0rc16 — 14 avril 2026
 
 ### Personnalisation produits

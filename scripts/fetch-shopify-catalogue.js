@@ -134,6 +134,7 @@ async function scrapePage(ctx, handle) {
           type: 'text',
           required: false,
           placeholder: null,
+          help: null,
           maxlength: null,
           choices: [],
         };
@@ -149,6 +150,9 @@ async function scrapePage(ctx, handle) {
         }
         if (typeof data.placeholder === 'string' && data.placeholder.trim() !== '') {
           current.placeholder = data.placeholder.trim();
+        }
+        if (typeof data.help === 'string' && data.help.trim() !== '') {
+          current.help = data.help.trim();
         }
         if (Number.isInteger(data.maxlength) || data.maxlength === null) {
           current.maxlength = data.maxlength;
@@ -223,6 +227,12 @@ async function scrapePage(ctx, handle) {
           ? Array.from(select.querySelectorAll('option')).filter(o => o.value).map(o => o.textContent.trim())
           : Array.from(new Set(choiceInputs.map(input => (input.value || '').trim()).filter(Boolean)));
         const label = container.querySelector('.form__label')?.textContent?.replace(/\s+/g, ' ').trim() || null;
+        const help = Array.from(container.querySelectorAll('[class*=help], [class*=description], [class*=desc], [class*=instruction], .tpo_option-help-text, .tpo_option-description'))
+          .map(el => el.textContent?.replace(/\s+/g, ' ').trim() || '')
+          .filter(Boolean)
+          .filter(text => text !== label)
+          .filter((text, index, all) => all.indexOf(text) === index)
+          .join(' ');
         const control = textarea || select || fileInput || numberInput || dateInput || textInput || named;
 
         upsertOption(prop, {
@@ -230,6 +240,7 @@ async function scrapePage(ctx, handle) {
           type,
           required: Boolean(container.querySelector('.tpo_option-required-indicator')?.textContent?.trim()) || Boolean(control?.required),
           placeholder: textInput?.placeholder || textarea?.placeholder || named?.placeholder || null,
+          help,
           maxlength: control && control.maxLength > 0 ? control.maxLength : null,
           choices,
         });

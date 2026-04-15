@@ -1,0 +1,38 @@
+uuid: 5088710d-8346-45a9-bfef-9282bf39e1dd
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_99fb7d2d
+label: 'Texte 1 + Texte 2'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Texte 1'
+    type: text
+    required: true
+    placeholder: 'ex : Papa'
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Texte 2'
+    type: text
+    required: true
+    placeholder: "ex : d'amour"
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

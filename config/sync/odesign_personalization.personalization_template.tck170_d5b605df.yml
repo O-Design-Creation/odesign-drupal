@@ -1,0 +1,44 @@
+uuid: 6e611bbb-8bc0-4c4d-9611-b4e236ba321b
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_d5b605df
+label: 'Nom ou numéro de la table + Motif de feuille'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Nom ou numéro de la table'
+    type: text
+    required: true
+    placeholder: 'ex : Table des mariés'
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Motif de feuille'
+    type: checkboxes
+    required: true
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 1
+    options:
+      -
+        value: Oui
+        label: Oui
+      -
+        value: Non
+        label: Non
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

@@ -1,0 +1,38 @@
+uuid: 966f532a-0cee-4cc4-84af-0c77c1ee2e5a
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_d12bfdee
+label: 'Personnalisation + Votre photo'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: true
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Votre photo'
+    type: file
+    required: true
+    placeholder: 'Ajouter votre photo'
+    help: 'Votre photo sera retravaillée afin qu’elle soit adaptée et éligible à la gravure sur bois'
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
