@@ -1,0 +1,83 @@
+uuid: ef14fe75-bbbe-405d-97da-475551451182
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_ac9fbf41
+label: 'Personnalisation du cœur + Nombre de ligne + Prénom(s) li...'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Personnalisation du cœur'
+    type: text
+    required: true
+    placeholder: "ex : Mamie d'amour"
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Nombre de ligne'
+    type: text
+    required: true
+    placeholder: 'Please select'
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_3
+    label: 'Prénom(s) ligne 1'
+    type: textarea
+    required: true
+    placeholder: 'ex : Sarah, Julien'
+    help: 'Si vous avez choisi une seule ligne, veuillez indiquer tous les prénoms dans ce champ. En revanche, si vous avez sélectionné deux ou trois lignes, merci de renseigner ici uniquement les prénoms destinés à la ligne de gauche.'
+    maxlength: 0
+    weight: 2
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_4
+    label: 'Prénom(s) ligne 2'
+    type: textarea
+    required: false
+    placeholder: 'ex : Marine, Léo, Séréna'
+    help: 'Merci de remplir ce champ uniquement si vous avez sélectionné deux ou trois lignes, puisqu’il correspond à la ligne du milieu de votre création personnalisée.'
+    maxlength: 0
+    weight: 3
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_5
+    label: 'Prénom(s) ligne 3'
+    type: textarea
+    required: false
+    placeholder: 'ex : Paolo, Suzane'
+    help: 'Merci de remplir ce champ uniquement si vous avez sélectionné trois lignes, car il correspond à la ligne de droite de votre création.'
+    maxlength: 0
+    weight: 4
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

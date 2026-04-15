@@ -1,0 +1,38 @@
+uuid: 1e1e4eca-3ed0-49c1-afc8-b7550cf0125b
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_345d5caf
+label: 'Prénoms des mariés + Date du mariage'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: 'Prénoms des mariés'
+    type: text
+    required: true
+    placeholder: ''
+    help: 'Entrez les prénoms des deux mariés'
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: 'Date du mariage'
+    type: text
+    required: true
+    placeholder: 'Select a date'
+    help: ''
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

@@ -91,7 +91,13 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
 
   foreach ($fields as $field) {
     $fieldId  = $field['id'];
-    $fieldKey = 'perso_' . preg_replace('/[^a-z0-9_]/i', '_', strtolower($field['label'] ?: $fieldId));
+    $fieldKeyBase = 'perso_' . preg_replace('/[^a-z0-9_]/i', '_', strtolower($field['label'] ?: $fieldId));
+    $fieldKey = $fieldKeyBase;
+    $fieldKeySuffix = 2;
+    while (isset($field_labels_by_key[$fieldKey])) {
+      $fieldKey = $fieldKeyBase . '_' . $fieldKeySuffix;
+      $fieldKeySuffix++;
+    }
     $normalized_label = mb_strtolower(trim((string) ($field['label'] ?? '')));
     $field_labels_by_key[$fieldKey] = (string) ($field['label'] ?? '');
 
@@ -165,7 +171,11 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
         break;
 
       case 'file':
-        $form['personalization'][$fieldKey] = $baseProps + [
+        $fileProps = $baseProps;
+        if (!empty($field['placeholder'])) {
+          $fileProps['#description'] = trim($field['placeholder'] . (!empty($field['help']) ? ' — ' . $field['help'] : ''));
+        }
+        $form['personalization'][$fieldKey] = $fileProps + [
           '#type'              => 'managed_file',
           '#upload_location'   => 'private://personalization/',
           '#upload_validators' => [

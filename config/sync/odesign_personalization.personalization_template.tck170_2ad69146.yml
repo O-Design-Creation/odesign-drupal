@@ -1,0 +1,38 @@
+uuid: a5ac9174-a401-43d6-9835-3e54b78f96b3
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_2ad69146
+label: 'Personnalisation + Prénoms'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: true
+    placeholder: 'ex : Mamie'
+    help: 'Texte qui apparaitra en dessous de "super"'
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Prénoms
+    type: text
+    required: true
+    placeholder: 'ex : Théo, Raphaël, Nathan'
+    help: 'Veuillez indiquer les prénoms, séparés par une virgule'
+    maxlength: 80
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

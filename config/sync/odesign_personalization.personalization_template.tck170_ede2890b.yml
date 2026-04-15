@@ -1,0 +1,23 @@
+uuid: d5656f07-56d8-44b1-8d4e-7b7106ac53d1
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_ede2890b
+label: Personnalisation
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Personnalisation
+    type: text
+    required: false
+    placeholder: 'Ex : Papi, tu tires ou tu pointes ?'
+    help: 'Personnalisez entièrement la phrase selon vos envies.'
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

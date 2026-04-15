@@ -1,0 +1,38 @@
+uuid: 2ea8c39a-83eb-475b-9e2d-5a749d2b3606
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_f44682e9
+label: 'Texte + Prénoms'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Texte
+    type: text
+    required: true
+    placeholder: 'ex : Le bonheur de Mamie '
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Prénoms
+    type: textarea
+    required: true
+    placeholder: 'Ex: Hugo, Melyo, Meliah, Pauline, Gabriel, Mael'
+    help: 'Remplissez ce champ avec les prénoms qui seront réalisés sous forme de Scrabble (8 prénoms maximum) et veillez à bien séparer chaque prénom par une virgule.'
+    maxlength: 0
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''

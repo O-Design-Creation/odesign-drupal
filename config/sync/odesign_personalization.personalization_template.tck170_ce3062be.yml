@@ -1,0 +1,38 @@
+uuid: a7ea5bd6-cb43-4940-8a6d-841ea9982055
+langcode: fr
+status: true
+dependencies: {  }
+id: tck170_ce3062be
+label: 'Quantité + Prénoms'
+description: 'Aligné sur Shopify live par TCK-170 (labels, aides, placeholders).'
+fields:
+  -
+    id: field_1
+    label: Quantité
+    type: text
+    required: true
+    placeholder: ''
+    help: ''
+    maxlength: 80
+    weight: 0
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
+  -
+    id: field_2
+    label: Prénoms
+    type: textarea
+    required: false
+    placeholder: 'ex : Lisa, Célia, Quentin, Séverine'
+    help: 'Veuillez entrer le même nombre de prénoms que la quantité sélectionnée et les séparer par une virgule'
+    maxlength: 0
+    weight: 1
+    options: {  }
+    group_max: 5
+    price_modifier:
+      type: none
+      amount: '0'
+      label: ''
