@@ -5,6 +5,12 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc18 — 15 avril 2026
+
+### Documentation gestionnaire
+- **Modèles de personnalisation** : le guide de personnalisation précise maintenant la différence entre les modèles réutilisables et les modèles dédiés à un produit.
+- **Prévention des erreurs** : le guide rappelle qu'un modèle dédié, par exemple pour l'Arbre de vie ou le Calendrier gravé, ne doit pas être associé à d'autres produits.
+
 ## v1.0rc17 — 15 avril 2026
 
 ### Personnalisation produits

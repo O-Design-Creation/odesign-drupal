@@ -95,7 +95,9 @@ Une fois votre modèle créé, vous devez l'associer aux produits concernés :
 
 ![Champ modèle de personnalisation sur la fiche produit](screenshots/personnalisation-produit-champ.png)
 
-> 💡 **Astuce** : Un modèle peut être réutilisé sur plusieurs produits. Par exemple, si vous avez 10 produits avec un simple champ "Prénom", créez un seul modèle "Prénom simple" et associez-le à tous ces produits.
+> 💡 **Astuce** : Un modèle peut être réutilisé sur plusieurs produits similaires. Par exemple, si vous avez 10 produits avec un simple champ "Prénom", créez un seul modèle "Prénom simple" et associez-le à tous ces produits.
+>
+> **Exception — modèles dédiés par produit** : Certains produits disposent d'un modèle propre qui ne doit pas être partagé. C'est le cas notamment de l'**Arbre de vie** et du **Calendrier gravé**, dont l'interface cliente ou les textes d'aide sont spécifiques au produit. Associer ces modèles dédiés à d'autres produits produirait un rendu incorrect. Ne modifiez pas ces modèles sans en comprendre le rôle, et ne les réaffectez pas à d'autres produits.
 
 ---
 
@@ -150,4 +152,4 @@ Le client peut ajuster les positions avant d'ajouter au panier :
 - **Modifier** : depuis la liste des modèles, cliquer sur **Modifier** à droite du modèle
 - **Supprimer** : cliquer sur **Supprimer** — attention, si le modèle est associé à des produits, ceux-ci n'afficheront plus le formulaire de personnalisation
 
-> ⚠️ **Attention** : Modifier un modèle affecte immédiatement tous les produits qui l'utilisent.
+> ⚠️ **Attention** : Modifier un modèle affecte immédiatement tous les produits qui l'utilisent. Si le modèle est partagé entre plusieurs produits, tout ajout, suppression ou renommage de champ est répercuté sur l'ensemble de ces fiches. Avant de modifier un modèle partagé, identifiez les produits concernés (rechercher le nom du modèle dans `/admin/commerce/products`) et, si le changement ne doit s'appliquer qu'à un seul produit, créez plutôt un nouveau modèle dédié.
