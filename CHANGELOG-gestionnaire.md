@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc28 — 20 avril 2026
+
+### Facturation
+- **Factures PDF** : l'espace de stockage des factures est maintenant correctement configuré — le message d'erreur "Commerce Invoice requires the private file system path" ne s'affiche plus.
+
+---
+
 ## v1.0rc27 — 20 avril 2026
 
 ### Infrastructure
