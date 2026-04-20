@@ -893,6 +893,18 @@ if (!empty($_ENV['PANTHEON_ENVIRONMENT'])) {
 // Désactiver les bannières partenaires Commerce (ShipStation etc.)
 $settings['commerce_show_partner_banners'] = FALSE;
 
+// Reverse proxy Traefik — Drupal doit faire confiance aux en-têtes X-Forwarded-*.
+// Sans ceci, getSchemeAndHttpHost() retourne http:// au lieu de https://.
+if (getenv('DB_HOST')) {
+  $settings['reverse_proxy'] = TRUE;
+  $settings['reverse_proxy_addresses'] = ['127.0.0.1'];
+  $settings['reverse_proxy_trusted_headers'] =
+    \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_FOR |
+    \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_HOST |
+    \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PORT |
+    \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PROTO;
+}
+
 // Surcharge config SMTP Brevo depuis les variables d'environnement.
 if (getenv('BREVO_SMTP_USERNAME')) {
   $config['smtp.settings']['smtp_username'] = getenv('BREVO_SMTP_USERNAME');
