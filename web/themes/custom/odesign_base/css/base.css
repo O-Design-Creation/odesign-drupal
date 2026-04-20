@@ -906,6 +906,7 @@ strong { font-weight: 600; }
 
 /* Checkbox RGPD — pleine largeur sous le champ */
 .newsletter-strip__form .form-type--checkbox,
+.newsletter-strip__form .form-type-checkbox,
 .newsletter-strip__form .form-item-gdpr-consent {
   grid-area: gdpr;
   display: flex;
@@ -917,19 +918,22 @@ strong { font-weight: 600; }
   margin-top: var(--space-1);
 }
 
-.newsletter-strip__form .form-type--checkbox input[type="checkbox"] {
+.newsletter-strip__form .form-type--checkbox input[type="checkbox"],
+.newsletter-strip__form .form-type-checkbox input[type="checkbox"] {
   margin-top: 2px;
   flex-shrink: 0;
   accent-color: var(--color-brand-dark);
 }
 
-.newsletter-strip__form .form-type--checkbox label {
+.newsletter-strip__form .form-type--checkbox label,
+.newsletter-strip__form .form-type-checkbox label {
   font-size: 11px;
   color: var(--color-text-muted);
 }
 
-.newsletter-strip__form .form-type--checkbox a {
-  color: var(--color-brand-warm, #8B6151);
+.newsletter-strip__form .form-type--checkbox a,
+.newsletter-strip__form .form-type-checkbox a {
+  color: #8B6151;
   font-weight: 600;
   text-decoration: underline;
 }

@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc24 — 20 avril 2026
+
+### Lisibilité
+- **Newsletter** : le lien vers la politique de confidentialité est corrigé sur le balisage réellement servi en préproduction.
+
+---
+
 ## v1.0rc23 — 20 avril 2026
 
 ### Lisibilité
