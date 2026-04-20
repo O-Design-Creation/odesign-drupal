@@ -893,6 +893,9 @@ if (!empty($_ENV['PANTHEON_ENVIRONMENT'])) {
 // Désactiver les bannières partenaires Commerce (ShipStation etc.)
 $settings['commerce_show_partner_banners'] = FALSE;
 
+// Fichiers privés (Commerce Invoice, etc.) — hors webroot, persistant via volume.
+$settings['file_private_path'] = getenv('DRUPAL_PRIVATE_PATH') ?: '/var/www/html/private';
+
 // Reverse proxy Traefik — Drupal doit faire confiance aux en-têtes X-Forwarded-*.
 // Sans ceci, getSchemeAndHttpHost() retourne http:// au lieu de https://.
 if (getenv('DB_HOST')) {

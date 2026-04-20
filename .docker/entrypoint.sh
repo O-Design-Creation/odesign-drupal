@@ -58,6 +58,8 @@ ok "Base de données disponible."
 # pour ne pas être interprétées par bash dans le heredoc.
 
 mkdir -p "${WEB_ROOT}/sites/default"
+mkdir -p "${DRUPAL_PRIVATE_PATH:-/var/www/html/private}"
+chmod 750 "${DRUPAL_PRIVATE_PATH:-/var/www/html/private}"
 cat > "${WEB_ROOT}/sites/default/settings.local.php" << SETTINGS_EOF
 <?php
 /**
