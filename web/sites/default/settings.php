@@ -892,3 +892,17 @@ if (!empty($_ENV['PANTHEON_ENVIRONMENT'])) {
 
 // Désactiver les bannières partenaires Commerce (ShipStation etc.)
 $settings['commerce_show_partner_banners'] = FALSE;
+
+// Surcharge config Stripe depuis les variables d'environnement.
+// Protège les clés live d'un écrasement par drush config:import.
+if (getenv('STRIPE_SECRET_KEY')) {
+  $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['configuration']['secret_key'] = getenv('STRIPE_SECRET_KEY');
+  $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['configuration']['publishable_key'] = getenv('STRIPE_PUBLISHABLE_KEY');
+  $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['configuration']['mode'] = getenv('STRIPE_MODE') ?: 'live';
+  $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['configuration']['authentication_method'] = 'api_keys';
+  $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['status'] = TRUE;
+  if (getenv('STRIPE_WEBHOOK_SECRET')) {
+    $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['configuration']['webhook_signing_secret'] = getenv('STRIPE_WEBHOOK_SECRET');
+    $config['commerce_payment.commerce_payment_gateway.stripe_sandbox']['configuration']['webhook_secret'] = getenv('STRIPE_WEBHOOK_SECRET');
+  }
+}
