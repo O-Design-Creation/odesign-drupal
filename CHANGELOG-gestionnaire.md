@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc23 — 20 avril 2026
+
+### Lisibilité
+- **Newsletter** : le lien vers la politique de confidentialité dans le formulaire d'inscription est plus contrasté.
+
+---
+
 ## v1.0rc22 — 20 avril 2026
 
 ### Page campagne Fête des mères

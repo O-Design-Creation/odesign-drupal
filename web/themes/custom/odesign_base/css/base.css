@@ -929,7 +929,8 @@ strong { font-weight: 600; }
 }
 
 .newsletter-strip__form .form-type--checkbox a {
-  color: var(--color-brand-dark);
+  color: var(--color-brand-warm, #8B6151);
+  font-weight: 600;
   text-decoration: underline;
 }
 
