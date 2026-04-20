@@ -57,11 +57,27 @@
   margin-bottom: 1.5rem;
 }
 
+/* Le wrapper Drupal (entity_reference_entity_view) ajoute un div intermédiaire sans classe */
 .campagne-produits-grid {
+  margin-bottom: 2rem;
+}
+
+.campagne-produits-grid > div {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+}
+
+@media (max-width: 700px) {
+  .campagne-produits-grid > div {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 440px) {
+  .campagne-produits-grid > div {
+    grid-template-columns: 1fr;
+  }
 }
 
 .campagne-full__cta {

@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc20 — 20 avril 2026
+
+### Page campagne Fête des mères (correctifs CSS)
+- **Chargement CSS** : les styles de la page campagne sont désormais correctement chargés (librairie non attachée au template full).
+- **Grille de produits** : les produits mis en avant s'affichent maintenant en grille (3 colonnes desktop, 2 sur tablette, 1 sur mobile).
+
+---
+
 ## v1.0rc19 — 20 avril 2026
 
 ### Page campagne Fête des mères
