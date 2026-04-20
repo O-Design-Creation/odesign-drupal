@@ -893,6 +893,12 @@ if (!empty($_ENV['PANTHEON_ENVIRONMENT'])) {
 // Désactiver les bannières partenaires Commerce (ShipStation etc.)
 $settings['commerce_show_partner_banners'] = FALSE;
 
+// Surcharge config SMTP Brevo depuis les variables d'environnement.
+if (getenv('BREVO_SMTP_USERNAME')) {
+  $config['smtp.settings']['smtp_username'] = getenv('BREVO_SMTP_USERNAME');
+  $config['smtp.settings']['smtp_password'] = getenv('BREVO_SMTP_PASSWORD');
+}
+
 // Surcharge config Stripe depuis les variables d'environnement.
 // Protège les clés live d'un écrasement par drush config:import.
 if (getenv('STRIPE_SECRET_KEY')) {
