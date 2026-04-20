@@ -5,6 +5,21 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc21 — 20 avril 2026
+
+### Page campagne Fête des mères
+- **Accessibilité** : le titre principal reste disponible pour les lecteurs d'écran tout en évitant un doublon visuel sur la page.
+- **Affichage mobile** : le bouton "Découvrir la collection" peut maintenant revenir à la ligne si le texte est trop long sur téléphone.
+- **Liens de campagne** : les boutons de campagne utilisent désormais une adresse lisible au lieu d'une adresse technique `internal:/...`.
+
+### Panier
+- **Produits personnalisés** : l'ajout au panier fonctionne à nouveau après saisie des champs de personnalisation sur le cadre jardin fleuri.
+
+### Lisibilité
+- **Contraste** : les textes du footer et du bandeau cookies sont renforcés pour rester lisibles sur le fond terracotta.
+
+---
+
 ## v1.0rc20 — 20 avril 2026
 
 ### Page campagne Fête des mères (correctifs CSS)

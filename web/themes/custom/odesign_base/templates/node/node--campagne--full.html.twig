@@ -55,7 +55,7 @@
 
     {# CTA button #}
     {%- set cta_label = node.field_campagne_cta_label.value -%}
-    {%- set cta_url = node.field_campagne_cta_url.uri -%}
+    {%- set cta_url = node.field_campagne_cta_url.0.url -%}
     {%- if cta_label and cta_url -%}
       <div class="campagne-full__cta">
         <a href="{{ cta_url }}" class="btn btn--primary campagne-cta-btn">

@@ -1074,7 +1074,8 @@ function odesign_base_preprocess_page(array &$variables): void {
         );
       }
       $campagne_cta_label = $campagne_node->get('field_campagne_cta_label')->value ?: t('Découvrir la campagne');
-      $campagne_cta_url   = $campagne_node->get('field_campagne_cta_url')->uri ?: $campagne_node->toUrl()->toString();
+      $campagne_raw_uri   = $campagne_node->get('field_campagne_cta_url')->uri;
+      $campagne_cta_url   = $campagne_raw_uri ? \Drupal\Core\Url::fromUri($campagne_raw_uri)->toString() : $campagne_node->toUrl()->toString();
       $variables['front_campagne'] = [
         '#theme'     => 'campagne_en_cours_widget',
         '#node'      => $campagne_node,

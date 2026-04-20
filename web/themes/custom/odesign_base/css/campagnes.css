@@ -92,6 +92,7 @@
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
+  line-height: 1.35;
   /* Couleur accessible #8B6151 sur #fff : ratio ≈ 4.9:1 — WCAG AA ✓ */
   background: var(--color-brand-warm, #8B6151);
   border: 2px solid var(--color-brand-warm, #8B6151);
@@ -100,6 +101,8 @@
   /* Empêche le débordement horizontal sur mobile */
   max-width: 100%;
   box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .campagne-cta-btn:hover,
@@ -116,9 +119,18 @@
   }
 }
 
-/* Masque le bloc page-title Drupal sur la page campagne (le template rend son propre h2 visuel) */
+/* Cache visuellement le bloc page-title Drupal sur la page campagne (sr-only — reste dans l'arbre d'accessibilité) */
 main:has(.campagne-full) #block-odesign-base-page-title {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* ---------------------------------------------------------------------------
