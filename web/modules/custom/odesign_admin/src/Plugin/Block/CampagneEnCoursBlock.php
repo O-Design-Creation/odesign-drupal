@@ -7,6 +7,7 @@ namespace Drupal\odesign_admin\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -73,7 +74,8 @@ final class CampagneEnCoursBlock extends BlockBase implements ContainerFactoryPl
 
     // Récupération du CTA.
     $cta_label = $node->get('field_campagne_cta_label')->value ?? '';
-    $cta_url   = $node->get('field_campagne_cta_url')->uri ?? $node->toUrl()->toString();
+    $raw_uri   = $node->get('field_campagne_cta_url')->uri;
+    $cta_url   = $raw_uri ? Url::fromUri($raw_uri)->toString() : $node->toUrl()->toString();
     if (!$cta_label) {
       $cta_label = $this->t('Découvrir la campagne');
     }

@@ -37,7 +37,7 @@ final class CartOrderItemAddSubscriber implements EventSubscriberInterface {
 
     $sources = [
       (array) $request->request->all(),
-      (array) $request->request->get('personalization', []),
+      (array) $request->request->all('personalization'),
     ];
     $values = [];
     foreach ($sources as $source) {

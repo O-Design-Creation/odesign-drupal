@@ -1016,13 +1016,13 @@ strong { font-weight: 600; }
 
 .site-footer__copyright {
   margin: 0;
-  color: rgba(255,255,255,0.95);
+  color: #ffffff;
   font-size: var(--font-size-xs);
 }
 
 .site-footer__legal-notice {
   margin: var(--space-2) 0 0;
-  color: rgba(255,255,255,0.95);
+  color: #ffffff;
   font-size: var(--font-size-xs);
   font-style: italic;
   width: 100%;
@@ -2225,7 +2225,7 @@ textarea {
 
 #sliding-popup .popup-content {
   background: transparent;
-  color: rgba(255,255,255,0.92);
+  color: #ffffff;
   font-family: var(--font-body);
   font-size: var(--font-size-sm);
   max-width: var(--container-max);
