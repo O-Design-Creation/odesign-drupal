@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc22 — 20 avril 2026
+
+### Page campagne Fête des mères
+- **Affichage mobile** : le bouton de la campagne est mieux contraint pour éviter tout débordement horizontal sur téléphone.
+- **Bandeau cookies** : le lien vers la politique de confidentialité est plus lisible et respecte le contraste attendu.
+
+---
+
 ## v1.0rc21 — 20 avril 2026
 
 ### Page campagne Fête des mères
