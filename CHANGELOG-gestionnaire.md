@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc27 — 20 avril 2026
+
+### Infrastructure
+- **HTTPS correct en back-office** : les URLs générées dans l'interface de gestion (notamment l'URL webhook Stripe) affichent désormais `https://` au lieu de `http://`, conformément au certificat SSL en place.
+
+---
+
 ## v1.0rc26 — 20 avril 2026
 
 ### Infrastructure
