@@ -5,6 +5,16 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc19 — 20 avril 2026
+
+### Page campagne Fête des mères
+- **Widget campagne sur l'accueil** : la campagne Fête des mères est désormais visible sur la page d'accueil (desktop et mobile).
+- **Bouton "Découvrir la collection"** : le lien du bouton est corrigé — il pointait vers une page d'administration au lieu de la page campagne.
+- **Contraste du bouton** : la couleur du bouton est ajustée pour satisfaire les critères WCAG 2.1 AA (ratio ≥ 4.5:1).
+- **Affichage mobile** : le bouton ne déborde plus de l'écran sur téléphone.
+
+---
+
 ## v1.0rc18 — 15 avril 2026
 
 ### Documentation gestionnaire

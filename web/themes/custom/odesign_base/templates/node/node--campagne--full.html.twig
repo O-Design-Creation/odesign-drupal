@@ -28,10 +28,10 @@
 
   <div class="campagne-full__inner">
 
-    {# Titre H1 avec couleur d'accent #}
-    <h1 class="campagne-full__title" style="color: {{ couleur }};">
+    {# Titre de la campagne — h2 sémantique, le h1 est rendu par le bloc page-title Drupal #}
+    <h2 class="campagne-full__title" style="color: {{ couleur }};">
       {{- label -}}
-    </h1>
+    </h2>
 
     {# Corps de texte #}
     {%- if content.body|render|striptags|trim is not empty -%}
@@ -57,7 +57,7 @@
     {%- set cta_url = node.field_campagne_cta_url.uri -%}
     {%- if cta_label and cta_url -%}
       <div class="campagne-full__cta">
-        <a href="{{ cta_url }}" class="btn btn--primary campagne-cta-btn" style="background-color: {{ couleur }}; border-color: {{ couleur }};">
+        <a href="{{ cta_url }}" class="btn btn--primary campagne-cta-btn">
           {{- cta_label|e -}}
         </a>
       </div>
