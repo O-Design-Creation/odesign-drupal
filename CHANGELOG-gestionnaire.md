@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc26 — 20 avril 2026
+
+### Infrastructure
+- **Configuration sécurisée** : les clés Stripe et les identifiants email (Brevo) sont désormais protégés et survivent aux mises à jour du serveur sans intervention manuelle.
+
+---
+
 ## v1.0rc25 — 20 avril 2026
 
 ### Personnalisation produits — back-office
