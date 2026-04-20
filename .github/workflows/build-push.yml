@@ -232,8 +232,9 @@ jobs:
         env:
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
-          docker manifest inspect "ghcr.io/${GITHUB_REPOSITORY}:${RELEASE_TAG}" >/dev/null \
-            || { echo "Image GHCR introuvable: ghcr.io/${GITHUB_REPOSITORY}:${RELEASE_TAG}"; exit 1; }
+          REPO_LOWER="${GITHUB_REPOSITORY,,}"
+          docker manifest inspect "ghcr.io/${REPO_LOWER}:${RELEASE_TAG}" >/dev/null \
+            || { echo "Image GHCR introuvable: ghcr.io/${REPO_LOWER}:${RELEASE_TAG}"; exit 1; }
 
       - name: Aligner le tag Coolify prod sur le tag GitHub
         env:
