@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc25 — 20 avril 2026
+
+### Personnalisation produits — back-office
+- **Formulaire modèles de personnalisation corrigé** : la sauvegarde d'un modèle de personnalisation échouait systématiquement avec des messages d'erreur ("Nom du modèle est requis", "valeur non autorisée"). Ce blocage est résolu — les modèles se créent, s'éditent et se sauvegardent normalement.
+
+---
+
 ## v1.0rc24 — 20 avril 2026
 
 ### Lisibilité

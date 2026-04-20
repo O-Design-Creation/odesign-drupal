@@ -189,11 +189,14 @@ class PersonalizationTemplateForm extends EntityForm {
     $editData = $editing !== NULL ? ($form_state->get('fields')[$editing] ?? []) : [];
 
     $form = [
-      '#type'       => 'fieldset',
-      '#title'      => $editing !== NULL
+      '#type'        => 'fieldset',
+      '#title'       => $editing !== NULL
         ? $this->t('Modifier le champ « @label »', ['@label' => $editData['label'] ?? ''])
         : $this->t('Nouveau champ'),
       '#collapsible' => FALSE,
+      // Sans #tree, les sous-champs se retrouvent à la racine du formulaire et
+      // entrent en conflit avec le champ "label" du template (même name="label").
+      '#tree'        => TRUE,
     ];
 
     $form['label'] = [
@@ -256,10 +259,12 @@ class PersonalizationTemplateForm extends EntityForm {
       '#max'           => 25,
     ];
 
-    // Modificateur de prix
+    // Modificateur de prix — #tree pour que les sous-champs soient nommés
+    // new_field[price_modifier][type] et non name="type" à la racine.
     $form['price_modifier'] = [
-      '#type'       => 'fieldset',
-      '#title'      => $this->t('Impact sur le prix'),
+      '#type'  => 'fieldset',
+      '#title' => $this->t('Impact sur le prix'),
+      '#tree'  => TRUE,
     ];
 
     $currentModType = $editData['price_modifier']['type'] ?? 'none';
