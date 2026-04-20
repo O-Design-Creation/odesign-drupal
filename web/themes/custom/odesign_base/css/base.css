@@ -2245,6 +2245,13 @@ textarea {
   margin-bottom: var(--space-1);
 }
 
+#sliding-popup .popup-content a {
+  color: var(--color-brand-warm, #8B6151);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 #sliding-popup .agree-button {
   background: var(--color-brand-dark);
   color: #ffffff;
