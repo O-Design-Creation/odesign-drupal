@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc29 — 21 avril 2026
+
+### Correctifs techniques
+- **Factures PDF** : l'espace de stockage des factures est maintenant correctement configuré — le message d'erreur "Commerce Invoice requires the private file system path" ne s'affiche plus.
+- **Robots.txt** : le message d'avertissement sur le fichier robots.txt est résolu — c'est désormais le module qui gère ce fichier (configuration pré-lancement : indexation limitée).
+
+---
+
 ## v1.0rc28 — 20 avril 2026
 
 ### Facturation
