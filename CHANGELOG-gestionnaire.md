@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc30 — 21 avril 2026
+
+### Fiches produits
+- **Tarif de livraison** : le tarif affiché sur les fiches produits est corrigé — il indique désormais **3,99 €** (au lieu de 4,90 €).
+
+---
+
 ## v1.0rc29 — 21 avril 2026
 
 ### Correctifs techniques
