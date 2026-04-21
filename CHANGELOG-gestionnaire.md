@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc31 — 21 avril 2026
+
+### Sécurité
+- **Mise à jour de sécurité** : le cœur de la boutique est mis à jour vers la version 11.3.8 — correctif de sécurité officiel appliqué.
+
+---
+
 ## v1.0rc30 — 21 avril 2026
 
 ### Fiches produits
