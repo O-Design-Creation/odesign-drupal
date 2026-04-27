@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc33 — 27 avril 2026
+
+### Personnalisation produits — correctif panier
+- **Cases à cocher (ex. Pancartes jeu des mariés)** : l'ajout au panier ne provoque plus d'erreur fatale sur les produits dont la personnalisation utilise des cases à cocher. Le problème venait d'une contrainte de longueur de texte appliquée par erreur sur ce type de champ — c'est corrigé.
+
+---
+
 ## v1.0rc32 — 27 avril 2026
 
 ### Page campagne — affichage mobile

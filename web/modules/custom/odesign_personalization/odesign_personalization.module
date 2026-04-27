@@ -125,7 +125,7 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
     if (!empty($field['placeholder'])) {
       $baseProps['#placeholder'] = $field['placeholder'];
     }
-    if (!empty($field['maxlength'])) {
+    if (!empty($field['maxlength']) && in_array($field['type'], ['text', 'textarea'], TRUE)) {
       $baseProps['#maxlength'] = (int) $field['maxlength'];
     }
 
