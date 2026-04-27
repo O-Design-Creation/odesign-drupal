@@ -68,15 +68,42 @@
   gap: 1.5rem;
 }
 
+/* Icône panier dans le CTA : masquée par défaut, visible uniquement sur mobile étroit */
+.product-card__cta-icon {
+  display: none;
+}
+
 @media (max-width: 700px) {
   .campagne-produits-grid > div {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 }
 
 @media (max-width: 440px) {
+  /* Maintien des 2 colonnes — uniformisation avec .product-grid */
   .campagne-produits-grid > div {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* Footer en colonne pour éviter le débordement prix + bouton */
+  .campagne-produits-grid .product-card__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+  .campagne-produits-grid .product-card__cta {
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+  }
+  /* Remplace le texte du CTA par l'icône panier sur colonnes étroites */
+  .campagne-produits-grid .product-card__cta-text {
+    display: none;
+  }
+  .campagne-produits-grid .product-card__cta-icon {
+    display: inline;
+    font-size: 1.1rem;
+    line-height: 1;
   }
 }
 

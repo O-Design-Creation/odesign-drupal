@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc32 — 27 avril 2026
+
+### Page campagne — affichage mobile
+- **Grille produits** : la page campagne (ex. Fête des mères) affiche désormais **2 produits par ligne** sur mobile, comme les pages univers (Mariage, Naissance & bébé…).
+- **Bouton "Voir le produit"** : sur mobile en grille 2 colonnes, le bouton affiche une icône œil à la place du texte pour éviter tout débordement.
+
+---
+
 ## v1.0rc31 — 21 avril 2026
 
 ### Sécurité
