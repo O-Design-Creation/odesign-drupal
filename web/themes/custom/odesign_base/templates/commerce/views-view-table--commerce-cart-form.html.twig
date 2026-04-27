@@ -1,0 +1,85 @@
+{#
+/**
+ * @file
+ * views-view-table--commerce-cart-form.html.twig
+ *
+ * Panier — affichage en cartes avec miniature produit.
+ *
+ * Variables spécifiques injectées par preprocess :
+ * - rows[i].product_image : render array de la miniature (image_style product_thumbnail)
+ * - rows[i].product_url   : URL de la fiche produit
+ *
+ * Colonnes Commerce disponibles dans rows[i].columns :
+ * - purchased_entity     : nom du produit (rendu entity view mode "cart")
+ * - unit_price__number   : prix unitaire
+ * - edit_quantity        : widget saisie quantité (champ de formulaire)
+ * - remove_button        : bouton suppression (champ de formulaire)
+ * - total_price__number  : total de la ligne
+ */
+#}
+{% if rows %}
+  <div class="cart-items-list">
+    {% for key, row in rows %}
+      <div{{ row.attributes.addClass('cart-item') }}>
+
+        {# Miniature produit #}
+        {% if row.product_url is defined %}
+          <a href="{{ row.product_url }}" class="cart-item__image-link" tabindex="-1" aria-hidden="true">
+        {% else %}
+          <div class="cart-item__image-link cart-item__image-link--no-href">
+        {% endif %}
+          <div class="cart-item__image">
+            {% if row.product_image is defined %}
+              {{ row.product_image }}
+            {% else %}
+              <div class="cart-item__image--placeholder" aria-hidden="true">
+                <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <rect width="60" height="60" fill="#f9f5f2"/>
+                  <path d="M20 38 L30 20 L40 38Z" fill="#d9c7b8"/>
+                </svg>
+              </div>
+            {% endif %}
+          </div>
+        {% if row.product_url is defined %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+
+        {# Corps — titre et prix unitaire #}
+        <div class="cart-item__body">
+          <div class="cart-item__title">
+            {% for content in row.columns.purchased_entity.content %}
+              {{- content.field_output -}}
+            {% endfor %}
+          </div>
+          <div class="cart-item__unit-price">
+            {% for content in row.columns['unit_price__number'].content %}
+              {{- content.field_output -}}
+            {% endfor %}
+          </div>
+        </div>
+
+        {# Contrôles — quantité, total ligne, suppression #}
+        <div class="cart-item__controls">
+          <div class="cart-item__quantity">
+            {% for content in row.columns.edit_quantity.content %}
+              {{- content.field_output -}}
+            {% endfor %}
+          </div>
+          <div class="cart-item__total">
+            {% for content in row.columns['total_price__number'].content %}
+              {{- content.field_output -}}
+            {% endfor %}
+          </div>
+          <div class="cart-item__remove">
+            {% for content in row.columns.remove_button.content %}
+              {{- content.field_output -}}
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc34 — 27 avril 2026
+
+### Panier — affichage des miniatures produits
+- **Photo de chaque article** : la page panier affiche désormais la photo du produit à côté de chaque ligne, pour identifier facilement les articles avant de valider.
+- **Mise en page** : les articles s'affichent en cartes lisibles (photo + nom + prix unitaire + quantité + total + suppression), adapté mobile et tablette.
+
+---
+
 ## v1.0rc33 — 27 avril 2026
 
 ### Personnalisation produits — correctif panier

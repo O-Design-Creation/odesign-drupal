@@ -1482,3 +1482,38 @@ function odesign_base_preprocess_page_title(array &$variables): void {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_views_view_table__commerce_cart_form().
+ *
+ * Injecte la miniature produit et l'URL produit dans chaque ligne du panier.
+ */
+function odesign_base_preprocess_views_view_table__commerce_cart_form(array &$variables): void {
+  foreach ($variables['view']->result as $index => $row) {
+    $order_item = $row->_entity ?? NULL;
+    if (!$order_item instanceof \Drupal\commerce_order\Entity\OrderItemInterface) {
+      continue;
+    }
+    $purchased = $order_item->getPurchasedEntity();
+    if (!$purchased || !method_exists($purchased, 'getProduct')) {
+      continue;
+    }
+    $product = $purchased->getProduct();
+    if (!$product || !$product->hasField('field_product_images') || $product->get('field_product_images')->isEmpty()) {
+      continue;
+    }
+    $file = $product->get('field_product_images')->entity;
+    if (!$file) {
+      continue;
+    }
+    $variables['rows'][$index]['product_image'] = [
+      '#theme' => 'image_style',
+      '#style_name' => 'product_thumbnail',
+      '#uri' => $file->getFileUri(),
+      '#alt' => $product->label(),
+      '#width' => 80,
+      '#height' => 80,
+    ];
+    $variables['rows'][$index]['product_url'] = $product->toUrl()->toString();
+  }
+}

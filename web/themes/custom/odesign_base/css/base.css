@@ -4474,3 +4474,183 @@ nav ul {
   }
   .home-methode__step::after { display: none; }
 }
+
+/* ---------------------------------------------------------------------------
+   Page panier — liste d'articles avec miniatures
+   --------------------------------------------------------------------------- */
+
+.cart-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-bg, #fff);
+  border: 1px solid var(--color-border-light, #ecddd5);
+  border-radius: var(--radius-lg, 8px);
+  padding: var(--space-4);
+  transition: box-shadow 0.15s ease;
+}
+
+.cart-item:hover {
+  box-shadow: 0 2px 10px rgba(78, 38, 32, 0.08);
+}
+
+/* Miniature */
+.cart-item__image-link,
+.cart-item__image-link--no-href {
+  flex-shrink: 0;
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md, 6px);
+  overflow: hidden;
+  background: var(--color-bg-alt, #faf4f0);
+}
+
+.cart-item__image {
+  width: 80px;
+  height: 80px;
+}
+
+.cart-item__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-item__image--placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.cart-item__image--placeholder svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Corps — titre + prix unitaire */
+.cart-item__body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cart-item__title {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: 600;
+  color: var(--color-text, #1a1210);
+  margin-bottom: var(--space-1);
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.cart-item__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cart-item__title a:hover {
+  color: var(--color-brand-warm, #8B6151);
+}
+
+/* Retire le label "Élément" ajouté par la vue Commerce */
+.cart-item__title .views-label,
+.cart-item__unit-price .views-label {
+  display: none;
+}
+
+.cart-item__unit-price {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--color-text-muted, #6b4e44);
+}
+
+/* Contrôles droite : quantité + total + suppression */
+.cart-item__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.cart-item__quantity input[type="number"] {
+  width: 3.5rem;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border-light, #ecddd5);
+  border-radius: var(--radius-sm, 4px);
+  font-size: var(--font-size-sm, 0.875rem);
+  text-align: center;
+  color: var(--color-text, #1a1210);
+  background: var(--color-bg, #fff);
+}
+
+.cart-item__total {
+  font-weight: 700;
+  font-size: var(--font-size-base, 1rem);
+  color: var(--color-text, #1a1210);
+  min-width: 4rem;
+  text-align: right;
+}
+
+.cart-item__remove input[type="submit"],
+.cart-item__remove button {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, #6b4e44);
+  cursor: pointer;
+  padding: var(--space-1);
+  line-height: 1;
+  font-size: 0.8rem;
+  transition: color 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.cart-item__remove input[type="submit"]:hover,
+.cart-item__remove button:hover {
+  color: var(--color-error, #c0392b);
+}
+
+/* Masquer les labels Commerce dans les contrôles */
+.cart-item__quantity .views-label,
+.cart-item__total .views-label,
+.cart-item__remove .views-label {
+  display: none;
+}
+
+/* Mobile : contrôles sous le corps */
+@media (max-width: 560px) {
+  .cart-item {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .cart-item__image-link,
+  .cart-item__image-link--no-href {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cart-item__image {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cart-item__body {
+    flex: 1 1 calc(100% - 64px - var(--space-3));
+  }
+
+  .cart-item__controls {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px solid var(--color-border-light, #ecddd5);
+    padding-top: var(--space-3);
+    margin-top: 0;
+  }
+}
