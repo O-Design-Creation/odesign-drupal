@@ -138,13 +138,15 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
         break;
 
       case 'select':
-        $options = ['_none' => t('-- Choisir --')];
+        $options = [];
         foreach ($field['options'] ?? [] as $opt) {
           $options[$opt['value']] = $opt['label'];
         }
         $form['personalization'][$fieldKey] = $baseProps + [
-          '#type'    => 'select',
-          '#options' => $options,
+          '#type'         => 'select',
+          '#options'      => $options,
+          '#empty_option' => t('-- Choisir --'),
+          '#empty_value'  => '_none',
         ];
         break;
 
@@ -250,7 +252,7 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
         '#markup' => '<div class="perso-price-hint" data-perso-field="' . htmlspecialchars($fieldId) . '">'
           . t('Supplément si renseigné : <strong>@label</strong>', ['@label' => $modLabel])
           . '</div>',
-        '#weight' => $form['personalization'][$fieldKey]['#weight'] ?? 0 + 0.1,
+        '#weight' => ($form['personalization'][$fieldKey]['#weight'] ?? 0) + 0.1,
       ];
     }
   }
@@ -367,12 +369,13 @@ function odesign_personalization_form_commerce_order_item_add_to_cart_form_alter
       '#attributes' => ['class' => ['js-tree-data-payload']],
       '#parents' => ['data', 'odesign_personalization_values'],
     ];
+  }
 
-    // Un produit personnalisé ne doit pas être fusionné automatiquement.
-    if (isset($form['settings']['combine'])) {
-      $form['settings']['combine']['#type'] = 'value';
-      $form['settings']['combine']['#value'] = FALSE;
-    }
+  // Tout produit personnalisé ne doit pas être fusionné automatiquement —
+  // chaque soumission correspond à une personnalisation potentiellement unique.
+  if (isset($form['settings']['combine'])) {
+    $form['settings']['combine']['#type'] = 'value';
+    $form['settings']['combine']['#value'] = FALSE;
   }
 
   // Prix dynamique
@@ -446,20 +449,6 @@ function odesign_personalization_add_to_cart_submit(array $form, FormStateInterf
   if ($values && !$orderItem->isNew()) {
     $orderItem->save();
   }
-}
-
-/**
- * Implements hook_form_FORM_ID_submit() for add_to_cart forms.
- */
-function odesign_personalization_form_commerce_order_item_add_to_cart_form_submit(array $form, FormStateInterface $form_state): void {
-  odesign_personalization_add_to_cart_submit($form, $form_state);
-}
-
-/**
- * Collecte récursive des valeurs perso_* depuis l'arbre des valeurs du form.
- */
-function odesign_personalization_collect_perso_values(array $input): array {
-  return PersonalizationValues::collectFromInput($input);
 }
 
 /**

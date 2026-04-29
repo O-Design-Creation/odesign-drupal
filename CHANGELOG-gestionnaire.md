@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc35 — 29 avril 2026
+
+### Robustesse — ajout au panier (produits personnalisables)
+- **Personnalisations distinctes conservées** : si vous ajoutez deux fois le même produit personnalisé (ex. deux plaques de chaise avec des prénoms différents), chaque article conserve désormais sa propre personnalisation dans le panier. Avant ce correctif, le second ajout écrasait le premier.
+- **Champ "liste de choix" obligatoire** : quand un champ de type liste déroulante est marqué obligatoire, la soumission sans sélection est maintenant correctement bloquée (validation Drupal active).
+
+---
+
 ## v1.0rc34 — 27 avril 2026
 
 ### Panier — affichage des miniatures produits
