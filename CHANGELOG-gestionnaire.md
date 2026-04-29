@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc36 — 29 avril 2026
+
+### Paiement
+- **Mode de paiement réel activé** : la boutique accepte désormais de vrais paiements par carte bancaire. La phase de test Stripe est terminée — les achats effectués sur le site sont maintenant réels et débités.
+
+---
+
 ## v1.0rc35 — 29 avril 2026
 
 ### Robustesse — ajout au panier (produits personnalisables)
