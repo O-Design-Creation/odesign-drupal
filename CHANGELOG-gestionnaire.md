@@ -5,6 +5,15 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc40 — 29 avril 2026
+
+### Personnalisation produits
+
+- **Étiquettes bois cadeaux d'invités** : le formulaire de personnalisation indique désormais clairement "Quantité souhaitée" avec un exemple de saisie ("Ex : 10"). Le champ accepte maintenant du texte libre comme sur le site Shopify original.
+- **Marques bacs enfant en bois** : le champ "Catégories" affiche un exemple de saisie ("Ex : voitures, poupées, livres") pour guider la commande.
+
+---
+
 ## v1.0rc39 — 29 avril 2026
 
 ### Technique — stockage interne

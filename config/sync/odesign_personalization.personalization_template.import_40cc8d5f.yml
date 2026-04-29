@@ -3,17 +3,17 @@ langcode: fr
 status: true
 dependencies: {  }
 id: import_40cc8d5f
-label: Quantité
-description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+label: "Étiquettes bois — quantité"
+description: "Étiquettes en bois cadeaux d'invités — quantité souhaitée."
 fields:
   -
     id: field_1
-    label: Quantité
-    type: number
+    label: Quantité souhaitée
+    type: text
     required: false
-    placeholder: ''
-    help: ''
-    maxlength: 0
+    placeholder: 'Ex : 10'
+    help: 'Indiquez le nombre d''étiquettes souhaitées.'
+    maxlength: 20
     weight: 0
     options: {  }
     group_max: 5

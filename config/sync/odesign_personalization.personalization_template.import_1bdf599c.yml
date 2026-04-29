@@ -3,16 +3,16 @@ langcode: fr
 status: true
 dependencies: {  }
 id: import_1bdf599c
-label: 'Catégories '
-description: "Créé automatiquement lors de l'import catalogue Shopify. À affiner dans le backoffice."
+label: "Marques bacs — catégories"
+description: "Marques bacs enfant en bois — catégories souhaitées."
 fields:
   -
     id: field_1
-    label: 'Catégories '
+    label: Catégories
     type: text
     required: false
-    placeholder: ''
-    help: ''
+    placeholder: 'Ex : voitures, poupées, livres'
+    help: 'Indiquez les catégories que vous souhaitez (séparées par des virgules).'
     maxlength: 80
     weight: 0
     options: {  }
