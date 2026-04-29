@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc37 — 29 avril 2026
+
+### Panier — correctif miniatures produits
+- **Photos des articles** : les images des produits s'affichent maintenant correctement dans le panier. Un problème technique empêchait leur chargement depuis la bibliothèque de médias — c'est corrigé.
+
+---
+
 ## v1.0rc36 — 29 avril 2026
 
 ### Paiement

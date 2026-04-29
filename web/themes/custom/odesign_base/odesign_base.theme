@@ -1502,8 +1502,14 @@ function odesign_base_preprocess_views_view_table__commerce_cart_form(array &$va
     if (!$product || !$product->hasField('field_product_images') || $product->get('field_product_images')->isEmpty()) {
       continue;
     }
-    $file = $product->get('field_product_images')->entity;
-    if (!$file) {
+    // field_product_images référence des entités Media ; il faut descendre
+    // jusqu'à field_media_image pour obtenir le File et son URI.
+    $media = $product->get('field_product_images')->entity;
+    if (!$media || !$media->hasField('field_media_image') || $media->get('field_media_image')->isEmpty()) {
+      continue;
+    }
+    $file = $media->get('field_media_image')->entity;
+    if (!$file instanceof \Drupal\file\FileInterface) {
       continue;
     }
     $variables['rows'][$index]['product_image'] = [
