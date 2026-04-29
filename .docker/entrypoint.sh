@@ -58,8 +58,15 @@ ok "Base de données disponible."
 # pour ne pas être interprétées par bash dans le heredoc.
 
 mkdir -p "${WEB_ROOT}/sites/default"
-mkdir -p "${DRUPAL_PRIVATE_PATH:-/var/www/html/private}"
-chmod 750 "${DRUPAL_PRIVATE_PATH:-/var/www/html/private}"
+PRIVATE_PATH="${DRUPAL_PRIVATE_PATH:-/var/www/html/private}"
+mkdir -p "${PRIVATE_PATH}"
+chown www-data:www-data "${PRIVATE_PATH}"
+chmod 750 "${PRIVATE_PATH}"
+# Fichier requis par Drupal status check (SA-CORE-2013-003).
+# En nginx, le répertoire est hors webroot et inaccessible directement.
+if [ ! -f "${PRIVATE_PATH}/.htaccess" ]; then
+  printf 'Order deny,allow\nDeny from all\n' > "${PRIVATE_PATH}/.htaccess"
+fi
 cat > "${WEB_ROOT}/sites/default/settings.local.php" << SETTINGS_EOF
 <?php
 /**

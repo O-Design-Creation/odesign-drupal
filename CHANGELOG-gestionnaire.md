@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc39 — 29 avril 2026
+
+### Technique — stockage interne
+
+- **Espace de stockage privé** : le dossier réservé aux factures PDF et aux fichiers internes est maintenant correctement accessible par le serveur. Les messages d'avertissement sur l'espace de stockage privé dans le rapport système disparaissent au prochain redémarrage.
+
+---
+
 ## v1.0rc38 — 29 avril 2026
 
 ### Panier — correctif miniatures produits (2e passe)
