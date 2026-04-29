@@ -5,6 +5,13 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc38 — 29 avril 2026
+
+### Panier — correctif miniatures produits (2e passe)
+- **Photos des articles** : les images s'affichent maintenant correctement dans le panier sur tous les environnements. Le correctif précédent corrigeait la bibliothèque de médias, mais la structure de la vue Commerce n'était pas correctement prise en compte — c'est résolu.
+
+---
+
 ## v1.0rc37 — 29 avril 2026
 
 ### Panier — correctif miniatures produits
