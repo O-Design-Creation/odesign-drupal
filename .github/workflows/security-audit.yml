@@ -1,0 +1,157 @@
+name: Security Audit Composer Dependencies
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  composer-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:2.7
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run Composer audit (JSON)
+        id: audit
+        shell: bash
+        run: |
+          set +e
+          composer audit --format=json --locked > audit-report.json 2>&1
+          status=$?
+          echo "audit_exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Parse audit report
+        id: parse
+        shell: bash
+        run: |
+          if ! jq empty audit-report.json >/dev/null 2>&1; then
+            echo '[]' > audit-normalized.json
+            echo "parse_error=true" >> "$GITHUB_OUTPUT"
+            echo "has_vulnerabilities=false" >> "$GITHUB_OUTPUT"
+            echo "vuln_count=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          jq '
+            def advisories_from_composer:
+              if (.advisories | type? // "null") == "object" then
+                [ .advisories | to_entries[]? as $pkg | $pkg.value[]? | {
+                    package: $pkg.key,
+                    severity: (.severity // "unknown"),
+                    cve: (.cve // .cveID // ""),
+                    title: (.title // "Sans titre"),
+                    link: (.link // .url // ""),
+                    affected_versions: (.affectedVersions // .affected_versions // "")
+                  } ]
+              elif (.vulnerabilities | type? // "null") == "array" then
+                [ .vulnerabilities[]? | {
+                    package: (.package // "unknown"),
+                    severity: (.severity // .type // "unknown"),
+                    cve: (.cve // ""),
+                    title: (.title // "Sans titre"),
+                    link: (.link // .url // ""),
+                    affected_versions: (.version // .affectedVersions // .affected_versions // "")
+                  } ]
+              else
+                []
+              end;
+            advisories_from_composer
+          ' audit-report.json > audit-normalized.json
+
+          vuln_count=$(jq 'length' audit-normalized.json)
+          echo "parse_error=false" >> "$GITHUB_OUTPUT"
+          echo "vuln_count=$vuln_count" >> "$GITHUB_OUTPUT"
+
+          if [ "$vuln_count" -gt 0 ]; then
+            echo "has_vulnerabilities=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_vulnerabilities=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Render alert email body
+        if: steps.parse.outputs.has_vulnerabilities == 'true'
+        shell: bash
+        run: |
+          rows=$(jq -r '.[] | "<tr><td style=\"border:1px solid #ddd;padding:8px;\">\(.package)</td><td style=\"border:1px solid #ddd;padding:8px;\">\(.severity)</td><td style=\"border:1px solid #ddd;padding:8px;\">\(.cve)</td><td style=\"border:1px solid #ddd;padding:8px;\">\(.title)</td></tr>"' audit-normalized.json)
+          cat > email-body.html <<HTML
+<!DOCTYPE html>
+<html lang="fr">
+<body style="font-family: Arial, sans-serif; color: #222;">
+  <h2 style="color:#b00020;">Alerte sécurité Composer</h2>
+  <p><strong>Repository :</strong> ${GITHUB_REPOSITORY}</p>
+  <p><strong>Advisories détectées :</strong> ${{ steps.parse.outputs.vuln_count }}</p>
+  <p><strong>Run GitHub Actions :</strong> <a href="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}">ouvrir le rapport</a></p>
+  <table style="border-collapse: collapse; width: 100%; margin-top: 16px;">
+    <tr>
+      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Package</th>
+      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Sévérité</th>
+      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">CVE</th>
+      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Titre</th>
+    </tr>
+    ${rows}
+  </table>
+  <p style="margin-top: 16px;">Action attendue : mettre à jour les dépendances concernées, valider localement, puis rejouer l'audit.</p>
+</body>
+</html>
+HTML
+
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-report
+          path: |
+            audit-report.json
+            audit-normalized.json
+            email-body.html
+          retention-days: 90
+
+      - name: Send alert email
+        if: steps.parse.outputs.has_vulnerabilities == 'true'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: 465
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASS }}
+          subject: "[SECURITY] ${{ steps.parse.outputs.vuln_count }} advisories found - ${{ github.repository }}"
+          to: ${{ secrets.ALERT_EMAIL }}
+          from: ${{ secrets.EMAIL_USER }}
+          content_type: text/html
+          body: file://email-body.html
+
+      - name: Summary
+        if: always()
+        shell: bash
+        run: |
+          echo "### Security audit summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Audit exit code: ${{ steps.audit.outputs.audit_exit_code }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Parse error: ${{ steps.parse.outputs.parse_error }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Advisories: ${{ steps.parse.outputs.vuln_count }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Alert sent: ${{ steps.parse.outputs.has_vulnerabilities }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail on vulnerabilities or parser error
+        shell: bash
+        run: |
+          if [ "${{ steps.parse.outputs.parse_error }}" = "true" ]; then
+            echo "Audit report parsing failed"
+            exit 1
+          fi
+          if [ "${{ steps.parse.outputs.has_vulnerabilities }}" = "true" ]; then
+            echo "Composer advisories detected"
+            exit 1
+          fi
