@@ -85,29 +85,29 @@ jobs:
       - name: Render alert email body
         if: steps.parse.outputs.has_vulnerabilities == 'true'
         shell: bash
+        env:
+          VULN_COUNT: ${{ steps.parse.outputs.vuln_count }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REPO: ${{ github.repository }}
         run: |
           rows=$(jq -r '.[] | "<tr><td style=\"border:1px solid #ddd;padding:8px;\">\(.package)</td><td style=\"border:1px solid #ddd;padding:8px;\">\(.severity)</td><td style=\"border:1px solid #ddd;padding:8px;\">\(.cve)</td><td style=\"border:1px solid #ddd;padding:8px;\">\(.title)</td></tr>"' audit-normalized.json)
-          cat > email-body.html <<HTML
-<!DOCTYPE html>
-<html lang="fr">
-<body style="font-family: Arial, sans-serif; color: #222;">
-  <h2 style="color:#b00020;">Alerte sécurité Composer</h2>
-  <p><strong>Repository :</strong> ${GITHUB_REPOSITORY}</p>
-  <p><strong>Advisories détectées :</strong> ${{ steps.parse.outputs.vuln_count }}</p>
-  <p><strong>Run GitHub Actions :</strong> <a href="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}">ouvrir le rapport</a></p>
-  <table style="border-collapse: collapse; width: 100%; margin-top: 16px;">
-    <tr>
-      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Package</th>
-      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Sévérité</th>
-      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">CVE</th>
-      <th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Titre</th>
-    </tr>
-    ${rows}
-  </table>
-  <p style="margin-top: 16px;">Action attendue : mettre à jour les dépendances concernées, valider localement, puis rejouer l'audit.</p>
-</body>
-</html>
-HTML
+          {
+            printf '<!DOCTYPE html>\n<html lang="fr">\n'
+            printf '<body style="font-family:Arial,sans-serif;color:#222;">\n'
+            printf '<h2 style="color:#b00020;">Alerte s&eacute;curit&eacute; Composer</h2>\n'
+            printf '<p><strong>Repository :</strong> %s</p>\n' "$REPO"
+            printf '<p><strong>Advisories d&eacute;tect&eacute;es :</strong> %s</p>\n' "$VULN_COUNT"
+            printf '<p><strong>Run GitHub Actions :</strong> <a href="%s">ouvrir le rapport</a></p>\n' "$RUN_URL"
+            printf '<table style="border-collapse:collapse;width:100%%;margin-top:16px;">\n'
+            printf '<tr><th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Package</th>'
+            printf '<th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">S&eacute;v&eacute;rit&eacute;</th>'
+            printf '<th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">CVE</th>'
+            printf '<th style="border:1px solid #ddd;padding:8px;text-align:left;background:#f4f4f4;">Titre</th></tr>\n'
+            printf '%s\n' "$rows"
+            printf '</table>\n'
+            printf '<p style="margin-top:16px;">Action attendue : mettre &agrave; jour les d&eacute;pendances concern&eacute;es, valider localement, puis rejouer l&apos;audit.</p>\n'
+            printf '</body>\n</html>\n'
+          } > email-body.html
 
       - name: Upload audit artifacts
         if: always()
