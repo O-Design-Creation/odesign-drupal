@@ -5,7 +5,7 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
-## v1.0rc41 — 22 mai 2026
+## v1.1rc1 — 22 mai 2026
 
 ### Sécurité
 
