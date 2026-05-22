@@ -100,7 +100,8 @@ RUN mkdir -p /var/www/html/seeds \
 # ── Permissions Drupal ─────────────────────────────────────────────────────────
 RUN mkdir -p /var/www/html/web/sites/default/files \
  && chown -R www-data:www-data /var/www/html \
- && chmod 755 /var/www/html/web/sites/default/files
+ && chmod 755 /var/www/html/web/sites/default/files \
+ && git config --system --add safe.directory /var/www/html
 
 EXPOSE 80
 
