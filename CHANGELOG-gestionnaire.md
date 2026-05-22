@@ -5,6 +5,15 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.0rc41 — 22 mai 2026
+
+### Sécurité
+
+- **Mise à jour de sécurité Drupal** : le cœur de la boutique passe en version **11.3.10** avec les dépendances Symfony et Twig associées, pour corriger les alertes de sécurité remontées par l'audit Composer.
+- **Surveillance sécurité préparée** : un workflow GitHub dédié à l'audit automatique des dépendances Composer est ajouté pour faciliter la détection rapide des prochaines alertes.
+
+---
+
 ## v1.0rc40 — 29 avril 2026
 
 ### Personnalisation produits
