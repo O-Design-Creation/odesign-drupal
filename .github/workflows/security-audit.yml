@@ -1,4 +1,4 @@
-name: Security Audit Composer Dependencies
+name: Security Audit — Composer Dependencies
 
 on:
   schedule:
