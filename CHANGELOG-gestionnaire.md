@@ -5,6 +5,15 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.2rc1 — 1er juin 2026
+
+### Sécurité
+
+- **Mise à jour de sécurité** : 8 alertes de sécurité corrigées sur 4 composants (Drupal core, Symfony, Twig, Guzzle). Drupal passe en version **11.3.11**, Twig en **3.27.1**, Symfony en **7.4.13**. Les correctifs couvrent des risques de contournement du moteur de templates (sandbox Twig), une faille SSRF sur les réseaux IPv6, et un problème d'encodage d'URL.
+- Aucun changement visible pour la gestion de la boutique ou les commandes.
+
+---
+
 ## v1.1rc1 — 22 mai 2026
 
 ### Sécurité
