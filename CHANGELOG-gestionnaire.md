@@ -5,11 +5,11 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
-## v1.3rc1 — 1er juin 2026
+## v1.4rc1 — 1er juin 2026
 
 ### Technique — stockage interne (correctif)
 
-- **Espace de stockage privé** : le rapport système Drupal signalait "Pas entièrement protégé" pour le dossier de fichiers privés. Le fichier de protection `.htaccess` est maintenant généré par Drupal lui-même au démarrage (marqueur SA-2013-003 exact), ce qui fait disparaître cet avertissement dans le rapport système.
+- **Espace de stockage privé** : le rapport système Drupal signalait "Pas entièrement protégé" pour le dossier de fichiers privés. Le fichier de protection `.htaccess` est maintenant généré par Drupal lui-même au démarrage du serveur (marqueur SA-2013-003 exact), ce qui fait disparaître cet avertissement dans le rapport système dès le premier lancement.
 
 ---
 

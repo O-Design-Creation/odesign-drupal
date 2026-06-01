@@ -220,6 +220,15 @@ log "Correction finale des permissions sites/default/files/ ..."
 chown -R www-data:www-data "${WEB_ROOT}/sites/default/files" 2>/dev/null || true
 ok "Permissions files/ corrigées (post-déploiement)."
 
+# ── 4d. Génération du .htaccess private (SA-CORE-2013-003) ───────────────────
+# HtaccessWriter::ensure() est appelé par system_requirements() — pas par drush cr.
+# On le déclenche explicitement pour que le check drush core:requirements soit
+# vert dès le premier démarrage, sans attendre une visite de /admin/reports/status.
+log "Génération du .htaccess private via drush..."
+"$DRUSH" php:eval "\Drupal::service('file.htaccess_writer')->ensure();" \
+  && ok "htaccess private généré." \
+  || log "Avertissement : htaccess private non généré (Drupal pas encore prêt)."
+
 # ── 5. Smoke test post-déploiement ────────────────────────────────────────────
 
 if [ -f "${DRUPAL_ROOT}/.docker/smoke-test.sh" ]; then
