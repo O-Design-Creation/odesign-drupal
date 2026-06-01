@@ -62,11 +62,27 @@ PRIVATE_PATH="${DRUPAL_PRIVATE_PATH:-/var/www/html/private}"
 mkdir -p "${PRIVATE_PATH}"
 chown www-data:www-data "${PRIVATE_PATH}"
 chmod 750 "${PRIVATE_PATH}"
-# Fichier requis par Drupal status check (SA-CORE-2013-003).
-# En nginx, le répertoire est hors webroot et inaccessible directement.
-if [ ! -f "${PRIVATE_PATH}/.htaccess" ]; then
-  printf 'Order deny,allow\nDeny from all\n' > "${PRIVATE_PATH}/.htaccess"
-fi
+# Fichier requis par Drupal (SA-CORE-2013-003) — le marker SetHandler est vérifié
+# par drush core:requirements. En nginx, le répertoire est hors webroot.
+cat > "${PRIVATE_PATH}/.htaccess" << 'HTACCESS'
+# Turn off all options we don't need.
+Options -Indexes -ExecCGI -Includes -MultiViews
+
+# Set the catch-all handler to prevent scripts from being executed.
+SetHandler Drupal_Security_Do_Not_Remove_See_SA_CORE_2013_003
+<Files *>
+  SetHandler Drupal_Security_Do_Not_Remove_See_SA_CORE_2013_003
+</Files>
+
+# Don't allow PHP scripts to be served.
+<FilesMatch "\.php$">
+  Require all denied
+</FilesMatch>
+
+# Deny access.
+Require all denied
+HTACCESS
+chown www-data:www-data "${PRIVATE_PATH}/.htaccess"
 cat > "${WEB_ROOT}/sites/default/settings.local.php" << SETTINGS_EOF
 <?php
 /**

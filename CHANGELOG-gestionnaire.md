@@ -5,6 +5,14 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.2rc2 — 1er juin 2026
+
+### Technique — stockage interne (correctif)
+
+- **Espace de stockage privé** : le rapport système Drupal signalait "Pas entièrement protégé" pour le dossier de fichiers privés. Le fichier de protection `.htaccess` contient maintenant le marqueur exact attendu par Drupal (SA-CORE-2013-003), ce qui fait disparaître cet avertissement dans le rapport système.
+
+---
+
 ## v1.2rc1 — 1er juin 2026
 
 ### Sécurité
