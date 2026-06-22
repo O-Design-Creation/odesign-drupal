@@ -5,6 +5,15 @@ Il est rédigé en langage simple, sans jargon technique.
 
 ---
 
+## v1.5.1 — 22 juin 2026
+
+### Sécurité
+
+- **Mise à jour de sécurité** : plusieurs composants techniques de la boutique sont mis à jour pour corriger les alertes remontées par l'audit de sécurité. Drupal passe en version **11.3.12**, Drupal Commerce en **3.3.6**, Guzzle en **7.12.1** et PSR-7 en **2.12.1**.
+- Aucun changement visible n'est attendu dans la gestion quotidienne de la boutique, des produits ou des commandes.
+
+---
+
 ## v1.4rc1 — 1er juin 2026
 
 ### Technique — stockage interne (correctif)
