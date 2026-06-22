@@ -2,8 +2,10 @@
 # Build & Push — image Docker vers GHCR
 #
 # Convention de tags (ADR-013) :
-#   X.YrcN  (ex: 1.1rc1)  → build + push + déploiement AUTO preprod via Coolify
-#   X.Y     (ex: 1.1)     → build + push ; déploiement prod MANUEL via workflow_dispatch
+#   X.YrcN       (ex: 1.1rc1)    → build + push + déploiement AUTO preprod via Coolify
+#   X.Y.ZrcN     (ex: 1.5.1rc1)  → build + push + déploiement AUTO preprod via Coolify
+#   X.Y          (ex: 1.1)       → build + push ; déploiement prod MANUEL via workflow_dispatch
+#   X.Y.Z        (ex: 1.5.1)     → build + push ; déploiement prod MANUEL via workflow_dispatch
 #
 # Secrets requis dans GitHub → Settings → Secrets :
 #   COOLIFY_PREPROD_WEBHOOK  — webhook Coolify pour déclencher le déploiement preprod
@@ -16,8 +18,10 @@ name: Build & Push Docker image
 on:
   push:
     tags:
-      - '[0-9]+.[0-9]+rc[0-9]+'   # ex: 1.1rc1  → preprod
-      - '[0-9]+.[0-9]+'           # ex: 1.1     → prod (déploiement manuel)
+      - '[0-9]+.[0-9]+rc[0-9]+'       # ex: 1.1rc1    → preprod
+      - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+' # ex: 1.5.1rc1  → preprod
+      - '[0-9]+.[0-9]+'               # ex: 1.1       → prod (déploiement manuel)
+      - '[0-9]+.[0-9]+.[0-9]+'        # ex: 1.5.1     → prod (déploiement manuel)
   workflow_dispatch:
     inputs:
       release_tag:
@@ -49,7 +53,7 @@ jobs:
         id: tag_type
         run: |
           TAG="${GITHUB_REF_NAME}"
-          if [[ "$TAG" =~ ^[0-9]+\.[0-9]+rc[0-9]+$ ]]; then
+          if [[ "$TAG" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?rc[0-9]+$ ]]; then
             echo "is_preprod=true"  >> "$GITHUB_OUTPUT"
             echo "env=preprod"      >> "$GITHUB_OUTPUT"
           else
